@@ -12,6 +12,7 @@ namespace Storage
     {
         public DbSet<Publication> Publications { set; get; }
         public DbSet<Author> Authors { set; get; }
+        public DbSet<Publisher> Publishers { set; get; }
 
         public Database(DbContextOptions<Database> options) : base(options)
         {

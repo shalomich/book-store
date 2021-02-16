@@ -29,13 +29,13 @@ namespace Storage.DatabaseConfigs
 
             builder.HasIndex(publication => publication.ISBN).IsUnique();
             builder.HasIndex(publication =>
-                new 
-                { 
-                    publication.Name, 
+                new
+                {
+                    publication.Name,
                     publication.ReleaseYear,
-                    publication.AuthorId
+                    publication.AuthorId,
+                    publication.PublisherId
                 }).IsUnique();
-            
-      }
+        }
     }
 }
