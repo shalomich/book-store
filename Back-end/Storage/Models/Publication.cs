@@ -67,7 +67,7 @@ namespace Storage.Models
             "12+",
             "18+"
         };
-        public int ReleaseYear 
+       public int ReleaseYear 
         { 
             set 
             {
@@ -83,7 +83,10 @@ namespace Storage.Models
             } 
         }
 
-        public string Type
+        public Author Author { set; get; }
+        public int AuthorId { set; get; }
+
+       public string Type
         {
             set
             {

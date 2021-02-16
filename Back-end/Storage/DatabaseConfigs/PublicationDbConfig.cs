@@ -32,7 +32,8 @@ namespace Storage.DatabaseConfigs
                 new 
                 { 
                     publication.Name, 
-                    publication.ReleaseYear, 
+                    publication.ReleaseYear,
+                    publication.AuthorId
                 }).IsUnique();
             
       }
