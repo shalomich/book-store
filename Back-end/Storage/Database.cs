@@ -20,6 +20,7 @@ namespace Storage
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new PublicationDbConfig());
+            modelBuilder.ApplyConfiguration(new AuthorDbConfig());
         }
     }
 }
