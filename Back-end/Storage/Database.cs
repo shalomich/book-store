@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Storage.DatabaseConfigs;
 using Storage.Models;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,11 @@ namespace Storage
 
         public Database(DbContextOptions<Database> options) : base(options)
         {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new PublicationDbConfig());
         }
     }
 }
