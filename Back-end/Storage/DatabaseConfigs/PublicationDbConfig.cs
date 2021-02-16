@@ -10,10 +10,12 @@ using System.Threading.Tasks;
 
 namespace Storage.DatabaseConfigs
 {
-    public class PublicationDbConfig : IEntityTypeConfiguration<Publication>
+    public class PublicationDbConfig : ProductDbConfig<Publication>
     {
-        public void Configure(EntityTypeBuilder<Publication> builder)
+        public override void Configure(EntityTypeBuilder<Publication> builder)
         {
+            base.Configure(builder);
+
             builder.ToTable("publications");
 
             var genresConversion = new ValueConverter<ISet<string>, string>(

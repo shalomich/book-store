@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Storage.Models
 {
-    public class Product : Entity
+    public abstract class Product : Entity
     {
         private const int _minCost = 0;
         private const int _minQuantity = 0;
