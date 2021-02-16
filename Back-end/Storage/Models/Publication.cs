@@ -85,8 +85,10 @@ namespace Storage.Models
 
         public Author Author { set; get; }
         public int AuthorId { set; get; }
+        public Publisher Publisher { set; get; }
+        public int PublisherId { set; get; }
 
-       public string Type
+        public string Type
         {
             set
             {
