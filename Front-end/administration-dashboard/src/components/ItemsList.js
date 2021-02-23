@@ -3,7 +3,7 @@ import Item from "./Item";
 
 const ItemsList = (props) => {
     const items = props.goods.map((item) =>
-        <Item goods = {item} />
+        <Item updateData = {props.updateData} goods = {item} />
     );
 
     return (

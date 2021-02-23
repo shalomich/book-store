@@ -1,19 +1,29 @@
 import React from 'react';
 import {Component} from "react/cjs/react.production.min";
-import {NavLink} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 
 class Item extends Component {
     constructor(props) {
         super(props);
-        this.state = {date: new Date()};
         this.link = "/" + this.props.goods.type;
+        this.clicked = false;
+    }
+
+
+    handleClick = () => {
+        console.log("Hello");
+        this.props.updateData(this.props.goods.name);
+        this.clicked = true;
     }
 
     render() {
+        if (this.clicked) {
+            return <Redirect to={this.link}/>
+        }
 
         return (
             <div>
-                <button><NavLink to={this.link}>{this.props.goods.name}</NavLink></button>
+                <button onClick={this.handleClick}>{this.props.goods.name}</button>
             </div>
         );
     }
