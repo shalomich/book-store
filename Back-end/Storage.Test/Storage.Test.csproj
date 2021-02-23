@@ -19,11 +19,4 @@
     </PackageReference>
   </ItemGroup>
 
-<<<<<<< HEAD
-=======
-  <ItemGroup>
-    <ProjectReference Include="..\Storage\Storage.csproj" />
-  </ItemGroup>
-
->>>>>>> cb33912 (init project for microservice storage testing)
 </Project>
