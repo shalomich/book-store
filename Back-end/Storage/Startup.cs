@@ -25,6 +25,7 @@ namespace Storage
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<Database>(options => options.UseSqlServer(connectionString));
+            services.AddControllers().AddNewtonsoftJson();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -38,10 +39,7 @@ namespace Storage
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
             });
         }
     }
