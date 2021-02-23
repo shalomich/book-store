@@ -1,9 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PagesManager from "./components/PagesManager";
+
+const goods = [{type: "books", name: "Книги"}, {type: "pencils", name: "Карандаши"}];
 
 ReactDOM.render(
   <React.StrictMode>
-    <div>Hello, world!</div>
+    <PagesManager goods = {goods} />
   </React.StrictMode>,
   document.getElementById('root')
 );
