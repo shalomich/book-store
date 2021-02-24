@@ -1,10 +1,10 @@
 import React from 'react';
-import ItemsList from "./ItemsList";
+import ItemsList from "./ProductsList/ItemsList";
 
 const MainPage = (props) => {
     return (
         <div>
-            <h1>Товары</h1>
+            <h1 style={{marginLeft: "65px"}}>Товары</h1>
             <ItemsList updateData = {props.updateData} goods = {props.goods}/>
         </div>
     );

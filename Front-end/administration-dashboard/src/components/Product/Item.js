@@ -1,6 +1,7 @@
 import React from 'react';
 import {Component} from "react/cjs/react.production.min";
 import {Redirect} from "react-router-dom";
+import style from "./Product.module.css"
 
 class Item extends Component {
     constructor(props) {
@@ -16,14 +17,15 @@ class Item extends Component {
         this.clicked = true;
     }
 
+
     render() {
         if (this.clicked) {
             return <Redirect to={this.link}/>
         }
 
         return (
-            <div>
-                <button onClick={this.handleClick}>{this.props.goods.name}</button>
+            <div className={style.product_block}>
+                <button className={style.product} onClick={this.handleClick}>{this.props.goods.name}</button>
             </div>
         );
     }

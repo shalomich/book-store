@@ -1,5 +1,6 @@
 import React from 'react';
-import Item from "./Item";
+import Item from "../Product/Item";
+import "./ProductsList.module.css"
 
 const ItemsList = (props) => {
     const items = props.goods.map((item) =>
@@ -7,7 +8,7 @@ const ItemsList = (props) => {
     );
 
     return (
-        <div>{items}</div>
+        <ul className="products-block">{items}</ul>
         )
 }
 
