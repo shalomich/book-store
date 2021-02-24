@@ -1,10 +1,10 @@
 import React from 'react';
-import Item from "../Product/Item";
+import Product from "../Product/Product";
 import "./ProductsList.module.css"
 
 const ItemsList = (props) => {
     const items = props.goods.map((item) =>
-        <Item updateData = {props.updateData} goods = {item} />
+        <Product updateData = {props.updateData} goods = {item} />
     );
 
     return (
