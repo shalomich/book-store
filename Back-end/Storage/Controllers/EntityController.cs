@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Storage.Models;
+using Storage.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,9 @@ namespace Storage.Controllers
 {
     [ApiController]
     [Route("storage/[controller]")]
-    public abstract class EntityController<T> : Controller where T : Entity
+    public abstract class EntityController<T> : Controller where T : Entity, new()
     {
         protected readonly Database _database;
-
         public EntityController(Database database)
         {
             _database = database;
@@ -77,6 +77,12 @@ namespace Storage.Controllers
             await _database.SaveChangesAsync();
             
             return NoContent();
+        }
+
+        [HttpGet("form")]
+        public IActionResult ToForm([FromServices] EntityToFormConverter converter)
+        {
+            return new JsonResult(converter.Convert<T>());
         }
     }
 }

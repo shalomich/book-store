@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Storage.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,10 @@ namespace Storage
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<Database>(options => options.UseSqlServer(connectionString));
+            
             services.AddControllers().AddNewtonsoftJson();
+
+            services.AddSingleton<EntityToFormConverter>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
