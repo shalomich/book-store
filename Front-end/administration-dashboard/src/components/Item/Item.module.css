@@ -1,0 +1,31 @@
+.item {
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.item_block {
+    display: inline-block;
+    margin: 30px;
+    width: 200px;
+    height: 200px;
+    outline: 2px solid #000;
+}
+
+.delete_button {
+    float: right;
+    vertical-align: center;
+}
+
+.edit_button {
+    vertical-align: center;
+}
+
+.line {
+    background-color: black;
+    margin-bottom: 30px;
+    margin-top: 60px;
+    width: 200px;
+}
+
