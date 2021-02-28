@@ -1,26 +1,26 @@
 import React from 'react';
 import MainPage from "./MainPage";
-import {BrowserRouter} from "react-router-dom";
+import {BrowserRouter, Route, Redirect} from "react-router-dom";
 import {Component} from "react/cjs/react.production.min";
+import EntityPage from "./EntityPage";
 
 class PagesManager extends Component{
     constructor(props) {
         super(props);
-        this.state = {goodsName: String()}
-        this.link = "/" + this.props.goods.type;
-        this.clicked = false;
+        this.state = {product: String()}
     }
 
     updateData = (value) => {
-        this.setState({ goodsName: value })
+        this.setState({ product: value })
     }
 
     render() {
-        console.log(this.state.goodsName);
         return (
             <BrowserRouter>
                 <div>
-                    <MainPage updateData = {this.updateData} goods = {this.props.goods}/>
+                    <Redirect from="/" to="/admin" />
+                    <Route exact path="/admin" render={() => <MainPage updateData = {this.updateData} goods = {this.props.goods}/>}/>
+                    <Route strict path="/admin/" render={() => <EntityPage name={this.state.product} />}/>
                 </div>
             </BrowserRouter>
         );
