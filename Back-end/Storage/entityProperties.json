@@ -1,0 +1,16 @@
+{
+  "form": {
+    "Author": {
+      "Biography": "textarea"
+    },
+    "Publisher": {
+      "Description": "textarea"
+    },
+    "Publication": {
+      "Type": "select",
+      "Genres": "select multiple",
+      "CoverArt": "select",
+      "AgeLimit":  "select"
+    }
+  }
+}
