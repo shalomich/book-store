@@ -13,7 +13,8 @@ namespace Storage.Services
             {typeof(string), new string[]
                 {
                     "text",
-                    "textArea",
+                    "textarea",
+                    "select",
                     "password",
                     "tel",
                     "email"
@@ -33,9 +34,8 @@ namespace Storage.Services
                 }.ToImmutableArray()
             },
             {
-                typeof(IEnumerable<string>),new string[]
+                typeof(ISet<string>),new string[]
                 {
-                    "select",
                     "select multiple"
                 }.ToImmutableArray()
             }
