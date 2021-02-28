@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Storage.Models;
 using Storage.Services;
 using System;
@@ -80,9 +81,15 @@ namespace Storage.Controllers
         }
 
         [HttpGet("form")]
-        public IActionResult ToForm([FromServices] EntityToFormConverter converter)
+        public IActionResult ToForm([FromServices] EntityToFormConverter converter, [FromServices] IConfiguration configuration)
         {
-            return new JsonResult(converter.Convert<T>());
+            var entityName = new T().GetType().Name;
+            
+            var entityToFormElements = configuration
+                .GetSection($"form:{entityName}")
+                .GetChildren()
+                .ToDictionary(section => section.Key, section => section.Value);
+            return new JsonResult(converter.Convert<T>(entityToFormElements));
         }
     }
 }
