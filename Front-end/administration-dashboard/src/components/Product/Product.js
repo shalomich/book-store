@@ -3,24 +3,25 @@ import {Component} from "react/cjs/react.production.min";
 import {Redirect} from "react-router-dom";
 import style from "./Product.module.css"
 
-class Item extends Component {
+class Product extends Component {
     constructor(props) {
         super(props);
-        this.link = "/" + this.props.goods.type;
-        this.clicked = false;
+        this.state = {
+            link: "/admin/" + this.props.goods.type,
+            clicked: false
+        }
     }
 
 
     handleClick = () => {
-        console.log("Hello");
         this.props.updateData(this.props.goods.name);
-        this.clicked = true;
+        this.state.clicked = true;
     }
 
 
     render() {
-        if (this.clicked) {
-            return <Redirect to={this.link}/>
+        if (this.state.clicked) {
+            return <Redirect to={this.state.link}/>
         }
 
         return (
@@ -31,4 +32,4 @@ class Item extends Component {
     }
 }
 
-export default Item;
+export default Product;
