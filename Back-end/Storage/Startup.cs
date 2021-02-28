@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Storage.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,7 +20,8 @@ namespace Storage
 
         public Startup(IConfiguration configuration)
         {
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            var buidler = new ConfigurationBuilder();
+            _configuration = buidler.AddConfiguration(configuration).AddJsonFile("entityProperties.json").Build();
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -28,6 +30,7 @@ namespace Storage
             services.AddDbContext<Database>(options => options.UseSqlServer(connectionString));
             
             services.AddControllers().AddNewtonsoftJson();
+            services.AddSingleton<IConfiguration>(_configuration);
 
             services.AddSingleton<EntityToFormConverter>();
         }
