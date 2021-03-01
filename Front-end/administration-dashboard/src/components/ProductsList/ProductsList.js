@@ -1,15 +1,15 @@
 import React from 'react';
-import Product from "../Product/Product";
+import ProductType from "../ProductType/ProductType";
 import "./ProductsList.module.css"
 
-const ProductsList = (props) => {
-    const items = props.goods.map((item) =>
-        <Product updateData = {props.updateData} goods = {item} />
-    );
-
-    return (
-        <ul>{items}</ul>
-        )
+const ProductsList = ({goods}) => {
+    return <ul>
+        {
+            goods.map((product,index) =>
+            <ProductType key={index} name={product.name} type={product.type}/>)
+        }
+    </ul>
+        
 }
 
 export default ProductsList;
