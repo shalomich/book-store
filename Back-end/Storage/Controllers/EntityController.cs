@@ -24,13 +24,13 @@ namespace Storage.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<T>>> Read()
         {
-            return await _database.Set<T>().AsNoTracking().ToListAsync();
+            return await _database.Set<T>().Include(entity => entity.Images).AsNoTracking().ToListAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<T>> Read(int id)
         {
-            var entity = await _database.Set<T>().FirstOrDefaultAsync(entity => entity.Id == id);
+            var entity = await _database.Set<T>().Include(entity => entity.Images).FirstOrDefaultAsync(entity => entity.Id == id);
             if (entity == null)
                 return NotFound();
             else return entity;
