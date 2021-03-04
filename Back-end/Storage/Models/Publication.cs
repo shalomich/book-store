@@ -12,8 +12,8 @@ namespace Storage.Models
         private static readonly int _maxReleaseYear = DateTime.Today.Year;
         private const int _minPageQuantity = 1;
         private const int _maxPageQuantity = int.MaxValue;
-        private const string _ISBNMask = "978-5-[0-9]{6}-[0-9]{2}-[0-9]{1}";
-        private const string _formatMask = "[0-9]+X[0-9]+X[0-9]+";
+        private const string _ISBNMask = @"^978-5-\d{6}-\d{2}-\d{1}$";
+        private const string _formatMask = @"^[1-9]\d{1}x[1-9]\d{1}x[1-9]$";
 
         private static readonly string _notExistTypeMessage = "Не существует данного типа публикации {0}";
         private static readonly string _notExistGenreMessage = "Не существует данного жанра {0}";
