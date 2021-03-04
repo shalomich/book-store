@@ -1,7 +1,5 @@
 import React from 'react';
 import {Component} from "react/cjs/react.production.min";
-import {Redirect} from "react-router-dom";
-import Product from "../Product/Product";
 import style from "./Item.module.css"
 
 class Item extends Component {

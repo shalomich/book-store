@@ -1,4 +1,16 @@
 .button {
-    display: inline-block;
-    padding: 30px;
+    height: 200px;
+    width: 200px;
+    float: left;
+    margin-right: 70px;
 }
+
+.list_block {
+    padding-left: 65px;
+}
+
+.list {
+    padding: 0;
+}
+
+

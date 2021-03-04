@@ -14,7 +14,7 @@ const EntityPage = (props) => {
     return (
         <div>
             <button onClick={handleClick}>На главную</button>
-            <h1 style={{marginLeft: "65px"}}>{props.name}</h1>
+            <h1 style={{marginLeft: "65px", marginBottom: "50px"}}>{props.name}</h1>
             <ItemsList />
         </div>
     );

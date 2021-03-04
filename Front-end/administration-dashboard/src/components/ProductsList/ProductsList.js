@@ -1,6 +1,6 @@
 import React from 'react';
 import Product from "../Product/Product";
-import "./ProductsList.module.css"
+import style from "./ProductsList.module.css"
 
 const ProductsList = (props) => {
     const items = props.goods.map((item) =>
