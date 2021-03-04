@@ -14,8 +14,6 @@ namespace Storage.DatabaseConfigs
         {
             builder.ToTable("publishers");
 
-            builder.Property(publisher => publisher.Name).IsRequired();
-
             builder.HasIndex(publisher => publisher.Name).IsUnique();
         }
     }

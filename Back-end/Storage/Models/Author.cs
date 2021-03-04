@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Storage.Models
@@ -9,21 +10,35 @@ namespace Storage.Models
     {
         private static readonly DateTime _maxDeathDate = DateTime.Today;
         private static readonly DateTime _maxBirthDate;
+        private static readonly string _nameMask = "^[А-ЯЁ][а-яё]* [А-ЯЁ][а-яё]* [А-ЯЁ][а-яё]*$";
 
         private static readonly string _maxDeathDateMessage = $"Дата смерти не может быть позже {_maxDeathDate}";
         private static readonly string _maxBirthDateMessage = $"Дата рождения не может быть позже {_maxBirthDate}";
-
+        private static readonly string _invalidNameMessage = "Некорректное значение имени автора:{0}";
+                                                                                  
+        private string _name;
         private DateTime _birthDate;
         private DateTime? _deathDate;
+
         static Author()
         {
             var majorityYear = 18;
             var today = DateTime.Today;
             _maxBirthDate = new DateTime(today.Year - majorityYear, today.Month, today.Day);
         } 
-        public string Name { set; get; }
-        public string Surname { set; get; }
-        public string Patronymic { set; get; }
+        public override string Name 
+        { 
+            set 
+            {
+                if (Regex.IsMatch(value, _nameMask) == false)
+                    throw new ArgumentException(String.Format(_invalidNameMessage,value));
+                _name = value;
+            } 
+            get 
+            {
+                return _name;
+            } 
+        }
         public DateTime BirthDate 
         {
             set 

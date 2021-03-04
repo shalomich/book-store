@@ -8,6 +8,7 @@ namespace Storage.Models
     public abstract class Entity
     {
         public int Id { set; get; }
+        public virtual string Name { set;get; }
         public string TitleImageName { set; get; }
         public List<Image> Images { set; get; }
     }

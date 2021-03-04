@@ -19,7 +19,6 @@ namespace Storage.Models
         {
             AddingDate = DateTime.Today;
         }
-        public string Name { set; get; }
         public int Cost 
         {
             set 

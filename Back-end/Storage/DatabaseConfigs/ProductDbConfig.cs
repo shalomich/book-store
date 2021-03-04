@@ -12,7 +12,6 @@ namespace Storage.DatabaseConfigs
     {
         public override void Configure(EntityTypeBuilder<T> builder)
         {
-            builder.Property(product => product.Name).IsRequired();
         }
     }
 }

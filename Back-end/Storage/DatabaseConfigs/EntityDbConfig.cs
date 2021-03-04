@@ -12,8 +12,7 @@ namespace Storage.DatabaseConfigs
     {
         public virtual void Configure(EntityTypeBuilder<T> builder)
         {
-            builder.Property(entity => entity.TitleImageName).IsRequired();
-            builder.Property(entity => entity.Images).IsRequired();
+            builder.Property(entity => entity.Name).IsRequired();
         }
     }
 }

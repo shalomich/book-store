@@ -14,10 +14,7 @@ namespace Storage.DatabaseConfigs
         {
             builder.ToTable("authors");
 
-            builder.Property(author => author.Name).IsRequired();
-            builder.Property(author => author.Surname).IsRequired();
-            
-            builder.HasIndex(author => new { author.Name, author.Surname, author.BirthDate }).IsUnique();
+            builder.HasIndex(author => author.Name).IsUnique();
         }
     }
 }
