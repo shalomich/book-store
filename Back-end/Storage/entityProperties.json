@@ -1,16 +1,48 @@
 {
   "form": {
-    "Author": {
-      "Biography": "textarea"
-    },
-    "Publisher": {
-      "Description": "textarea"
-    },
-    "Publication": {
-      "Type": "select",
-      "Genres": "select multiple",
-      "CoverArt": "select",
-      "AgeLimit":  "select"
+    "settings": [
+      {
+        "propertyType": "System.String",
+        "formElements": [
+          "text",
+          "textarea",
+          "select",
+          "password",
+          "tel",
+          "email"
+        ],
+        "defaultFormElement": "text"
+      },
+      {
+        "propertyType": "System.Int32",
+        "formElements": [
+          "number",
+          "range"
+        ],
+        "defaultFormElement": "number"
+      },
+      {
+        "propertyType": "System.DateTime",
+        "formElements": [
+          "date",
+          "time"
+        ],
+        "defaultFormElement": "date"
+      }
+    ],
+    "entity": {
+      "Author": {
+        "Biography": "textarea"
+      },
+      "Publisher": {
+        "Description": "textarea"
+      },
+      "Publication": {
+        "Type": "select",
+        "Genres": "select multiple",
+        "CoverArt": "select",
+        "AgeLimit": "select"
+      }
     }
   }
 }
