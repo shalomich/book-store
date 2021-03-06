@@ -13,7 +13,7 @@ namespace Storage.Controllers
 {
     [ApiController]
     [Route("storage/[controller]")]
-    public abstract class EntityController<T> : Controller where T : Entity, new()
+    public abstract class EntityController<T> : Controller where T : Entity
     {
         protected readonly Database _database;
         public EntityController(Database database)
@@ -81,15 +81,9 @@ namespace Storage.Controllers
         }
 
         [HttpGet("form")]
-        public IActionResult ToForm([FromServices] EntityToFormConverter converter, [FromServices] IConfiguration configuration)
+        public IActionResult ToForm([FromServices] EntityToFormConverter converter)
         {
-            var entityName = new T().GetType().Name;
-            
-            var entityToFormElements = configuration
-                .GetSection($"form:{entityName}")
-                .GetChildren()
-                .ToDictionary(section => section.Key, section => section.Value);
-            return new JsonResult(converter.Convert<T>(entityToFormElements));
+            return new JsonResult(converter.Convert<T>());
         }
     }
 }

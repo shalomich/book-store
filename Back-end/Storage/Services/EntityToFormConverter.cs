@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using Storage.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -8,77 +10,80 @@ namespace Storage.Services
 {
     public class EntityToFormConverter
     {
-        private Dictionary<Type, ImmutableArray<string>> TypeToFormElements => new Dictionary<Type, ImmutableArray<string>>()
+        private class PropertyToFormElement
         {
-            {typeof(string), new string[]
-                {
-                    "text",
-                    "textarea",
-                    "select",
-                    "password",
-                    "tel",
-                    "email"
-                }.ToImmutableArray()
-            },
+            public readonly Type PropertyType;
+            
+            public readonly string[] FormElements;
+            
+            public readonly string DefaultFormElement;
+            public PropertyToFormElement(Type propertyType, string[] formElements, string defaultElement)
             {
-                typeof(int), new string[]
-                {
-                    "number"
-                }.ToImmutableArray()
-            },
-            {
-                typeof(DateTime), new string[]
-                {
-                    "date",
-                    "time"
-                }.ToImmutableArray()
-            },
-            {
-                typeof(ISet<string>),new string[]
-                {
-                    "select multiple"
-                }.ToImmutableArray()
+                PropertyType = propertyType;
+                FormElements = formElements;
+
+                if (FormElements.Contains(defaultElement) == false)
+                    throw new ArgumentException();
+                DefaultFormElement = defaultElement;
             }
-
-        };
-
-        private Dictionary<Type, string> DefaultTypeToFormElements => new Dictionary<Type, string>()
-        {
-            {typeof(string), "text"},
-            {typeof(int), "number"},
-            {typeof(DateTime), "date"},
-            {typeof(IEnumerable<string>), "select"}
-        };
-
-
-        public Dictionary<string,string> Convert<T>(Dictionary<string,string> propertyToFormElements = null) where T : new()
-        {
-            var convertedType = new T().GetType();
+        }
         
-            Console.WriteLine(convertedType.Name);
-            Console.WriteLine(convertedType.FullName);
+
+        private const string _entitySection = "form:entity";
+        private const string _settingsSection = "form:settings";
+        
+        private readonly ImmutableArray<PropertyToFormElement> _defaultSettings;
+        private readonly Dictionary<string, Dictionary<string, string>> _entityConfigSettings;
+        public EntityToFormConverter(IConfiguration configuration) 
+        {
+            _defaultSettings = configuration
+                .GetSection(_settingsSection)
+                .GetChildren()
+                .Select(section => new PropertyToFormElement(
+                    Type.GetType(section["propertyType"]),
+                    section.GetSection("formElements")
+                            .GetChildren()
+                            .Select(section => section.Value)
+                            .ToArray(),
+                    section["defaultFormElement"]))
+                .ToImmutableArray();
+            _entityConfigSettings = configuration
+                .GetSection(_entitySection)
+                .GetChildren()
+                .ToDictionary(
+                    entitySection => entitySection.Key,
+                    entitySection => entitySection
+                    .GetChildren()
+                    .ToDictionary(
+                        propertySection => propertySection.Key,
+                        propertySection => propertySection.Value));                                              
+        }
+
+        public Dictionary<string,string> Convert<T>() where T : Entity
+        {
+            var convertedType = typeof(T);
+
+            var propertyConfigSettings = _entityConfigSettings[convertedType.Name];
+            
             var properties = convertedType.GetProperties();
 
-            var fullPropertyToFormElements = new Dictionary<string, string>();
+            var finalSettings = new Dictionary<string, string>();
 
             foreach (var property in properties)
             {
-                if (TypeToFormElements.ContainsKey(property.PropertyType) == false)
+                var propertyToFormElement = _defaultSettings.FirstOrDefault(propertyToFormElement => propertyToFormElement.PropertyType == property.PropertyType);
+                if (propertyToFormElement == null)
                     continue;
 
-                string formElement = null;
-                if (propertyToFormElements?.TryGetValue(property.Name, out formElement) == true)
-                {
-                    var formElements = TypeToFormElements[property.PropertyType];
-                    if (formElements.Contains(formElement) == false)
-                        formElement = DefaultTypeToFormElements[property.PropertyType];
-                }
-                else formElement = DefaultTypeToFormElements[property.PropertyType];
 
-                fullPropertyToFormElements.Add(property.Name, formElement);
+                if (propertyConfigSettings.TryGetValue(property.Name, out string formElement) == true)
+                    if (propertyToFormElement.FormElements.Contains(formElement) == true)
+                        finalSettings.Add(property.Name, formElement);
+                    else finalSettings.Add(property.Name, propertyToFormElement.DefaultFormElement);
+                else finalSettings.Add(property.Name, propertyToFormElement.DefaultFormElement);
             }
 
-            return fullPropertyToFormElements;
+            return finalSettings;
         }
     }
 }
