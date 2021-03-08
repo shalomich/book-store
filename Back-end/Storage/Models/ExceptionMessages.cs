@@ -18,7 +18,7 @@ namespace Storage.Models
         private static Dictionary<MessageType, string> _messageSchemas => new Dictionary<MessageType, string>()
         {
             {MessageType.NotExist, "Not exist this {0}, choose from {1}"},
-            {MessageType.Invalid, "Invalid value for {0}, for example {1}"},
+            {MessageType.Invalid, "Invalid value for {0}, use this schema: {1}"},
             {MessageType.Less, "Current {0} less than minimum ({1})" },
             {MessageType.More, "Current {0} more than maximum ({1})"}
         };

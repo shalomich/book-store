@@ -14,16 +14,23 @@ namespace Storage.Models
 
         public static readonly string[] EncodingConsts = { "base64" };
 
-        private static readonly string _notExistFormatMessage = "{0} не соотвествует нужному формату {1}";
-        private static readonly string _notExistEncodingMessage = "{0} не соотвествует нужной кодировке {1}";
+        private static readonly string _notExistFormatMessage;
+        private static readonly string _notExistEncodingMessage;
         public int Id { set; get; }
         public string Name { set; get; }
+
+        static Image()
+        {
+
+            _notExistFormatMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.NotExist, "Format", String.Join(" ", FormatConsts));
+            _notExistEncodingMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.NotExist, "Encoding", String.Join(" ", EncodingConsts));
+        }
         public string Format
         {
             set
             {
                 if (FormatConsts.Contains(value) == false)
-                    throw new ArgumentOutOfRangeException(String.Format(_notExistFormatMessage, value, FormatConsts));
+                    throw new ArgumentOutOfRangeException(_notExistFormatMessage);
                 _format = value;
             }
             get
@@ -36,7 +43,7 @@ namespace Storage.Models
             set 
             {
                 if (EncodingConsts.Contains(value) == false)
-                    throw new ArgumentOutOfRangeException(String.Format(_notExistEncodingMessage, value, EncodingConsts));
+                    throw new ArgumentOutOfRangeException(_notExistEncodingMessage);
                 _encoding = value;
             } 
             get 

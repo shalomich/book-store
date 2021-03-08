@@ -12,19 +12,22 @@ namespace Storage.Models
         private static readonly int _maxReleaseYear = DateTime.Today.Year;
         private const int _minPageQuantity = 1;
         private const int _maxPageQuantity = int.MaxValue;
+
         private const string _ISBNMask = @"^978-5-\d{6}-\d{2}-\d{1}$";
         private const string _formatMask = @"^[1-9]\d{1}x[1-9]\d{1}x[1-9]$";
+        private const string _ISBNSchema = "978-5-XXXXXX-XX-X";
+        private const string _formatSchema = "(10-99)X(10-99)X(1-9)";
 
-        private static readonly string _notExistTypeMessage = "Не существует данного типа публикации {0}";
-        private static readonly string _notExistGenreMessage = "Не существует данного жанра {0}";
-        private static readonly string _notExistCoverArtMessage = "Не существует данного типа обложки {0}";
-        private static readonly string _notExistAgeLimitMessage = "Не существует данного возрастного ограничения {0}";
-        private static readonly string _minReleaseYearMessage = $"Год релиза не должен быть меньше {_minReleaseYear}";
-        private static readonly string _maxReleaseYearMessage = $"Год релиза не должен быть больше {_maxReleaseYear}";
-        private static readonly string _minPageQuantityMessage = $"Количество страниц не должно быть меньше {_minPageQuantity}";
-        private static readonly string _maxPageQuantityMessage = $"Количество страниц не должно быть больше {_maxPageQuantity}";
-        private static readonly string _invalidISBNMessage = "Некорректное значение ISBN:{0}, должно быть 978-5-XXXXXX-XX-X";
-        private static readonly string _invalidFormatMessage = "Некорректное значение формата:{0}, должно быть длинаXширинаXтолщина";
+        private static readonly string _notExistTypeMessage;
+        private static readonly string _notExistGenreMessage;
+        private static readonly string _notExistCoverArtMessage;
+        private static readonly string _notExistAgeLimitMessage;
+        private static readonly string _minReleaseYearMessage;
+        private static readonly string _maxReleaseYearMessage;
+        private static readonly string _minPageQuantityMessage;
+        private static readonly string _maxPageQuantityMessage;
+        private static readonly string _invalidISBNMessage;
+        private static readonly string _invalidFormatMessage;
 
         private int _releaseYear;
         private string _type;
@@ -35,7 +38,24 @@ namespace Storage.Models
         private string _ageLimit;
         private string _format;
 
-        public static readonly string[] PublicationTypeConsts =
+        static Publication()
+        {
+            _notExistTypeMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.NotExist, "Type", String.Join(" ", TypeConsts));
+            _notExistGenreMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.NotExist, "Genre", String.Join(" ", GenreConsts));
+            _notExistCoverArtMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.NotExist, "CoverArt", String.Join(" ", CoverArtConsts));
+            _notExistAgeLimitMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.NotExist, "AgeLimit", String.Join(" ", AgeLimitConsts));
+
+            _invalidISBNMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.Invalid, "ISBN", _ISBNSchema);
+            _invalidFormatMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.Invalid, "Format", _formatSchema);
+
+            _maxReleaseYearMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.More, "ReleaseYear", _maxReleaseYear.ToString());
+            _maxPageQuantityMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.More, "PageQuantity", _maxPageQuantity.ToString());
+
+            _minReleaseYearMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.Less, "ReleaseYear", _minReleaseYear.ToString());
+            _minPageQuantityMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.Less, "PageQuantity", _minPageQuantity.ToString());
+        }
+
+        public static readonly string[] TypeConsts =
         {
             "Книга",
             "Манга",
@@ -92,8 +112,8 @@ namespace Storage.Models
         {
             set
             {
-                if (PublicationTypeConsts.Contains(value) == false)
-                    throw new ArgumentOutOfRangeException(String.Format(_notExistTypeMessage,value));
+                if (TypeConsts.Contains(value) == false)
+                    throw new ArgumentOutOfRangeException(_notExistTypeMessage);
                 _type = value;
             }
             get
@@ -106,7 +126,7 @@ namespace Storage.Models
             set
             { 
                 if (Regex.IsMatch(value, _ISBNMask) == false)
-                    throw new ArgumentException(String.Format(_invalidISBNMessage,value));
+                    throw new ArgumentException(_invalidISBNMessage);
                 _ISBN = value;
             }
             get 
@@ -120,7 +140,7 @@ namespace Storage.Models
             {
                 foreach (var genre in value)
                     if (GenreConsts.Contains(genre) == false)
-                        throw new ArgumentOutOfRangeException(String.Format(_notExistGenreMessage,value));
+                        throw new ArgumentOutOfRangeException(_notExistGenreMessage);
                 _genres = value;
             }
             get
@@ -149,7 +169,7 @@ namespace Storage.Models
             set
             {
                 if (CoverArtConsts.Contains(value) == false)
-                    throw new ArgumentOutOfRangeException(String.Format(_notExistCoverArtMessage,value));
+                    throw new ArgumentOutOfRangeException(_notExistCoverArtMessage);
                 _coverArt = value;
             }
 
@@ -163,7 +183,7 @@ namespace Storage.Models
             set
             {
                 if (AgeLimitConsts.Contains(value) == false)
-                    throw new ArgumentOutOfRangeException(String.Format(_notExistAgeLimitMessage,value));
+                    throw new ArgumentOutOfRangeException(_notExistAgeLimitMessage);
                 _ageLimit = value;
             }
             get
@@ -176,7 +196,7 @@ namespace Storage.Models
             set
             {
                 if (Regex.IsMatch(value, _formatMask) == false)
-                    throw new ArgumentException(String.Format(_invalidFormatMessage, value));
+                    throw new ArgumentException(_invalidFormatMessage);
                 _format = value;
             }
             get

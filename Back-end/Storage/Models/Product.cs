@@ -10,15 +10,21 @@ namespace Storage.Models
         private const int _minCost = 0;
         private const int _minQuantity = 0;
 
-        private readonly static string _minCostMessage = $"Цена не должна быть меньше {_minCost}";
-        private readonly static string _minQuantityMessage = $"Количество не должно быть меньше {_minQuantity}";
+        private readonly static string _minCostMessage;
+        private readonly static string _minQuantityMessage;
 
         private int _cost;
         private int _quantity;
+
+        static Product() {
+           _minCostMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.Less, "Cost", _minCost.ToString());
+           _minQuantityMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.Less, "Quantity", _minQuantity.ToString());
+        }
         public Product()
         {
             AddingDate = DateTime.Today;
         }
+
         public int Cost 
         {
             set 
