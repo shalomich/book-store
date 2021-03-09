@@ -1,4 +1,49 @@
 {
+  "entityConstants": {
+    "Publication": {
+      "options": {
+        "TypeOptions": [
+          "Книга",
+          "Манга",
+          "Ранобэ",
+          "Графический роман",
+          "Артбук"
+        ],
+        "GenresOptions": [
+          "Драма",
+          "Ужасы",
+          "Научная фантастика",
+          "Наука",
+          "Боевик",
+          "Детектив",
+          "Фэнтези"
+        ],
+        "CoverArtOptions": [
+          "Мягкая",
+          "Твёрдая"
+        ],
+        "AgeLimitOptions": [
+          "0+",
+          "6+",
+          "12+",
+          "18+"
+        ]
+      },
+      "numbers": {
+        "MinReleaseYear": 2000,
+        "MaxReleaseYear": 2021
+      },
+      "strings": {
+        "ISBNSchema": "978-5-XXXXXX-XX-X",
+        "FormatSchema": "(10-99)X(10-99)X(1-9)"
+      }
+    }, 
+    "Author": {
+      "strings": {
+        "NameSchema": "Surname Firstname Patronymic"
+      }
+    }
+  },
   "form": {
     "settings": [
       {
