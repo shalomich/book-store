@@ -24,6 +24,7 @@ namespace Storage
             modelBuilder.ApplyConfiguration(new AuthorDbConfig());
             modelBuilder.ApplyConfiguration(new PublisherDbConfig());
             modelBuilder.ApplyConfiguration(new ImageDbConfig());
+            modelBuilder.ApplyConfiguration(new EntityDbConfig());
         }
     }
 }

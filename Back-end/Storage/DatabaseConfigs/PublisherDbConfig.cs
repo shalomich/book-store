@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Storage.DatabaseConfigs
 {
-    public class PublisherDbConfig : EntityDbConfig<Publisher>
+    public class PublisherDbConfig : IEntityTypeConfiguration<Publisher>
     {
-        public override void Configure(EntityTypeBuilder<Publisher> builder)
+        public void Configure(EntityTypeBuilder<Publisher> builder)
         {
             builder.ToTable("publishers");
 

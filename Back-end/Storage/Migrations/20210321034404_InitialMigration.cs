@@ -8,45 +8,85 @@ namespace Storage.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "authors",
+                name: "entities",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Surname = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Patronymic = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TitleImageName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_entities", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "authors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeathDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Biography = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TitleImageName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Biography = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_authors", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_authors_entities_Id",
+                        column: x => x.Id,
+                        principalTable: "entities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "images",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EntityId = table.Column<int>(type: "int", nullable: false),
+                    Format = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Encoding = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Data = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_images", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_images_entities_EntityId",
+                        column: x => x.EntityId,
+                        principalTable: "entities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "publishers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TitleImageName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_publishers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_publishers_entities_Id",
+                        column: x => x.Id,
+                        principalTable: "entities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "publications",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     ReleaseYear = table.Column<int>(type: "int", nullable: false),
                     AuthorId = table.Column<int>(type: "int", nullable: false),
                     PublisherId = table.Column<int>(type: "int", nullable: false),
@@ -58,8 +98,6 @@ namespace Storage.Migrations
                     CoverArt = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AgeLimit = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PublicationFormat = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TitleImageName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Cost = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -75,6 +113,12 @@ namespace Storage.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_publications_entities_Id",
+                        column: x => x.Id,
+                        principalTable: "entities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_publications_publishers_PublisherId",
                         column: x => x.PublisherId,
                         principalTable: "publishers",
@@ -82,63 +126,10 @@ namespace Storage.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Image",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Format = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Endoding = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Data = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AuthorId = table.Column<int>(type: "int", nullable: true),
-                    PublicationId = table.Column<int>(type: "int", nullable: true),
-                    PublisherId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Image", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Image_authors_AuthorId",
-                        column: x => x.AuthorId,
-                        principalTable: "authors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Image_publications_PublicationId",
-                        column: x => x.PublicationId,
-                        principalTable: "publications",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Image_publishers_PublisherId",
-                        column: x => x.PublisherId,
-                        principalTable: "publishers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
-                name: "IX_authors_Name_Surname_BirthDate",
-                table: "authors",
-                columns: new[] { "Name", "Surname", "BirthDate" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Image_AuthorId",
-                table: "Image",
-                column: "AuthorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Image_PublicationId",
-                table: "Image",
-                column: "PublicationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Image_PublisherId",
-                table: "Image",
-                column: "PublisherId");
+                name: "IX_images_EntityId",
+                table: "images",
+                column: "EntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_publications_AuthorId",
@@ -149,30 +140,19 @@ namespace Storage.Migrations
                 name: "IX_publications_ISBN",
                 table: "publications",
                 column: "ISBN",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_publications_Name_ReleaseYear_AuthorId_PublisherId",
-                table: "publications",
-                columns: new[] { "Name", "ReleaseYear", "AuthorId", "PublisherId" },
-                unique: true);
+                unique: true,
+                filter: "[ISBN] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_publications_PublisherId",
                 table: "publications",
                 column: "PublisherId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_publishers_Name",
-                table: "publishers",
-                column: "Name",
-                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Image");
+                name: "images");
 
             migrationBuilder.DropTable(
                 name: "publications");
@@ -182,6 +162,9 @@ namespace Storage.Migrations
 
             migrationBuilder.DropTable(
                 name: "publishers");
+
+            migrationBuilder.DropTable(
+                name: "entities");
         }
     }
 }

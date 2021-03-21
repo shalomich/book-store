@@ -5,7 +5,7 @@ using Storage.Services;
 using Xunit;
 
 namespace Storage.Test
-{
+{/*
     public class EntityToFormConverterTest
     {
         private EntityToFormConverter _converter = new EntityToFormConverter();
@@ -106,5 +106,5 @@ namespace Storage.Test
             Assert.Equal(actual, expected);
         }
 
-    }
+    }*/
 }

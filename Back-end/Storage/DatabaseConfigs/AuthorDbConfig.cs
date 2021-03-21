@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Storage.DatabaseConfigs
 {
-    public class AuthorDbConfig : EntityDbConfig<Author>
+    public class AuthorDbConfig : IEntityTypeConfiguration<Author>
     {
-        public override void Configure(EntityTypeBuilder<Author> builder)
+        public void Configure(EntityTypeBuilder<Author> builder)
         {
             builder.ToTable("authors");
 

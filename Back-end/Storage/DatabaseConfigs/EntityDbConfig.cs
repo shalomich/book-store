@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace Storage.DatabaseConfigs
 {
-    abstract public class EntityDbConfig<T> : IEntityTypeConfiguration<T> where T : Entity
+    public class EntityDbConfig : IEntityTypeConfiguration<Entity> 
     {
-        public virtual void Configure(EntityTypeBuilder<T> builder)
+        public void Configure(EntityTypeBuilder<Entity> builder)
         {
+            builder.ToTable("entities");
             builder.Property(entity => entity.Name).IsRequired();
+            builder.Property(entity => entity.TitleImageName).IsRequired();
         }
     }
 }

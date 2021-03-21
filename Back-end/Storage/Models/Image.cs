@@ -25,6 +25,9 @@ namespace Storage.Models
             _notExistFormatMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.NotExist, "Format", String.Join(" ", FormatConsts));
             _notExistEncodingMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.NotExist, "Encoding", String.Join(" ", EncodingConsts));
         }
+
+        public Entity Entity { set; get; }
+        public int EntityId { set; get; }
         public string Format
         {
             set

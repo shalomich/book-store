@@ -19,7 +19,6 @@ namespace Storage.Models
         private static readonly string _invalidNameMessage;
 
                                                                                   
-        private string _name;
         private DateTime _birthDate;
         private DateTime? _deathDate;
 
@@ -39,11 +38,11 @@ namespace Storage.Models
             {
                 if (Regex.IsMatch(value, _nameMask) == false)
                     throw new ArgumentException(_invalidNameMessage);
-                _name = value;
+                base.Name = value;
             } 
             get 
             {
-                return _name;
+                return base.Name;
             } 
         }
         public DateTime BirthDate 

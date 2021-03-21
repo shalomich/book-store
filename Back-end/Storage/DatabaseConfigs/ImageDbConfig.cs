@@ -12,6 +12,9 @@ namespace Storage.DatabaseConfigs
     {
         public void Configure(EntityTypeBuilder<Image> builder)
         {
+            builder.ToTable("images");
+
+            builder.Property(image => image.Name).IsRequired();
             builder.Property(image => image.Format).IsRequired();
             builder.Property(image => image.Encoding).IsRequired();
             builder.Property(image => image.Data).IsRequired();

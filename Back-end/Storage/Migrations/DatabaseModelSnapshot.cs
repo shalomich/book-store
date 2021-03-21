@@ -19,12 +19,62 @@ namespace Storage.Migrations
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Storage.Models.Author", b =>
+            modelBuilder.Entity("Storage.Models.Entity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TitleImageName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("entities");
+                });
+
+            modelBuilder.Entity("Storage.Models.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Encoding")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EntityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Format")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EntityId");
+
+                    b.ToTable("images");
+                });
+
+            modelBuilder.Entity("Storage.Models.Author", b =>
+                {
+                    b.HasBaseType("Storage.Models.Entity");
 
                     b.Property<string>("Biography")
                         .HasColumnType("nvarchar(max)");
@@ -35,69 +85,15 @@ namespace Storage.Migrations
                     b.Property<DateTime?>("DeathDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("TitleImageName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("authors");
                 });
 
-            modelBuilder.Entity("Storage.Models.Image", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AuthorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Data")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Encoding")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Format")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PublicationId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PublisherId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
-
-                    b.HasIndex("PublicationId");
-
-                    b.HasIndex("PublisherId");
-
-                    b.ToTable("Image");
-                });
-
             modelBuilder.Entity("Storage.Models.Publication", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.HasBaseType("Storage.Models.Entity");
 
                     b.Property<DateTime>("AddingDate")
                         .HasColumnType("datetime2");
@@ -125,9 +121,6 @@ namespace Storage.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("OriginalName")
                         .HasColumnType("nvarchar(max)");
 
@@ -146,67 +139,55 @@ namespace Storage.Migrations
                     b.Property<int>("ReleaseYear")
                         .HasColumnType("int");
 
-                    b.Property<string>("TitleImageName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
-
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("ISBN")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[ISBN] IS NOT NULL");
 
                     b.HasIndex("PublisherId");
 
                     b.HasIndex("Name", "ReleaseYear", "AuthorId", "PublisherId")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("publications");
                 });
 
             modelBuilder.Entity("Storage.Models.Publisher", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.HasBaseType("Storage.Models.Entity");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("TitleImageName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("publishers");
                 });
 
             modelBuilder.Entity("Storage.Models.Image", b =>
                 {
-                    b.HasOne("Storage.Models.Author", null)
+                    b.HasOne("Storage.Models.Entity", "Entity")
                         .WithMany("Images")
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("EntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Storage.Models.Publication", null)
-                        .WithMany("Images")
-                        .HasForeignKey("PublicationId");
+                    b.Navigation("Entity");
+                });
 
-                    b.HasOne("Storage.Models.Publisher", null)
-                        .WithMany("Images")
-                        .HasForeignKey("PublisherId");
+            modelBuilder.Entity("Storage.Models.Author", b =>
+                {
+                    b.HasOne("Storage.Models.Entity", null)
+                        .WithOne()
+                        .HasForeignKey("Storage.Models.Author", "Id")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Storage.Models.Publication", b =>
@@ -215,6 +196,12 @@ namespace Storage.Migrations
                         .WithMany("Publications")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Storage.Models.Entity", null)
+                        .WithOne()
+                        .HasForeignKey("Storage.Models.Publication", "Id")
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.HasOne("Storage.Models.Publisher", "Publisher")
@@ -228,22 +215,27 @@ namespace Storage.Migrations
                     b.Navigation("Publisher");
                 });
 
-            modelBuilder.Entity("Storage.Models.Author", b =>
+            modelBuilder.Entity("Storage.Models.Publisher", b =>
                 {
-                    b.Navigation("Images");
-
-                    b.Navigation("Publications");
+                    b.HasOne("Storage.Models.Entity", null)
+                        .WithOne()
+                        .HasForeignKey("Storage.Models.Publisher", "Id")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("Storage.Models.Publication", b =>
+            modelBuilder.Entity("Storage.Models.Entity", b =>
                 {
                     b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("Storage.Models.Author", b =>
+                {
+                    b.Navigation("Publications");
                 });
 
             modelBuilder.Entity("Storage.Models.Publisher", b =>
                 {
-                    b.Navigation("Images");
-
                     b.Navigation("Publications");
                 });
 #pragma warning restore 612, 618
