@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using QueryWorker;
 using Storage.Models;
 using Storage.Services;
 using System;
@@ -13,7 +14,7 @@ namespace Storage.Controllers
 {
     [ApiController]
     [Route("storage/[controller]")]
-    public abstract class EntityController<T> : Controller where T : Entity
+    public abstract class EntityController<T> : Controller where T : Entity,new()
     {
         protected readonly Database _database;
         public EntityController(Database database)
@@ -22,9 +23,10 @@ namespace Storage.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<T>>> Read()
+        public async Task<ActionResult<IEnumerable<T>>> Read([FromQuery] QueryParams parameters, [FromServices] QueryTransformer<T> transformer)
         {
-            return await _database.Set<T>().Include(entity => entity.Images).AsNoTracking().ToListAsync();
+            var data = await _database.Set<T>().Include(entity => entity.Images).AsNoTracking().ToListAsync();
+            return transformer.Transform(data.AsQueryable(), parameters).ToList();
         }
 
         [HttpGet("{id}")]

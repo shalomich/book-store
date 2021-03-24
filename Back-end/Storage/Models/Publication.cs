@@ -195,8 +195,9 @@ namespace Storage.Models
         {
             set
             {
-                if (Regex.IsMatch(value, _formatMask) == false)
-                    throw new ArgumentException(_invalidFormatMessage);
+                if (value != null) 
+                    if (Regex.IsMatch(value, _formatMask) == false)
+                        throw new ArgumentException(_invalidFormatMessage);
                 _format = value;
             }
             get

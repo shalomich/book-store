@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using QueryWorker;
+using QueryWorker.Visitors;
 using Storage.Services;
 using System;
 using System.Collections.Generic;
@@ -33,6 +35,8 @@ namespace Storage
             services.AddSingleton<IConfiguration>(_configuration);
 
             services.AddSingleton<EntityToFormConverter>();
+            services.AddTransient<IQueryParser, QueryParser>();
+            services.AddTransient(typeof(QueryTransformer<>));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

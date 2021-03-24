@@ -8,7 +8,7 @@ namespace QueryWorker
     {
         public string[] Filter { set; get; } = new string[] { };
         public string[] Sorting { set; get; } = new string[] { };
-        public string Pagging { set; get; } = String.Empty;
+        public string Pagging { set; get; } = "60,1";
        
     }
 }

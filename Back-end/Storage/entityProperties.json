@@ -1,4 +1,54 @@
 {
+  "query": {
+    "pagging": {
+      "MaxPageSize": 60
+    },
+    "sorting": {
+      "Publication": {
+        "SortedProperties": [
+          "Name",
+          "Cost",
+          "AddingDate",
+          "ReleaseYear"
+        ]
+      },
+      "Author": {
+        "SortedProperties": [
+          "Name"
+        ]
+      },
+      "Publisher": {
+        "SortedProperties": [
+          "Name"
+        ]
+      }
+    },
+    "filter": {
+      "Publication": {
+        "FilteredProperties": [
+          "Name",
+          "Cost",
+          "Quantity",
+          "ReleaseYear",
+          "AuthorId",
+          "PublisherId",
+          "Type",
+          "Genres",
+          "AgeLimit"
+        ]
+      },
+      "Author": {
+        "FilteredProperties": [
+          "Name"
+        ]
+      },
+      "Publisher": {
+        "FilteredProperties": [
+          "Name"
+        ]
+      }
+    }
+  },
   "entityConstants": {
     "Publication": {
       "options": {
@@ -37,7 +87,7 @@
         "ISBNSchema": "978-5-XXXXXX-XX-X",
         "FormatSchema": "(10-99)X(10-99)X(1-9)"
       }
-    }, 
+    },
     "Author": {
       "strings": {
         "NameSchema": "Surname Firstname Patronymic"
