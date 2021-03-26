@@ -97,7 +97,7 @@
   "form": {
     "settings": [
       {
-        "propertyType": "System.String",
+        "typeName": "System.String",
         "formElements": [
           "text",
           "textarea",
@@ -109,7 +109,7 @@
         "defaultFormElement": "text"
       },
       {
-        "propertyType": "System.Int32",
+        "typeName": "System.Int32",
         "formElements": [
           "number",
           "range"
@@ -117,7 +117,7 @@
         "defaultFormElement": "number"
       },
       {
-        "propertyType": "System.DateTime",
+        "typeName": "System.DateTime",
         "formElements": [
           "date",
           "time"
