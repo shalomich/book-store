@@ -37,6 +37,8 @@ namespace Storage
             services.AddSingleton<EntityToFormConverter>();
             services.AddTransient<IQueryParser, QueryParser>();
             services.AddTransient(typeof(QueryTransformer<>));
+
+            services.AddCors();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -47,6 +49,8 @@ namespace Storage
             }
 
             app.UseRouting();
+
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>
             {
