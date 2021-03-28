@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Configuration;
 using QueryWorker;
 using Storage.Models;
@@ -17,6 +18,8 @@ namespace Storage.Controllers
     public abstract class EntityController<T> : Controller where T : Entity,new()
     {
         protected readonly Database _database;
+
+        protected abstract IQueryable<T> Data { get; }
         public EntityController(Database database)
         {
             _database = database;
@@ -25,14 +28,14 @@ namespace Storage.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<T>>> Read([FromQuery] QueryParams parameters, [FromServices] QueryTransformer<T> transformer)
         {
-            var data = await _database.Set<T>().Include(entity => entity.Images).AsNoTracking().ToListAsync();
+            var data = await Data.AsNoTracking().ToListAsync();
             return transformer.Transform(data.AsQueryable(), parameters).ToList();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<T>> Read(int id)
         {
-            var entity = await _database.Set<T>().Include(entity => entity.Images).FirstOrDefaultAsync(entity => entity.Id == id);
+            var entity = await Data.FirstOrDefaultAsync(entity => entity.Id == id);
             if (entity == null)
                 return NotFound();
             else return entity;

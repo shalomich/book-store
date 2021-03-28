@@ -31,7 +31,7 @@ namespace Storage
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<Database>(options => options.UseSqlServer(connectionString));
             
-            services.AddControllers().AddNewtonsoftJson();
+            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddSingleton<IConfiguration>(_configuration);
 
             services.AddSingleton<EntityToFormConverter>();
