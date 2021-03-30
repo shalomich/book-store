@@ -15,7 +15,7 @@ namespace Storage.Models
 
         private const string _IsbnMask = @"^978-5-\d{6}-\d{2}-\d{1}$";
         private const string _formatMask = @"^[1-9]\d{1}x[1-9]\d{1}x[1-9]$";
-        private const string _IsbnSchema = "978-5-XXXXXX-XX-X";
+        private const string _IsbnSchema = "978-5-XXXXXX-XX-X";       
         private const string _formatSchema = "(10-99)x(10-99)x(1-9)";
 
         private static readonly string _notExistTypeMessage;
@@ -178,7 +178,7 @@ namespace Storage.Models
             }
         }
 
-        public string Isbn
+       public string Isbn
         {
             set
             {
