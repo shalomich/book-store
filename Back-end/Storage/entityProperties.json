@@ -126,6 +126,10 @@
       }
     ],
     "entity": {
+      "non-convertible": [
+        "Id",
+        "AddingDate"
+      ],
       "Author": {
         "Biography": "textarea"
       },

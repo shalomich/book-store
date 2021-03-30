@@ -53,6 +53,7 @@ namespace Storage.Services
         
         private readonly IEnumerable<PropertyToFormElement> _defaultSettings;
         private IConfigurationSection _entitiesSection;
+        private string[] _noneConvertiblePropertyNames;
         public EntityToFormConverter(IConfiguration configuration) 
         {
             
@@ -60,7 +61,9 @@ namespace Storage.Services
                 .GetSection(_settingsSectionName)
                 .Get<PropertyToFormElement[]>();
 
-            _entitiesSection = configuration.GetSection(_entitiesSectionName);                                         
+            _entitiesSection = configuration.GetSection(_entitiesSectionName);
+
+            _noneConvertiblePropertyNames = configuration.GetSection($"{_entitiesSectionName}:non-convertible").Get<string[]>();
         }
 
         public Dictionary<string,string> Convert<T>() where T : Entity
@@ -79,11 +82,14 @@ namespace Storage.Services
 
             foreach (var property in properties)
             {
+                if (_noneConvertiblePropertyNames.Contains(property.Name))
+                    continue;
+
                 PropertyToFormElement currentElement = _defaultSettings.FirstOrDefault(currentElement => 
                                                 Type.GetType(currentElement.TypeName) == property.PropertyType);
                 if (currentElement == null)
                     continue;
-
+                
                 string currentFormElement = currentElement.DefaultFormElement;
 
                 if (entitySettings.TryGetValue(property.Name, out string formElement) == true)
