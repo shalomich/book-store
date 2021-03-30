@@ -32,32 +32,9 @@ namespace Storage.Models
             _maxDeathDateMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.More, "DeathDate", _maxDeathDate.ToString());
             _invalidNameMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.Invalid, "Name", _nameSchema);
         }
-        public override string Name 
-        { 
-            set 
-            {
-                if (Regex.IsMatch(value, _nameMask) == false)
-                    throw new ArgumentException(_invalidNameMessage);
-                base.Name = value;
-            } 
-            get 
-            {
-                return base.Name;
-            } 
-        }
-        public DateTime BirthDate 
-        {
-            set 
-            {
-                if (value > _maxBirthDate)
-                    throw new ArgumentOutOfRangeException(_maxBirthDateMessage);
-                _birthDate = value;
-            }
-            get 
-            {
-                return _birthDate;
-            }
-        }
+
+        public string Biography { set; get; }
+
         public DateTime? DeathDate 
         {
             set 
@@ -72,7 +49,34 @@ namespace Storage.Models
             } 
         }
 
-        public string Biography { set; get; }
+        public DateTime BirthDate
+        {
+            set
+            {
+                if (value > _maxBirthDate)
+                    throw new ArgumentOutOfRangeException(_maxBirthDateMessage);
+                _birthDate = value;
+            }
+            get
+            {
+                return _birthDate;
+            }
+        }
+
+       
+        public override string Name
+        {
+            set
+            {
+                if (Regex.IsMatch(value, _nameMask) == false)
+                    throw new ArgumentException(_invalidNameMessage);
+                base.Name = value;
+            }
+            get
+            {
+                return base.Name;
+            }
+        }
         public List<Publication> Publications { set; get; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Storage.Extensions;
 using Storage.Models;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,15 @@ namespace Storage.Services
             Dictionary<string, object> numbers = currentConfigSection
                 .GetSection("numbers")
                 .GetChildren()
-                .ToDictionary(section => section.Key, section => (object)section.Get<int>());
+                .ToDictionary(section => section.Key, 
+                    section => 
+                    {
+                        Dictionary<string,int> numbers = section
+                                                    .GetChildren()
+                                                    .ToDictionary(section => section.Key, section => Convert.ToInt32(section.Value));
+                        return (object)numbers;
+                    } 
+            );
             Dictionary<string, object> strings = currentConfigSection
                 .GetSection("strings")
                 .GetChildren()
@@ -43,7 +52,7 @@ namespace Storage.Services
             return options
                 .Concat(numbers)
                 .Concat(strings)
-                .ToDictionary(property => property.Key, property => property.Value);
+                .ToDictionary(property => property.Key.ToLowFirstLetter(), property => property.Value);
         }
     }
 }

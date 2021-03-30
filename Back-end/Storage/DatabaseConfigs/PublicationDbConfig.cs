@@ -24,10 +24,10 @@ namespace Storage.DatabaseConfigs
             builder.Property(publication => publication.Genres).HasConversion(genresConversion);
 
             builder.Property(publication => publication.Type).IsRequired();
-            builder.Property(publication => publication.ISBN).IsRequired();
+            builder.Property(publication => publication.Isbn).IsRequired();
             builder.Property(publication => publication.AgeLimit).IsRequired();
 
-            builder.HasIndex(publication => publication.ISBN).IsUnique();
+            builder.HasIndex(publication => publication.Isbn).IsUnique();
             builder.HasIndex(publication =>
                 new
                 {

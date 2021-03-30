@@ -23,8 +23,8 @@ namespace Storage.Services
         {
             Dictionary<string,object> publicationConstants = base.GetConstants();
 
-            publicationConstants.Add("AuthorId", _authorIdAndNames);
-            publicationConstants.Add("PublisherId", _publisherIdAndNames);
+            publicationConstants.Add("authorId", _authorIdAndNames);
+            publicationConstants.Add("publisherId", _publisherIdAndNames);
 
             return publicationConstants;
         }

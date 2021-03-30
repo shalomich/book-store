@@ -13,10 +13,10 @@ namespace Storage.Models
         private const int _minPageQuantity = 1;
         private const int _maxPageQuantity = int.MaxValue;
 
-        private const string _ISBNMask = @"^978-5-\d{6}-\d{2}-\d{1}$";
+        private const string _IsbnMask = @"^978-5-\d{6}-\d{2}-\d{1}$";
         private const string _formatMask = @"^[1-9]\d{1}x[1-9]\d{1}x[1-9]$";
-        private const string _ISBNSchema = "978-5-XXXXXX-XX-X";
-        private const string _formatSchema = "(10-99)X(10-99)X(1-9)";
+        private const string _IsbnSchema = "978-5-XXXXXX-XX-X";
+        private const string _formatSchema = "(10-99)x(10-99)x(1-9)";
 
         private static readonly string _notExistTypeMessage;
         private static readonly string _notExistGenreMessage;
@@ -26,12 +26,12 @@ namespace Storage.Models
         private static readonly string _maxReleaseYearMessage;
         private static readonly string _minPageQuantityMessage;
         private static readonly string _maxPageQuantityMessage;
-        private static readonly string _invalidISBNMessage;
+        private static readonly string _invalidIsbnMessage;
         private static readonly string _invalidFormatMessage;
 
         private int _releaseYear;
         private string _type;
-        private string _ISBN;
+        private string _Isbn;
         private ISet<string> _genres;
         private int? _pageQuantity;
         private string _coverArt;
@@ -45,7 +45,7 @@ namespace Storage.Models
             _notExistCoverArtMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.NotExist, "CoverArt", String.Join(" ", CoverArtConsts));
             _notExistAgeLimitMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.NotExist, "AgeLimit", String.Join(" ", AgeLimitConsts));
 
-            _invalidISBNMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.Invalid, "ISBN", _ISBNSchema);
+            _invalidIsbnMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.Invalid, "Isbn", _IsbnSchema);
             _invalidFormatMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.Invalid, "Format", _formatSchema);
 
             _maxReleaseYearMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.More, "ReleaseYear", _maxReleaseYear.ToString());
@@ -76,7 +76,7 @@ namespace Storage.Models
 
         public static readonly string[] CoverArtConsts = 
         {
-            "Твердая",
+            "Твёрдая",
             "Мягкая"
         };
 
@@ -87,52 +87,66 @@ namespace Storage.Models
             "12+",
             "18+"
         };
-       public int ReleaseYear 
-        { 
-            set 
-            {
-                if (value < _minReleaseYear)
-                    throw new ArgumentOutOfRangeException(_minReleaseYearMessage);
-                if (value > _maxReleaseYear)
-                    throw new ArgumentOutOfRangeException(_maxReleaseYearMessage);
-                _releaseYear = value;
-            }
-            get 
-            {
-                return _releaseYear;
-            } 
-        }
-
-        public Author Author { set; get; }
-        public int AuthorId { set; get; }
-        public Publisher Publisher { set; get; }
-        public int PublisherId { set; get; }
-
-        public string Type
+     
+        public string CoverArt
         {
             set
             {
-                if (TypeConsts.Contains(value) == false)
-                    throw new ArgumentOutOfRangeException(_notExistTypeMessage);
-                _type = value;
+                if (value != null)
+                    if (CoverArtConsts.Contains(value) == false)
+                        throw new ArgumentOutOfRangeException(_notExistCoverArtMessage);
+                _coverArt = value;
+            }
+
+            get
+            {
+                return _coverArt;
+            }
+        }
+        
+        public string PublicationFormat
+        {
+            set
+            {
+                if (value != null) 
+                    if (Regex.IsMatch(value, _formatMask) == false)
+                        throw new ArgumentException(_invalidFormatMessage);
+                _format = value;
             }
             get
             {
-                return _type;
+                return _format;
             }
         }
-        public string ISBN 
-        { 
+
+        public string AgeLimit
+        {
             set
-            { 
-                if (Regex.IsMatch(value, _ISBNMask) == false)
-                    throw new ArgumentException(_invalidISBNMessage);
-                _ISBN = value;
-            }
-            get 
             {
-                return _ISBN;
-            } 
+                if (AgeLimitConsts.Contains(value) == false)
+                    throw new ArgumentOutOfRangeException(_notExistAgeLimitMessage);
+                _ageLimit = value;
+            }
+            get
+            {
+                return _ageLimit;
+            }
+        }
+
+        public int? PageQuantity
+        {
+            set
+            {
+                if (value < _minPageQuantity)
+                    throw new ArgumentOutOfRangeException(_minPageQuantityMessage);
+                if (value > _maxPageQuantity)
+                    throw new ArgumentOutOfRangeException(_maxPageQuantityMessage);
+                _pageQuantity = value;
+            }
+            get
+            {
+                return _pageQuantity;
+            }
         }
         public ISet<string> Genres
         {
@@ -149,63 +163,57 @@ namespace Storage.Models
                 return _genres;
             }
         }
-        public string OriginalName { set; get; }
-        public int? PageQuantity 
-        { 
-            set 
-            {
-                if (value < _minPageQuantity)
-                    throw new ArgumentOutOfRangeException(_minPageQuantityMessage);
-                if (value < _maxPageQuantity)
-                    throw new ArgumentOutOfRangeException(_maxPageQuantityMessage);
-                _pageQuantity = value;
-            } 
-            get 
-            {
-                return _pageQuantity;
-            } 
-        }
-        public string CoverArt
-        {
-            set
-            {
-                if (value != null)
-                    if (CoverArtConsts.Contains(value) == false)
-                        throw new ArgumentOutOfRangeException(_notExistCoverArtMessage);
-                _coverArt = value;
-            }
 
-            get
-            {
-                return _coverArt;
-            }
-        }
-        public string AgeLimit
+        public string Type
         {
             set
             {
-                if (AgeLimitConsts.Contains(value) == false)
-                    throw new ArgumentOutOfRangeException(_notExistAgeLimitMessage);
-                _ageLimit = value;
+                if (TypeConsts.Contains(value) == false)
+                    throw new ArgumentOutOfRangeException(_notExistTypeMessage);
+                _type = value;
             }
             get
             {
-                return _ageLimit;
+                return _type;
             }
         }
-        public string PublicationFormat
+
+        public string Isbn
         {
             set
             {
-                if (value != null) 
-                    if (Regex.IsMatch(value, _formatMask) == false)
-                        throw new ArgumentException(_invalidFormatMessage);
-                _format = value;
+                if (Regex.IsMatch(value, _IsbnMask) == false)
+                    throw new ArgumentException(_invalidIsbnMessage);
+                _Isbn = value;
             }
             get
             {
-                return _format;
+                return _Isbn;
             }
         }
+        public int ReleaseYear
+        {
+            set
+            {
+                if (value < _minReleaseYear)
+                    throw new ArgumentOutOfRangeException(_minReleaseYearMessage);
+                if (value > _maxReleaseYear)
+                    throw new ArgumentOutOfRangeException(_maxReleaseYearMessage);
+                _releaseYear = value;
+            }
+            get
+            {
+                return _releaseYear;
+            }
+        }
+
+        public Publisher Publisher { set; get; }
+        public int PublisherId { set; get; }
+
+        public Author Author { set; get; }
+        public int AuthorId { set; get; }
+        public string OriginalName { set; get; }
+
+
     }
 }

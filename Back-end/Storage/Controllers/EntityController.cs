@@ -107,30 +107,9 @@ namespace Storage.Controllers
         }
 
         [HttpGet("config")]
-        public IActionResult ToConfig([FromServices] IConfiguration configuration)
+        public IActionResult ToConfig([FromServices] EntityConfig<T> config)
         {
-            var entityName = typeof(T).Name;
-            var entityConstantSection = configuration.GetSection($"entityConstants:{entityName}");
-            
-            Dictionary<string,object> options = entityConstantSection
-                .GetSection("options")
-                .GetChildren()
-                .ToDictionary(section => section.Key, section => (object) section.Get<string[]>());
-            Dictionary<string, object> numbers = entityConstantSection
-                .GetSection("numbers")
-                .GetChildren()
-                .ToDictionary(section => section.Key, section => (object)section.Get<int>());
-            Dictionary<string, object> strings = entityConstantSection
-                .GetSection("strings")
-                .GetChildren()
-                .ToDictionary(section => section.Key, section => (object)section.Get<string>());
-
-
-            return new JsonResult(options
-                .Concat(numbers)
-                .Concat(strings)
-                .ToDictionary(property => property.Key, property => property.Value));
-
+            return new JsonResult(config.GetConstants());
         }
 
     }

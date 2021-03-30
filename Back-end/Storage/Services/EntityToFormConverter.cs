@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Storage.Extensions;
 using Storage.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -66,7 +68,7 @@ namespace Storage.Services
             _noneConvertiblePropertyNames = configuration.GetSection($"{_entitiesSectionName}:non-convertible").Get<string[]>();
         }
 
-        public Dictionary<string,string> Convert<T>() where T : Entity
+        public Dictionary<string,string> Convert<T>() where T : Entity, new()
         {
             Type convertedType = typeof(T);
             PropertyInfo[] properties = convertedType.GetProperties();
@@ -80,13 +82,20 @@ namespace Storage.Services
             
             var finalSettings = new Dictionary<string, string>();
 
-            foreach (var property in properties)
+            for (int i = properties.Length - 1; i >=0; i--)
             {
+                PropertyInfo property = properties[i];
                 if (_noneConvertiblePropertyNames.Contains(property.Name))
                     continue;
+                
+                string propertyTypeName;
+                
+                if (property.PropertyType.IsGenericType)
+                   propertyTypeName = property.PropertyType.GetGenericArguments()[0].Name;
+                else propertyTypeName = property.PropertyType.Name;
 
-                PropertyToFormElement currentElement = _defaultSettings.FirstOrDefault(currentElement => 
-                                                Type.GetType(currentElement.TypeName) == property.PropertyType);
+                PropertyToFormElement currentElement = _defaultSettings.FirstOrDefault(entityToForm => 
+                                                entityToForm.TypeName == propertyTypeName);
                 if (currentElement == null)
                     continue;
                 
@@ -96,7 +105,7 @@ namespace Storage.Services
                     if (currentElement.FormElements.Contains(formElement) == true)
                         currentFormElement = formElement;
                 
-                finalSettings.Add(property.Name, currentFormElement);
+                finalSettings.Add(property.Name.ToLowFirstLetter(), currentFormElement);
             }
 
             return finalSettings;

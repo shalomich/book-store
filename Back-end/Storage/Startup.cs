@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using QueryWorker;
 using QueryWorker.Visitors;
+using Storage.Models;
 using Storage.Services;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,8 @@ namespace Storage
             services.AddSingleton<EntityToFormConverter>();
             services.AddTransient<IQueryParser, QueryParser>();
             services.AddTransient(typeof(QueryTransformer<>));
+            services.AddTransient(typeof(EntityConfig<>));
+            services.AddTransient<EntityConfig<Publication>,PublicationConfig>();
 
             services.AddCors();
         }

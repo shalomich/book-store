@@ -25,19 +25,7 @@ namespace Storage.Models
             AddingDate = DateTime.Today;
         }
 
-        public int Cost 
-        {
-            set 
-            {
-                if (value < _minCost)
-                    throw new ArgumentOutOfRangeException(_minCostMessage);
-                _cost = value;
-            }
-            get 
-            {
-                return _cost;
-            } 
-        }
+        public string Description { set; get; }
         public int Quantity 
         {
             set 
@@ -51,7 +39,20 @@ namespace Storage.Models
                 return _quantity;
             } 
         }
-        public string Description { set; get; }
+
+        public int Cost
+        {
+            set
+            {
+                if (value < _minCost)
+                    throw new ArgumentOutOfRangeException(_minCostMessage);
+                _cost = value;
+            }
+            get
+            {
+                return _cost;
+            }
+        }
         public DateTime AddingDate {private set; get; }
     }
 }

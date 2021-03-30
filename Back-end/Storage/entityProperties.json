@@ -52,14 +52,14 @@
   "entityConstants": {
     "Publication": {
       "options": {
-        "TypeOptions": [
+        "Type": [
           "Книга",
           "Манга",
           "Ранобэ",
           "Графический роман",
           "Артбук"
         ],
-        "GenresOptions": [
+        "Genres": [
           "Драма",
           "Ужасы",
           "Научная фантастика",
@@ -68,11 +68,11 @@
           "Детектив",
           "Фэнтези"
         ],
-        "CoverArtOptions": [
+        "CoverArt": [
           "Мягкая",
           "Твёрдая"
         ],
-        "AgeLimitOptions": [
+        "AgeLimit": [
           "0+",
           "6+",
           "12+",
@@ -80,28 +80,35 @@
         ]
       },
       "numbers": {
-        "MinReleaseYear": 2000,
-        "MaxReleaseYear": 2021
+        "ReleaseYear": {
+          "min": 2000,
+          "max": 2021
+        },
+        "PageQuantity": {
+          "min": 1,
+          "max": 1000
+        }
       },
       "strings": {
-        "ISBNSchema": "978-5-XXXXXX-XX-X",
-        "FormatSchema": "(10-99)X(10-99)X(1-9)"
+        "Isbn": "978-5-XXXXXX-XX-X",
+        "PublicationFormat": "[10-99]x[10-99]x[1-9]"
       }
     },
     "Author": {
       "strings": {
-        "NameSchema": "Surname Firstname Patronymic"
+        "Name": "Surname Firstname Patronymic"
       }
     }
   },
   "form": {
     "settings": [
       {
-        "typeName": "System.String",
+        "typeName": "String",
         "formElements": [
           "text",
           "textarea",
           "select",
+          "select multiple",
           "password",
           "tel",
           "email"
@@ -109,20 +116,28 @@
         "defaultFormElement": "text"
       },
       {
-        "typeName": "System.Int32",
+        "typeName": "Int32",
         "formElements": [
           "number",
-          "range"
+          "range",
+          "select"
         ],
         "defaultFormElement": "number"
       },
       {
-        "typeName": "System.DateTime",
+        "typeName": "DateTime",
         "formElements": [
           "date",
           "time"
         ],
         "defaultFormElement": "date"
+      },
+      {
+        "typeName": "Image",
+        "formElements": [
+          "file"
+        ],
+        "defaultFormElement": "file"
       }
     ],
     "entity": {
@@ -138,9 +153,12 @@
       },
       "Publication": {
         "Type": "select",
-        "Genres": "select multiple",
         "CoverArt": "select",
-        "AgeLimit": "select"
+        "AgeLimit": "select",
+        "AuthorId": "select",
+        "PublisherId": "select",
+        "Description": "textarea",
+        "Genres": "select multiple"
       }
     }
   }
