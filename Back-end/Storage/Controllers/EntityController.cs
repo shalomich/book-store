@@ -53,6 +53,21 @@ namespace Storage.Controllers
             return CreatedAtAction(nameof(Read), new { id = entity.Id }, entity); 
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult<T>> Update(int id, T entity)
+        {
+            if (id != entity.Id)
+            {
+                return BadRequest();
+            }
+
+            _database.Entry(entity).State = EntityState.Modified;
+
+            await _database.SaveChangesAsync();
+          
+            return NoContent();
+        }
+
         [HttpPatch("{id}")]
         public async Task<ActionResult<T>> Update(int id, [FromBody] JsonPatchDocument<T> patchEntity)
         {

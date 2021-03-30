@@ -138,9 +138,10 @@ namespace Storage.Models
         {
             set
             {
-                foreach (var genre in value)
-                    if (GenreConsts.Contains(genre) == false)
-                        throw new ArgumentOutOfRangeException(_notExistGenreMessage);
+                if (value != null)
+                    foreach (var genre in value)
+                        if (GenreConsts.Contains(genre) == false)
+                            throw new ArgumentOutOfRangeException(_notExistGenreMessage);
                 _genres = value;
             }
             get
@@ -168,8 +169,9 @@ namespace Storage.Models
         {
             set
             {
-                if (CoverArtConsts.Contains(value) == false)
-                    throw new ArgumentOutOfRangeException(_notExistCoverArtMessage);
+                if (value != null)
+                    if (CoverArtConsts.Contains(value) == false)
+                        throw new ArgumentOutOfRangeException(_notExistCoverArtMessage);
                 _coverArt = value;
             }
 
