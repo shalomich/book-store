@@ -10,6 +10,7 @@ const EntityPage = (props) => {
     const [data, setData] = useState();
 
     useEffect(() => {
+        console.log(props.type)
         axios.get("https://localhost:44327/storage/publication")
             .then(res => {
                 if(res.status===200){
