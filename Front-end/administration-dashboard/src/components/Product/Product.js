@@ -10,7 +10,7 @@ class Product extends Component {
 
 
     handleClick = () => {
-        this.props.updateData(this.props.goods.name);
+        this.props.updateData(this.props.goods.name, this.props.goods.type);
         this.props.history.push("/admin/" + this.props.goods.type)
     }
 
