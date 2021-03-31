@@ -9,8 +9,12 @@ class ItemForm extends Component {
         super(props);
         this.state = {
             formData: {},
-            config: {}
+            config: {},
+            form: {},
+            sendClicked: false
         }
+
+        this.images =
         this.ref = React.createRef()
     }
 
@@ -27,6 +31,17 @@ class ItemForm extends Component {
             })
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if ((prevState !== this.state) && (this.state.sendClicked)) {
+            console.log(prevState, this.state)
+            axios.post("https://localhost:44327/storage/publication", this.state.form, { headers: {'Content-Type': 'application/json' }})
+                .then(res => {
+                     console.log(res.status)
+                 })
+            this.props.history.push("/admin/" + this.props.type)
+        }
+    }
+
     handleClickBack = (e) => {
         e.preventDefault();
         this.props.history.push("/admin/" + this.props.type)
@@ -34,14 +49,17 @@ class ItemForm extends Component {
 
     handleClickSend = (e) => {
         e.preventDefault();
-
         let form = getFormData(this.ref.current.children)
-        console.log(JSON.stringify(form))
-        // axios.post("https://localhost:44327/storage/publication", form, { headers: {'Content-Type': 'application/json' }})
-        //     .then(res => {
-        //          console.log(res.status)
-        //      })
-        this.props.history.push("/admin/" + this.props.type)
+        Promise.allSettled(form.Images)
+            .then((results) => {
+                let arr = []
+                results.forEach(result => {
+                    arr.push(result.value)
+                })
+                form.Images = arr
+                this.setState({form: form, sendClicked: true})
+                console.log(this.state.form)
+            })
     }
 
     render() {
