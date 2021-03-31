@@ -1,6 +1,9 @@
 import React from 'react';
 import {Component} from "react/cjs/react.production.min";
+import {Redirect, withRouter} from "react-router-dom";
 import style from "./Item.module.css"
+import axios from "axios";
+import {resolveToLocation} from "react-router-dom/modules/utils/locationUtils";
 
 class Item extends Component {
     constructor(props) {
@@ -15,8 +18,8 @@ class Item extends Component {
                 this.imageSource = `data:${image.format};${image.encoding},${image.data}`;
             }
         })
-        this.info = information.map((field) =>
-            <div className={style.item}>
+        this.info = information.map((field, index) =>
+            <div key = {index} className={style.item}>
                 <span>{field[0]}: </span>
                 <span>{field[1]}</span>
             </div>
@@ -24,9 +27,12 @@ class Item extends Component {
     }
 
 
-    handleClick = () => {
-
-        this.clicked = true;
+    handleClickDelete = (e) => {
+        e.preventDefault();
+        axios.delete("https://localhost:44327/storage/publication/" + this.props.item.id)
+            .then(res => {
+                this.props.history.go(0)
+            });
     };
 
 
@@ -42,11 +48,11 @@ class Item extends Component {
                 <div className={style.button_block}>
                     <hr className={style.line}/>
                     <button className={style.edit_button} onClick={this.handleClick}>Изменить</button>
-                    <button className={style.delete_button} onClick={this.handleClick}>Удалить</button>
+                    <button className={style.delete_button} onClick={this.handleClickDelete}>Удалить</button>
                 </div>
             </div>
         );
     }
 }
 
-export default Item;
+export default withRouter(Item);
