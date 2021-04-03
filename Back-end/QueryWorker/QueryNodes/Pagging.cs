@@ -15,12 +15,19 @@ namespace QueryWorker
         private int _pageSize;
         private int _pageNumber;
         private int _maxPageSize = int.MaxValue;
+
+        public event Action<string, string> Accepted;
+        public event Action<string, string> Crashed;
+
         public int PageSize 
         {
             set
             {
                 if (value < _minPageSize || value > _maxPageSize)
+                {
                     _pageSize = _maxPageSize;
+                    Crashed?.Invoke("pageSize",$"curent pageSize is unvalid {value}, use default pageSize {_maxPageSize}");
+                }
                 else _pageSize = value;
             }
             get
@@ -34,7 +41,10 @@ namespace QueryWorker
             set
             {
                 if (value < _minPageNumber)
+                {
                     _pageNumber = _minPageNumber;
+                    Crashed?.Invoke("pageNumber", $"curent pageNumber is unvalid ({value}), use default pageNumber ({_minPageSize})");
+                }
                 else _pageNumber = value;
             }
             get
@@ -48,7 +58,9 @@ namespace QueryWorker
             set
             {
                 if (value < int.MaxValue && value > _minPageSize)
+                {
                     _maxPageSize = value;
+                }
             }
             get
             {
@@ -56,6 +68,7 @@ namespace QueryWorker
             }
         }
 
+        public int CalcPageCount<T>(IQueryable<T> query) => (int)Math.Ceiling(query.Count() / (double)PageSize);
         public Pagging()
         {
             PageSize = _maxPageSize;
@@ -70,12 +83,33 @@ namespace QueryWorker
 
         public IQueryable<T> Execute<T>(IQueryable<T> query)
         {
-            return query.Skip(PageSize * (PageNumber - 1)).Take(PageSize);
+            int pageCount = CalcPageCount(query);
+            bool hasNextPage = PageNumber < pageCount;
+            bool hasPreviousPage = PageNumber > 1;
+
+            Accepted?.Invoke(nameof(pageCount), pageCount.ToString());
+            Accepted?.Invoke(nameof(hasNextPage), hasNextPage.ToString());
+            Accepted?.Invoke(nameof(hasPreviousPage), hasPreviousPage.ToString());
+
+            int pageNumber = PageNumber;
+            if (PageNumber > pageCount)
+            {
+                string error = $"pageNumber({pageNumber}) less than pageCount ({pageCount}), used last page";
+                Crashed?.Invoke(nameof(PageNumber), $"{error}, {this.ToString()}");
+                pageNumber = pageCount;
+            }
+
+            return query.Skip(PageSize * (pageNumber - 1)).Take(PageSize);
         }
 
         public void Accept(IQueryParser parser)
         {
             parser.Parse(this);
+        }
+
+        public override string ToString()
+        {
+            return $"Pagging(pageSize: {PageSize},pageNumber: {PageNumber})";
         }
     }
 }

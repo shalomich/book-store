@@ -6,7 +6,7 @@ using System.Text;
 
 namespace QueryWorker
 {
-    public interface IQueryNode
+    public interface IQueryNode : IInformed
     {
         IQueryable<T> Execute<T>(IQueryable<T> query);
     }

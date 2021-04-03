@@ -17,6 +17,10 @@ namespace QueryWorker
     {
         private const string _notExistPropertyNameMessage = "This class does not exist property named {0}";
         private const string _invalidValueTypeMessage = "This property has not type named {0}";
+
+        public event Action<string, string> Accepted;
+        public event Action<string, string> Crashed;
+
         public string PropertyName { set;get;}
         public IComparable Value { set; get; }
         public FilterСomparison FilterСomparisonValue { set; get; }
@@ -40,14 +44,26 @@ namespace QueryWorker
             var property = typeof(T).GetProperty(PropertyName);
 
             if (property == null)
-                throw new ArgumentException(String.Format(_notExistPropertyNameMessage,PropertyName));
-
+            {
+                string error = String.Format(_notExistPropertyNameMessage, PropertyName);
+                Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
+                return query;
+            }
+               
             if (FilteredProperties?.Contains(PropertyName) == false)
-                throw new ArgumentException();
+            {
+                string error = $"Filtered properties don't contain this property ({PropertyName})";
+                Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
+                return query;
+            }
 
             if (property.PropertyType != Value.GetType())
-                throw new ArgumentException(String.Format(_invalidValueTypeMessage, Value.GetType()));
-
+            {
+                string error = String.Format(_invalidValueTypeMessage, Value.GetType());
+                Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
+                return query;
+            }
+            
             Func<T, bool> fieldComparison = obj => ((IComparable)property.GetValue(obj)).CompareTo(Value) == (int) FilterСomparisonValue;
             
             query = query.Where(fieldComparison).AsQueryable();
@@ -58,6 +74,11 @@ namespace QueryWorker
         public void Accept(IQueryParser parser)
         {
             parser.Parse(this);
+        }
+
+        public override string ToString()
+        {
+            return $"Filter(propertyName: {PropertyName},value: {Value})";
         }
     }
 }

@@ -13,6 +13,9 @@ namespace QueryWorker
     {
         private const string _notExistPropertyNameMessage = "This class does not exist property named {0}";
 
+        public event Action<string, string> Accepted;
+        public event Action<string, string> Crashed;
+
         public string PropertyName { set; get; }
         public bool IsAscending { set; get; } = true;
         public string[] SortedProperties { set; get; }
@@ -32,11 +35,18 @@ namespace QueryWorker
             var property = typeof(T).GetProperty(PropertyName);
 
             if (property == null)
-                throw new ArgumentException(String.Format(_notExistPropertyNameMessage, PropertyName));
-
+            {
+                string error = String.Format(_notExistPropertyNameMessage, PropertyName);
+                Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
+                return query;
+            }
+                
             if (SortedProperties?.Contains(PropertyName) == false)
-                throw new ArgumentException();
-
+            {
+                string error = $"Sorted properties don't contain this property ({PropertyName})";
+                Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
+                return query;
+            }
             Expression<Func<T, object>> valueGetting = obj => property.GetValue(obj);
 
             query = IsAscending == true ? query.AppendOrderBy(valueGetting) : query.AppendOrderByDescending(valueGetting);
@@ -47,6 +57,11 @@ namespace QueryWorker
         public void Accept(IQueryParser parser)
         {
             parser.Parse(this);
+        }
+
+        public override string ToString()
+        {
+            return $"Sorting(propertyName: {PropertyName})";
         }
     }
 }
