@@ -28,9 +28,8 @@ namespace QueryWorker
 
         public IQueryable<T> Transform(IQueryable<T> data, QueryParams parameters)
         {
-            var queryQueue = new QueryQueue();
-            var parser = new QueryParser();
-
+            var queryQueue = new Queue<IQueryNode>();
+           
             foreach (string filterQuery in parameters.Filter)
                 queryQueue.Enqueue(CreateNode(_filterFactory, filterQuery));
             
@@ -39,13 +38,16 @@ namespace QueryWorker
 
             queryQueue.Enqueue(CreateNode(_paggingFactory, parameters.Pagging));
 
-            return queryQueue.Execute(data);
+            while (queryQueue.TryDequeue(out IQueryNode node) == false)
+                data = node.Execute(data);
+            
+            return data;
         }
 
         private IQueryNode CreateNode(IQueryNodeFactory factory, string query)
         {
             IQueryNode queryNode = factory.Create();
-
+           
             _parser.Query = query;
             ((IParsed)queryNode).Accept(_parser);
 
