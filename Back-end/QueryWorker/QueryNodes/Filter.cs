@@ -23,7 +23,7 @@ namespace QueryWorker
 
         public string PropertyName { set;get;}
         public IComparable Value { set; get; }
-        public FilterСomparison FilterСomparisonValue { set; get; }
+        public FilterСomparison? FilterСomparisonValue { set; get; }
 
         public string[] FilteredProperties { set; get; }
 
@@ -41,6 +41,9 @@ namespace QueryWorker
 
         public IQueryable<T> Execute<T>(IQueryable<T> query)
         {
+            if (isValidFilter() == false)
+                return query;
+
             var property = typeof(T).GetProperty(PropertyName);
 
             if (property == null)
@@ -50,13 +53,6 @@ namespace QueryWorker
                 return query;
             }
                
-            if (FilteredProperties?.Contains(PropertyName) == false)
-            {
-                string error = $"Filtered properties don't contain this property ({PropertyName})";
-                Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
-                return query;
-            }
-
             if (property.PropertyType != Value.GetType())
             {
                 string error = String.Format(_invalidValueTypeMessage, Value.GetType());
@@ -71,6 +67,33 @@ namespace QueryWorker
             return query;
         }
 
+        private bool isValidFilter()
+        {
+            if (PropertyName == null)
+            {
+                string error = "propertyName can not be null";
+                Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
+            }
+            else if (Value == null)
+            {
+                string error = "value can not be null";
+                Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
+            }
+            else if (FilterСomparisonValue == null)
+            {
+                string error = "filterComparisonValue can not be null";
+                Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
+            }
+            else if (FilteredProperties?.Contains(PropertyName) == false)
+            {
+                string error = $"Filtered properties don't contain this property ({PropertyName})";
+                Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
+            }
+            else return true;
+
+            return false;
+        }
+
         public void Accept(IQueryParser parser)
         {
             parser.Parse(this);
@@ -78,7 +101,7 @@ namespace QueryWorker
 
         public override string ToString()
         {
-            return $"Filter(propertyName: {PropertyName},value: {Value})";
+            return $"Filter(propertyName: {PropertyName}, value: {Value}, filterСomparisonValue: {FilterСomparisonValue.ToString()} )";
         }
     }
 }

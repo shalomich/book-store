@@ -32,6 +32,9 @@ namespace QueryWorker
 
         public IQueryable<T> Execute<T>(IQueryable<T> query)
         {
+            if (isValidSorting() == false)
+                return query;
+
             var property = typeof(T).GetProperty(PropertyName);
 
             if (property == null)
@@ -40,18 +43,29 @@ namespace QueryWorker
                 Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
                 return query;
             }
-                
-            if (SortedProperties?.Contains(PropertyName) == false)
-            {
-                string error = $"Sorted properties don't contain this property ({PropertyName})";
-                Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
-                return query;
-            }
+            
             Expression<Func<T, object>> valueGetting = obj => property.GetValue(obj);
 
             query = IsAscending == true ? query.AppendOrderBy(valueGetting) : query.AppendOrderByDescending(valueGetting);
 
             return query;
+        }
+
+        private bool isValidSorting()
+        {
+            if (PropertyName == null)
+            {
+                string error = "propertyName can not be null";
+                Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
+            }
+            else if (SortedProperties?.Contains(PropertyName) == false)
+            {
+                string error = $"Sorted properties don't contain this property ({PropertyName})";
+                Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
+            }
+            else return true;
+
+            return false;
         }
 
         public void Accept(IQueryParser parser)
