@@ -4,7 +4,7 @@ using System.Text;
 
 namespace QueryWorker.Visitors
 {
-    public interface IQueryParser
+    public interface IQueryParser :  IInformed
     {
         string Query { set; get; }
         void Parse(Sorting sorting);
