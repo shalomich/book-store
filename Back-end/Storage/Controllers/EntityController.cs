@@ -29,7 +29,11 @@ namespace Storage.Controllers
         public async Task<ActionResult<IEnumerable<T>>> Read([FromQuery] QueryParams parameters, [FromServices] QueryTransformer<T> transformer)
         {
             var data = await Data.AsNoTracking().ToListAsync();
-            return transformer.Transform(data.AsQueryable(), parameters).ToList();
+            data = transformer.Transform(data.AsQueryable(), parameters).ToList();
+
+            foreach (var message in transformer.Informer.Messages)
+                Response.Headers.Add(message.Key, message.Value);
+            return data;
         }
 
         [HttpGet("{id}")]
