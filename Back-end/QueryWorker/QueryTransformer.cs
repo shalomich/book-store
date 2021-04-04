@@ -15,6 +15,9 @@ namespace QueryWorker
         private SortingFactory _sortingFactory;
         private PaggingFactory _paggingFactory;
         private IQueryParser _parser;
+        private Informer _informer;
+
+        public Informer Informer => _informer;
         public QueryTransformer(IConfiguration configuration, IQueryParser parser)
         {
             _parser = parser;
@@ -24,12 +27,15 @@ namespace QueryWorker
             _paggingFactory = querySection.GetSection("pagging").Get<PaggingFactory>();
             _sortingFactory = querySection.GetSection($"sorting:{typeName}").Get<SortingFactory>();
             _filterFactory = querySection.GetSection($"filter:{typeName}").Get<FilterFactory>();
+            
+            _informer = new Informer();
+            _informer.Subscribe(_parser);
         }
 
         public IQueryable<T> Transform(IQueryable<T> data, QueryParams parameters)
         {
             var queryQueue = new Queue<IQueryNode>();
-           
+            
             foreach (string filterQuery in parameters.Filter)
                 queryQueue.Enqueue(CreateNode(_filterFactory, filterQuery));
             
@@ -38,7 +44,7 @@ namespace QueryWorker
 
             queryQueue.Enqueue(CreateNode(_paggingFactory, parameters.Pagging));
 
-            while (queryQueue.TryDequeue(out IQueryNode node) == false)
+            while (queryQueue.TryDequeue(out IQueryNode node) != false)
                 data = node.Execute(data);
             
             return data;
@@ -47,6 +53,7 @@ namespace QueryWorker
         private IQueryNode CreateNode(IQueryNodeFactory factory, string query)
         {
             IQueryNode queryNode = factory.Create();
+            _informer.Subscribe(queryNode);
            
             _parser.Query = query;
             ((IParsed)queryNode).Accept(_parser);
