@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\QueryWorker\QueryWorker.csproj" />
+    <ProjectReference Include="..\Various\Various.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Various;
 
 namespace Storage.Models
 {
@@ -41,19 +42,19 @@ namespace Storage.Models
 
         static Publication()
         {
-            _notExistTypeMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.NotExist, "Type", String.Join(" ", TypeConsts));
-            _notExistGenreMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.NotExist, "Genre", String.Join(" ", GenreConsts));
-            _notExistCoverArtMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.NotExist, "CoverArt", String.Join(" ", CoverArtConsts));
-            _notExistAgeLimitMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.NotExist, "AgeLimit", String.Join(" ", AgeLimitConsts));
+            _notExistTypeMessage = ExceptionMessages.GetMessage(ExceptionMessageType.NotExist, "Type", String.Join(" ", TypeConsts));
+            _notExistGenreMessage = ExceptionMessages.GetMessage(ExceptionMessageType.NotExist, "Genre", String.Join(" ", GenreConsts));
+            _notExistCoverArtMessage = ExceptionMessages.GetMessage(ExceptionMessageType.NotExist, "CoverArt", String.Join(" ", CoverArtConsts));
+            _notExistAgeLimitMessage = ExceptionMessages.GetMessage(ExceptionMessageType.NotExist, "AgeLimit", String.Join(" ", AgeLimitConsts));
 
-            _invalidIsbnMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.Invalid, "Isbn", _IsbnSchema);
-            _invalidFormatMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.Invalid, "Format", _formatSchema);
+            _invalidIsbnMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Invalid, "Isbn", _IsbnSchema);
+            _invalidFormatMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Invalid, "Format", _formatSchema);
 
-            _maxReleaseYearMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.More, "ReleaseYear", _maxReleaseYear.ToString());
-            _maxPageQuantityMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.More, "PageQuantity", _maxPageQuantity.ToString());
+            _maxReleaseYearMessage = ExceptionMessages.GetMessage(ExceptionMessageType.More, "ReleaseYear", _maxReleaseYear.ToString());
+            _maxPageQuantityMessage = ExceptionMessages.GetMessage(ExceptionMessageType.More, "PageQuantity", _maxPageQuantity.ToString());
 
-            _minReleaseYearMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.Less, "ReleaseYear", _minReleaseYear.ToString());
-            _minPageQuantityMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.Less, "PageQuantity", _minPageQuantity.ToString());
+            _minReleaseYearMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, "ReleaseYear", _minReleaseYear.ToString());
+            _minPageQuantityMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, "PageQuantity", _minPageQuantity.ToString());
         }
 
         public static readonly string[] TypeConsts =
