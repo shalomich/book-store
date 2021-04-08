@@ -31,7 +31,9 @@ namespace Storage
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<Database>(options => options.UseSqlServer(connectionString));
-            
+            services.AddTransient(typeof(IRepository<>), typeof(ContextRepository<>));
+            services.AddTransient(typeof(DbContext), typeof(Database));
+
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddSingleton<IConfiguration>(_configuration);
 

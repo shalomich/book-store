@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Storage.Models;
+using Storage.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,7 @@ namespace Storage.Controllers
 {
     public class PublicationController : EntityController<Publication>
     {
-        protected override IQueryable<Publication> Data => _database
-                                                                .Publications
-                                                                .Include(publication => publication.Images)
-                                                                .Include(publication => publication.Author)
-                                                                .Include(publication => publication.Publisher);
-
-        public PublicationController(Database database) : base(database)
+        public PublicationController(IRepository<Publication> repository) : base(repository)
         {
         }
     }
