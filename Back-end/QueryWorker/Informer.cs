@@ -21,15 +21,15 @@ namespace QueryWorker
             informed.Accepted -= AddMessage;
             informed.Crashed -= AddErrorMessage;
         }
-        private void AddMessage(string theme,string text)
+        private void AddMessage(string theme,string text,IInformed informed)
         {
             _messages.Add(KeyValuePair.Create(theme, text));
         }
 
-        private void AddErrorMessage(string theme,string text)
+        private void AddErrorMessage(string theme,string text, IInformed informed)
         {
             _errorCount ++;
-            AddMessage($"error{_errorCount}", $"{theme}: {text}");
+            AddMessage($"error{_errorCount}", $"{theme}: {text}, {informed.ToString()}",informed);
         }
     }
 }

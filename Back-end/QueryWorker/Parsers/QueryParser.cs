@@ -3,23 +3,30 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Linq;
+using Various;
 
 namespace QueryWorker.Visitors
 {
     public class QueryParser : IQueryParser
     {
-        public string Query { set; get; }
+        private static readonly string _notExistTypeSymbolMessage;
+        private static readonly string _mustHaveComparisonSymbolMessage;
+        private static readonly string _mustHaveСolonMessage;
+        private static readonly string _mustHaveTypeSymbolMessage;
+        private static readonly string _mustHavePageSizeMessage;
+        private static readonly string _mustHavePageNumberMessage;
+        private static readonly string _mustHavePageNumberAfterCommaMessage;
 
-        private string _filterPattern = "(=)|(<)|(>)";
+        private const string _filterPattern = "(=)|(<)|(>)";
 
-        private Dictionary<string, FilterСomparison> _symbolToFilterComparisons = new Dictionary<string, FilterСomparison>()
+        private static readonly Dictionary<string, FilterСomparison> _symbolToFilterComparisons = new Dictionary<string, FilterСomparison>()
         {
             { "=", FilterСomparison.Equal },
             { "<", FilterСomparison.Less},
             { ">", FilterСomparison.More }
         };
 
-        private Dictionary<string, Func<string, object>> _converters = new Dictionary<string, Func<string, object>>()
+        private static readonly Dictionary<string, Func<string, object>> _converters = new Dictionary<string, Func<string, object>>()
         {
             {"i", str => Convert.ToInt32(str)},
             {"d", str => Convert.ToDouble(str)},
@@ -28,9 +35,36 @@ namespace QueryWorker.Visitors
             {"t", str => Convert.ToDateTime(str)},
         };
 
-        public event Action<string, string> Accepted;
-        public event Action<string, string> Crashed;
+        public event Action<string, string, IInformed> Accepted;
+        public event Action<string, string, IInformed> Crashed;
 
+        public string Query { set; get; }
+
+        static QueryParser()
+        {
+            string typeSymbols = _converters.Select(converter => converter.Key).Aggregate((str1, str2) => $"{str1} {str2}");
+            _notExistTypeSymbolMessage = ExceptionMessages
+                .GetMessage(ExceptionMessageType.NotExist,"PropertyType",typeSymbols);
+
+            _mustHaveTypeSymbolMessage = ExceptionMessages
+                .GetMessage(ExceptionMessageType.MustHave, "Filter", typeSymbols);
+
+            IEnumerable<string> comparisonSymbols = _symbolToFilterComparisons.Select(comparison => comparison.Key);
+            _mustHaveComparisonSymbolMessage = ExceptionMessages
+                .GetMessage(ExceptionMessageType.MustHave, "Filter", comparisonSymbols.Aggregate((str1, str2) => $"{str1} {str2}"));
+
+            _mustHaveСolonMessage = ExceptionMessages
+                .GetMessage(ExceptionMessageType.MustHave, "Filter", ":");
+            
+            _mustHavePageSizeMessage = ExceptionMessages
+                .GetMessage(ExceptionMessageType.MustHave, "PageSize", "number");
+
+            _mustHavePageNumberMessage = ExceptionMessages
+                .GetMessage(ExceptionMessageType.MustHave, "PageNumber", "number");
+
+            _mustHavePageNumberMessage = ExceptionMessages
+                .GetMessage(ExceptionMessageType.MustHave, "PageNumber", "number after comma");
+        }
         public void Parse(Sorting sorting)
         {
             bool isAscending;
@@ -72,7 +106,7 @@ namespace QueryWorker.Visitors
 
             if (isValid == false)
             {
-                Crashed?.Invoke("FilterComparison", $"Filter must be contain one of these symbols {_symbolToFilterComparisons.Keys.Aggregate((str1, str2) => $"{str1} {str2}")}");
+                Crashed?.Invoke("FilterComparison", _mustHaveComparisonSymbolMessage,this);
                 return;
             }
 
@@ -81,7 +115,7 @@ namespace QueryWorker.Visitors
 
             if (property.Contains(":") == false)
             {
-                Crashed?.Invoke("Value", $"Filter must be contain ':'");
+                Crashed?.Invoke("Value", _mustHaveСolonMessage,this);
                 return;
             }
 
@@ -96,13 +130,13 @@ namespace QueryWorker.Visitors
             }
             catch (IndexOutOfRangeException)
             {
-                Crashed?.Invoke("Value", $"Filter must be contain type of value");
+                Crashed?.Invoke("Value", _mustHaveTypeSymbolMessage,this);
                 return;
             }
 
             if (_converters.TryGetValue(propertyType,out Func<string, object> converter) == false)
             {
-                Crashed?.Invoke("Value", $"Uncorrect type {propertyType}");
+                Crashed?.Invoke("Value", _notExistTypeSymbolMessage,this);
                 return;
             }
             
@@ -123,7 +157,7 @@ namespace QueryWorker.Visitors
             }
             catch (FormatException)
             {
-                Crashed?.Invoke("PageSize", "pageSize must be number");
+                Crashed?.Invoke("PageSize", _mustHavePageSizeMessage,this);
             }
 
             try
@@ -132,12 +166,17 @@ namespace QueryWorker.Visitors
             }
             catch (FormatException)
             {
-                Crashed?.Invoke("PageNumber", "pageNumber must be number");
+                Crashed?.Invoke("PageNumber", _mustHavePageNumberMessage,this);
             }
             catch (IndexOutOfRangeException)
             {
-                Crashed?.Invoke("PageNumber", "pageNumber is after comma");
+                Crashed?.Invoke("PageNumber", _mustHavePageNumberAfterCommaMessage,this);
             }
+        }
+
+        public override string ToString()
+        {
+            return "QueryParser";
         }
     }
 }

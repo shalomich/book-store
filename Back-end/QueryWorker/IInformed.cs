@@ -6,7 +6,7 @@ namespace QueryWorker
 {
     public interface IInformed
     {
-        event Action<string, string> Accepted;
-        event Action<string, string> Crashed;
+        event Action<string, string, IInformed> Accepted;
+        event Action<string, string, IInformed> Crashed;
     }
 }
