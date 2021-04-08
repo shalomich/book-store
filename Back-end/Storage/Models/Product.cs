@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Various;
 
 namespace Storage.Models
 {
@@ -17,8 +18,8 @@ namespace Storage.Models
         private int _quantity;
 
         static Product() {
-           _minCostMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.Less, "Cost", _minCost.ToString());
-           _minQuantityMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.Less, "Quantity", _minQuantity.ToString());
+           _minCostMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, "Cost", _minCost.ToString());
+           _minQuantityMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, "Quantity", _minQuantity.ToString());
         }
         public Product()
         {

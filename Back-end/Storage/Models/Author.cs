@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Various;
 
 namespace Storage.Models
 {
@@ -28,9 +29,9 @@ namespace Storage.Models
             var today = DateTime.Today;
             _maxBirthDate = new DateTime(today.Year - majorityYear, today.Month, today.Day);
 
-            _maxBirthDateMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.More, "BirthDate", _maxBirthDate.ToString());
-            _maxDeathDateMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.More, "DeathDate", _maxDeathDate.ToString());
-            _invalidNameMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.Invalid, "Name", _nameSchema);
+            _maxBirthDateMessage = ExceptionMessages.GetMessage(ExceptionMessageType.More, "BirthDate", _maxBirthDate.ToString());
+            _maxDeathDateMessage = ExceptionMessages.GetMessage(ExceptionMessageType.More, "DeathDate", _maxDeathDate.ToString());
+            _invalidNameMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Invalid, "Name", _nameSchema);
         }
 
         public string Biography { set; get; }

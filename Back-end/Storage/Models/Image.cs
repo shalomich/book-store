@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Various;
 
 namespace Storage.Models
 {
@@ -22,8 +23,8 @@ namespace Storage.Models
         static Image()
         {
 
-            _notExistFormatMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.NotExist, "Format", String.Join(" ", FormatConsts));
-            _notExistEncodingMessage = ExceptionMessages.GetMessage(ExceptionMessages.MessageType.NotExist, "Encoding", String.Join(" ", EncodingConsts));
+            _notExistFormatMessage = ExceptionMessages.GetMessage(ExceptionMessageType.NotExist, "Format", String.Join(" ", FormatConsts));
+            _notExistEncodingMessage = ExceptionMessages.GetMessage(ExceptionMessageType.NotExist, "Encoding", String.Join(" ", EncodingConsts));
         }
 
         public Entity Entity { set; get; }
