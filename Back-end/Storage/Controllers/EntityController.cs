@@ -17,90 +17,64 @@ namespace Storage.Controllers
     [Route("storage/[controller]")]
     public abstract class EntityController<T> : Controller where T : Entity,new()
     {
-        protected readonly Database _database;
-
-        protected abstract IQueryable<T> Data { get; }
-        public EntityController(Database database)
+        private IRepository<T> _repository;
+        public EntityController(IRepository<T> repository)
         {
-            _database = database;
+            _repository = repository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<T>>> Read([FromQuery] QueryParams parameters, [FromServices] QueryTransformer<T> transformer)
+        public ActionResult<IEnumerable<T>> Read([FromQuery] QueryParams parameters, [FromServices] QueryTransformer<T> transformer)
         {
-            var data = await Data.AsNoTracking().ToListAsync();
+            var data = _repository.Select();
             data = transformer.Transform(data.AsQueryable(), parameters).ToList();
 
             foreach (var message in transformer.Informer.Messages)
                 Response.Headers.Add(message.Key, message.Value);
-            return data;
+            return new JsonResult(data);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<T>> Read(int id)
+        public ActionResult<T> Read(int id)
         {
-            var entity = await Data.FirstOrDefaultAsync(entity => entity.Id == id);
-            if (entity == null)
-                return NotFound();
-            else return entity;
+            return _repository.Select(id);
         }
 
         [HttpPost] 
-        public async Task<ActionResult<T>> Create(T entity) 
+        public ActionResult<T> Create(T entity) 
         { 
             if (entity == null) 
                 return BadRequest();
-            
-            _database.Set<T>().Add(entity); 
-            await _database.SaveChangesAsync();
+
+            _repository.Create(entity);
             
             return CreatedAtAction(nameof(Read), new { id = entity.Id }, entity); 
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<T>> Update(int id, T entity)
+        public ActionResult<T> Update(int id, T entity)
         {
             if (id != entity.Id)
             {
                 return BadRequest();
             }
 
-            _database.Entry(entity).State = EntityState.Modified;
-
-            await _database.SaveChangesAsync();
-          
-            return NoContent();
-        }
-
-        [HttpPatch("{id}")]
-        public async Task<ActionResult<T>> Update(int id, [FromBody] JsonPatchDocument<T> patchEntity)
-        {
-            var entity = await _database.Set<T>().FirstOrDefaultAsync(entity => entity.Id == id);
-
-            if (entity == null)
-            {
-                return NotFound();
-            }
-
-            patchEntity.ApplyTo(entity, ModelState);
-            await _database.SaveChangesAsync();
+            _repository.Update(entity);
 
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<T>> Delete(int id)
+        public ActionResult<T> Delete(int id)
         {
-            var entity = await _database.Set<T>().FirstOrDefaultAsync(entity => entity.Id == id);
-
-            if (entity == null)
+            try
+            {
+                _repository.Delete(id);
+            }
+            catch (ArgumentException)
             {
                 return NotFound();
-            }
-
-            _database.Set<T>().Remove(entity);
-            await _database.SaveChangesAsync();
-            
+            }            
             return NoContent();
         }
 

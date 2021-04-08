@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Storage.Models;
+using Storage.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,7 @@ namespace Storage.Controllers
 {
     public class AuthorController : EntityController<Author>
     {
-        protected override IQueryable<Author> Data => _database.Authors
-                                                                .Include(author => author.Images)
-                                                                .Include(author => author.Publications);
-        public AuthorController(Database database) : base(database)
+        public AuthorController(IRepository<Author> repository) : base(repository)
         {
         }
     }
