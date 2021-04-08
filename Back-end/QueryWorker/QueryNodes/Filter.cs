@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Various;
 
 namespace QueryWorker
 {
@@ -15,21 +16,34 @@ namespace QueryWorker
     }
     public class Filter : IQueryNode, IParsed
     {
-        private const string _notExistPropertyNameMessage = "This class does not exist property named {0}";
-        private const string _invalidValueTypeMessage = "This property has not type named {0}";
+        
+        private static readonly string _notNullPropertyNameMessage;
+        private static readonly string _notNullValueMessage;
+        private static readonly string _notNullFilterComparisonMessage;
 
-        public event Action<string, string> Accepted;
-        public event Action<string, string> Crashed;
+        private string _notExistFilteredPropertyMessage;
+        private string _notExistPropertyNameMessage;
+        private string _invalidValueTypeMessage;
+
+        public event Action<string, string, IInformed> Accepted;
+        public event Action<string, string, IInformed> Crashed;
 
         public string PropertyName { set;get;}
         public IComparable Value { set; get; }
         public FilterСomparison? FilterСomparisonValue { set; get; }
-
         public string[] FilteredProperties { set; get; }
 
+        static Filter()
+        {
+            _notNullPropertyNameMessage = ExceptionMessages
+                .GetMessage(ExceptionMessageType.Null, nameof(PropertyName), "name");
+            _notNullValueMessage = ExceptionMessages
+                .GetMessage(ExceptionMessageType.Null, nameof(Value), "1 or 'abc'");
+            _notNullFilterComparisonMessage = ExceptionMessages
+                .GetMessage(ExceptionMessageType.Null, nameof(FilterСomparisonValue), FilterСomparison.Equal.ToString());
+        }
         public Filter()
         {
-
         }
 
         public Filter(string propertyName, IComparable value, FilterСomparison сomparisonValue)
@@ -48,15 +62,20 @@ namespace QueryWorker
 
             if (property == null)
             {
-                string error = String.Format(_notExistPropertyNameMessage, PropertyName);
-                Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
+                IEnumerable<string> propertyNames = typeof(T).GetProperties().Select(property => property.Name);
+                propertyNames = propertyNames.Intersect(FilteredProperties);
+                _notExistPropertyNameMessage = ExceptionMessages
+                    .GetMessage(ExceptionMessageType.NotExist,nameof(PropertyName), propertyNames.Aggregate((str1, str2) => $"{str1} {str2}"));
+                
+                Crashed?.Invoke(nameof(PropertyName), _notExistPropertyNameMessage,this);
                 return query;
             }
                
             if (property.PropertyType != Value.GetType())
             {
-                string error = String.Format(_invalidValueTypeMessage, Value.GetType());
-                Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
+                _invalidValueTypeMessage = ExceptionMessages
+                    .GetMessage(ExceptionMessageType.Invalid, nameof(Value), Value.GetType().Name);
+                Crashed?.Invoke(nameof(Value), _invalidValueTypeMessage,this);
                 return query;
             }
             
@@ -69,29 +88,35 @@ namespace QueryWorker
 
         private bool isValidFilter()
         {
+            bool isValid = true;
+
             if (PropertyName == null)
             {
-                string error = "propertyName can not be null";
-                Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
-            }
-            else if (Value == null)
-            {
-                string error = "value can not be null";
-                Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
-            }
-            else if (FilterСomparisonValue == null)
-            {
-                string error = "filterComparisonValue can not be null";
-                Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
+                Crashed?.Invoke(nameof(PropertyName), _notNullPropertyNameMessage,this);
+                isValid = false;
             }
             else if (FilteredProperties?.Contains(PropertyName) == false)
             {
-                string error = $"Filtered properties don't contain this property ({PropertyName})";
-                Crashed?.Invoke(nameof(PropertyName), $"{error}, {this.ToString()}");
+                _notExistFilteredPropertyMessage = ExceptionMessages
+                    .GetMessage(ExceptionMessageType.NotExist, nameof(FilteredProperties), FilteredProperties.Aggregate((str1, str2) => $"{str1} {str2}"));
+                Crashed?.Invoke(nameof(PropertyName), _notExistFilteredPropertyMessage,this);
+                isValid = false;
             }
-            else return true;
 
-            return false;
+            if (Value == null)
+            {
+                Crashed?.Invoke(nameof(Value), _notNullValueMessage,this);
+                isValid = false;
+            }
+
+            if (FilterСomparisonValue == null)
+            {
+                Crashed?.Invoke(nameof(FilterСomparisonValue), _notNullFilterComparisonMessage,this);
+                isValid = false;
+            }
+
+            return isValid;
+
         }
 
         public void Accept(IQueryParser parser)

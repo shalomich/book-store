@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Various;
 
 namespace QueryWorker
 {
@@ -11,13 +12,16 @@ namespace QueryWorker
     {
         private const int _minPageSize = 1;
         private const int _minPageNumber = 1;
+
+        private string _invalidPageSizeMessage;
+        private string _invalidPageNumberMessage;
         
         private int _pageSize;
         private int _pageNumber;
         private int _maxPageSize = int.MaxValue;
 
-        public event Action<string, string> Accepted;
-        public event Action<string, string> Crashed;
+        public event Action<string, string, IInformed> Accepted;
+        public event Action<string, string, IInformed> Crashed;
 
         public int PageSize 
         {
@@ -26,7 +30,9 @@ namespace QueryWorker
                 if (value < _minPageSize || value > _maxPageSize)
                 {
                     _pageSize = _maxPageSize;
-                    Crashed?.Invoke("pageSize",$"curent pageSize is unvalid {value}, use default pageSize {_maxPageSize}");
+                    _invalidPageSizeMessage = ExceptionMessages
+                        .GetMessage(ExceptionMessageType.Invalid, nameof(PageSize), _maxPageSize.ToString());
+                    Crashed?.Invoke(nameof(PageSize), _invalidPageSizeMessage,this);
                 }
                 else _pageSize = value;
             }
@@ -43,7 +49,9 @@ namespace QueryWorker
                 if (value < _minPageNumber)
                 {
                     _pageNumber = _minPageNumber;
-                    Crashed?.Invoke("pageNumber", $"curent pageNumber is unvalid ({value}), use default pageNumber ({_minPageSize})");
+                    _invalidPageNumberMessage = ExceptionMessages
+                        .GetMessage(ExceptionMessageType.Invalid,nameof(PageNumber),_minPageNumber.ToString());
+                    Crashed?.Invoke(nameof(PageNumber), _invalidPageNumberMessage, this);
                 }
                 else _pageNumber = value;
             }
@@ -87,15 +95,16 @@ namespace QueryWorker
             bool hasNextPage = PageNumber < pageCount;
             bool hasPreviousPage = PageNumber > 1;
 
-            Accepted?.Invoke(nameof(pageCount), pageCount.ToString());
-            Accepted?.Invoke(nameof(hasNextPage), hasNextPage.ToString());
-            Accepted?.Invoke(nameof(hasPreviousPage), hasPreviousPage.ToString());
+            Accepted?.Invoke(nameof(pageCount), pageCount.ToString(),this);
+            Accepted?.Invoke(nameof(hasNextPage), hasNextPage.ToString(),this);
+            Accepted?.Invoke(nameof(hasPreviousPage), hasPreviousPage.ToString(),this);
 
             int pageNumber = PageNumber;
             if (PageNumber > pageCount)
             {
-                string error = $"pageNumber({pageNumber}) less than pageCount ({pageCount}), used last page";
-                Crashed?.Invoke(nameof(PageNumber), $"{error}, {this.ToString()}");
+                _invalidPageNumberMessage = ExceptionMessages
+                    .GetMessage(ExceptionMessageType.Invalid, nameof(PageNumber), pageCount.ToString());
+                Crashed?.Invoke(nameof(PageNumber), _invalidPageNumberMessage,this);
                 pageNumber = pageCount;
             }
 
