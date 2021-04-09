@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {withRouter} from "react-router-dom";
 import axios from "axios";
-import {createForm} from "./FormCreation";
+import {createForm} from "./CreateForm";
 import {getFormData} from "./GetFormData";
+import {setFormData} from "./SetFormData";
 
 class ItemForm extends Component {
     constructor(props) {
@@ -11,6 +12,7 @@ class ItemForm extends Component {
             formData: {},
             config: {},
             form: {},
+            formToEdit: {},
             sendClicked: false
         }
 
@@ -29,15 +31,31 @@ class ItemForm extends Component {
                 this.setState({config: res.data})
                 console.log(this.state.config)
             })
+        if (this.props.action === 'edit') {
+            axios.get("https://localhost:44327/storage/publication/" + sessionStorage.getItem('editItemId'))
+                .then(res => {
+                    this.setState({formToEdit: res.data})
+                })
+        }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if ((prevState !== this.state) && (this.state.sendClicked)) {
-            console.log(prevState, this.state)
-            axios.post("https://localhost:44327/storage/publication", this.state.form, { headers: {'Content-Type': 'application/json' }})
-                .then(res => {
-                     console.log(res.status)
-                 })
+            if (this.props.action !== 'edit') {
+                console.log("post")
+                axios.post("https://localhost:44327/storage/publication", this.state.form, { headers: {'Content-Type': 'application/json' }})
+                    .then(res => {
+                        console.log(res.status)
+                    })
+            }
+            else {
+                console.log(this.state.form)
+                axios.put("https://localhost:44327/storage/publication/" + sessionStorage.getItem('editItemId'), this.state.form, { headers: {'Content-Type': 'application/json' }})
+                    .then(res => {
+                        console.log(res.status)
+                    })
+            }
+
             this.props.history.push("/admin/" + this.props.type)
         }
     }
@@ -50,22 +68,36 @@ class ItemForm extends Component {
     handleClickSend = (e) => {
         e.preventDefault();
         let form = getFormData(this.ref.current.children)
-        Promise.allSettled(form.Images)
-            .then((results) => {
-                let arr = []
-                results.forEach(result => {
-                    arr.push(result.value)
+        if (form.images.length !== 0) {
+            if (this.props.action === 'edit') {
+                form.id = sessionStorage.getItem('editItemId')
+            }
+            Promise.allSettled(form.images)
+                .then((results) => {
+                    let arr = []
+                    results.forEach(result => {
+                        arr.push(result.value)
+                    })
+                    form.images = arr
+                    this.setState({form: form, sendClicked: true})
+                    console.log(this.state.form)
                 })
-                form.Images = arr
-                this.setState({form: form, sendClicked: true})
-                console.log(this.state.form)
-            })
+        } else {
+            form.images = this.state.formToEdit.images
+            form.id = sessionStorage.getItem('editItemId')
+            this.setState({form: form, sendClicked: true})
+        }
+
     }
 
     render() {
-        console.log(this.state.formData)
-
-        this.info = createForm(this.state.formData, this.state.config);
+        console.log(this.props.action)
+        if (this.props.action === 'edit') {
+            this.info = setFormData(this.state.formData, this.state.config, this.state.formToEdit)
+        }
+        else {
+            this.info = createForm(this.state.formData, this.state.config);
+        }
         return (
             <div>
                 <button onClick={this.handleClickBack}>Назад</button>
