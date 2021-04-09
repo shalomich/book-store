@@ -35,19 +35,22 @@ class Item extends Component {
             });
     };
 
+    handleClickEdit = (e) => {
+        e.preventDefault();
+        sessionStorage.setItem('editItemId', this.props.item.id)
+        this.props.updateData(this.props.name, this.props.type, 'edit')
+        this.props.history.push("/admin/" + this.props.type + "/form")
+    };
+
 
     render() {
-        // if (this.clicked) {
-        //     return <Redirect to={this.link}/>
-        // }
-
         return (
             <div className={style.item_block}>
                 <img className={style.image} src={this.imageSource}/>
                 {this.info}
                 <div className={style.button_block}>
                     <hr className={style.line}/>
-                    <button className={style.edit_button} onClick={this.handleClick}>Изменить</button>
+                    <button className={style.edit_button} onClick={this.handleClickEdit}>Изменить</button>
                     <button className={style.delete_button} onClick={this.handleClickDelete}>Удалить</button>
                 </div>
             </div>

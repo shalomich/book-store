@@ -15,8 +15,8 @@ class PagesManager extends Component{
         }
     }
 
-    updateData = (product, type) => {
-        this.setState({ product: product, type: type })
+    updateData = (product, type, action) => {
+        this.setState({ product: product, type: type, action: action })
     }
 
     render() {
@@ -25,7 +25,7 @@ class PagesManager extends Component{
                 <div>
                     <Route exact path="/admin" render={() => <MainPage updateData = {this.updateData} goods = {this.props.goods}/>}/>
                     <Route exact path="/admin/:String" render={() => <EntityPage updateData = {this.updateData} type={this.state.type} name={this.state.product} />}/>
-                    <Route path="/admin/:String/form" render={() => <ItemForm type={this.state.type} name={this.state.product}/>}/>
+                    <Route path="/admin/:String/form" render={() => <ItemForm type={this.state.type} action={this.state.action}/>}/>
                 </div>
             </BrowserRouter>
         );

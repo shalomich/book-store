@@ -1,5 +1,3 @@
-import React, { useState} from 'react';
-
 export const getFormData = (data) => {
     let form = {}
     let formCollection = Array.prototype.slice.call(data)
@@ -7,28 +5,29 @@ export const getFormData = (data) => {
         .filter(formEl=>formEl.nodeName ==='DIV')
         .forEach(div => {
             let divEls = Array.prototype.slice.call(div.children)
-            console.log(divEls)
             divEls.forEach(el => {
-                if (el.nodeName !== 'SPAN' && el.nodeName !== 'SELECT' && el.type !== 'file' && (el.value !== ''|| el.value !== 0)){
-                    form[el.name] = el.value
-                }
-                else if (el.nodeName === 'SELECT') {
-                    if (!el.attributes.multiple) {
-                        form[el.name] = el.value
+                if (el.nodeName !== 'SPAN' && (el.value !== ''|| el.value !== 0)) {
+                    if (el.nodeName === 'SELECT') {
+                        if (!el.attributes.multiple) {
+                            form[el.name] = el.value
+                        }
+                        else {
+                            let options = []
+                            Array.prototype.slice.call(el.options).forEach(option => {
+                                if (option.selected) {
+                                    options.push(option.value)
+                                }
+                            })
+                            form[el.name] = options
+                        }
+                    }
+                    else if (el.type === 'file') {
+                        console.log(GetImages(Array.prototype.slice.call(el.files)))
+                        form[el.name] = GetImages(Array.prototype.slice.call(el.files))
                     }
                     else {
-                        let options = []
-                        Array.prototype.slice.call(el.options).forEach(option => {
-                            if (option.selected) {
-                                options.push(option.value)
-                            }
-                        })
-                        form[el.name] = options
+                        form[el.name] = el.value
                     }
-                }
-                else if (el.type === 'file') {
-                    console.log(GetImages(Array.prototype.slice.call(el.files)))
-                    form[el.name] = GetImages(Array.prototype.slice.call(el.files))
                 }
             })
         })
