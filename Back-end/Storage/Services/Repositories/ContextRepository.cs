@@ -26,9 +26,6 @@ namespace Storage.Services
         {
             T entity = Select(id);
 
-            if (entity == null)
-                throw new ArgumentException();
-
             _context.Set<T>().Remove(entity);
 
             _context.SaveChanges();
@@ -41,7 +38,10 @@ namespace Storage.Services
 
         public T Select(int id)
         {
-            return _context.Set<T>().AsNoTracking().Include(entity => entity.Images).Include().FirstOrDefault(entity => entity.Id == id);
+            T entity = _context.Set<T>().AsNoTracking().Include(entity => entity.Images).Include().FirstOrDefault(entity => entity.Id == id);
+            if (entity == null)
+                throw new ArgumentException();
+            return entity;
         }
 
         public void Update(T entity)

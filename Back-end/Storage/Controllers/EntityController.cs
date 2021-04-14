@@ -36,8 +36,15 @@ namespace Storage.Controllers
 
         [HttpGet("{id}")]
         public ActionResult<T> Read(int id)
-        {
-            return _repository.Select(id);
+        { 
+            try
+            {
+                return _repository.Select(id);
+            }
+            catch (ArgumentException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpPost] 
