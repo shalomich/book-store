@@ -26,9 +26,9 @@ namespace Storage.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Biography = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DeathDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Biography = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -87,20 +87,21 @@ namespace Storage.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    ReleaseYear = table.Column<int>(type: "int", nullable: false),
-                    AuthorId = table.Column<int>(type: "int", nullable: false),
-                    PublisherId = table.Column<int>(type: "int", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ISBN = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Genres = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OriginalName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PageQuantity = table.Column<int>(type: "int", nullable: true),
                     CoverArt = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Format = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AgeLimit = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PublicationFormat = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Cost = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    PageQuantity = table.Column<int>(type: "int", nullable: true),
+                    Weight = table.Column<int>(type: "int", nullable: true),
+                    Circulation = table.Column<int>(type: "int", nullable: true),
+                    Genres = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Isbn = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ReleaseYear = table.Column<int>(type: "int", nullable: false),
+                    PublisherId = table.Column<int>(type: "int", nullable: false),
+                    AuthorId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Cost = table.Column<int>(type: "int", nullable: false),
                     AddingDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -137,11 +138,11 @@ namespace Storage.Migrations
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_publications_ISBN",
+                name: "IX_publications_Isbn",
                 table: "publications",
-                column: "ISBN",
+                column: "Isbn",
                 unique: true,
-                filter: "[ISBN] IS NOT NULL");
+                filter: "[Isbn] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_publications_PublisherId",

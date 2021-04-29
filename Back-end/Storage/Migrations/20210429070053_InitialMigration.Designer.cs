@@ -10,7 +10,7 @@ using Storage;
 namespace Storage.Migrations
 {
     [DbContext(typeof(Database))]
-    [Migration("20210321034404_InitialMigration")]
+    [Migration("20210429070053_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace Storage.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.3")
+                .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Storage.Models.Entity", b =>
@@ -107,6 +107,9 @@ namespace Storage.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("Circulation")
+                        .HasColumnType("int");
+
                     b.Property<int>("Cost")
                         .HasColumnType("int");
 
@@ -116,21 +119,18 @@ namespace Storage.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Format")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Genres")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ISBN")
+                    b.Property<string>("Isbn")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("OriginalName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("PageQuantity")
                         .HasColumnType("int");
-
-                    b.Property<string>("PublicationFormat")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PublisherId")
                         .HasColumnType("int");
@@ -145,11 +145,14 @@ namespace Storage.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("Weight")
+                        .HasColumnType("int");
+
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("ISBN")
+                    b.HasIndex("Isbn")
                         .IsUnique()
-                        .HasFilter("[ISBN] IS NOT NULL");
+                        .HasFilter("[Isbn] IS NOT NULL");
 
                     b.HasIndex("PublisherId");
 
