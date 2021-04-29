@@ -7,7 +7,7 @@ namespace Storage.Models
 {
     public abstract class Entity
     {
-        private const int _maxImageCount = 5;
+        private const int _maxImageCount = 4;
 
         private List<Image> _images;
         public int Id { set; get; }
