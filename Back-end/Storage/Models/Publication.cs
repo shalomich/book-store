@@ -13,12 +13,13 @@ namespace Storage.Models
         private static readonly int _maxReleaseYear = DateTime.Today.Year;
         private const int _minPageQuantity = 1;
         private const int _maxPageQuantity = int.MaxValue;
+        private const int _maxWeight = 10000;
 
         private const string _IsbnMask = @"^978-5-\d{6}-\d{2}-\d{1}$";
-        private const string _formatMask = @"^[1-9]\d{1}x[1-9]\d{1}x[1-9]$";
+        private const string _formatMask = @"^[1-9]\d{1}(\.\d{1})x[1-9]\d{1}(\.\d{1})x[1-9](\.\d{1})$";
 
         private const string _IsbnSchema = "978-5-XXXXXX-XX-X";       
-        private const string _formatSchema = "(10-99)x(10-99)x(1-9)";
+        private const string _formatSchema = "[10.0-99.9]x[10.0-99.9]x[1.0-9.9]";
 
         private static readonly string _notExistTypeMessage;
         private static readonly string _notExistGenreMessage;
@@ -28,6 +29,7 @@ namespace Storage.Models
         private static readonly string _maxReleaseYearMessage;
         private static readonly string _minCirculationMessage;
         private static readonly string _minWeightMessage;
+        private static readonly string _maxWeightMessage;
         private static readonly string _minPageQuantityMessage;
         private static readonly string _maxPageQuantityMessage;
         private static readonly string _invalidIsbnMessage;
@@ -46,21 +48,22 @@ namespace Storage.Models
 
         static Publication()
         {
-            _notExistTypeMessage = ExceptionMessages.GetMessage(ExceptionMessageType.NotExist, "Type", String.Join(" ", TypeConsts));
+            _notExistTypeMessage = ExceptionMessages.GetMessage(ExceptionMessageType.NotExist, nameof(Type), String.Join(" ", TypeConsts));
             _notExistGenreMessage = ExceptionMessages.GetMessage(ExceptionMessageType.NotExist, "Genre", String.Join(" ", GenreConsts));
-            _notExistCoverArtMessage = ExceptionMessages.GetMessage(ExceptionMessageType.NotExist, "CoverArt", String.Join(" ", CoverArtConsts));
-            _notExistAgeLimitMessage = ExceptionMessages.GetMessage(ExceptionMessageType.NotExist, "AgeLimit", String.Join(" ", AgeLimitConsts));
+            _notExistCoverArtMessage = ExceptionMessages.GetMessage(ExceptionMessageType.NotExist, nameof(CoverArt), String.Join(" ", CoverArtConsts));
+            _notExistAgeLimitMessage = ExceptionMessages.GetMessage(ExceptionMessageType.NotExist, nameof(AgeLimit), String.Join(" ", AgeLimitConsts));
 
-            _invalidIsbnMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Invalid, "Isbn", _IsbnSchema);
-            _invalidFormatMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Invalid, "Format", _formatSchema);
+            _invalidIsbnMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Invalid, nameof(Isbn), _IsbnSchema);
+            _invalidFormatMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Invalid, nameof(Format), _formatSchema);
 
-            _maxReleaseYearMessage = ExceptionMessages.GetMessage(ExceptionMessageType.More, "ReleaseYear", _maxReleaseYear.ToString());
-            _maxPageQuantityMessage = ExceptionMessages.GetMessage(ExceptionMessageType.More, "PageQuantity", _maxPageQuantity.ToString());
+            _maxReleaseYearMessage = ExceptionMessages.GetMessage(ExceptionMessageType.More, nameof(ReleaseYear), _maxReleaseYear.ToString());
+            _maxPageQuantityMessage = ExceptionMessages.GetMessage(ExceptionMessageType.More, nameof(PageQuantity), _maxPageQuantity.ToString());
+            _maxWeightMessage = ExceptionMessages.GetMessage(ExceptionMessageType.More, nameof(Weight), _maxWeight.ToString());
 
-            _minReleaseYearMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, "ReleaseYear", _minReleaseYear.ToString());
-            _minPageQuantityMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, "PageQuantity", _minPageQuantity.ToString());
-            _minCirculationMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, "Circulation", Convert.ToString(0));
-            _minWeightMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, "Weight", Convert.ToString(0));
+            _minReleaseYearMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, nameof(ReleaseYear), _minReleaseYear.ToString());
+            _minPageQuantityMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, nameof(PageQuantity), _minPageQuantity.ToString());
+            _minCirculationMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, nameof(Circulation), Convert.ToString(0));
+            _minWeightMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, nameof(Weight), Convert.ToString(0));
         }
 
         public static readonly string[] TypeConsts =
@@ -84,8 +87,8 @@ namespace Storage.Models
 
         public static readonly string[] CoverArtConsts = 
         {
-            "Твёрдая",
-            "Мягкая"
+            "Твёрдый переплёт",
+            "Мягкий переплёт"
         };
 
         public static readonly string[] AgeLimitConsts = 
@@ -112,7 +115,7 @@ namespace Storage.Models
             }
         }
         
-        public string PublicationFormat
+        public string Format
         {
             set
             {
@@ -163,6 +166,8 @@ namespace Storage.Models
             {
                 if (value <= 0)
                     throw new ArgumentOutOfRangeException(_minWeightMessage);
+                if (value > _maxWeight)
+                    throw new ArgumentOutOfRangeException(_maxWeightMessage);
                 _weight = value;
             }
 
@@ -248,8 +253,5 @@ namespace Storage.Models
 
         public Author Author { set; get; }
         public int AuthorId { set; get; }
-        public string OriginalName { set; get; }
-
-
     }
 }
