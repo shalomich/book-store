@@ -26,6 +26,8 @@ namespace Storage.Models
         private static readonly string _notExistAgeLimitMessage;
         private static readonly string _minReleaseYearMessage;
         private static readonly string _maxReleaseYearMessage;
+        private static readonly string _minCirculationMessage;
+        private static readonly string _minWeightMessage;
         private static readonly string _minPageQuantityMessage;
         private static readonly string _maxPageQuantityMessage;
         private static readonly string _invalidIsbnMessage;
@@ -35,6 +37,8 @@ namespace Storage.Models
         private string _type;
         private string _Isbn;
         private ISet<string> _genres;
+        private int? _circulation;
+        private int? _weight; 
         private int? _pageQuantity;
         private string _coverArt;
         private string _ageLimit;
@@ -55,6 +59,8 @@ namespace Storage.Models
 
             _minReleaseYearMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, "ReleaseYear", _minReleaseYear.ToString());
             _minPageQuantityMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, "PageQuantity", _minPageQuantity.ToString());
+            _minCirculationMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, "Circulation", Convert.ToString(0));
+            _minWeightMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, "Weight", Convert.ToString(0));
         }
 
         public static readonly string[] TypeConsts =
@@ -148,6 +154,35 @@ namespace Storage.Models
             get
             {
                 return _pageQuantity;
+            }
+        }
+
+        public int? Weight
+        {
+            set
+            {
+                if (value <= 0)
+                    throw new ArgumentOutOfRangeException(_minWeightMessage);
+                _weight = value;
+            }
+
+            get
+            {
+                return _weight;
+            }
+        }
+        public int? Circulation
+        {
+            set
+            {
+                if (value <= 0)
+                    throw new ArgumentOutOfRangeException(_minCirculationMessage);
+                _circulation = value;
+            }
+
+            get
+            {
+                return _circulation;
             }
         }
         public ISet<string> Genres
