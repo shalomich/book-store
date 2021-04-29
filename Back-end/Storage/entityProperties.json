@@ -87,11 +87,18 @@
         "PageQuantity": {
           "min": 1,
           "max": 1000
+        },
+        "Weight": {
+          "min": 1,
+          "max": 10000
+        },
+        "Circulation": {
+          "min": 1
         }
       },
       "strings": {
         "Isbn": "978-5-XXXXXX-XX-X",
-        "PublicationFormat": "[10-99]x[10-99]x[1-9]"
+        "Format": "[10.0-99.9]x[10.0-99.9]x[1.0-9.9]"
       }
     },
     "Author": {
