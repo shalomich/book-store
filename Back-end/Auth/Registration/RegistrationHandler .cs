@@ -1,5 +1,6 @@
 ﻿using Auth.Exceptions;
 using Auth.Models;
+using Auth.Services;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -14,20 +15,25 @@ namespace Auth.Registration
 {
 	public class RegistrationHandler : IRequestHandler<RegistrationCommand, AuthAnswer>
 	{
+		private const string _defaultUserRole = "BUYER";
+
 		private static readonly RestError _emailExist = new RestError { Reason = "EmailExist", Message = "Current email belongs to other" };
 		private static readonly RestError _userNameExist = new RestError { Reason = "UserNameExist", Message = "Current userName belongs to other" };
-
-
+		
+		private IJwtGenerator _jwtGenerator;
 		private readonly UserManager<User> _userManager;
 		private readonly Database _context;
+		private RoleManager<IdentityRole> _roleManager;
 
-		public RegistrationHandler(Database context, UserManager<User> userManager)
-		{
-			_context = context;
-			_userManager = userManager;
-		}
+        public RegistrationHandler(IJwtGenerator jwtGenerator, UserManager<User> userManager, Database context, RoleManager<IdentityRole> roleManager)
+        {
+            _jwtGenerator = jwtGenerator ?? throw new ArgumentNullException(nameof(jwtGenerator));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
+        }
 
-		public async Task<AuthAnswer> Handle(RegistrationCommand request, CancellationToken cancellationToken)
+        public async Task<AuthAnswer> Handle(RegistrationCommand request, CancellationToken cancellationToken)
 		{
 			var errors = new List<RestError>();
 
@@ -49,12 +55,14 @@ namespace Auth.Registration
 
 			var result = await _userManager.CreateAsync(user, request.Password);
 
+			
 			if (result.Succeeded)
 			{
+				await _userManager.AddToRoleAsync(user, _defaultUserRole);
 				return new AuthAnswer
 				{
 					Id = user.Id,
-					Token = "test"
+					Token = _jwtGenerator.CreateToken(user,_defaultUserRole)
 				};
 			}
 			else
