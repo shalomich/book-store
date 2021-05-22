@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 namespace Auth.Controllers
 {
-    [AllowAnonymous]
     [Route("auth")]
     [ApiController]
     public class UserController : ControllerBase
