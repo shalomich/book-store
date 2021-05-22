@@ -43,15 +43,26 @@ namespace Auth.Registration
 			if (await _context.Users.Where(x => x.UserName == request.UserName).AnyAsync())
 				errors.Add(_userNameExist);
 
+
+			User user = null;
+
+            try
+            {
+				user = new User
+				{
+					Age = request.Age,
+					Email = request.Email,
+					UserName = request.UserName
+				};
+			}
+			catch (ArgumentException exception)
+            {
+				errors.Add(new RestError { Reason = "InvalidAccountData",Message = exception.Message});
+            }
+
 			if (errors.Count != 0)
 				throw new RestException(HttpStatusCode.BadRequest, errors);
 
-			var user = new User
-			{
-				Age = request.Age,
-				Email = request.Email,
-				UserName = request.UserName
-			};
 
 			var result = await _userManager.CreateAsync(user, request.Password);
 
@@ -59,11 +70,10 @@ namespace Auth.Registration
 			if (result.Succeeded)
 			{
 				await _userManager.AddToRoleAsync(user, _defaultUserRole);
-				return new AuthAnswer
-				{
-					Id = user.Id,
-					Token = _jwtGenerator.CreateToken(user,_defaultUserRole)
-				};
+
+				string token = _jwtGenerator.CreateToken(user, _defaultUserRole);
+
+				return new AuthAnswer { Token = token};
 			}
 			else
 			{ 

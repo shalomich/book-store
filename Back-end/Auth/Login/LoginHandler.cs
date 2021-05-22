@@ -42,7 +42,6 @@ namespace Auth.Login
 				string role = (await _userManager.GetRolesAsync(user)).First();
 				return new AuthAnswer
 				{
-					Id = user.Id,
 					Token = _jwtGenerator.CreateToken(user,role),
 				};
 			}

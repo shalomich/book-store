@@ -42,15 +42,12 @@ namespace Auth
             services.AddMediatR(typeof(LoginHandler).Assembly);
             services.TryAddSingleton<ISystemClock, SystemClock>();
 
+
             services.AddMvc(option =>
             {
                 option.EnableEndpointRouting = false;
-                var policy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .Build();
-                option.Filters.Add(new AuthorizeFilter(policy));
-            }).SetCompatibilityVersion(CompatibilityVersion.Latest);
-
+            });
+            
             var builder = services.AddIdentityCore<User>();
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
 
