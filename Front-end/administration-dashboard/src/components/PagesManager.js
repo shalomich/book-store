@@ -3,7 +3,10 @@ import MainPage from "./MainPage";
 import {BrowserRouter, Route, Redirect} from "react-router-dom";
 import {Component} from "react/cjs/react.production.min";
 import EntityPage from "./EntityPage";
-import ItemForm from "./ItemForm/ItemForm";
+import FormPage from "./FormPage/FormPage"
+import AddingForm from "./Form/AddingForm/AddingForm"
+import UpdatingForm from "./Form/UpdatingForm/UpdatingForm"
+
 
 class PagesManager extends Component{
     constructor(props) {
@@ -25,7 +28,8 @@ class PagesManager extends Component{
                 <div>
                     <Route exact path="/admin" render={() => <MainPage updateData = {this.updateData} goods = {this.props.goods}/>}/>
                     <Route exact path="/admin/:String" render={() => <EntityPage updateData = {this.updateData} type={this.state.type} name={this.state.product} />}/>
-                    <Route path="/admin/:String/form" render={() => <ItemForm type={this.state.type} action={this.state.action}/>}/>
+                    <Route exact path="/admin/:entityName/form" render={({match}) => <FormPage Form={AddingForm} match={match}/>}/>
+                    <Route exact path="/admin/:entityName/form/:id" render={({match}) => <FormPage Form={UpdatingForm} match={match}/>}/>
                 </div>
             </BrowserRouter>
         );
