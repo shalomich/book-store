@@ -30,7 +30,7 @@ namespace Storage.Services
                 .ToDictionary(section => section.Key, section => 
                 {
                     var options = section.Get<string[]>();
-                    return (object) options.Select(option => KeyValuePair.Create(option, option)).ToList();
+                    return (object) options.Select(option => new {Text = option, Value = option}).ToList();
                 });
             Dictionary<string, object> numbers = currentConfigSection
                 .GetSection("numbers")

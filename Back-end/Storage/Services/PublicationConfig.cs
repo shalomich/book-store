@@ -9,18 +9,17 @@ namespace Storage.Services
 {
     public class PublicationConfig : EntityConfig<Publication>
     {
-        private readonly IReadOnlyList<KeyValuePair<string, int>> _authorIdAndNames;
-        private readonly IReadOnlyList<KeyValuePair<string, int>> _publisherIdAndNames;
-       
-
+        private readonly Database _database;
         public PublicationConfig(IConfiguration configuration, Database database) : base(configuration)
         {
-            _authorIdAndNames = database.Authors.Select(author => KeyValuePair.Create(author.Name,author.Id)).ToList();
-            _publisherIdAndNames = database.Publishers.Select(publisher => KeyValuePair.Create(publisher.Name, publisher.Id)).ToList();
+            _database = database;
         }
 
         public override Dictionary<string, object> GetConstants()
         {
+            var _authorIdAndNames = _database.Authors.Select(author => new { Text = author.Name, Value = author.Id }).ToList();
+            var _publisherIdAndNames = _database.Publishers.Select(publisher => new { Text = publisher.Name, Value = publisher.Id }).ToList();
+
             Dictionary<string,object> publicationConstants = base.GetConstants();
 
             publicationConstants.Add("authorId", _authorIdAndNames);
