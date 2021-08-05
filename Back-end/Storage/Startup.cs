@@ -1,4 +1,8 @@
+using Auth.Middlewares;
 using Auth.Models;
+using Auth.Services;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -6,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using QueryWorker;
 using QueryWorker.Visitors;
 using Storage.Models;
@@ -14,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Storage
@@ -43,9 +49,25 @@ namespace Storage
             services.AddTransient(typeof(QueryTransformer<>));
             services.AddTransient(typeof(EntityConfig<>));
             services.AddTransient<EntityConfig<Publication>,PublicationConfig>();
+            services.AddScoped<JwtGenerator>();
 
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<ApplicationContext>();
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["TokenKey"]));
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
+                opt =>
+                {
+                    opt.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = key,
+                        ValidateAudience = false,
+                        ValidateIssuer = false,
+                    };
+                });
+
+            services.AddMediatR(GetType().Assembly);
             services.AddCors();
         }
 
@@ -58,6 +80,11 @@ namespace Storage
 
             app.UseRouting();
 
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+            
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>

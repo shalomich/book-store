@@ -9,19 +9,22 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using static Auth.Login.LoginHandler;
 
 namespace Auth.Login
 {
 	public class LoginHandler : IRequestHandler<LoginQuery, AuthAnswer>
 	{
+		public record LoginQuery(string Email, string Password) : IRequest<AuthAnswer>;
+		
 		private static readonly RestError _emailUnregistered = new RestError { Reason = "EmailUnregistered", Message = "This email is unregistered" };
 		private static readonly RestError _passwordUncorrect = new RestError { Reason = "PasswordUncorrect", Message = "Wrong password" };
 
 		private readonly UserManager<User> _userManager;
 		private readonly SignInManager<User> _signInManager;
-		private IJwtGenerator _jwtGenerator;
+		private JwtGenerator _jwtGenerator;
 
-        public LoginHandler(UserManager<User> userManager, SignInManager<User> signInManager, IJwtGenerator jwtGenerator)
+        public LoginHandler(UserManager<User> userManager, SignInManager<User> signInManager, JwtGenerator jwtGenerator)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
@@ -30,12 +33,14 @@ namespace Auth.Login
 
         public async Task<AuthAnswer> Handle(LoginQuery request, CancellationToken cancellationToken)
 		{
-			var user = await _userManager.FindByEmailAsync(request.Email);
+			var (email, password) = request;
+
+			var user = await _userManager.FindByEmailAsync(email);
 			if (user == null)
 				throw new RestException(HttpStatusCode.BadRequest, new List<RestError>() { _emailUnregistered});
 			
 
-			var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
+			var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
 
 			if (result.Succeeded)
 			{

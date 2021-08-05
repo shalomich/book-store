@@ -8,18 +8,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Auth.Login.LoginHandler;
+using static Auth.Registration.RegistrationHandler;
 
 namespace Auth.Controllers
 {
-    [Route("auth")]
+    [Route("account")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class AccountController : ControllerBase
     {
         private IMediator _mediator;
 
-        public UserController(IMediator mediator)
+        public AccountController(IMediator mediator)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        }
+
+        public IActionResult Hello()
+        {
+            return Content("hello");
+        }
+
+        [HttpGet("auth")]
+        [Authorize]
+        public IActionResult HelloAuth()
+        {
+            return Content($"hello {User.Identity.Name}");
         }
 
         [HttpPost("login")]
