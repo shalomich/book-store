@@ -13,10 +13,10 @@ namespace Storage.Services
         private readonly IReadOnlyList<KeyValuePair<string, int>> _publisherIdAndNames;
        
 
-        public PublicationConfig(IConfiguration configuration, Database database) : base(configuration)
+        public PublicationConfig(IConfiguration configuration, ApplicationContext ApplicationContext) : base(configuration)
         {
-            _authorIdAndNames = database.Authors.Select(author => KeyValuePair.Create(author.Name,author.Id)).ToList();
-            _publisherIdAndNames = database.Publishers.Select(publisher => KeyValuePair.Create(publisher.Name, publisher.Id)).ToList();
+            _authorIdAndNames = ApplicationContext.Authors.Select(author => KeyValuePair.Create(author.Name,author.Id)).ToList();
+            _publisherIdAndNames = ApplicationContext.Publishers.Select(publisher => KeyValuePair.Create(publisher.Name, publisher.Id)).ToList();
         }
 
         public override Dictionary<string, object> GetConstants()

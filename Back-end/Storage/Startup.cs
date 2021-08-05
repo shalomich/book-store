@@ -1,3 +1,4 @@
+using Auth.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,9 +31,9 @@ namespace Storage
         public void ConfigureServices(IServiceCollection services)
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<Database>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
             services.AddTransient(typeof(IRepository<>), typeof(ContextRepository<>));
-            services.AddTransient(typeof(DbContext), typeof(Database));
+            services.AddTransient(typeof(DbContext), typeof(ApplicationContext));
 
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddSingleton<IConfiguration>(_configuration);
@@ -43,6 +44,8 @@ namespace Storage
             services.AddTransient(typeof(EntityConfig<>));
             services.AddTransient<EntityConfig<Publication>,PublicationConfig>();
 
+            services.AddIdentity<User, Role>()
+                .AddEntityFrameworkStores<ApplicationContext>();
             services.AddCors();
         }
 
