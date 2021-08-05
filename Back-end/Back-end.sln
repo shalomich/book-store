@@ -3,19 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Storage", "Storage\Storage.csproj", "{00100D42-513A-418A-92B4-062F03BBC666}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App", "Storage\App.csproj", "{00100D42-513A-418A-92B4-062F03BBC666}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Storage.Test", "Storage.Test\Storage.Test.csproj", "{42954C1A-90F5-4BCF-B524-3054766032FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Test", "Storage.Test\App.Test.csproj", "{42954C1A-90F5-4BCF-B524-3054766032FA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryWorker", "QueryWorker\QueryWorker.csproj", "{1A3CAFD1-5335-4D2B-BD0C-A55ACF72587E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryWorker.Test", "QueryWorker.Test\QueryWorker.Test.csproj", "{2B8A7A49-2A31-414C-89BD-890E8C243CC0}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{7805CE3E-3EE3-4BFA-B038-4A6DF21DC3A3}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5E0A572C-F167-4FBC-A813-7333C915C6AE}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth", "Auth\Auth.csproj", "{1BF8C044-42CF-41A1-A1F5-242EB962295E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,19 +33,9 @@ Global
 		{2B8A7A49-2A31-414C-89BD-890E8C243CC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B8A7A49-2A31-414C-89BD-890E8C243CC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B8A7A49-2A31-414C-89BD-890E8C243CC0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1BF8C044-42CF-41A1-A1F5-242EB962295E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1BF8C044-42CF-41A1-A1F5-242EB962295E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1BF8C044-42CF-41A1-A1F5-242EB962295E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1BF8C044-42CF-41A1-A1F5-242EB962295E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{00100D42-513A-418A-92B4-062F03BBC666} = {7805CE3E-3EE3-4BFA-B038-4A6DF21DC3A3}
-		{42954C1A-90F5-4BCF-B524-3054766032FA} = {5E0A572C-F167-4FBC-A813-7333C915C6AE}
-		{5E0A572C-F167-4FBC-A813-7333C915C6AE} = {7805CE3E-3EE3-4BFA-B038-4A6DF21DC3A3}
-		{1BF8C044-42CF-41A1-A1F5-242EB962295E} = {7805CE3E-3EE3-4BFA-B038-4A6DF21DC3A3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {39BDB0AD-450F-4CC4-BB99-69D569761FF1}

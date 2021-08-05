@@ -4,43 +4,45 @@ using Auth.Services;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using static Auth.Registration.RegistrationHandler;
 
 namespace Auth.Registration
 {
 	public class RegistrationHandler : IRequestHandler<RegistrationCommand, AuthAnswer>
 	{
-		private const string _defaultUserRole = "BUYER";
+		public record RegistrationCommand(string UserName, string Email, string Password) : IRequest<AuthAnswer>;
+
+		private const string _defaultUserRole = "customer";
 
 		private static readonly RestError _emailExist = new RestError { Reason = "EmailExist", Message = "Current email belongs to other" };
 		private static readonly RestError _userNameExist = new RestError { Reason = "UserNameExist", Message = "Current userName belongs to other" };
 		
-		private IJwtGenerator _jwtGenerator;
+		private JwtGenerator _jwtGenerator;
 		private readonly UserManager<User> _userManager;
-		private readonly Database _context;
-		private RoleManager<IdentityRole> _roleManager;
-
-        public RegistrationHandler(IJwtGenerator jwtGenerator, UserManager<User> userManager, Database context, RoleManager<IdentityRole> roleManager)
+		
+        public RegistrationHandler(JwtGenerator jwtGenerator, UserManager<User> userManager)
         {
             _jwtGenerator = jwtGenerator ?? throw new ArgumentNullException(nameof(jwtGenerator));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
         }
 
         public async Task<AuthAnswer> Handle(RegistrationCommand request, CancellationToken cancellationToken)
 		{
 			var errors = new List<RestError>();
 
-			if (await _context.Users.Where(x => x.Email == request.Email).AnyAsync())
+			var (userName, email, password) = request;
+
+			if (await _userManager.Users.Where(x => x.Email == email).AnyAsync())
 				errors.Add(_emailExist);
 
-			if (await _context.Users.Where(x => x.UserName == request.UserName).AnyAsync())
+			if (await _userManager.Users.Where(x => x.UserName == userName).AnyAsync())
 				errors.Add(_userNameExist);
 
 
@@ -50,9 +52,8 @@ namespace Auth.Registration
             {
 				user = new User
 				{
-					Age = request.Age,
-					Email = request.Email,
-					UserName = request.UserName
+					Email = email,
+					UserName = userName
 				};
 			}
 			catch (ArgumentException exception)
@@ -64,7 +65,7 @@ namespace Auth.Registration
 				throw new RestException(HttpStatusCode.BadRequest, errors);
 
 
-			var result = await _userManager.CreateAsync(user, request.Password);
+			var result = await _userManager.CreateAsync(user, password);
 
 			
 			if (result.Succeeded)

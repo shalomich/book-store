@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Auth.Services
 {
-    public class JwtGenerator : IJwtGenerator
+    public class JwtGenerator
     {
         private readonly SymmetricSecurityKey _key;
         
