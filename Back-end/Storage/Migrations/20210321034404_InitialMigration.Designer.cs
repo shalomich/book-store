@@ -9,7 +9,7 @@ using Storage;
 
 namespace Storage.Migrations
 {
-    [DbContext(typeof(Database))]
+    [DbContext(typeof(ApplicationContext))]
     [Migration("20210321034404_InitialMigration")]
     partial class InitialMigration
     {
