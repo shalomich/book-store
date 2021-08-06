@@ -1,6 +1,7 @@
-﻿using Auth.Exceptions;
+﻿using App.Areas.Auth.Services;
+using App.Areas.Auth.ViewModels;
+using Auth.Exceptions;
 using Auth.Models;
-using Auth.Services;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -9,13 +10,13 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using static Auth.Login.LoginHandler;
+using static App.Areas.Auth.RequestHandlers.LoginHandler;
 
-namespace Auth.Login
+namespace App.Areas.Auth.RequestHandlers
 {
-	public class LoginHandler : IRequestHandler<LoginQuery, AuthAnswer>
+	public class LoginHandler : IRequestHandler<LoginCommand, AuthorizedData>
 	{
-		public record LoginQuery(string Email, string Password) : IRequest<AuthAnswer>;
+		public record LoginCommand(AuthForm AuthForm) : IRequest<AuthorizedData>;
 		
 		private static readonly RestError _emailUnregistered = new RestError { Reason = "EmailUnregistered", Message = "This email is unregistered" };
 		private static readonly RestError _passwordUncorrect = new RestError { Reason = "PasswordUncorrect", Message = "Wrong password" };
@@ -31,9 +32,9 @@ namespace Auth.Login
             _jwtGenerator = jwtGenerator ?? throw new ArgumentNullException(nameof(jwtGenerator));
         }
 
-        public async Task<AuthAnswer> Handle(LoginQuery request, CancellationToken cancellationToken)
+        public async Task<AuthorizedData> Handle(LoginCommand request, CancellationToken cancellationToken)
 		{
-			var (email, password) = request;
+			var (email, password) = request.AuthForm;
 
 			var user = await _userManager.FindByEmailAsync(email);
 			if (user == null)
@@ -45,10 +46,8 @@ namespace Auth.Login
 			if (result.Succeeded)
 			{
 				string role = (await _userManager.GetRolesAsync(user)).First();
-				return new AuthAnswer
-				{
-					Token = _jwtGenerator.CreateToken(user,role),
-				};
+				string token = _jwtGenerator.CreateToken(user, role);
+				return new AuthorizedData(token, role);
 			}
 			else throw new RestException(HttpStatusCode.BadRequest, new List<RestError>() { _passwordUncorrect});
 			

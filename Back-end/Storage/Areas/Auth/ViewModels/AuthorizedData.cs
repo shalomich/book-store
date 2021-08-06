@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Auth.Models
+namespace App.Areas.Auth.ViewModels
 {
-    public class AuthAnswer
-    {
-        public string Token { set; get; }
-    }
+    public record AuthorizedData(string Token, string Role);
 }
