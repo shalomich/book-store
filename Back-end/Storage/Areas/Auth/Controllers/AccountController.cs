@@ -1,6 +1,5 @@
-﻿using Auth.Login;
+﻿using App.Areas.Auth.ViewModels;
 using Auth.Models;
-using Auth.Registration;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,13 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static Auth.Login.LoginHandler;
-using static Auth.Registration.RegistrationHandler;
+using static App.Areas.Auth.RequestHandlers.LoginHandler;
+using static App.Areas.Auth.RequestHandlers.RegistrationHandler;
 
-namespace Auth.Controllers
+namespace App.Areas.Auth.Controllers
 {
-    [Route("account")]
     [ApiController]
+    [Area("auth")]
+    [Route("[area]/[controller]")]
     public class AccountController : ControllerBase
     {
         private IMediator _mediator;
@@ -33,19 +33,19 @@ namespace Auth.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public IActionResult HelloAuth()
         {
-            return Content($"hello {User.Identity.Name}");
+            return Content($"{User.Identity.IsAuthenticated}");
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<AuthAnswer>> LoginAsync(LoginQuery query)
+        public async Task<ActionResult<AuthorizedData>> LoginAsync(AuthForm authForm)
         {
-            return await _mediator.Send(query);
+            return await _mediator.Send(new LoginCommand(authForm));
         }
 
         [HttpPost("registration")]
-        public async Task<ActionResult<AuthAnswer>> RegistrationAsync(RegistrationCommand command)
+        public async Task<ActionResult<AuthorizedData>> RegistrationAsync(AuthForm authForm)
         {
-            return await _mediator.Send(command);
+            return await _mediator.Send(new RegistrationCommand(authForm));
         }
     }
 }

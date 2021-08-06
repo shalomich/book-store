@@ -1,6 +1,6 @@
+using App.Areas.Auth.Services;
 using Auth.Middlewares;
 using Auth.Models;
-using Auth.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;

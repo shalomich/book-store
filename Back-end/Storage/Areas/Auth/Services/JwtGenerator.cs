@@ -10,7 +10,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Auth.Services
+namespace App.Areas.Auth.Services
 {
     public class JwtGenerator
     {
