@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App", "Storage\App.csproj", "{00100D42-513A-418A-92B4-062F03BBC666}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App", "App\App.csproj", "{00100D42-513A-418A-92B4-062F03BBC666}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Test", "Storage.Test\App.Test.csproj", "{42954C1A-90F5-4BCF-B524-3054766032FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Test", "App.Test\App.Test.csproj", "{42954C1A-90F5-4BCF-B524-3054766032FA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryWorker", "QueryWorker\QueryWorker.csproj", "{1A3CAFD1-5335-4D2B-BD0C-A55ACF72587E}"
 EndProject
