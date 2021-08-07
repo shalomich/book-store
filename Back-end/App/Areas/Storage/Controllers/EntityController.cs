@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static App.Areas.Storage.RequestHandlers.CreateHandler;
+using static App.Areas.Storage.RequestHandlers.UpdateHandler;
 
 namespace App.Areas.Storage.Controllers
 {
@@ -47,9 +48,11 @@ namespace App.Areas.Storage.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<T> Update(int id, T entity)
+        public async Task<ActionResult<T>> Update(int id, T entity)
         {
-            return null;
+            await _mediator.Send(new UpdateCommand(id,entity));
+
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
