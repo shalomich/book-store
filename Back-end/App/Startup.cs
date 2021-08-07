@@ -1,5 +1,6 @@
 using App;
 using App.Areas.Auth.Services;
+using App.Areas.Storage.Attributes.GenericController;
 using App.Entities;
 using Auth.Middlewares;
 using MediatR;
@@ -38,7 +39,9 @@ namespace Storage
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
 
-            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
+                .ConfigureApplicationPartManager(options => options.FeatureProviders.Add(new GenericControllerFeatureProvider())); ;
             services.AddSingleton<IConfiguration>(_configuration);
 
             services.AddTransient<IQueryParser, QueryParser>();
@@ -74,7 +77,7 @@ namespace Storage
 
             app.UseRouting();
 
-            app.UseMiddleware<ErrorHandlingMiddleware>();
+            //app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseAuthentication();
             app.UseAuthorization();

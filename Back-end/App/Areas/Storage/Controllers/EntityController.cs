@@ -1,4 +1,5 @@
-﻿using App.Entities;
+﻿using App.Areas.Storage.Attributes.GenericController;
+using App.Entities;
 using MediatR;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -20,11 +21,12 @@ namespace App.Areas.Storage.Controllers
     [ApiController]
     [Area("storage")]
     [Route("[area]/[controller]")]
-    public abstract class EntityController<T> : Controller where T : Entity,new()
+    [GenericController]
+    public class EntityController<T> : Controller where T : Entity
     {
         private readonly IMediator _mediator;
 
-        protected EntityController(IMediator mediator)
+        public EntityController(IMediator mediator)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
