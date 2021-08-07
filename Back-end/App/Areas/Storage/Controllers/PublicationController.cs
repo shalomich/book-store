@@ -1,4 +1,5 @@
 ﻿using App.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,5 +11,8 @@ namespace App.Areas.Storage.Controllers
 {
     public class PublicationController : EntityController<Publication>
     {
+        public PublicationController(IMediator mediator) : base(mediator)
+        {
+        }
     }
 }
