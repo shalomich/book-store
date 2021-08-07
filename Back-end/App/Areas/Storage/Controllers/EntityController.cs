@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static App.Areas.Storage.RequestHandlers.CreateHandler;
+using static App.Areas.Storage.RequestHandlers.DeleteHandler;
+using static App.Areas.Storage.RequestHandlers.GetByIdHandler;
 using static App.Areas.Storage.RequestHandlers.UpdateHandler;
 
 namespace App.Areas.Storage.Controllers
@@ -56,9 +58,12 @@ namespace App.Areas.Storage.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<T> Delete(int id)
+        public async Task<ActionResult<T>> Delete(int id)
         {
-            return null;
+            var deletedEntity = await _mediator.Send(new GetByIdQuery(id, typeof(T)));
+            await _mediator.Send(new DeleteCommand(deletedEntity));
+
+            return NoContent();
         }
     }
 }
