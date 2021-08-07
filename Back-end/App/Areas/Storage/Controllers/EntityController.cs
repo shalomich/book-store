@@ -10,14 +10,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static App.Areas.Storage.RequestHandlers.CreateHandler;
 
 namespace App.Areas.Storage.Controllers
 {
     [ApiController]
-    [Route("storage/[controller]")]
+    [Area("storage")]
+    [Route("[area]/[controller]")]
     public abstract class EntityController<T> : Controller where T : Entity,new()
     {
-        
+        private readonly IMediator _mediator;
+
+        protected EntityController(IMediator mediator)
+        {
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        }
+
         [HttpGet]
         public ActionResult<IEnumerable<T>> Read([FromQuery] QueryParams parameters, [FromServices] QueryTransformer<T> transformer)
         {
@@ -31,9 +39,11 @@ namespace App.Areas.Storage.Controllers
         }
 
         [HttpPost] 
-        public ActionResult<T> Create(T entity) 
+        public async Task<ActionResult<T>> Create(T entity) 
         {
-            return null;
+            var createdEntity = await _mediator.Send(new CreateCommand(entity));
+
+            return CreatedAtAction(nameof(Read), new { id = createdEntity.Id }, createdEntity);
         }
 
         [HttpPut("{id}")]
