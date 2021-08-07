@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using static App.Areas.Storage.RequestHandlers.CreateHandler;
 using static App.Areas.Storage.RequestHandlers.DeleteHandler;
 using static App.Areas.Storage.RequestHandlers.GetByIdHandler;
+using static App.Areas.Storage.RequestHandlers.GetHandler;
 using static App.Areas.Storage.RequestHandlers.UpdateHandler;
 
 namespace App.Areas.Storage.Controllers
@@ -22,25 +23,27 @@ namespace App.Areas.Storage.Controllers
     [Area("storage")]
     [Route("[area]/[controller]")]
     [GenericController]
-    public class EntityController<T> : Controller where T : Entity
+    public class CrudController<T> : Controller where T : Entity
     {
         private readonly IMediator _mediator;
 
-        public EntityController(IMediator mediator)
+        public CrudController(IMediator mediator)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<T>> Read([FromQuery] QueryParams parameters, [FromServices] QueryTransformer<T> transformer)
+        public async Task<ActionResult<IEnumerable<Entity>>> Read()
         {
-            return null;
+            var entities = await _mediator.Send(new GetQuery(typeof(T)));
+
+            return Ok(entities);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<T> Read(int id)
+        public async Task<ActionResult<T>> Read(int id)
         {
-            return null;
+            return await _mediator.Send(new GetByIdQuery(id, typeof(T))) as T;
         }
 
         [HttpPost] 
