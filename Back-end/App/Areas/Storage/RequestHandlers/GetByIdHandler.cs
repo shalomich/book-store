@@ -1,4 +1,5 @@
 ﻿using App.Entities;
+using App.Exceptions;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace App.Areas.Storage.RequestHandlers
             var entity = (Entity)await Context.FindAsync(entityType, id);
 
             if (entity == null)
-                throw new ArgumentException();
+                throw new NotFoundException(WrongIdMessage);
 
             return entity;
         }
