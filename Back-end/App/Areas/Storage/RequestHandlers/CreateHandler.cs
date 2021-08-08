@@ -1,4 +1,5 @@
 ﻿using App.Entities;
+using App.Exceptions;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace App.Areas.Storage.RequestHandlers
             }
             catch (Exception exception)
             {
-                throw exception;
+                throw new BadRequestException("Wrong data", exception);
             }
 
             return createdEntity;

@@ -1,6 +1,7 @@
 ﻿using App.Areas.Auth.Services;
 using App.Areas.Auth.ViewModels;
 using App.Entities;
+using App.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +20,8 @@ namespace App.Areas.Auth.RequestHandlers
 	{
 		public record RegistrationCommand(AuthForm AuthForm) : IRequest<AuthorizedData>;
 
-		private const string _defaultUserRole = "customer";
+		private const string DefaultUserRole = "customer";
+		private const string EmailTakenMessage = "This email is already taken";
 
 		private JwtGenerator _jwtGenerator;
 		private readonly UserManager<User> _userManager;
@@ -34,22 +36,25 @@ namespace App.Areas.Auth.RequestHandlers
 		{
 			var (email, password) = request.AuthForm;
 
+			if (_userManager.Users.Any(user => user.Email == email))
+				throw new BadRequestException(EmailTakenMessage);
+
 			var user = new User { Email = email, UserName = email };
 
 			var result = await _userManager.CreateAsync(user, password);
 			
 			if (result.Succeeded)
 			{
-				await _userManager.AddToRoleAsync(user, _defaultUserRole);
+				await _userManager.AddToRoleAsync(user, DefaultUserRole);
 
-				string token = _jwtGenerator.CreateToken(user, _defaultUserRole);
+				string token = _jwtGenerator.CreateToken(user, DefaultUserRole);
 
-				return new AuthorizedData(token, _defaultUserRole);
+				return new AuthorizedData(token, DefaultUserRole);
 			}
 			else
 			{
-				//errors = result.Errors.Select(error => new RestError {Reason = error.Code, Message = error.Description}).ToList();
-				throw new ArgumentException();
+				var passwordErrorMessage = result.Errors.First().Description;
+				throw new BadRequestException(passwordErrorMessage);
 			}
 
 		}

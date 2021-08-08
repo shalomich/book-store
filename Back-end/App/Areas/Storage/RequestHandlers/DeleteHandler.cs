@@ -18,17 +18,10 @@ namespace App.Areas.Storage.RequestHandlers
             Context = context ?? throw new ArgumentNullException(nameof(context));
         }
         public async Task<Unit> Handle(DeleteCommand request, CancellationToken cancellationToken)
-        {
-            try
-            {
-                Context.Remove(request.Entity);
-                await Context.SaveChangesAsync();
-            }
-            catch (Exception exception)
-            {
-                throw exception;
-            }
-
+        {   
+            Context.Remove(request.Entity);
+            await Context.SaveChangesAsync();
+           
             return Unit.Value;
         }
     }

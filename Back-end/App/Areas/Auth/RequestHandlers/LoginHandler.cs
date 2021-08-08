@@ -1,6 +1,7 @@
 ﻿using App.Areas.Auth.Services;
 using App.Areas.Auth.ViewModels;
 using App.Entities;
+using App.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -16,7 +17,10 @@ namespace App.Areas.Auth.RequestHandlers
 	public class LoginHandler : IRequestHandler<LoginCommand, AuthorizedData>
 	{
 		public record LoginCommand(AuthForm AuthForm) : IRequest<AuthorizedData>;
-		
+
+		private const string NotExistEmailMessage = "This email does not exist";
+		private const string WrongPasswordMessage = "Wrong password";
+
 		private readonly UserManager<User> _userManager;
 		private readonly SignInManager<User> _signInManager;
 		private JwtGenerator _jwtGenerator;
@@ -34,8 +38,8 @@ namespace App.Areas.Auth.RequestHandlers
 
 			var user = await _userManager.FindByEmailAsync(email);
 			if (user == null)
-				throw new ArgumentException();
-			
+				throw new BadRequestException(NotExistEmailMessage);
+
 
 			var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
 
@@ -45,8 +49,8 @@ namespace App.Areas.Auth.RequestHandlers
 				string token = _jwtGenerator.CreateToken(user, role);
 				return new AuthorizedData(token, role);
 			}
-			else throw new ArgumentException();
-			
+			else throw new BadRequestException(WrongPasswordMessage);
+
 		}
 	}
 }
