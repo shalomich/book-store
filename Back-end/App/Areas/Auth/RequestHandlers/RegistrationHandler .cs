@@ -1,7 +1,6 @@
 ﻿using App.Areas.Auth.Services;
 using App.Areas.Auth.ViewModels;
 using App.Entities;
-using Auth.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -33,8 +32,6 @@ namespace App.Areas.Auth.RequestHandlers
 
         public async Task<AuthorizedData> Handle(RegistrationCommand request, CancellationToken cancellationToken)
 		{
-			var errors = new List<RestError>();
-
 			var (email, password) = request.AuthForm;
 
 			var user = new User { Email = email, UserName = email };
@@ -50,9 +47,9 @@ namespace App.Areas.Auth.RequestHandlers
 				return new AuthorizedData(token, _defaultUserRole);
 			}
 			else
-			{ 
-				errors = result.Errors.Select(error => new RestError {Reason = error.Code, Message = error.Description}).ToList();
-				throw new RestException(HttpStatusCode.BadRequest, errors);
+			{
+				//errors = result.Errors.Select(error => new RestError {Reason = error.Code, Message = error.Description}).ToList();
+				throw new ArgumentException();
 			}
 
 		}
