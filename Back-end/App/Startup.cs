@@ -77,7 +77,7 @@ namespace Storage
 
             app.UseRouting();
 
-            //app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseAuthentication();
             app.UseAuthorization();

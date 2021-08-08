@@ -4,18 +4,14 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Auth.Exceptions
+namespace App.Exceptions
 {
-    public class RestException : Exception
+    public abstract class RestException : Exception
     {
-        public HttpStatusCode Code { get; }
-        
-        public IEnumerable<RestError> Errors;
-
-        public RestException(HttpStatusCode code, IEnumerable<RestError> errors)
+        public abstract HttpStatusCode Code { get; }
+       
+        public RestException(string message, Exception inner = null) : base(message, inner)
         {
-            Code = code;
-            Errors = errors ?? throw new ArgumentNullException(nameof(errors));
         }
     }
 }
