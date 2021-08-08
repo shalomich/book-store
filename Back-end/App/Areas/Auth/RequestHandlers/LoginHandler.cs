@@ -1,7 +1,6 @@
 ﻿using App.Areas.Auth.Services;
 using App.Areas.Auth.ViewModels;
 using App.Entities;
-using Auth.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -18,9 +17,6 @@ namespace App.Areas.Auth.RequestHandlers
 	{
 		public record LoginCommand(AuthForm AuthForm) : IRequest<AuthorizedData>;
 		
-		private static readonly RestError _emailUnregistered = new RestError { Reason = "EmailUnregistered", Message = "This email is unregistered" };
-		private static readonly RestError _passwordUncorrect = new RestError { Reason = "PasswordUncorrect", Message = "Wrong password" };
-
 		private readonly UserManager<User> _userManager;
 		private readonly SignInManager<User> _signInManager;
 		private JwtGenerator _jwtGenerator;
@@ -38,7 +34,7 @@ namespace App.Areas.Auth.RequestHandlers
 
 			var user = await _userManager.FindByEmailAsync(email);
 			if (user == null)
-				throw new RestException(HttpStatusCode.BadRequest, new List<RestError>() { _emailUnregistered});
+				throw new ArgumentException();
 			
 
 			var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
@@ -49,7 +45,7 @@ namespace App.Areas.Auth.RequestHandlers
 				string token = _jwtGenerator.CreateToken(user, role);
 				return new AuthorizedData(token, role);
 			}
-			else throw new RestException(HttpStatusCode.BadRequest, new List<RestError>() { _passwordUncorrect});
+			else throw new ArgumentException();
 			
 		}
 	}

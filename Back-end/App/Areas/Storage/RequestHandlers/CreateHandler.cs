@@ -1,5 +1,4 @@
 ﻿using App.Entities;
-using Auth.Exceptions;
 using MediatR;
 using System;
 using System.Collections.Generic;
