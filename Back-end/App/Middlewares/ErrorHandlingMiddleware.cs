@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using Auth.Exceptions;
+using App.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -11,12 +11,9 @@ namespace Auth.Middlewares
     {
         private readonly RequestDelegate _next;
 
-        private readonly ILogger<ErrorHandlingMiddleware> _logger;
-
         public ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger)
         {
             _next = next;
-            _logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -25,41 +22,29 @@ namespace Auth.Middlewares
             {
                 await _next(context);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                await HandleExceptionAsync(context, ex, _logger);
+                await HandleExceptionAsync(context, exception);
             }
         }
 
-        private async Task HandleExceptionAsync(HttpContext context, Exception ex, ILogger<ErrorHandlingMiddleware> logger)
+        private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            object errors = null;
 
-            switch (ex)
+            if (exception is RestException restException)
             {
-                case RestException rest:
-                    logger.LogError(ex, "Rest error");
-                    errors = rest.Errors;
-                    context.Response.StatusCode = (int)rest.Code;
-                    break;
-                case Exception e:
-                    logger.LogError(ex, "Server error");
-                    errors = string.IsNullOrWhiteSpace(e.Message) ? "error" : e.Message;
-                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    break;
+                context.Response.StatusCode = (int)restException.Code;
+            }
+            else
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
 
             context.Response.ContentType = "appliation/json";
 
-            if (errors != null)
-            {
-                var result = JsonConvert.SerializeObject(new
-                {
-                    errors
-                });
+            string responce = JsonConvert.SerializeObject(new { errors = new { Server = new string[] { exception.Message } } });
 
-                await context.Response.WriteAsync(result);
-            }
+            await context.Response.WriteAsync(responce);
         }
     }
 }
