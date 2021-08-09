@@ -1,4 +1,5 @@
-﻿using App.Entities;
+﻿
+using App.Products.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -18,6 +19,8 @@ namespace Storage.DatabaseConfigs
             builder.Property(image => image.Format).IsRequired();
             builder.Property(image => image.Encoding).IsRequired();
             builder.Property(image => image.Data).IsRequired();
+
+            builder.HasIndex(image => new { image.Name, image.AlbumId }).IsUnique();
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Xunit;
-using Storage.Models;
+using App.Entities;
 
 namespace QueryWorker.Test
 {

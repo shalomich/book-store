@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Storage.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,6 +6,7 @@ using Xunit;
 using System.Linq;
 using QueryWorker.Visitors;
 using System.Text.RegularExpressions;
+using App.Entities;
 
 namespace QueryWorker.Test
 {

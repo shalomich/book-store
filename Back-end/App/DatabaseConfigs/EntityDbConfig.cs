@@ -14,7 +14,6 @@ namespace Storage.DatabaseConfigs
         {
             builder.ToTable("entities");
             builder.Property(entity => entity.Name).IsRequired();
-            builder.Property(entity => entity.TitleImageName).IsRequired();
         }
     }
 }

@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\App\App.csproj" />
     <ProjectReference Include="..\QueryWorker\QueryWorker.csproj" />
     <ProjectReference Include="..\Storage\App.csproj" />
   </ItemGroup>

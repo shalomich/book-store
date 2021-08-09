@@ -1,4 +1,5 @@
-﻿using System;
+﻿using App.Entities.Products;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,14 +19,9 @@ namespace App.Entities
         private int _quantity;
 
         static Product() {
-           _minCostMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, "Cost", _minCost.ToString());
-           _minQuantityMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, "Quantity", _minQuantity.ToString());
+           _minCostMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, nameof(Cost), _minCost.ToString());
+           _minQuantityMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, nameof(Quantity), _minQuantity.ToString());
         }
-        public Product()
-        {
-            AddingDate = DateTime.Today;
-        }
-
         public string Description { set; get; }
         public int Quantity 
         {
@@ -54,6 +50,10 @@ namespace App.Entities
                 return _cost;
             }
         }
-        public DateTime AddingDate {private set; get; }
+        public DateTime AddingDate {private set; get; } = DateTime.Today;
+
+        public Album Album { set; get; }
+
+
     }
 }
