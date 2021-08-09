@@ -1,20 +1,24 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Storage.Migrations
+namespace App.Migrations
 {
-    public partial class AddIdentity : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_publications_ISBN",
-                table: "publications");
-
-            migrationBuilder.RenameColumn(
-                name: "ISBN",
-                table: "publications",
-                newName: "Isbn");
+            migrationBuilder.CreateTable(
+                name: "Albums",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TitleImageName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Albums", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
@@ -55,6 +59,78 @@ namespace Storage.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Authors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Authors", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Publishers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Publishers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Data = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Format = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AlbumId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Images_Albums_AlbumId",
+                        column: x => x.AlbumId,
+                        principalTable: "Albums",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Cost = table.Column<int>(type: "int", nullable: false),
+                    AddingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AlbumId = table.Column<int>(type: "int", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Products_Albums_AlbumId",
+                        column: x => x.AlbumId,
+                        principalTable: "Albums",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -163,22 +239,55 @@ namespace Storage.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 1L, "3f9be233-74ac-49b0-b5c3-869ef110cdc4", "admin", "ADMIN" });
+            migrationBuilder.CreateTable(
+                name: "Publications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CoverArt = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PublicationFormat = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AgeLimit = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PageQuantity = table.Column<int>(type: "int", nullable: true),
+                    Genres = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Isbn = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ReleaseYear = table.Column<int>(type: "int", nullable: false),
+                    PublisherId = table.Column<int>(type: "int", nullable: false),
+                    AuthorId = table.Column<int>(type: "int", nullable: false),
+                    OriginalName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Publications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Publications_Authors_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Authors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Publications_Products_Id",
+                        column: x => x.Id,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Publications_Publishers_PublisherId",
+                        column: x => x.PublisherId,
+                        principalTable: "Publishers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 2L, "61e7fe50-c33f-4202-98b0-f346a2ebf9aa", "customer", "CUSTOMER" });
+                values: new object[] { 1L, "1e7e9e86-c861-4fd3-9518-69da1ed73ef2", "admin", "ADMIN" });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_publications_Isbn",
-                table: "publications",
-                column: "Isbn",
-                unique: true,
-                filter: "[Isbn] IS NOT NULL");
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { 2L, "45408cf4-64da-46fe-b446-eb05d9f81d48", "customer", "CUSTOMER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -218,6 +327,51 @@ namespace Storage.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Authors_Name",
+                table: "Authors",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Images_AlbumId",
+                table: "Images",
+                column: "AlbumId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Images_Name_AlbumId",
+                table: "Images",
+                columns: new[] { "Name", "AlbumId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_AlbumId",
+                table: "Products",
+                column: "AlbumId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Publications_AuthorId",
+                table: "Publications",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Publications_Isbn",
+                table: "Publications",
+                column: "Isbn",
+                unique: true,
+                filter: "[Isbn] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Publications_PublisherId",
+                table: "Publications",
+                column: "PublisherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Publishers_Name",
+                table: "Publishers",
+                column: "Name",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -238,26 +392,28 @@ namespace Storage.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Images");
+
+            migrationBuilder.DropTable(
+                name: "Publications");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
-            migrationBuilder.DropIndex(
-                name: "IX_publications_Isbn",
-                table: "publications");
+            migrationBuilder.DropTable(
+                name: "Authors");
 
-            migrationBuilder.RenameColumn(
-                name: "Isbn",
-                table: "publications",
-                newName: "ISBN");
+            migrationBuilder.DropTable(
+                name: "Products");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_publications_ISBN",
-                table: "publications",
-                column: "ISBN",
-                unique: true,
-                filter: "[ISBN] IS NOT NULL");
+            migrationBuilder.DropTable(
+                name: "Publishers");
+
+            migrationBuilder.DropTable(
+                name: "Albums");
         }
     }
 }

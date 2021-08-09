@@ -1,8 +1,9 @@
 ﻿
+using App.DatabaseConfigs;
 using App.Entities;
+using App.Entities.Publications;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Storage.DatabaseConfigs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,8 +28,10 @@ namespace App
             modelBuilder.ApplyConfiguration(new AuthorDbConfig());
             modelBuilder.ApplyConfiguration(new PublisherDbConfig());
             modelBuilder.ApplyConfiguration(new ImageDbConfig());
-            modelBuilder.ApplyConfiguration(new EntityDbConfig());
+            modelBuilder.ApplyConfiguration(new AlbumDbConfig());
             modelBuilder.ApplyConfiguration(new RoleDbConfig());
+
+            modelBuilder.Entity<Product>().ToTable("Products");
         }
     }
 }

@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Storage.DatabaseConfigs
+namespace App.DatabaseConfigs
 {
-    public abstract class ProductDbConfig<T> : IEntityTypeConfiguration<T> where T : Product
+    public abstract class ProductDbConfig<T> : EntityDbConfig<T> where T : Product
     {
-        public virtual void Configure(EntityTypeBuilder<T> builder)
+        public override void Configure(EntityTypeBuilder<T> builder)
         {
+            base.Configure(builder);
         }
     }
 }

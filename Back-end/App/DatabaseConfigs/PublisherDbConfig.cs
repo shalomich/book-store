@@ -6,14 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Storage.DatabaseConfigs
+namespace App.DatabaseConfigs
 {
-    public class PublisherDbConfig : IEntityTypeConfiguration<Publisher>
+    public class PublisherDbConfig : EntityDbConfig<Publisher>
     {
-        public void Configure(EntityTypeBuilder<Publisher> builder)
+        public override void Configure(EntityTypeBuilder<Publisher> builder)
         {
-            builder.ToTable("publishers");
-
+            base.Configure(builder);
             builder.HasIndex(publisher => publisher.Name).IsUnique();
         }
     }

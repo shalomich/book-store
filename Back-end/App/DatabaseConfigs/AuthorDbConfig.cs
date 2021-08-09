@@ -1,4 +1,5 @@
-﻿using App.Entities;
+﻿
+using App.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -6,14 +7,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Storage.DatabaseConfigs
+namespace App.DatabaseConfigs
 {
-    public class AuthorDbConfig : IEntityTypeConfiguration<Author>
+    public class AuthorDbConfig : EntityDbConfig<Author>
     {
-        public void Configure(EntityTypeBuilder<Author> builder)
+        public override void Configure(EntityTypeBuilder<Author> builder)
         {
-            builder.ToTable("authors");
-
+            base.Configure(builder);
             builder.HasIndex(author => author.Name).IsUnique();
         }
     }
