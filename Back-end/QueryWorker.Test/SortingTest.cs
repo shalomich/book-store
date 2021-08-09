@@ -4,7 +4,7 @@ using System.Text;
 using QueryWorker;
 using System.Linq;
 using Xunit;
-using Storage.Models;
+using App.Entities;
 
 namespace QueryWorker.Test
 {

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using App.Entities.Products;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Various;
 
-namespace App.Entities
+namespace App.Products.Entities
 {
     public class Image
     {
@@ -27,8 +28,8 @@ namespace App.Entities
             _notExistEncodingMessage = ExceptionMessages.GetMessage(ExceptionMessageType.NotExist, "Encoding", String.Join(" ", EncodingConsts));
         }
 
-        public Entity Entity { set; get; }
-        public int EntityId { set; get; }
+        public Album Album { set; get; }
+        public int AlbumId { set; get; }
         public string Format
         {
             set

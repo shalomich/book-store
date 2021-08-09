@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit;
 using QueryWorker.Visitors;
-using Storage.Models;
 
 namespace QueryWorker.Test
 {
