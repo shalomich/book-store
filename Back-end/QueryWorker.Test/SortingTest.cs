@@ -23,11 +23,11 @@ namespace QueryWorker.Test
 
         public static IEnumerable<object[]> GetCorrectSortData()
         {
-            var p1 = new Publication { ReleaseYear = 2009, Cost = 6, Type = "Манга" };
-            var p2 = new Publication { ReleaseYear = 2018, Cost = 2, Type = "Ранобэ" };
-            var p3 = new Publication { ReleaseYear = 2003, Cost = 1, Type = "Книга" };
-            var p4 = new Publication { ReleaseYear = 2020, Cost = 4, Type = "Графический роман" };
-            var p5 = new Publication { ReleaseYear = 2010, Cost = 5, Type = "Артбук" };
+            var p1 = new Publication { ReleaseYear = 2009, Cost = 6};
+            var p2 = new Publication { ReleaseYear = 2018, Cost = 2};
+            var p3 = new Publication { ReleaseYear = 2003, Cost = 1};
+            var p4 = new Publication { ReleaseYear = 2020, Cost = 4};
+            var p5 = new Publication { ReleaseYear = 2010, Cost = 5};
 
             var source = new Publication[] { p1, p2, p3, p4, p5 };
 

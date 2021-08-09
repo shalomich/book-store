@@ -1,4 +1,5 @@
-﻿using System;
+﻿using App.Entities.Publications;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -20,7 +21,6 @@ namespace App.Entities
         private const string _IsbnSchema = "978-5-XXXXXX-XX-X";       
         private const string _formatSchema = "(10-99)x(10-99)x(1-9)";
 
-        private static readonly string _notExistTypeMessage;
         private static readonly string _notExistGenreMessage;
         private static readonly string _notExistCoverArtMessage;
         private static readonly string _notExistAgeLimitMessage;
@@ -32,7 +32,6 @@ namespace App.Entities
         private static readonly string _invalidFormatMessage;
 
         private int _releaseYear;
-        private string _type;
         private string _Isbn;
         private ISet<string> _genres;
         private int? _pageQuantity;
@@ -42,7 +41,6 @@ namespace App.Entities
 
         static Publication()
         {
-            _notExistTypeMessage = ExceptionMessages.GetMessage(ExceptionMessageType.NotExist, "Type", String.Join(" ", TypeConsts));
             _notExistGenreMessage = ExceptionMessages.GetMessage(ExceptionMessageType.NotExist, "Genre", String.Join(" ", GenreConsts));
             _notExistCoverArtMessage = ExceptionMessages.GetMessage(ExceptionMessageType.NotExist, "CoverArt", String.Join(" ", CoverArtConsts));
             _notExistAgeLimitMessage = ExceptionMessages.GetMessage(ExceptionMessageType.NotExist, "AgeLimit", String.Join(" ", AgeLimitConsts));
@@ -57,14 +55,6 @@ namespace App.Entities
             _minPageQuantityMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, "PageQuantity", _minPageQuantity.ToString());
         }
 
-        public static readonly string[] TypeConsts =
-        {
-            "Книга",
-            "Манга",
-            "Ранобэ",
-            "Графический роман",
-            "Артбук"
-        };
         public static readonly string[] GenreConsts = 
         {
             "Драма",
@@ -89,7 +79,8 @@ namespace App.Entities
             "12+",
             "18+"
         };
-     
+
+        public string Type { set; get; }
         public string CoverArt
         {
             set
@@ -166,19 +157,6 @@ namespace App.Entities
             }
         }
 
-        public string Type
-        {
-            set
-            {
-                if (TypeConsts.Contains(value) == false)
-                    throw new ArgumentOutOfRangeException(_notExistTypeMessage);
-                _type = value;
-            }
-            get
-            {
-                return _type;
-            }
-        }
         public string Isbn
         {
             set

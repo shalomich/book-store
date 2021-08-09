@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Storage.DatabaseConfigs
+namespace App.DatabaseConfigs
 {
     public class PublicationDbConfig : ProductDbConfig<Publication>
     {
@@ -16,18 +16,16 @@ namespace Storage.DatabaseConfigs
         {
             base.Configure(builder);
 
-            builder.ToTable("publications");
+            builder.ToTable("Publications");
 
             var genresConversion = new ValueConverter<ISet<string>, string>(
                 collection => JsonSerializer.Serialize(collection, null),
                 str => JsonSerializer.Deserialize<ISet<string>>(str, null));
             builder.Property(publication => publication.Genres).HasConversion(genresConversion);
 
-            builder.Property(publication => publication.Type).IsRequired();
             builder.Property(publication => publication.Isbn).IsRequired();
-            builder.Property(publication => publication.AgeLimit).IsRequired();
-
             builder.HasIndex(publication => publication.Isbn).IsUnique();
+            
             builder.HasIndex(publication =>
                 new
                 {

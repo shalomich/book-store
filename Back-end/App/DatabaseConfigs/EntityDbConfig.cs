@@ -6,13 +6,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Storage.DatabaseConfigs
+namespace App.DatabaseConfigs
 {
-    public class EntityDbConfig : IEntityTypeConfiguration<Entity> 
+    public class EntityDbConfig<T> : IEntityTypeConfiguration<T> where T : Entity 
     {
-        public void Configure(EntityTypeBuilder<Entity> builder)
+        public virtual void Configure(EntityTypeBuilder<T> builder)
         {
-            builder.ToTable("entities");
             builder.Property(entity => entity.Name).IsRequired();
         }
     }

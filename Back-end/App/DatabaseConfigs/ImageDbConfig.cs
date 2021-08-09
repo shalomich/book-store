@@ -7,17 +7,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Storage.DatabaseConfigs
+namespace App.DatabaseConfigs
 {
     public class ImageDbConfig : IEntityTypeConfiguration<Image>
     {
         public void Configure(EntityTypeBuilder<Image> builder)
         {
-            builder.ToTable("images");
+            builder.ToTable("Images");
 
             builder.Property(image => image.Name).IsRequired();
             builder.Property(image => image.Format).IsRequired();
-            builder.Property(image => image.Encoding).IsRequired();
             builder.Property(image => image.Data).IsRequired();
 
             builder.HasIndex(image => new { image.Name, image.AlbumId }).IsUnique();
