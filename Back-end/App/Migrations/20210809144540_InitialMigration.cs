@@ -8,6 +8,19 @@ namespace App.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AgeLimits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AgeLimits", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Albums",
                 columns: table => new
                 {
@@ -75,6 +88,45 @@ namespace App.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CoverArts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CoverArts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Genres",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Genres", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PublicationTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PublicationTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Publishers",
                 columns: table => new
                 {
@@ -115,9 +167,9 @@ namespace App.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
                     Cost = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<long>(type: "bigint", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AddingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AlbumId = table.Column<int>(type: "int", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
@@ -244,21 +296,26 @@ namespace App.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CoverArt = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PublicationFormat = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AgeLimit = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PageQuantity = table.Column<int>(type: "int", nullable: true),
-                    Genres = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Isbn = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ReleaseYear = table.Column<int>(type: "int", nullable: false),
                     PublisherId = table.Column<int>(type: "int", nullable: false),
                     AuthorId = table.Column<int>(type: "int", nullable: false),
-                    OriginalName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    TypeId = table.Column<int>(type: "int", nullable: true),
+                    OriginalName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AgeLimitId = table.Column<int>(type: "int", nullable: true),
+                    CoverArtId = table.Column<int>(type: "int", nullable: true),
+                    PublicationFormat = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PageQuantity = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Publications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Publications_AgeLimits_AgeLimitId",
+                        column: x => x.AgeLimitId,
+                        principalTable: "AgeLimits",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Publications_Authors_AuthorId",
                         column: x => x.AuthorId,
@@ -266,9 +323,21 @@ namespace App.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_Publications_CoverArts_CoverArtId",
+                        column: x => x.CoverArtId,
+                        principalTable: "CoverArts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Publications_Products_Id",
                         column: x => x.Id,
                         principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Publications_PublicationTypes_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "PublicationTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -279,15 +348,92 @@ namespace App.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "GenrePublication",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PublicationId = table.Column<int>(type: "int", nullable: false),
+                    GenreId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GenrePublication", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GenrePublication_Genres_GenreId",
+                        column: x => x.GenreId,
+                        principalTable: "Genres",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GenrePublication_Publications_PublicationId",
+                        column: x => x.PublicationId,
+                        principalTable: "Publications",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 1L, "1e7e9e86-c861-4fd3-9518-69da1ed73ef2", "admin", "ADMIN" });
+                table: "AgeLimits",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "0+" },
+                    { 2, "6+" },
+                    { 3, "12+" },
+                    { 4, "18+" }
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 2L, "45408cf4-64da-46fe-b446-eb05d9f81d48", "customer", "CUSTOMER" });
+                values: new object[,]
+                {
+                    { 1L, "ab6dff90-b076-4257-b4f3-bdf6f48e2eb5", "admin", "ADMIN" },
+                    { 2L, "2c7caf10-0a44-4db9-b200-f47f4ec39dd7", "customer", "CUSTOMER" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "CoverArts",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Мягкая" },
+                    { 2, "Твердая" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Genres",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Драма" },
+                    { 2, "Ужасы" },
+                    { 3, "Научная фантастика" },
+                    { 5, "Боевик" },
+                    { 6, "Детектив" },
+                    { 7, "Фэнтези" },
+                    { 4, "Наука" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PublicationTypes",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Книга" },
+                    { 2, "Манга" },
+                    { 3, "Ранобэ" },
+                    { 4, "Графический роман" },
+                    { 5, "Артбук" }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AgeLimits_Name",
+                table: "AgeLimits",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -335,6 +481,28 @@ namespace App.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_CoverArts_Name",
+                table: "CoverArts",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GenrePublication_GenreId",
+                table: "GenrePublication",
+                column: "GenreId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GenrePublication_PublicationId",
+                table: "GenrePublication",
+                column: "PublicationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Genres_Name",
+                table: "Genres",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Images_AlbumId",
                 table: "Images",
                 column: "AlbumId");
@@ -351,9 +519,19 @@ namespace App.Migrations
                 column: "AlbumId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Publications_AgeLimitId",
+                table: "Publications",
+                column: "AgeLimitId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Publications_AuthorId",
                 table: "Publications",
                 column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Publications_CoverArtId",
+                table: "Publications",
+                column: "CoverArtId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Publications_Isbn",
@@ -366,6 +544,17 @@ namespace App.Migrations
                 name: "IX_Publications_PublisherId",
                 table: "Publications",
                 column: "PublisherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Publications_TypeId",
+                table: "Publications",
+                column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PublicationTypes_Name",
+                table: "PublicationTypes",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Publishers_Name",
@@ -392,10 +581,10 @@ namespace App.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Images");
+                name: "GenrePublication");
 
             migrationBuilder.DropTable(
-                name: "Publications");
+                name: "Images");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -404,10 +593,25 @@ namespace App.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "Genres");
+
+            migrationBuilder.DropTable(
+                name: "Publications");
+
+            migrationBuilder.DropTable(
+                name: "AgeLimits");
+
+            migrationBuilder.DropTable(
                 name: "Authors");
 
             migrationBuilder.DropTable(
+                name: "CoverArts");
+
+            migrationBuilder.DropTable(
                 name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "PublicationTypes");
 
             migrationBuilder.DropTable(
                 name: "Publishers");

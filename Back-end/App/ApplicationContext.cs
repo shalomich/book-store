@@ -16,6 +16,12 @@ namespace App
         public DbSet<Publication> Publications { set; get; }
         public DbSet<Author> Authors { set; get; }
         public DbSet<Publisher> Publishers { set; get; }
+        public DbSet<PublicationType> PublicationTypes { set; get; }
+        public DbSet<AgeLimit> AgeLimits { set; get; }
+        public DbSet<CoverArt> CoverArts { set; get; }
+        public DbSet<Genre> Genres { set; get; }
+
+
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
@@ -30,6 +36,10 @@ namespace App
             modelBuilder.ApplyConfiguration(new ImageDbConfig());
             modelBuilder.ApplyConfiguration(new AlbumDbConfig());
             modelBuilder.ApplyConfiguration(new RoleDbConfig());
+            modelBuilder.ApplyConfiguration(new PublicationTypeDbConfig());
+            modelBuilder.ApplyConfiguration(new AgeLimitDbConfig());
+            modelBuilder.ApplyConfiguration(new CoverArtDbConfig());
+            modelBuilder.ApplyConfiguration(new GenreDbConfig());
 
             modelBuilder.Entity<Product>().ToTable("Products");
         }

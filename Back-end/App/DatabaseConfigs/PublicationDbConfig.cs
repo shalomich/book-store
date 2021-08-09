@@ -1,4 +1,5 @@
 ﻿using App.Entities;
+using App.Entities.Publications;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -18,14 +19,9 @@ namespace App.DatabaseConfigs
 
             builder.ToTable("Publications");
 
-            var genresConversion = new ValueConverter<ISet<string>, string>(
-                collection => JsonSerializer.Serialize(collection, null),
-                str => JsonSerializer.Deserialize<ISet<string>>(str, null));
-            builder.Property(publication => publication.Genres).HasConversion(genresConversion);
-
             builder.Property(publication => publication.Isbn).IsRequired();
             builder.HasIndex(publication => publication.Isbn).IsUnique();
-            
+ 
             builder.HasIndex(publication =>
                 new
                 {
