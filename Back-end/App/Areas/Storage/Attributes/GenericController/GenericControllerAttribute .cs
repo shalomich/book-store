@@ -15,7 +15,9 @@ namespace App.Areas.Storage.Attributes.GenericController
         public void Apply(ControllerModel controller)
         {
             string viewModelName = controller.ControllerType.GenericTypeArguments[0].Name;
-            string resourceName = Regex.Match(viewModelName, @"^[A-z][a-z]+").Value;
+            string resourceName = string.Join(string.Empty, Regex
+                .Matches(viewModelName, @"[A-z][a-z]+")
+                .SkipLast(1));
 
             controller.ControllerName = resourceName;
         }
