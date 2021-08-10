@@ -1,5 +1,8 @@
 ﻿using App.Areas.Storage.Attributes.GenericController;
+using App.Areas.Storage.ViewModels;
 using App.Entities;
+using App.Extensions;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -22,50 +25,58 @@ namespace App.Areas.Storage.Controllers
     [ApiController]
     [Area("storage")]
     [Route("[area]/[controller]")]
-    [GenericController]
-    public class CrudController<T> : Controller where T : Entity
+    [GenericController()]
+    public class CrudController<T> : Controller where T : EntityForm
     {
         private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
 
-        public CrudController(IMediator mediator)
+        public CrudController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Entity>>> Read()
-        {
-            var entities = await _mediator.Send(new GetQuery(typeof(T)));
+        private Type EntityType => _mapper.GetDestinationType(typeof(T));
 
-            return Ok(entities);
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<T>>> Read()
+        {
+            var entities = await _mediator.Send(new GetQuery(EntityType));
+           
+            return Ok(entities.Select(entity => _mapper.Map<T>(entity)));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<T>> Read(int id)
         {
-            return await _mediator.Send(new GetByIdQuery(id, typeof(T))) as T;
+            var entity = await _mediator.Send(new GetByIdQuery(id, EntityType));
+            return Ok(_mapper.Map<T>(entity));
         }
 
         [HttpPost] 
-        public async Task<ActionResult<T>> Create(T entity) 
+        public async Task<IActionResult> Create(T entityForm) 
         {
+            var entity = _mapper.Map(entityForm, typeof(T), EntityType) as Entity;
             var createdEntity = await _mediator.Send(new CreateCommand(entity));
 
             return CreatedAtAction(nameof(Read), new { id = createdEntity.Id }, createdEntity);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<T>> Update(int id, T entity)
+        public async Task<IActionResult> Update(int id, T entityForm)
         {
+            var entity = _mapper.Map(entityForm, typeof(T), EntityType) as Entity;
+
             await _mediator.Send(new UpdateCommand(id,entity));
 
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<T>> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var deletedEntity = await _mediator.Send(new GetByIdQuery(id, typeof(T)));
+            var deletedEntity = await _mediator.Send(new GetByIdQuery(id, EntityType));
             await _mediator.Send(new DeleteCommand(deletedEntity));
 
             return NoContent();
