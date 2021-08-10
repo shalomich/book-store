@@ -65,6 +65,7 @@ namespace Storage
                 });
 
             services.AddMediatR(GetType().Assembly);
+            services.AddAutoMapper(GetType());
             services.AddCors();
         }
 
@@ -77,7 +78,7 @@ namespace Storage
 
             app.UseRouting();
 
-            app.UseMiddleware<ErrorHandlingMiddleware>();
+            //app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseAuthentication();
             app.UseAuthorization();
