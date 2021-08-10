@@ -10,19 +10,19 @@ namespace App.Entities
 {
     public class Publication : Product
     {
-        private const int _minReleaseYear = 2000;
-        private static readonly int _maxReleaseYear = DateTime.Today.Year;
+        public const int MinReleaseYear = 2000;
+        public static readonly int MaxReleaseYear = DateTime.Today.Year;
 
-        private const string _IsbnMask = @"^978-5-\d{6}-\d{2}-\d{1}$";
-        private const string _formatMask = @"^[1-9]\d{1}x[1-9]\d{1}x[1-9]$";
+        public const string IsbnTemplate = @"^978-5-\d{6}-\d{2}-\d{1}$";
+        public const string FormatTemplate = @"^[1-9]\d{1}x[1-9]\d{1}x[1-9]$";
 
-        private const string _IsbnSchema = "978-5-XXXXXX-XX-X";       
-        private const string _formatSchema = "(10-99)x(10-99)x(1-9)";
+        private const string IsbnSchema = "978-5-XXXXXX-XX-X";       
+        private const string FormatSchema = "(10-99)x(10-99)x(1-9)";
 
-        private static readonly string _minReleaseYearMessage;
-        private static readonly string _maxReleaseYearMessage;
-        private static readonly string _invalidIsbnMessage;
-        private static readonly string _invalidFormatMessage;
+        private static readonly string MinReleaseYearMessage;
+        private static readonly string MaxReleaseYearMessage;
+        private static readonly string InvalidIsbnMessage;
+        private static readonly string InvalidFormatMessage;
 
         private int _releaseYear;
         private string _Isbn;
@@ -31,20 +31,20 @@ namespace App.Entities
 
         static Publication()
         {
-            _invalidIsbnMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Invalid, "Isbn", _IsbnSchema);
-            _invalidFormatMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Invalid, "Format", _formatSchema);
+            InvalidIsbnMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Invalid, "Isbn", IsbnSchema);
+            InvalidFormatMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Invalid, "Format", FormatSchema);
 
-            _maxReleaseYearMessage = ExceptionMessages.GetMessage(ExceptionMessageType.More, "ReleaseYear", _maxReleaseYear.ToString());
+            MaxReleaseYearMessage = ExceptionMessages.GetMessage(ExceptionMessageType.More, "ReleaseYear", MaxReleaseYear.ToString());
             
-            _minReleaseYearMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, "ReleaseYear", _minReleaseYear.ToString());
+            MinReleaseYearMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, "ReleaseYear", MinReleaseYear.ToString());
         }
 
         public string Isbn
         {
             set
             {
-                if (Regex.IsMatch(value, _IsbnMask) == false)
-                    throw new ArgumentException(_invalidIsbnMessage);
+                if (Regex.IsMatch(value, IsbnTemplate) == false)
+                    throw new ArgumentException(InvalidIsbnMessage);
                 _Isbn = value;
             }
             get
@@ -57,10 +57,10 @@ namespace App.Entities
         {
             set
             {
-                if (value < _minReleaseYear)
-                    throw new ArgumentOutOfRangeException(_minReleaseYearMessage);
-                if (value > _maxReleaseYear)
-                    throw new ArgumentOutOfRangeException(_maxReleaseYearMessage);
+                if (value < MinReleaseYear)
+                    throw new ArgumentOutOfRangeException(MinReleaseYearMessage);
+                if (value > MaxReleaseYear)
+                    throw new ArgumentOutOfRangeException(MaxReleaseYearMessage);
                 _releaseYear = value;
             }
             get
@@ -93,8 +93,8 @@ namespace App.Entities
             set
             {
                 if (value != null) 
-                    if (Regex.IsMatch(value, _formatMask) == false)
-                        throw new ArgumentException(_invalidFormatMessage);
+                    if (Regex.IsMatch(value, FormatTemplate) == false)
+                        throw new ArgumentException(InvalidFormatMessage);
                 _format = value;
             }
             get
