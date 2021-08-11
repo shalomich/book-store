@@ -1,4 +1,5 @@
-﻿using App.Entities;
+﻿using App.Areas.Storage.Attributes.FormModel;
+using App.Entities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace App.Areas.Storage.ViewModels
 {
+    [FormModel]
     public record AuthorForm : EntityForm
     {
         private const string NameTemplate = "^[А-ЯЁ][а-яё]*$";
@@ -17,13 +19,16 @@ namespace App.Areas.Storage.ViewModels
 
         [Required]
         [RegularExpression(NameTemplate)]
+        [FormField(FormFieldType.Text,"Имя")]
         public string FirstName { init; get; }
 
         [Required]
         [RegularExpression(NameTemplate)]
+        [FormField(FormFieldType.Text,"Фамилия")]
         public string Surname { init; get; }
 
         [RegularExpression(NameTemplate)]
+        [FormField(FormFieldType.Text, "Отчество",false)]
         public string Patronymic { init; get; }
         
     }
