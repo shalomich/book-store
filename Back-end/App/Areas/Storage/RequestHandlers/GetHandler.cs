@@ -1,12 +1,12 @@
 ﻿using App.Entities;
 using App.Extensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using static App.Areas.Storage.RequestHandlers.GetByIdHandler;
 using static App.Areas.Storage.RequestHandlers.GetHandler;
 
 namespace App.Areas.Storage.RequestHandlers
@@ -24,7 +24,7 @@ namespace App.Areas.Storage.RequestHandlers
         }
         public async Task<IEnumerable<Entity>> Handle(GetQuery request, CancellationToken cancellationToken)
         {
-            return await Context.GetEntitiesAsync(request.EntityType);
+            return await Context.Entities(request.EntityType).ToListAsync();
         }
     }
 }
