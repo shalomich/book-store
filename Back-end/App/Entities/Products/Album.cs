@@ -10,11 +10,11 @@ namespace App.Entities.Products
     {
         private const int _maxImageCount = 5;
 
-        private List<Image> _images;
+        private ISet<Image> _images;
 
         public int Id { set; get; }
         public string TitleImageName { set; get; }
-        public List<Image> Images
+        public virtual ISet<Image> Images
         {
             set
             {
@@ -28,5 +28,8 @@ namespace App.Entities.Products
                 return _images;
             }
         }
+
+        public virtual Product Product { set; get; }
+        public int ProductId { set; get; }
     }
 }

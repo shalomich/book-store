@@ -69,23 +69,23 @@ namespace App.Entities
             }
         }
 
-        public Publisher Publisher { set; get; }
+        public virtual Publisher Publisher { set; get; }
         public int PublisherId { set; get; }
 
-        public Author Author { set; get; }
+        public virtual Author Author { set; get; }
         public int AuthorId { set; get; }
 
-        public PublicationType Type { set; get; }
+        public virtual PublicationType Type { set; get; }
         public int? TypeId { set; get; }
 
-        public ISet<GenrePublication> Genres { set; get; }
+        public virtual ISet<GenrePublication> Genres { set; get; }
 
         public string OriginalName { set; get; }
 
-        public AgeLimit AgeLimit { set; get; }
+        public virtual AgeLimit AgeLimit { set; get; }
         public int? AgeLimitId { set; get; }
 
-        public CoverArt CoverArt { set; get; }
+        public virtual CoverArt CoverArt { set; get; }
         public int? CoverArtId { set; get; }
 
         public string PublicationFormat

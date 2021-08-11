@@ -38,7 +38,5 @@ namespace App.Entities
         public string FirstName => FIO[0];
         public string Surname => FIO[1];
         public string Patronymic => FIO[2];
-
-        public List<Publication> Publications { set; get; }
     }
 }

@@ -9,10 +9,10 @@ namespace App.Entities.Publications
     {
         public int Id { set; get; }
 
-        public Publication Publication { set; get; }
+        public virtual Publication Publication { set; get; }
         public int PublicationId { set; get; }
 
-        public Genre Genre { set; get; }
+        public virtual Genre Genre { set; get; }
         public int GenreId { set; get; }
 
         public override bool Equals(object obj)

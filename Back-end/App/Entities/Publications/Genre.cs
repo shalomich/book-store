@@ -7,7 +7,6 @@ namespace App.Entities.Publications
 {
     public class Genre : Entity
     {
-        public ISet<GenrePublication> Publications { set; get; }
-     
+        public virtual ISet<GenrePublication> Publications { set; get; } 
     }
 }

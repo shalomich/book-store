@@ -37,7 +37,11 @@ namespace Storage
         public void ConfigureServices(IServiceCollection services)
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<ApplicationContext>(options =>
+            {
+                options.UseSqlServer(connectionString);
+                options.UseLazyLoadingProxies();
+            });
 
             services.AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
