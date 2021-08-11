@@ -1,4 +1,5 @@
 ﻿using App.Areas.Storage.Attributes.GenericController;
+using App.Areas.Storage.Services;
 using App.Areas.Storage.ViewModels;
 using App.Entities;
 using App.Extensions;
@@ -19,12 +20,13 @@ using static App.Areas.Storage.RequestHandlers.DeleteHandler;
 using static App.Areas.Storage.RequestHandlers.GetByIdHandler;
 using static App.Areas.Storage.RequestHandlers.GetHandler;
 using static App.Areas.Storage.RequestHandlers.UpdateHandler;
+using static App.Areas.Storage.Services.FormGenerator;
 
 namespace App.Areas.Storage.Controllers
 {
     [ApiController]
     [Area("storage")]
-    [Route("[area]/[controller]")]
+    [Route("[area]/form/[controller]")]
     [GenericController()]
     public class CrudController<T> : Controller where T : EntityForm
     {
@@ -80,6 +82,12 @@ namespace App.Areas.Storage.Controllers
             await _mediator.Send(new DeleteCommand(deletedEntity));
 
             return NoContent();
+        }
+
+        [HttpGet("template")]
+        public IEnumerable<FormField> GetFormTemplate([FromServices] FormGenerator formConverter)
+        {
+            return formConverter.Convert(typeof(T));
         }
     }
 }
