@@ -1,6 +1,7 @@
 using App;
 using App.Areas.Auth.Services;
 using App.Areas.Storage.Attributes.GenericController;
+using App.Areas.Storage.Services;
 using App.Entities;
 using Auth.Middlewares;
 using MediatR;
@@ -51,6 +52,7 @@ namespace Storage
             services.AddTransient<IQueryParser, QueryParser>();
             services.AddTransient(typeof(QueryTransformer<>));
             services.AddScoped<JwtGenerator>();
+            services.AddScoped<FormGenerator>();
 
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<ApplicationContext>();
@@ -82,7 +84,7 @@ namespace Storage
 
             app.UseRouting();
 
-            //app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseAuthentication();
             app.UseAuthorization();
