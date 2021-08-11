@@ -39,8 +39,18 @@ namespace App.Products.Entities
             }
         }
   
-        public Album Album { set; get; }
+        public virtual Album Album { set; get; }
         public int AlbumId { set; get; }
 
+        public override bool Equals(object obj)
+        {
+            return obj is Image image &&
+                   Name == image.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Name);
+        }
     }
 }

@@ -48,9 +48,6 @@ namespace App.Migrations
                     b.Property<DateTime>("AddingDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("AlbumId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Cost")
                         .HasColumnType("int");
 
@@ -66,8 +63,6 @@ namespace App.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AlbumId");
-
                     b.ToTable("Products");
                 });
 
@@ -78,11 +73,17 @@ namespace App.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
                     b.Property<string>("TitleImageName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
 
                     b.ToTable("Albums");
                 });
@@ -334,14 +335,14 @@ namespace App.Migrations
                         new
                         {
                             Id = 1L,
-                            ConcurrencyStamp = "ab6dff90-b076-4257-b4f3-bdf6f48e2eb5",
+                            ConcurrencyStamp = "bc7b6d6b-9641-4c1a-9da0-587d9e09b1e0",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2L,
-                            ConcurrencyStamp = "2c7caf10-0a44-4db9-b200-f47f4ec39dd7",
+                            ConcurrencyStamp = "57863c42-04ba-4a4b-b500-1175742147cb",
                             Name = "customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -602,13 +603,15 @@ namespace App.Migrations
                     b.ToTable("Publications");
                 });
 
-            modelBuilder.Entity("App.Entities.Product", b =>
+            modelBuilder.Entity("App.Entities.Products.Album", b =>
                 {
-                    b.HasOne("App.Entities.Products.Album", "Album")
-                        .WithMany()
-                        .HasForeignKey("AlbumId");
+                    b.HasOne("App.Entities.Product", "Product")
+                        .WithOne("Album")
+                        .HasForeignKey("App.Entities.Products.Album", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Album");
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("App.Entities.Publications.GenrePublication", b =>
@@ -695,17 +698,17 @@ namespace App.Migrations
             modelBuilder.Entity("App.Entities.Publication", b =>
                 {
                     b.HasOne("App.Entities.Publications.AgeLimit", "AgeLimit")
-                        .WithMany("Publications")
+                        .WithMany()
                         .HasForeignKey("AgeLimitId");
 
                     b.HasOne("App.Entities.Author", "Author")
-                        .WithMany("Publications")
+                        .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("App.Entities.Publications.CoverArt", "CoverArt")
-                        .WithMany("Publications")
+                        .WithMany()
                         .HasForeignKey("CoverArtId");
 
                     b.HasOne("App.Entities.Product", null)
@@ -715,13 +718,13 @@ namespace App.Migrations
                         .IsRequired();
 
                     b.HasOne("App.Entities.Publisher", "Publisher")
-                        .WithMany("Publications")
+                        .WithMany()
                         .HasForeignKey("PublisherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("App.Entities.Publications.PublicationType", "Type")
-                        .WithMany("Publications")
+                        .WithMany()
                         .HasForeignKey("TypeId");
 
                     b.Navigation("AgeLimit");
@@ -735,9 +738,9 @@ namespace App.Migrations
                     b.Navigation("Type");
                 });
 
-            modelBuilder.Entity("App.Entities.Author", b =>
+            modelBuilder.Entity("App.Entities.Product", b =>
                 {
-                    b.Navigation("Publications");
+                    b.Navigation("Album");
                 });
 
             modelBuilder.Entity("App.Entities.Products.Album", b =>
@@ -745,27 +748,7 @@ namespace App.Migrations
                     b.Navigation("Images");
                 });
 
-            modelBuilder.Entity("App.Entities.Publications.AgeLimit", b =>
-                {
-                    b.Navigation("Publications");
-                });
-
-            modelBuilder.Entity("App.Entities.Publications.CoverArt", b =>
-                {
-                    b.Navigation("Publications");
-                });
-
             modelBuilder.Entity("App.Entities.Publications.Genre", b =>
-                {
-                    b.Navigation("Publications");
-                });
-
-            modelBuilder.Entity("App.Entities.Publications.PublicationType", b =>
-                {
-                    b.Navigation("Publications");
-                });
-
-            modelBuilder.Entity("App.Entities.Publisher", b =>
                 {
                     b.Navigation("Publications");
                 });

@@ -7,6 +7,5 @@ namespace App.Entities.Publications
 {
     public class PublicationType : Entity
     {
-        public ISet<Publication> Publications { set; get; }
     }
 }
