@@ -12,16 +12,18 @@ namespace App.Extensions
 {
     public static class DbContextExtension
     {
-        public static async Task<IEnumerable<Entity>> GetEntitiesAsync(this ApplicationContext context, Type entityType) => entityType.Name switch
+        public static IQueryable<Entity> Entities(this ApplicationContext context, Type type)
         {
-            nameof(Publication) => await context.Publications.ToListAsync(),
-            nameof(Author) => await context.Authors.ToListAsync(),
-            nameof(Publisher) => await context.Publishers.ToListAsync(),
-            nameof(PublicationType) => await context.PublicationTypes.ToListAsync(),
-            nameof(AgeLimit) => await context.AgeLimits.ToListAsync(),
-            nameof(CoverArt) => await context.CoverArts.ToListAsync(),
-            nameof(Genre) => await context.Genres.ToListAsync(),
-            _ => throw new ArgumentException()
-        };
+            if (type.IsSubclassOf(typeof(Entity)) == false)
+                throw new ArgumentException();
+            
+            return (IQueryable<Entity>) context
+                .GetType()
+                .GetMethods()
+                .SingleOrDefault(method => method.Name == nameof(context.Set) 
+                    && method.GetParameters().Count() == 0)
+                .MakeGenericMethod(type)
+                .Invoke(context, null);
+        }
     }
 }
