@@ -29,6 +29,6 @@ namespace App.Areas.Storage.ViewModels
         public string Description { set; get; }
 
         [FormField(FormFieldType.Image, "Изображения товара",false)]
-        public AlbumForm Album { set; get; }
+        public AlbumDto Album { set; get; }
     }
 }

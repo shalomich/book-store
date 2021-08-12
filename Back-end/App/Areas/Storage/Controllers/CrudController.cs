@@ -1,6 +1,7 @@
 ﻿using App.Areas.Storage.Attributes.GenericController;
 using App.Areas.Storage.Services;
 using App.Areas.Storage.ViewModels;
+using App.Areas.Storage.ViewModels.Identities;
 using App.Entities;
 using App.Extensions;
 using AutoMapper;
@@ -39,14 +40,14 @@ namespace App.Areas.Storage.Controllers
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        private Type EntityType => _mapper.GetDestinationType(typeof(T));
+        private Type EntityType => _mapper.GetSourceType(typeof(T));
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<T>>> Read()
+        public async Task<ActionResult<IEnumerable<EntityIdentity>>> Read()
         {
             var entities = await _mediator.Send(new GetQuery(EntityType));
            
-            return Ok(entities.Select(entity => _mapper.Map<T>(entity)));
+            return Ok(entities.Select(entity => _mapper.Map<EntityIdentity>(entity)));
         }
 
         [HttpGet("{id}")]

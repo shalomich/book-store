@@ -29,6 +29,8 @@ namespace App.Entities.Products
             }
         }
 
+        public Image TitleImage => Images?.Single(image => image.Name == TitleImageName) 
+            ?? Images.FirstOrDefault();
         public virtual Product Product { set; get; }
         public int ProductId { set; get; }
     }

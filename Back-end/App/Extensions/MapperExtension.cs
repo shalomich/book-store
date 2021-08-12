@@ -8,12 +8,12 @@ namespace App.Extensions
 {
     public static class MapperExtension
     {
-        public static Type GetDestinationType(this IMapper mapper, Type sourceType)
+        public static Type GetSourceType(this IMapper mapper, Type destinationType)
         {
             return mapper.ConfigurationProvider
                 .GetAllTypeMaps()
-                .Single(mapper => mapper.SourceType == sourceType)
-                .DestinationType;
+                .Single(mapper => mapper.DestinationType == destinationType)
+                .SourceType;
         }
     }
 }
