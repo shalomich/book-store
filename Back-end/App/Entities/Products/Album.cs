@@ -31,6 +31,10 @@ namespace App.Entities.Products
 
         public Image TitleImage => Images?.Single(image => image.Name == TitleImageName) 
             ?? Images.FirstOrDefault();
+
+        public ISet<Image> NotTitleImages => Images
+            .Where(image => image != TitleImage)
+            .ToHashSet();
         public virtual Product Product { set; get; }
         public int ProductId { set; get; }
     }

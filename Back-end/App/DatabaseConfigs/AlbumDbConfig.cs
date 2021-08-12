@@ -15,6 +15,9 @@ namespace App.DatabaseConfigs
             builder.ToTable("Albums");
 
             builder.Property(album => album.TitleImageName).IsRequired();
+            
+            builder.Ignore(album => album.TitleImage);
+            builder.Ignore(album => album.NotTitleImages);
         }
     }
 }
