@@ -1,4 +1,5 @@
 ﻿using App.Areas.Storage.ViewModels;
+using App.Areas.Storage.ViewModels.Identities;
 using App.Entities;
 using App.Entities.Publications;
 using AutoMapper;
@@ -15,6 +16,9 @@ namespace App.Areas.Storage.Profiles
         {
             CreateMap<EntityForm, Entity>()
                 .ReverseMap()
+                .IncludeAllDerived();
+
+            CreateMap<Entity, EntityIdentity>()
                 .IncludeAllDerived();
         }
     }

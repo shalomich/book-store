@@ -1,4 +1,5 @@
 ﻿using App.Areas.Storage.ViewModels;
+using App.Areas.Storage.ViewModels.Identities;
 using App.Entities;
 using App.Entities.Publications;
 using AutoMapper;
@@ -13,6 +14,7 @@ namespace App.Areas.Storage.Profiles
     {
         public FormToPublicationProfile()
         {
+            CreateMap<Publication, ProductIdentity>();
             CreateMap<PublicationForm, Publication>()
                 .ForMember(publication => publication.Genres,
                     mapper => mapper.MapFrom(form => form.GenreIds

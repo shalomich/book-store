@@ -6,15 +6,12 @@ using System.Threading.Tasks;
 
 namespace App.Areas.Storage.ViewModels
 {
-    public record ImageForm
+    public record AlbumDto
     {
         [Required]
-        public string Name { init; get; }
+        public string TitleImageName { init; get; }
 
         [Required]
-        public string Format { init; get; }
-
-        [Required]
-        public string Data { init; get; }
+        public ISet<ImageDto> Images { init; get; }
     }
 }
