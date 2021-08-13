@@ -7,6 +7,7 @@ using Various;
 
 namespace QueryWorker.Visitors
 {
+    /*
     public class QueryParser : IQueryParser
     {
         private static readonly string _notExistTypeSymbolMessage;
@@ -67,25 +68,7 @@ namespace QueryWorker.Visitors
         }
         public void Parse(Sorting sorting)
         {
-            bool isAscending;
-            string propertyName;
-
-            if (Query == null)
-                return;
-            
-            if (Query.StartsWith('-'))
-            {
-                isAscending = false;
-                propertyName = Query.TrimStart(new char[] { '-'}).ToCapitalLetter();
-            }
-            else
-            {
-                isAscending = true;
-                propertyName = Query.ToCapitalLetter();
-            }
-             
-            sorting.PropertyName = propertyName;
-            sorting.IsAscending = isAscending;
+           
         }
 
         public void Parse(Filter filter)
@@ -178,5 +161,5 @@ namespace QueryWorker.Visitors
         {
             return "QueryParser";
         }
-    }
+    }*/
 }

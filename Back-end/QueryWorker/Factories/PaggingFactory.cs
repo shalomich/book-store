@@ -1,15 +1,20 @@
-﻿using System;
+﻿using QueryWorker.Parsers;
+using QueryWorker.QueryNodes;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace QueryWorker.Factories
 {
-    class PaggingFactory : IQueryNodeFactory
+    class PaggingFactory : QueryNodeFactory
     {
         public int MaxPageSize { set; get; }
-        public IQueryNode Create()
+
+        protected override IQueryParser Parser => throw new NotImplementedException();
+
+        public override IQueryNode<T> Create<T>(string query)
         {
-            return new Pagging() { MaxPageSize = MaxPageSize};
+            throw new NotImplementedException();
         }
     }
 }

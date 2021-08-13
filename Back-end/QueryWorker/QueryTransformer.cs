@@ -6,59 +6,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using QueryWorker.Factories;
+using System.Reflection;
+using QueryWorker.Parsers;
 
 namespace QueryWorker
 {
-    public class QueryTransformer<T>
+    public class QueryTransformer
     {
         private FilterFactory _filterFactory;
         private SortingFactory _sortingFactory;
         private PaggingFactory _paggingFactory;
-        private IQueryParser _parser;
-        private Informer _informer;
-
-        public Informer Informer => _informer;
-        public QueryTransformer(IConfiguration configuration, IQueryParser parser)
+        public QueryTransformer(Assembly assembly)
         {
-            _parser = parser;
-            IConfigurationSection querySection = configuration.GetSection("query");
-            string typeName = typeof(T).Name;
-
-            _paggingFactory = querySection.GetSection("pagging").Get<PaggingFactory>();
-            _sortingFactory = querySection.GetSection($"sorting:{typeName}").Get<SortingFactory>();
-            _filterFactory = querySection.GetSection($"filter:{typeName}").Get<FilterFactory>();
-            
-            _informer = new Informer();
-            _informer.Subscribe(_parser);
+            var configurationFinder = new ConfigurationFinder(assembly);
+            _sortingFactory = new SortingFactory(configurationFinder);
         }
 
-        public IQueryable<T> Transform(IQueryable<T> data, QueryParams parameters)
+        public IQueryable<T> Transform<T>(IQueryable<T> data, QueryParams parameters) where T : class
         {
-            var queryQueue = new Queue<IQueryNode>();
+            var queries = new Queue<IQueryNode<T>>();
             
-            foreach (string filterQuery in parameters.Filter)
-                queryQueue.Enqueue(CreateNode(_filterFactory, filterQuery));
+            //foreach (string filterQuery in parameters.Filter)
+              //  queries.Enqueue();
             
             foreach (string sortingQuery in parameters.Sorting)
-                queryQueue.Enqueue(CreateNode(_sortingFactory, sortingQuery));
+                queries.Enqueue(_sortingFactory.Create<T>(sortingQuery));
 
-            queryQueue.Enqueue(CreateNode(_paggingFactory, parameters.Pagging));
+            //queries.Enqueue(CreateNode(_paggingFactory, parameters.Pagging));
 
-            while (queryQueue.TryDequeue(out IQueryNode node) != false)
+            while (queries.TryDequeue(out IQueryNode<T> node) != false)
                 data = node.Execute(data);
             
             return data;
-        }
-
-        private IQueryNode CreateNode(IQueryNodeFactory factory, string query)
-        {
-            IQueryNode queryNode = factory.Create();
-            _informer.Subscribe(queryNode);
-           
-            _parser.Query = query;
-            ((IParsed)queryNode).Accept(_parser);
-
-            return queryNode;
         }
     }
 }

@@ -1,14 +1,12 @@
-﻿using System;
+﻿using QueryWorker.QueryNodeParams;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace QueryWorker.Visitors
+namespace QueryWorker.Parsers
 {
-    public interface IQueryParser :  IInformed
+    internal interface IQueryParser
     {
-        string Query { set; get; }
-        void Parse(Sorting sorting);
-        void Parse(Filter filter);
-        void Parse(Pagging pagging);
+        public IQueryNodeParams Parse(string query); 
     }
 }

@@ -1,13 +1,13 @@
-﻿using QueryWorker.Visitors;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace QueryWorker
+namespace QueryWorker.QueryNodes
 {
-    public interface IQueryNode : IInformed
+    internal interface IQueryNode<T> where T : class
     {
-        IQueryable<T> Execute<T>(IQueryable<T> query);
+        IQueryable<T> Execute(IQueryable<T> data);
     }
 }
