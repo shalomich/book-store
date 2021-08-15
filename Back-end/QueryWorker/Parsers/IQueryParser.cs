@@ -7,6 +7,6 @@ namespace QueryWorker.Parsers
 {
     internal interface IQueryParser
     {
-        public IQueryNodeParams Parse(string query); 
+        public IQueryNodeArgs Parse(string query); 
     }
 }

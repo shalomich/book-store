@@ -1,41 +1,35 @@
 ﻿using Microsoft.Extensions.Configuration;
 using QueryWorker.QueryNodes;
-using QueryWorker.Visitors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using QueryWorker.Factories;
 using System.Reflection;
 using QueryWorker.Parsers;
+using AutoMapper;
+using QueryWorker.QueryNodeParams;
+using QueryWorker.Configurations;
 
 namespace QueryWorker
 {
     public class QueryTransformer
     {
-        private FilterFactory _filterFactory;
-        private SortingFactory _sortingFactory;
-        private PaggingFactory _paggingFactory;
+        private readonly ConfigurationFinder _configurationFinder;
+
         public QueryTransformer(Assembly assembly)
         {
-            var configurationFinder = new ConfigurationFinder(assembly);
-            _sortingFactory = new SortingFactory(configurationFinder);
+            _configurationFinder = new ConfigurationFinder(assembly);
         }
 
         public IQueryable<T> Transform<T>(IQueryable<T> data, QueryParams parameters) where T : class
         {
-            var queries = new Queue<IQueryNode<T>>();
-            
-            //foreach (string filterQuery in parameters.Filter)
-              //  queries.Enqueue();
-            
+            var queries = new Queue<IQueryNode>();
             foreach (string sortingQuery in parameters.Sorting)
-                queries.Enqueue(_sortingFactory.Create<T>(sortingQuery));
+                queries.Enqueue(new Sorting(new SortingParser().Parse(sortingQuery) as SortingArgs));
 
-            //queries.Enqueue(CreateNode(_paggingFactory, parameters.Pagging));
-
-            while (queries.TryDequeue(out IQueryNode<T> node) != false)
-                data = node.Execute(data);
+            var queryConfig =  _configurationFinder.Find();
+            while (queries.TryDequeue(out IQueryNode node) != false)
+                data = node.Execute(data, queryConfig);
             
             return data;
         }

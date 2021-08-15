@@ -6,5 +6,7 @@ using System.Threading.Tasks;
 
 namespace QueryWorker.QueryNodeParams
 {
-    internal record SortingParams(string PropertyName, bool IsAscending = true) : IQueryNodeParams;
+    internal interface IQueryNodeArgs
+    {
+    }
 }

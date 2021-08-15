@@ -4,9 +4,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Linq;
 using Various;
+using QueryWorker.QueryNodeParams;
 
 namespace QueryWorker.Visitors
 {
+
     /*
     public class QueryParser : IQueryParser
     {

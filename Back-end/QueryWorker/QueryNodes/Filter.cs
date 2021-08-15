@@ -7,6 +7,7 @@ using System.Text;
 
 namespace QueryWorker
 {
+    /*
     public enum FilterСomparison
     {
         More = 1,
@@ -26,13 +27,13 @@ namespace QueryWorker
 
         public IQueryable<T> Execute(IQueryable<T> query)
         {
-            /*var property = typeof(T).GetProperty(PropertyName);
+            var property = typeof(T).GetProperty(PropertyName);
             
             Func<T, bool> fieldComparison = obj => ((IComparable)property.GetValue(obj)).CompareTo(Value) == (int) FilterСomparisonValue;
             
-            query = query.Where(fieldComparison).AsQueryable();*/
+            query = query.Where(fieldComparison).AsQueryable();
             
             return query;
         }
-    }
+    }*/
 }

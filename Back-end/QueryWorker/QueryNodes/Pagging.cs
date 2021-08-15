@@ -7,6 +7,7 @@ using System.Text;
 
 namespace QueryWorker
 {
+    /*
     public class Pagging<T> : IQueryNode<T> where T : class
     {
         private const int _minPageSize = 1;
@@ -89,5 +90,5 @@ namespace QueryWorker
 
             return query.Skip(PageSize * (pageNumber - 1)).Take(PageSize);
         }
-    }
+    }*/
 }

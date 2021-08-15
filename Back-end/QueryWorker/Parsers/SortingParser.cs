@@ -10,7 +10,7 @@ namespace QueryWorker.Parsers
     class SortingParser : IQueryParser
     {
         private const char DescendingSymbol = '-';
-        public IQueryNodeParams Parse(string query)
+        public IQueryNodeArgs Parse(string query)
         {
             bool isAscending;
             string propertyName;
@@ -23,7 +23,7 @@ namespace QueryWorker.Parsers
             else isAscending = true;
 
             propertyName = query.ToCapitalLetter();
-            return new SortingParams(propertyName, isAscending);
+            return new SortingArgs(propertyName, isAscending);
         }
     }
 }

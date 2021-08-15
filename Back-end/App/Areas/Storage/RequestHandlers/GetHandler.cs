@@ -30,7 +30,7 @@ namespace App.Areas.Storage.RequestHandlers
         {
             var (entityType, queryParams) = request;
             
-            return await QueryTransformer.Transform(Context.Publications, queryParams)
+            return await QueryTransformer.Transform(Context.Entities(entityType).AsQueryable(), queryParams)
                 .ToListAsync();
         }
     }
