@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace QueryWorker.QueryNodes
 {
-    internal interface IQueryNode 
+    internal interface IQueryNode<T> where T : class
     {
-        IQueryable<T> Execute<T>(IQueryable<T> data, QueryConfiguration config) where T : class;
+        IQueryable<T> Execute(IQueryable<T> data);
     }
 }

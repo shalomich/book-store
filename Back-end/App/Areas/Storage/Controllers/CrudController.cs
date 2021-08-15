@@ -42,7 +42,7 @@ namespace App.Areas.Storage.Controllers
         private Type EntityType => _mapper.GetDestinationType(typeof(T));
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<T>>> Read([FromQuery] QueryParams queryParams)
+        public async Task<ActionResult<IEnumerable<T>>> Read([FromQuery] QueryArgs queryParams)
         {
             var entities = await _mediator.Send(new GetQuery(EntityType, queryParams));
            

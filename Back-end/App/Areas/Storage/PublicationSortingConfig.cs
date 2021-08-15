@@ -13,8 +13,8 @@ namespace App.Areas.Storage
     {
         public PublicationSortingConfig()
         {
-            CreateSorting<Publication,int>(publication => publication.Cost);
-            CreateSorting<Publication, string>(publication => publication.Type.Name, "type");
+            CreateSorting(publication => publication.Cost);
+            CreateSorting(publication => publication.Type.Name, "type");
         }
     }
 }

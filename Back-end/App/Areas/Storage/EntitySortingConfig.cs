@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace App.Areas.Storage.ViewModels
 {
-    public abstract class EntitySortingConfig<T> : QueryConfiguration where T : Entity
+    public abstract class EntitySortingConfig<T> : QueryConfiguration<T> where T : Entity
     {
         public EntitySortingConfig()
         {
-            CreateSorting<T,string>(entity => entity.Name);
+            CreateSorting(entity => entity.Name);
         }
     }
 }

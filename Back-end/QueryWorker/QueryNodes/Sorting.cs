@@ -10,23 +10,19 @@ using System.Text;
 namespace QueryWorker
 {
 
-    internal class Sorting : IQueryNode
+    internal class Sorting<T> : IQueryNode<T> where T : class
     {
-        private SortingArgs _args;
-
-        public Sorting(SortingArgs args)
+        private readonly Expression<Func<T, object>> _propertySelector;
+        public bool IsAscending { set; get; } = true;
+        public Sorting(Expression<Func<T, object>> propertySelector)
         {
-            _args = args ?? throw new ArgumentNullException(nameof(args));
+            _propertySelector = propertySelector ?? throw new ArgumentNullException(nameof(propertySelector));
         }
 
-        public IQueryable<T> Execute<T>(IQueryable<T> query, QueryConfiguration config) where T : class
+        public IQueryable<T> Execute(IQueryable<T> query)
         {
-            var (propertyName, isAscending) = _args;
-
-            var propertySelector = config.GetSorting(propertyName);
-
-            query =  isAscending == true ? (IQueryable<T>)query.AppendOrderBy(propertySelector).AsQueryable() 
-                : (IQueryable<T>) query.AppendOrderByDescending(propertySelector);
+            query =  IsAscending == true ? query.AppendOrderBy(_propertySelector).AsQueryable() 
+                : query.AppendOrderByDescending(_propertySelector);
 
             return query;
         }

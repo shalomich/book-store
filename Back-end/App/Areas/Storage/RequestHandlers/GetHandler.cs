@@ -14,24 +14,19 @@ namespace App.Areas.Storage.RequestHandlers
 {
     public class GetHandler : IRequestHandler<GetQuery, IEnumerable<Entity>>
     {
-        public record GetQuery(Type EntityType, QueryParams QueryParams) : IRequest<IEnumerable<Entity>>;
+        public record GetQuery(Type EntityType, QueryArgs QueryParams) : IRequest<IEnumerable<Entity>>;
         private ApplicationContext Context { get; }
-        private QueryTransformer QueryTransformer { get; }
-
-        private const string WrongIdMessage = "Entity does not exist by this id";
-
-        public GetHandler(ApplicationContext context, QueryTransformer queryTransformer)
+   
+        public GetHandler(ApplicationContext context)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
-            QueryTransformer = queryTransformer ?? throw new ArgumentNullException(nameof(queryTransformer));
         }
 
         public async Task<IEnumerable<Entity>> Handle(GetQuery request, CancellationToken cancellationToken)
         {
             var (entityType, queryParams) = request;
             
-            return await QueryTransformer.Transform(Context.Entities(entityType).AsQueryable(), queryParams)
-                .ToListAsync();
+            return await Context.Entities(entityType, queryParams).ToListAsync();
         }
     }
 }

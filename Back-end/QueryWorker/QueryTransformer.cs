@@ -9,29 +9,24 @@ using QueryWorker.Parsers;
 using AutoMapper;
 using QueryWorker.QueryNodeParams;
 using QueryWorker.Configurations;
+using QueryWorker.Parts;
 
 namespace QueryWorker
 {
     public class QueryTransformer
     {
-        private readonly ConfigurationFinder _configurationFinder;
+        private readonly QueryPart _queryPart;
 
         public QueryTransformer(Assembly assembly)
         {
-            _configurationFinder = new ConfigurationFinder(assembly);
+            var configurationFinder = new ConfigurationFinder(assembly);
+
+            _queryPart = new SortingPart(configurationFinder);
         }
 
-        public IQueryable<T> Transform<T>(IQueryable<T> data, QueryParams parameters) where T : class
+        public IQueryable<T> Transform<T>(IQueryable<T> data, QueryArgs args) where T : class
         {
-            var queries = new Queue<IQueryNode>();
-            foreach (string sortingQuery in parameters.Sorting)
-                queries.Enqueue(new Sorting(new SortingParser().Parse(sortingQuery) as SortingArgs));
-
-            var queryConfig =  _configurationFinder.Find();
-            while (queries.TryDequeue(out IQueryNode node) != false)
-                data = node.Execute(data, queryConfig);
-            
-            return data;
+            return _queryPart.Change(data, args);
         }
     }
 }

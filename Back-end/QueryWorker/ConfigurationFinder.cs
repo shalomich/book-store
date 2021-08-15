@@ -16,13 +16,14 @@ namespace QueryWorker
             _assembly = assembly ?? throw new ArgumentNullException(nameof(assembly));
         }
 
-        public QueryConfiguration Find() 
+        public QueryConfiguration<T> Find<T>() where T : class 
         {
+            var configurationType = typeof(QueryConfiguration<>).MakeGenericType(typeof(T));
             var configuration = _assembly.GetTypes()
-                .Single(type => type.IsSubclassOf(typeof(QueryConfiguration))
+                .Single(type => type.IsSubclassOf(configurationType)
                     && type.IsAbstract == false);
 
-            return Activator.CreateInstance(configuration) as QueryConfiguration;
+            return Activator.CreateInstance(configuration) as QueryConfiguration<T>;
         }
     }
 }
