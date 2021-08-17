@@ -1,13 +1,10 @@
-﻿using QueryWorker.Configurations;
-using QueryWorker.QueryNodeParams;
-using QueryWorker.QueryNodes;
+﻿
+using QueryWorker.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
-namespace QueryWorker
+namespace QueryWorker.QueryNodes
 {
 
     internal class Sorting<T> : IQueryNode<T> where T : class

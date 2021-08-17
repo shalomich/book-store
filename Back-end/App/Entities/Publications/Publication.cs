@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Various;
 
 namespace App.Entities
 {
@@ -19,32 +18,17 @@ namespace App.Entities
         private const string IsbnSchema = "978-5-XXXXXX-XX-X";       
         private const string FormatSchema = "(10-99)x(10-99)x(1-9)";
 
-        private static readonly string MinReleaseYearMessage;
-        private static readonly string MaxReleaseYearMessage;
-        private static readonly string InvalidIsbnMessage;
-        private static readonly string InvalidFormatMessage;
-
         private int _releaseYear;
         private string _Isbn;
         private string _format;
         private int? _pageQuantity;
-
-        static Publication()
-        {
-            InvalidIsbnMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Invalid, "Isbn", IsbnSchema);
-            InvalidFormatMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Invalid, "Format", FormatSchema);
-
-            MaxReleaseYearMessage = ExceptionMessages.GetMessage(ExceptionMessageType.More, "ReleaseYear", MaxReleaseYear.ToString());
-            
-            MinReleaseYearMessage = ExceptionMessages.GetMessage(ExceptionMessageType.Less, "ReleaseYear", MinReleaseYear.ToString());
-        }
 
         public string Isbn
         {
             set
             {
                 if (Regex.IsMatch(value, IsbnTemplate) == false)
-                    throw new ArgumentException(InvalidIsbnMessage);
+                    throw new ArgumentException();
                 _Isbn = value;
             }
             get
@@ -58,9 +42,9 @@ namespace App.Entities
             set
             {
                 if (value < MinReleaseYear)
-                    throw new ArgumentOutOfRangeException(MinReleaseYearMessage);
+                    throw new ArgumentOutOfRangeException();
                 if (value > MaxReleaseYear)
-                    throw new ArgumentOutOfRangeException(MaxReleaseYearMessage);
+                    throw new ArgumentOutOfRangeException();
                 _releaseYear = value;
             }
             get
@@ -78,7 +62,11 @@ namespace App.Entities
         public virtual PublicationType Type { set; get; }
         public int? TypeId { set; get; }
 
-        public virtual ISet<GenrePublication> Genres { set; get; }
+        public virtual ISet<GenrePublication> GenresPublications { set; get; }
+
+        public ISet<string> Genres => GenresPublications
+            .Select(genrePublication => genrePublication.Genre.Name)
+            .ToHashSet();
 
         public string OriginalName { set; get; }
 
@@ -94,7 +82,7 @@ namespace App.Entities
             {
                 if (value != null) 
                     if (Regex.IsMatch(value, FormatTemplate) == false)
-                        throw new ArgumentException(InvalidFormatMessage);
+                        throw new ArgumentException();
                 _format = value;
             }
             get

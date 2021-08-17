@@ -1,28 +1,26 @@
-﻿using QueryWorker.Parsers;
-using QueryWorker.QueryNodeParams;
+﻿
+using QueryWorker.Args;
+using QueryWorker.Configurations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QueryWorker
+namespace QueryWorker.Parts
 {
-    abstract class QueryPart
+    internal abstract class QueryPart
     {
-        protected readonly ConfigurationFinder _configurationFinder;
         protected QueryPart _nextPart;
 
-        protected QueryPart(ConfigurationFinder configurationFinder)
-        {
-            _configurationFinder = configurationFinder ?? throw new ArgumentNullException(nameof(configurationFinder));
-        }
-
-        public void SetNextPart(QueryPart nexPart)
+        public QueryPart SetNextPart(QueryPart nexPart)
         {
             _nextPart = nexPart;
+
+            return this;
         }
-        public abstract IQueryable<T> Change<T>(IQueryable<T> data, QueryArgs args) where T : class;
+        public abstract IQueryable<T> Change<T>(IQueryable<T> data, QueryArgs args, 
+            QueryConfiguration<T> config) where T : class;
         
     }
 }

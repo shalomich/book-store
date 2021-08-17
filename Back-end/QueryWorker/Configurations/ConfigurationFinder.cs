@@ -6,9 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QueryWorker
+namespace QueryWorker.Configurations
 {
-    public class ConfigurationFinder
+    internal class ConfigurationFinder
     {
         private readonly Assembly _assembly;
         public ConfigurationFinder(Assembly assembly)

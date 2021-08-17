@@ -1,50 +1,54 @@
-﻿using AutoMapper;
-using QueryWorker.QueryNodeParams;
+﻿
+using QueryWorker.Extensions;
+using QueryWorker.QueryNodes;
+using QueryWorker.QueryNodes.Filters;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace QueryWorker.Configurations
 {
     public abstract class QueryConfiguration<TClass> where TClass : class
     {
         internal Dictionary<string, Sorting<TClass>> Sortings { get; }
-
+        internal Dictionary<string, StringFilter<TClass>> StringFilters { get; }
+        internal Dictionary<string, NumberFilter<TClass>> NumberFilters { get; }
+        internal Dictionary<string, CollectionFilter<TClass>> CollectionFilters { get; }
         protected QueryConfiguration()
         {
             Sortings = new Dictionary<string, Sorting<TClass>>();
+            StringFilters = new Dictionary<string, StringFilter<TClass>>();
+            NumberFilters = new Dictionary<string, NumberFilter<TClass>>();
+            CollectionFilters = new Dictionary<string, CollectionFilter<TClass>>();
         }
 
-        protected void CreateSorting<TProperty>(Expression<Func<TClass,TProperty>> propertySelector, string propertyName = null)
+        protected void CreateSorting<TProperty>(string propertyKey,Expression<Func<TClass,TProperty>> propertySelector)
         {
-            string sortingKey = GetPropertyName(propertyName, propertySelector);
+            var sorting = new Sorting<TClass>(propertySelector.ConvertBody<TClass, TProperty, object>());
 
-            var sorting = new Sorting<TClass>(ToStoredSelector(propertySelector));
-
-            Sortings.Add(sortingKey, sorting);
+            Sortings.Add(propertyKey, sorting);
         }
 
-        private Expression<Func<TClass, object>> ToStoredSelector<TProperty>(Expression<Func<TClass, TProperty>> propertySelector)
+        protected void CreateFilter(string propertyKey,Expression<Func<TClass, string>> propertySelector)
         {
-            return Expression.Lambda<Func<TClass, object>>(
-                    Expression.Convert(propertySelector.Body, typeof(object)),
-                    propertySelector.Parameters);
-        }
-        private string GetPropertyName<TProperty>(string propertyName, Expression<Func<TClass, TProperty>> propertySelector)
-        {
-            if (propertyName == null)
-            {
-                var member = propertySelector.Body as MemberExpression;
-                if (member != null && member.Member is PropertyInfo property)
-                    return property.Name;
-                else throw new ArgumentException();
-            }
+            var filter = new StringFilter<TClass>(propertySelector);
 
-            return propertyName.ToCapitalLetter();
+            StringFilters.Add(propertyKey, filter);
+        }
+
+        protected void CreateFilter(string propertyKey,Expression<Func<TClass, double>> propertySelector)
+        {
+            var filter = new NumberFilter<TClass>(propertySelector);
+
+            NumberFilters.Add(propertyKey, filter);
+        }
+
+        protected void CreateFilter(string propertyKey, Expression<Func<TClass, IEnumerable<string>>> propertySelector)
+        {
+            var filter = new CollectionFilter<TClass>(propertySelector);
+
+            CollectionFilters.Add(propertyKey, filter);
         }
     }
 }

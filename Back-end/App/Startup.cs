@@ -30,8 +30,7 @@ namespace Storage
 
         public Startup(IConfiguration configuration)
         {
-            var buidler = new ConfigurationBuilder();
-            _configuration = buidler.AddConfiguration(configuration).AddJsonFile("entityProperties.json").Build();
+            _configuration = configuration;
         }
 
         public void ConfigureServices(IServiceCollection services)

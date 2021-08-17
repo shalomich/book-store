@@ -8,6 +8,7 @@ using App.Entities;
 using App;
 using App.Entities.Publications;
 using QueryWorker;
+using QueryWorker.Args;
 
 namespace App.Extensions
 {

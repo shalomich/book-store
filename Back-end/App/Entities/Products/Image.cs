@@ -1,9 +1,7 @@
 ﻿using App.Entities.Products;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Various;
+
 
 namespace App.Products.Entities
 {
@@ -12,14 +10,6 @@ namespace App.Products.Entities
         private string _format;
 
         public static readonly string[] FormatConsts = { "image/png", "image/jpeg" };
-
-        private static readonly string _notExistFormatMessage;
-        
-
-        static Image()
-        {
-            _notExistFormatMessage = ExceptionMessages.GetMessage(ExceptionMessageType.NotExist, "Format", String.Join(" ", FormatConsts));
-        }
 
         public int Id { set; get; }
         public string Name { set; get; }
@@ -30,7 +20,7 @@ namespace App.Products.Entities
             set
             {
                 if (FormatConsts.Contains(value) == false)
-                    throw new ArgumentOutOfRangeException(_notExistFormatMessage);
+                    throw new ArgumentOutOfRangeException();
                 _format = value;
             }
             get

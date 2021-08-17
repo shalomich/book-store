@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 
 
-namespace QueryWorker
+namespace QueryWorker.QueryNodes
 {
     /*
     public class Pagging<T> : IQueryNode<T> where T : class

@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Configuration;
 using QueryWorker;
+using QueryWorker.Args;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace QueryWorker
+namespace QueryWorker.Extensions
 {
-    public static class QueryableExtensions
+    internal static class QueryableExtensions
     {
         public static IOrderedQueryable<T> AppendOrderBy<T, TKey>(this IQueryable<T> query, Expression<Func<T, TKey>> keySelector)
             => query.Expression.Type == typeof(IOrderedQueryable<T>)
