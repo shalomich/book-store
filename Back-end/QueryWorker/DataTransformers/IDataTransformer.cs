@@ -6,10 +6,10 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QueryWorker.QueryNodes
+namespace QueryWorker.DataTransformers
 {
-    internal interface IQueryNode<T> where T : class
+    internal interface IDataTransformer<T> where T : class
     {
-        IQueryable<T> Execute(IQueryable<T> data);
+        IQueryable<T> Transform(IQueryable<T> data);
     }
 }

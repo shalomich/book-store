@@ -27,17 +27,9 @@ namespace QueryWorker.Extensions
             var body = second.Body.ReplaceParameter(second.Parameters[0], intermediateValue);
             return Expression.Lambda<Func<TSource, TResult>>(body, param);
         }
-
-        public static Expression<Func<TClass, TCastedProperty>> ConvertBody<TClass,TProperty, TCastedProperty>(
-            this Expression<Func<TClass, TProperty>> propertySelector)
-        {
-            return Expression.Lambda<Func<TClass, TCastedProperty>>(
-                    Expression.Convert(propertySelector.Body, typeof(TCastedProperty)),
-                    propertySelector.Parameters);
-        }
     }
 
-    public class ParameterReplaceVisitor : ExpressionVisitor
+    internal class ParameterReplaceVisitor : ExpressionVisitor
     {
         private ParameterExpression from;
         private Expression to;

@@ -7,10 +7,16 @@ using System.Threading.Tasks;
 
 namespace QueryWorker.Args
 {
-    public record SortingArgs
+    public record SortingArgs : IDataTransformerArgs
     {
         [Required]
         public string PropertyName { init; get; }
-        public bool IsAscending { init; get; }
+        public bool IsAscending { init; get; } = true;
+
+        public override string ToString()
+        {
+            return $"Sorting(propertyName: {PropertyName}," +
+                $"isAscending: {IsAscending})";
+        }
     }
 }

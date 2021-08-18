@@ -17,19 +17,19 @@ namespace App.Extensions
         public static IQueryable<Entity> Entities(this ApplicationContext context, Type type, QueryArgs args) =>
         type.Name switch
         {
-            nameof(Author) => context.QueryTransformer.Transform(context.Authors,args),
-            nameof(Publisher) => context.QueryTransformer.Transform(context.Publishers, args),
-            nameof(Genre) => context.QueryTransformer.Transform(context.Genres, args),
-            nameof(PublicationType) => context.QueryTransformer.Transform(context.PublicationTypes, args),
-            nameof(AgeLimit) => context.QueryTransformer.Transform(context.AgeLimits, args),
-            nameof(CoverArt) => context.QueryTransformer.Transform(context.CoverArts, args),
+            nameof(Author) => context.DataTransformer.Transform(context.Authors,args),
+            nameof(Publisher) => context.DataTransformer.Transform(context.Publishers, args),
+            nameof(Genre) => context.DataTransformer.Transform(context.Genres, args),
+            nameof(PublicationType) => context.DataTransformer.Transform(context.PublicationTypes, args),
+            nameof(AgeLimit) => context.DataTransformer.Transform(context.AgeLimits, args),
+            nameof(CoverArt) => context.DataTransformer.Transform(context.CoverArts, args),
             _ => Products(context, type, args)
         };
             
         public static IQueryable<Product> Products(this ApplicationContext context, Type type, QueryArgs args) =>
         type.Name switch
         {
-            nameof(Publication) => context.QueryTransformer.Transform(context.Publications, args),
+            nameof(Publication) => context.DataTransformer.Transform(context.Publications, args),
             _ => throw new ArgumentException()
         };    
     }

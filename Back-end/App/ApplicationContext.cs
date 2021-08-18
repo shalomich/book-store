@@ -14,7 +14,7 @@ namespace App
 {
     public class ApplicationContext : IdentityDbContext<User,Role,long>
     {
-        public QueryTransformer QueryTransformer { get; }
+        public DataTransformerFacade DataTransformer { get; }
         public DbSet<Publication> Publications { set; get; }
         public DbSet<Author> Authors { set; get; }
         public DbSet<Publisher> Publishers { set; get; }
@@ -25,9 +25,9 @@ namespace App
 
 
 
-        public ApplicationContext(DbContextOptions<ApplicationContext> options, QueryTransformer queryTransformer) : base(options)
+        public ApplicationContext(DbContextOptions<ApplicationContext> options, DataTransformerFacade dataTransformer) : base(options)
         {
-            QueryTransformer = queryTransformer;
+            DataTransformer = dataTransformer;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

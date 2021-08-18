@@ -4,10 +4,10 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace QueryWorker.QueryNodes
+namespace QueryWorker.DataTransformers
 {
 
-    internal class Sorting<T> : IQueryNode<T> where T : class
+    internal class Sorting<T> : IDataTransformer<T> where T : class
     {
         private readonly Expression<Func<T, object>> _propertySelector;
         public bool IsAscending { set; get; } = true;
@@ -16,7 +16,7 @@ namespace QueryWorker.QueryNodes
             _propertySelector = propertySelector ?? throw new ArgumentNullException(nameof(propertySelector));
         }
 
-        public IQueryable<T> Execute(IQueryable<T> query)
+        public IQueryable<T> Transform(IQueryable<T> query)
         {
             query =  IsAscending == true ? query.AppendOrderBy(_propertySelector).AsQueryable() 
                 : query.AppendOrderByDescending(_propertySelector);

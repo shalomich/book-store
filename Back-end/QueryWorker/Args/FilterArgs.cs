@@ -1,18 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using QueryWorker.QueryNodes.Filters;
+﻿
+using QueryWorker.DataTransformers.Filters;
 using System.ComponentModel.DataAnnotations;
 
 
 namespace QueryWorker.Args
 {
-    public record FilterArgs
+    public record FilterArgs : IDataTransformerArgs
     {
         [Required]
         public string PropertyName { init; get; }
         
         [Required]
-        public string Value { init; get; }
+        public string ComparedValue { init; get; }
 
-        public FilterСomparison Comparison { init; get; }
+        public FilterСomparison Comparison { init; get; } = FilterСomparison.Equal;
+
+        public override string ToString()
+        {
+            return $"Filter(propertyName: {PropertyName}, " +
+                $"comparedValue: {ComparedValue}," +
+                $"comparison: {Comparison})";
+        }
     }
 }

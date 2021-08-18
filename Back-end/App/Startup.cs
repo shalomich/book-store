@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using QueryWorker;
+using QueryWorker.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -48,7 +49,7 @@ namespace Storage
 
             services.AddScoped<JwtGenerator>();
             services.AddScoped<FormGenerator>();
-            services.AddSingleton(new QueryTransformer(GetType().Assembly));
+            services.AddDataTransformer(GetType().Assembly);
 
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<ApplicationContext>();

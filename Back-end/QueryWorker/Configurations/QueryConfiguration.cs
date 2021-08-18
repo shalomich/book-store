@@ -1,54 +1,71 @@
 ﻿
 using QueryWorker.Extensions;
-using QueryWorker.QueryNodes;
-using QueryWorker.QueryNodes.Filters;
+using QueryWorker.DataTransformers;
+using QueryWorker.DataTransformers.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-
+using AutoMapper;
+using QueryWorker.Args;
+using System.Linq;
 
 namespace QueryWorker.Configurations
 {
     public abstract class QueryConfiguration<TClass> where TClass : class
     {
-        internal Dictionary<string, Sorting<TClass>> Sortings { get; }
-        internal Dictionary<string, StringFilter<TClass>> StringFilters { get; }
-        internal Dictionary<string, NumberFilter<TClass>> NumberFilters { get; }
-        internal Dictionary<string, CollectionFilter<TClass>> CollectionFilters { get; }
+        private readonly Dictionary<string, Sorting<TClass>> _sortings = new Dictionary<string, Sorting<TClass>>();
+        private readonly Dictionary<string, StringFilter<TClass>> _stringFilters = new Dictionary<string, StringFilter<TClass>>();
+        private readonly Dictionary<string, NumberFilter<TClass>> _numberFilters = new Dictionary<string, NumberFilter<TClass>>();
+        private readonly Dictionary<string, CollectionFilter<TClass>> _collectionFilters = new Dictionary<string, CollectionFilter<TClass>>();
+
+        private readonly Dictionary<string, IDataTransformer<TClass>> _filters = new Dictionary<string, IDataTransformer<TClass>>();
+
+        private readonly IMapper _mapper; 
+
         protected QueryConfiguration()
         {
-            Sortings = new Dictionary<string, Sorting<TClass>>();
-            StringFilters = new Dictionary<string, StringFilter<TClass>>();
-            NumberFilters = new Dictionary<string, NumberFilter<TClass>>();
-            CollectionFilters = new Dictionary<string, CollectionFilter<TClass>>();
+            var mapperConfig = new MapperConfiguration(builder =>
+            {
+                builder.CreateMap<SortingArgs, Sorting<TClass>>();
+                builder.CreateMap<FilterArgs, StringFilter<TClass>>();
+                builder.CreateMap<FilterArgs, NumberFilter<TClass>>()
+                    .ForMember(filter => filter.ComparedValue, mapper =>
+                        mapper.MapFrom(args => double.Parse(args.ComparedValue)));
+                builder.CreateMap<FilterArgs, CollectionFilter<TClass>>()
+                    .ForMember(filter => filter.ComparedValue, mapper =>
+                        mapper.MapFrom(args => args.ComparedValue.Split(',', StringSplitOptions.None)));
+            });
+
+            _mapper = new Mapper(mapperConfig);
         }
 
-        protected void CreateSorting<TProperty>(string propertyKey,Expression<Func<TClass,TProperty>> propertySelector)
+        internal IDataTransformer<TClass> BuildTransformer(IDataTransformerArgs args) => args switch
         {
-            var sorting = new Sorting<TClass>(propertySelector.ConvertBody<TClass, TProperty, object>());
+            SortingArgs sortingArgs => _mapper.Map(sortingArgs, _sortings[args.PropertyName]),
+            FilterArgs filterArgs => _mapper.Map(filterArgs, _filters[args.PropertyName]),
+            _ => throw new ArgumentException()
+        };
 
-            Sortings.Add(propertyKey, sorting);
+        protected void CreateSorting(string propertyKey,Expression<Func<TClass,object>> propertySelector)
+        {
+            var sorting = new Sorting<TClass>(propertySelector);
+
+            _sortings.Add(propertyKey, sorting);
         }
 
         protected void CreateFilter(string propertyKey,Expression<Func<TClass, string>> propertySelector)
         {
-            var filter = new StringFilter<TClass>(propertySelector);
-
-            StringFilters.Add(propertyKey, filter);
+            _filters.Add(propertyKey, new StringFilter<TClass>(propertySelector));
         }
 
         protected void CreateFilter(string propertyKey,Expression<Func<TClass, double>> propertySelector)
         {
-            var filter = new NumberFilter<TClass>(propertySelector);
-
-            NumberFilters.Add(propertyKey, filter);
+            _filters.Add(propertyKey, new NumberFilter<TClass>(propertySelector));
         }
 
         protected void CreateFilter(string propertyKey, Expression<Func<TClass, IEnumerable<string>>> propertySelector)
         {
-            var filter = new CollectionFilter<TClass>(propertySelector);
-
-            CollectionFilters.Add(propertyKey, filter);
+            _filters.Add(propertyKey, new CollectionFilter<TClass>(propertySelector));
         }
     }
 }

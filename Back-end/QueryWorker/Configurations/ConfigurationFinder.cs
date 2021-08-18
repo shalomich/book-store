@@ -10,6 +10,7 @@ namespace QueryWorker.Configurations
 {
     internal class ConfigurationFinder
     {
+        private const string NotFoundConfigTemplateMesage = "Not found query configuration for type {0}";
         private readonly Assembly _assembly;
         public ConfigurationFinder(Assembly assembly)
         {
@@ -18,10 +19,15 @@ namespace QueryWorker.Configurations
 
         public QueryConfiguration<T> Find<T>() where T : class 
         {
-            var configurationType = typeof(QueryConfiguration<>).MakeGenericType(typeof(T));
+            var type = typeof(T);
+            var configurationType = typeof(QueryConfiguration<>).MakeGenericType(type);
+           
             var configuration = _assembly.GetTypes()
-                .Single(type => type.IsSubclassOf(configurationType)
+                .SingleOrDefault(type => type.IsSubclassOf(configurationType)
                     && type.IsAbstract == false);
+
+            if (configuration == null)
+                throw new InvalidOperationException(string.Format(NotFoundConfigTemplateMesage, type.Name));
 
             return Activator.CreateInstance(configuration) as QueryConfiguration<T>;
         }

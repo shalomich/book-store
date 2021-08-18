@@ -9,11 +9,11 @@ using System.Text.RegularExpressions;
 namespace QueryWorker.Test
 {
     /*
-    public class QueryTransformerTest
+    public class DataTransformerFacadeTest
     {
 
-        private QueryTransformer _transformer = new QueryTransformer(
-            typeof(QueryTransformerTest).GetType().Assembly);
+        private DataTransformerFacade _transformer = new DataTransformerFacade(
+            typeof(DataTransformerFacadeTest).GetType().Assembly);
 
        
 

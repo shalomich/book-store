@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QueryWorker.QueryNodes.Filters
+namespace QueryWorker.DataTransformers.Filters
 {
     internal class NumberFilter<T> : Filter<T,double> where T : class
     {
@@ -22,10 +22,5 @@ namespace QueryWorker.QueryNodes.Filters
             FilterСomparison.EqualOrMore => value => value >= comparedValue,
             FilterСomparison.EqualOrLess => value => value <= comparedValue
         };
-
-        protected override double Parse(string comparedValue)
-        {
-            return double.Parse(comparedValue);
-        }
     }
 }
