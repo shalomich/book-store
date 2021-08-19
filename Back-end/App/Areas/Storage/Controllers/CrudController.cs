@@ -6,12 +6,8 @@ using App.Entities;
 using App.Extensions;
 using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.Extensions.Configuration;
-using QueryWorker;
+using QueryWorker.Args;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,11 +39,15 @@ namespace App.Areas.Storage.Controllers
         private Type EntityType => _mapper.GetSourceType(typeof(T));
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EntityIdentity>>> Read()
+
+        public async Task<ActionResult<ValidQueryData<IEnumerable<EntityIdentity>>>> Read([FromQuery] QueryArgs queryParams)
         {
-            var entities = await _mediator.Send(new GetQuery(EntityType));
-           
-            return Ok(entities.Select(entity => _mapper.Map<EntityIdentity>(entity)));
+            var validQueryEntities = await _mediator.Send(new GetQuery(EntityType, queryParams));
+
+            var entityIdentities = validQueryEntities.Data
+                .Select(entity => _mapper.Map<EntityIdentity>(entity));
+
+            return Ok(new ValidQueryData<IEnumerable<EntityIdentity>>(entityIdentities, validQueryEntities.Errors));
         }
 
         [HttpGet("{id}")]

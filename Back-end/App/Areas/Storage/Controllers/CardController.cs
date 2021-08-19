@@ -1,9 +1,11 @@
 ﻿using App.Areas.Storage.Attributes.GenericController;
+using App.Areas.Storage.ViewModels;
 using App.Areas.Storage.ViewModels.Cards;
 using App.Extensions;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using QueryWorker.Args;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,11 +33,14 @@ namespace App.Areas.Storage.Controllers
         private Type ProductType => _mapper.GetSourceType(typeof(T));
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductCard>>> Read()
+        public async Task<ActionResult<ValidQueryData<IEnumerable<ProductCard>>>> Read([FromQuery] QueryArgs queryParams)
         {
-            var entities = await _mediator.Send(new GetQuery(ProductType));
+            var validQueryProducts = await _mediator.Send(new GetQuery(ProductType, queryParams));
 
-            return Ok(entities.Select(entity => _mapper.Map<ProductCard>(entity)));
+            var productCards = validQueryProducts.Data
+                .Select(entity => _mapper.Map<ProductCard>(entity));
+
+            return Ok(new ValidQueryData<IEnumerable<ProductCard>>(productCards, validQueryProducts.Errors));
         }
 
         [HttpGet("{id}")]

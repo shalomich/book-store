@@ -25,8 +25,7 @@ namespace App.Areas.Storage.Profiles
                 .ForMember(card => card.CoverArt, mapper =>
                     mapper.MapFrom(publication => publication.CoverArt.Name))
                 .ForMember(card => card.Genres, mapper =>
-                    mapper.MapFrom(publication => publication.Genres
-                        .Select(genrePublication => genrePublication.Genre.Name)));
+                    mapper.MapFrom(publication => publication.Genres.ToArray()));
         }
     }
 }

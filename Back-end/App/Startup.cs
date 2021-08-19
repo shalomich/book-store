@@ -15,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using QueryWorker;
-using QueryWorker.Visitors;
+using QueryWorker.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,8 +31,7 @@ namespace Storage
 
         public Startup(IConfiguration configuration)
         {
-            var buidler = new ConfigurationBuilder();
-            _configuration = buidler.AddConfiguration(configuration).AddJsonFile("entityProperties.json").Build();
+            _configuration = configuration;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -47,12 +46,10 @@ namespace Storage
             services.AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
                 .ConfigureApplicationPartManager(options => options.FeatureProviders.Add(new GenericControllerFeatureProvider())); ;
-            services.AddSingleton<IConfiguration>(_configuration);
 
-            services.AddTransient<IQueryParser, QueryParser>();
-            services.AddTransient(typeof(QueryTransformer<>));
             services.AddScoped<JwtGenerator>();
             services.AddScoped<FormGenerator>();
+            services.AddDataTransformer(GetType().Assembly);
 
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<ApplicationContext>();
@@ -84,7 +81,7 @@ namespace Storage
 
             app.UseRouting();
 
-            app.UseMiddleware<ErrorHandlingMiddleware>();
+            //app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseAuthentication();
             app.UseAuthorization();
