@@ -14,6 +14,8 @@ namespace App.Areas.Storage.QueryConfigurations
             CreateSorting("name", entity => entity.Name);
             
             CreateFilter("name",entity => entity.Name);
+
+            CreateSearch("name", entity => entity.Name);
         }
     }
 }
