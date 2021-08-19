@@ -16,9 +16,15 @@ namespace QueryWorker.DataTransformers.Filters
         public TProperty ComparedValue { set; get; }
         public virtual FilterСomparison Comparison { set; get; } = FilterСomparison.Equal;
 
-        public Filter(Expression<Func<TClass, TProperty>> propertySelector)
+        protected Filter(Expression<Func<TClass, TProperty>> propertySelector)
         {
             _propertySelector = propertySelector ?? throw new ArgumentNullException(nameof(propertySelector));
+        }
+
+        protected Filter(Expression<Func<TClass, TProperty>> propertySelector, TProperty comparedValue, FilterСomparison comparison = FilterСomparison.Equal) : this(propertySelector)
+        {
+            ComparedValue = comparedValue;
+            Comparison = comparison;
         }
 
         public IQueryable<TClass> Transform(IQueryable<TClass> query)
