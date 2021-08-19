@@ -25,9 +25,10 @@ namespace QueryWorker
             _configurationFinder = new ConfigurationFinder(assembly);
 
             Action<string> errorConservation = message => _errorMessages.Add(message);
-           
+
             _queryHead = new FilterBuildNode(errorConservation)
-                .SetNextNode(new SortingBuildNode(errorConservation));
+                .SetNextNode(new SearchBuildNode(errorConservation)
+                .SetNextNode(new SortingBuildNode(errorConservation)));
         }
 
         public IQueryable<T> Transform<T>(IQueryable<T> data, QueryArgs args) where T : class
