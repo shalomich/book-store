@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using QueryWorker.DataTransformers.Filters;
 using QueryWorker.DataTransformers;
 
-namespace QueryWorker.requestTransformers
+namespace QueryWorker.DataTransformers
 {
     public class Search<T> : IDataTransformer<T> where T : class
     {
