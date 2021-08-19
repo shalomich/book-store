@@ -22,6 +22,9 @@ namespace App.Areas.Storage.QueryConfigurations
             CreateFilter("ageLimit", publication => publication.AgeLimit.Name);
             CreateFilter("genres", publication => publication.GenresPublications
                 .Select(genre => genre.Genre.Name));
+
+            CreateSearch("author", entity => entity.Author.Name);
+            CreateSearch("publisher", entity => entity.Publisher.Name);
         }
     }
 }
