@@ -14,11 +14,18 @@ namespace QueryWorker.DataTransformers.Filters
         {
         }
 
+        public StringFilter(Expression<Func<T, string>> propertySelector, string comparedValue, 
+            FilterСomparison сomparison = FilterСomparison.Equal) 
+            : base(propertySelector, comparedValue, сomparison)
+        {
+        }
+
+
         public override FilterСomparison Comparison
         {
             set
             {
-                if (value != FilterСomparison.Equal)
+                if (value == FilterСomparison.More || value == FilterСomparison.Less)
                     throw new ArgumentException();
                 _comparison = value;
             }
@@ -29,8 +36,11 @@ namespace QueryWorker.DataTransformers.Filters
         }
 
         protected override Expression<Func<string, bool>> ChooseComparer(string comparedValue, FilterСomparison comparison)
-        {
-            return value => value == comparedValue;   
-        }
+            => comparison switch
+            {
+                FilterСomparison.Equal => value => value == comparedValue,
+                FilterСomparison.EqualOrMore => value => value.Contains(comparedValue),
+                FilterСomparison.EqualOrLess => value => comparedValue.Contains(value)
+            };
     }
 }
