@@ -1,30 +1,46 @@
-﻿using App.Entities;
+﻿using App.Areas.Storage.ViewModels;
+using App.Entities;
 using App.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using QueryWorker;
+using QueryWorker.Args;
+using QueryWorker.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using static App.Areas.Storage.RequestHandlers.GetHandler;
 
 namespace App.Areas.Storage.RequestHandlers
 {
-    public class GetHandler : IRequestHandler<GetQuery, IEnumerable<Entity>>
+    public class GetHandler : IRequestHandler<GetQuery, ValidQueryData<IEnumerable<Entity>>>
     {
-        public record GetQuery(Type EntityType) : IRequest<IEnumerable<Entity>>;
+        public record GetQuery(Type EntityType, QueryArgs QueryParams) : IRequest<ValidQueryData<IEnumerable<Entity>>>;
         private ApplicationContext Context { get; }
-
-        private const string WrongIdMessage = "Entity does not exist by this id";
-
+   
         public GetHandler(ApplicationContext context)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
         }
-        public async Task<IEnumerable<Entity>> Handle(GetQuery request, CancellationToken cancellationToken)
+
+        public async Task<ValidQueryData<IEnumerable<Entity>>> Handle(GetQuery request, CancellationToken cancellationToken)
         {
-            return await Context.Entities(request.EntityType).ToListAsync();
+            var (entityType, queryParams) = request;
+
+            var data = await Context.Entities(entityType, queryParams).ToListAsync();
+
+            return new ValidQueryData<IEnumerable<Entity>>(data, Context.DataTransformer.ErrorMesages);
         }
     }
+
+    
+
+    
+  
+    
+
+    
 }

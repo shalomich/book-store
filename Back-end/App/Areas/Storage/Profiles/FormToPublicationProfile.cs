@@ -16,12 +16,12 @@ namespace App.Areas.Storage.Profiles
         {
             CreateMap<Publication, ProductIdentity>();
             CreateMap<PublicationForm, Publication>()
-                .ForMember(publication => publication.Genres,
+                .ForMember(publication => publication.GenresPublications,
                     mapper => mapper.MapFrom(form => form.GenreIds
                     .Select(id => new GenrePublication { GenreId = id })))
             .ReverseMap()
                 .ForMember(form => form.GenreIds,
-                    mapper => mapper.MapFrom(publication => publication.Genres
+                    mapper => mapper.MapFrom(publication => publication.GenresPublications
                         .Select(genre => genre.GenreId)));
 
             CreateMap<AuthorForm, Author>()
