@@ -11,6 +11,7 @@ namespace QueryWorker.Args
         private const int MaxPageSize = 60;
         public SortingArgs[] Sortings { init; get; }
         public FilterArgs[] Filters { init; get; }
+        public SearchArgs[] Searches { init; get; }
 
         [Required]
         [Range(1,MaxPageSize)]

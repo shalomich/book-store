@@ -14,11 +14,8 @@ namespace QueryWorker.Configurations
     public abstract class QueryConfiguration<TClass> where TClass : class
     {
         private readonly Dictionary<string, Sorting<TClass>> _sortings = new Dictionary<string, Sorting<TClass>>();
-        private readonly Dictionary<string, StringFilter<TClass>> _stringFilters = new Dictionary<string, StringFilter<TClass>>();
-        private readonly Dictionary<string, NumberFilter<TClass>> _numberFilters = new Dictionary<string, NumberFilter<TClass>>();
-        private readonly Dictionary<string, CollectionFilter<TClass>> _collectionFilters = new Dictionary<string, CollectionFilter<TClass>>();
-
         private readonly Dictionary<string, IDataTransformer<TClass>> _filters = new Dictionary<string, IDataTransformer<TClass>>();
+        private readonly Dictionary<string, Search<TClass>> _searches = new Dictionary<string, Search<TClass>>();
 
         private readonly IMapper _mapper; 
 
@@ -34,6 +31,7 @@ namespace QueryWorker.Configurations
                 builder.CreateMap<FilterArgs, CollectionFilter<TClass>>()
                     .ForMember(filter => filter.ComparedValue, mapper =>
                         mapper.MapFrom(args => args.ComparedValue.Split(',', StringSplitOptions.None)));
+                builder.CreateMap<SearchArgs, Search<TClass>>();
             });
 
             _mapper = new Mapper(mapperConfig);
@@ -43,6 +41,7 @@ namespace QueryWorker.Configurations
         {
             SortingArgs sortingArgs => _mapper.Map(sortingArgs, _sortings[args.PropertyName]),
             FilterArgs filterArgs => _mapper.Map(filterArgs, _filters[args.PropertyName]),
+            SearchArgs searchArgs => _mapper.Map(searchArgs, _searches[args.PropertyName]),
             _ => throw new ArgumentException()
         };
 
@@ -66,6 +65,11 @@ namespace QueryWorker.Configurations
         protected void CreateFilter(string propertyKey, Expression<Func<TClass, IEnumerable<string>>> propertySelector)
         {
             _filters.Add(propertyKey, new CollectionFilter<TClass>(propertySelector));
+        }
+
+        protected void CreateSearch(string propertyKey, Expression<Func<TClass, string>> propertySelector)
+        {
+            _searches.Add(propertyKey, new Search<TClass>(propertySelector));
         }
     }
 }
