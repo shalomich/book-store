@@ -1,5 +1,4 @@
 ﻿using QueryWorker.DataTransformers;
-using QueryWorker.requestTransformers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
