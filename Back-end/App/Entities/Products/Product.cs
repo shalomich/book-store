@@ -1,5 +1,6 @@
 ﻿using App.Entities.Products;
 using System;
+using System.Collections.Generic;
 
 namespace App.Entities
 {
@@ -45,6 +46,6 @@ namespace App.Entities
 
         public virtual Album Album { set; get; }
 
-
+        public ISet<BasketProduct> BasketProducts { set; get; }
     }
 }

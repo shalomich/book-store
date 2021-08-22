@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20210811080741_InitialMigration")]
+    [Migration("20210822144255_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,49 @@ namespace App.Migrations
                         .IsUnique();
 
                     b.ToTable("Authors");
+                });
+
+            modelBuilder.Entity("App.Entities.Basket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Baskets");
+                });
+
+            modelBuilder.Entity("App.Entities.BasketProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BasketId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BasketId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("BasketProducts");
                 });
 
             modelBuilder.Entity("App.Entities.Product", b =>
@@ -307,9 +350,9 @@ namespace App.Migrations
 
             modelBuilder.Entity("App.Entities.Role", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ConcurrencyStamp")
@@ -336,15 +379,15 @@ namespace App.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1L,
-                            ConcurrencyStamp = "bc7b6d6b-9641-4c1a-9da0-587d9e09b1e0",
+                            Id = 1,
+                            ConcurrencyStamp = "7d5002cc-1611-4010-8102-f83cd6efeba8",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = 2L,
-                            ConcurrencyStamp = "57863c42-04ba-4a4b-b500-1175742147cb",
+                            Id = 2,
+                            ConcurrencyStamp = "78216bae-c0f2-460f-84fe-60e6d12834fd",
                             Name = "customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -352,12 +395,15 @@ namespace App.Migrations
 
             modelBuilder.Entity("App.Entities.User", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BasketId")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -449,7 +495,7 @@ namespace App.Migrations
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -462,8 +508,8 @@ namespace App.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -472,7 +518,7 @@ namespace App.Migrations
                     b.ToTable("AspNetRoleClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<long>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -485,8 +531,8 @@ namespace App.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -495,7 +541,7 @@ namespace App.Migrations
                     b.ToTable("AspNetUserClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<long>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -506,8 +552,8 @@ namespace App.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -516,13 +562,13 @@ namespace App.Migrations
                     b.ToTable("AspNetUserLogins");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<long>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -531,10 +577,10 @@ namespace App.Migrations
                     b.ToTable("AspNetUserRoles");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<long>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -605,6 +651,36 @@ namespace App.Migrations
                     b.ToTable("Publications");
                 });
 
+            modelBuilder.Entity("App.Entities.Basket", b =>
+                {
+                    b.HasOne("App.Entities.User", "User")
+                        .WithOne("Basket")
+                        .HasForeignKey("App.Entities.Basket", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("App.Entities.BasketProduct", b =>
+                {
+                    b.HasOne("App.Entities.Basket", "Basket")
+                        .WithMany("BasketProducts")
+                        .HasForeignKey("BasketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Entities.Product", "Product")
+                        .WithMany("BasketProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Basket");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("App.Entities.Products.Album", b =>
                 {
                     b.HasOne("App.Entities.Product", "Product")
@@ -625,7 +701,7 @@ namespace App.Migrations
                         .IsRequired();
 
                     b.HasOne("App.Entities.Publication", "Publication")
-                        .WithMany("Genres")
+                        .WithMany("GenresPublications")
                         .HasForeignKey("PublicationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -646,7 +722,7 @@ namespace App.Migrations
                     b.Navigation("Album");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("App.Entities.Role", null)
                         .WithMany()
@@ -655,7 +731,7 @@ namespace App.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<long>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
                     b.HasOne("App.Entities.User", null)
                         .WithMany()
@@ -664,7 +740,7 @@ namespace App.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<long>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
                     b.HasOne("App.Entities.User", null)
                         .WithMany()
@@ -673,7 +749,7 @@ namespace App.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<long>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
                     b.HasOne("App.Entities.Role", null)
                         .WithMany()
@@ -688,7 +764,7 @@ namespace App.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<long>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
                     b.HasOne("App.Entities.User", null)
                         .WithMany()
@@ -740,9 +816,16 @@ namespace App.Migrations
                     b.Navigation("Type");
                 });
 
+            modelBuilder.Entity("App.Entities.Basket", b =>
+                {
+                    b.Navigation("BasketProducts");
+                });
+
             modelBuilder.Entity("App.Entities.Product", b =>
                 {
                     b.Navigation("Album");
+
+                    b.Navigation("BasketProducts");
                 });
 
             modelBuilder.Entity("App.Entities.Products.Album", b =>
@@ -755,9 +838,14 @@ namespace App.Migrations
                     b.Navigation("Publications");
                 });
 
+            modelBuilder.Entity("App.Entities.User", b =>
+                {
+                    b.Navigation("Basket");
+                });
+
             modelBuilder.Entity("App.Entities.Publication", b =>
                 {
-                    b.Navigation("Genres");
+                    b.Navigation("GenresPublications");
                 });
 #pragma warning restore 612, 618
         }
