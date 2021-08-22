@@ -1,9 +1,7 @@
 using App;
-using App.Areas.Auth.Services;
-using App.Areas.Storage.Attributes.GenericController;
-using App.Areas.Storage.Services;
+using App.Areas.Store.Services;
+using App.Attributes.GenericController;
 using App.Entities;
-using Auth.Middlewares;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -14,7 +12,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using QueryWorker;
 using QueryWorker.Extensions;
 using System;
 using System.Collections.Generic;
@@ -22,8 +19,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using App.Areas.Dashboard.Services;
 
-namespace Storage
+namespace Store
 {
     public class Startup
     {
