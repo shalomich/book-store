@@ -2,7 +2,7 @@
 
 namespace App.Areas.Dashboard.ViewModels.Identities
 {
-    public record ProductIdentity : EntityIdentity
+    public record ProductIdentity : FormEntityIdentity
     {
         public ImageDto TitleImage { init; get; }
     }

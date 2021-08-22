@@ -12,7 +12,7 @@ namespace App.Areas.Common.RequestHandlers
 {
     public class UpdateHandler : IRequestHandler<UpdateCommand, Unit>
     {
-        public record UpdateCommand(int Id, Entity Entity) : IRequest<Unit>;
+        public record UpdateCommand(int Id, IEntity Entity) : IRequest<Unit>;
 
         private const string WrongIdMessage = "Id from route and body are different";
 

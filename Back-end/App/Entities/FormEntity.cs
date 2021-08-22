@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace App.Entities
 {
-    public class Publisher : FormEntity
+    public abstract class FormEntity : IEntity
     {
+        public int Id { set; get; }
+        public virtual string Name { set;get; }
     }
 }

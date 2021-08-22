@@ -14,11 +14,11 @@ namespace App.Areas.Dashboard.Profiles
     {
         public FormToEntityProfile()
         {
-            CreateMap<EntityForm, Entity>()
+            CreateMap<EntityForm, FormEntity>()
                 .ReverseMap()
                 .IncludeAllDerived();
 
-            CreateMap<Entity, EntityIdentity>()
+            CreateMap<FormEntity, FormEntityIdentity>()
                 .IncludeAllDerived();
         }
     }

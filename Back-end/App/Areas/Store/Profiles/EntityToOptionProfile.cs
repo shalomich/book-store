@@ -12,7 +12,7 @@ namespace App.Areas.Store.Profiles
     {
         public EntityToOptionProfile()
         {
-            CreateMap<Entity, Option>()
+            CreateMap<FormEntity, Option>()
                 .ForMember(option => option.Text, mapper
                     => mapper.MapFrom(entity => entity.Name))
                 .ForMember(option => option.Value, mapper

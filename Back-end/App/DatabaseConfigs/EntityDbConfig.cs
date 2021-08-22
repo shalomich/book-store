@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace App.DatabaseConfigs
 {
-    public class EntityDbConfig<T> : IEntityTypeConfiguration<T> where T : Entity 
+    public class EntityDbConfig<T> : IEntityTypeConfiguration<T> where T : FormEntity 
     {
         public virtual void Configure(EntityTypeBuilder<T> builder)
         {

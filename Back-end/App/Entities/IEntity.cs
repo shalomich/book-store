@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace App.Entities
 {
-    public abstract class Entity
+    public interface IEntity
     {
         public int Id { set; get; }
-        public virtual string Name { set;get; }
     }
 }

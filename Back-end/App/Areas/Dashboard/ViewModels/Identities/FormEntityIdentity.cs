@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace App.Areas.Dashboard.ViewModels.Identities
 {
-    public record EntityIdentity
+    public record FormEntityIdentity
     {
         public int Id { init; get; }
         public string Name { init; get; }

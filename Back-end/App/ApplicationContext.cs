@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace App
 {
-    public class ApplicationContext : IdentityDbContext<User,Role,long>
+    public class ApplicationContext : IdentityDbContext<User,Role,int>
     {
         public DataTransformerFacade DataTransformer { get; }
         public DbSet<Publication> Publications { set; get; }
@@ -33,16 +33,8 @@ namespace App
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration(new PublicationDbConfig());
-            modelBuilder.ApplyConfiguration(new AuthorDbConfig());
-            modelBuilder.ApplyConfiguration(new PublisherDbConfig());
-            modelBuilder.ApplyConfiguration(new ImageDbConfig());
-            modelBuilder.ApplyConfiguration(new AlbumDbConfig());
-            modelBuilder.ApplyConfiguration(new RoleDbConfig());
-            modelBuilder.ApplyConfiguration(new PublicationTypeDbConfig());
-            modelBuilder.ApplyConfiguration(new AgeLimitDbConfig());
-            modelBuilder.ApplyConfiguration(new CoverArtDbConfig());
-            modelBuilder.ApplyConfiguration(new GenreDbConfig());
+
+            modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
 
             modelBuilder.Entity<Product>().ToTable("Products");
         }
