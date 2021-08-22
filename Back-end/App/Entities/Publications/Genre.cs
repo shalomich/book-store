@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace App.Entities.Publications
 {
-    public class Genre : Entity
+    public class Genre : FormEntity
     {
         public virtual ISet<GenrePublication> Publications { set; get; } 
     }

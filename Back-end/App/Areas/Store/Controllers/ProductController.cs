@@ -8,13 +8,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static App.Areas.Common.RequestHandlers.GetByQueryHandler;
-using static App.Areas.Common.RequestHandlers.GetByIdHandler;
+using static App.Areas.Common.RequestHandlers.GetFormEntitiesHandler;
+using static App.Areas.Common.RequestHandlers.GetEntityByIdHandler;
 using App.Areas.Common.ViewModels;
 using App.Areas.Store.ViewModels.Cards;
 using App.Entities;
 using App.Areas.Store.ViewModels;
-using static App.Areas.Common.RequestHandlers.GetHandler;
+using static App.Areas.Common.RequestHandlers.GetEntitiesHandler;
 
 namespace App.Areas.Store.Controllers
 {
@@ -35,7 +35,7 @@ namespace App.Areas.Store.Controllers
         [HttpGet]
         public async Task<ActionResult<ValidQueryData<IEnumerable<ProductCard>>>> GetCards([FromQuery] QueryArgs queryParams)
         {
-            var validQueryProducts = await Mediator.Send(new GetByQuery(typeof(T), queryParams));
+            var validQueryProducts = await Mediator.Send(new GetFormEntitiesQuery(typeof(T), queryParams));
 
             var productCards = validQueryProducts.Data
                 .Select(entity => Mapper.Map<ProductCard>(entity));
@@ -53,9 +53,9 @@ namespace App.Areas.Store.Controllers
             return Ok(Mapper.Map(entity, productType, productCardType));
         }
 
-        protected async Task<IEnumerable<Option>> GetRelatedEntityOptions(Type relatedEntityType)
+        protected async Task<IEnumerable<Option>> GetRelatedEntityOptions(Type relatedEntityType, PaggingArgs args)
         {
-            var relatedEntities = await Mediator.Send(new GetQuery(relatedEntityType));
+            var relatedEntities = await Mediator.Send(new GetEntitiesQuery(relatedEntityType, args));
 
             return relatedEntities.Select(genre => Mapper.Map<Option>(genre));
         }

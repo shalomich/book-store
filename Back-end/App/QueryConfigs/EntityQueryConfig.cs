@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace App.QueryConfigs
 {
-    public abstract class EntityQueryConfig<T> : QueryConfiguration<T> where T : Entity
+    public abstract class EntityQueryConfig<T> : QueryConfiguration<T> where T : FormEntity
     {
         public EntityQueryConfig()
         {

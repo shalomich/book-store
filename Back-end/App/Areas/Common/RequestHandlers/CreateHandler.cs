@@ -11,9 +11,9 @@ using static App.Areas.Common.RequestHandlers.CreateHandler;
 
 namespace App.Areas.Common.RequestHandlers
 {
-    public class CreateHandler : IRequestHandler<CreateCommand, Entity>
+    public class CreateHandler : IRequestHandler<CreateCommand, IEntity>
     {
-        public record CreateCommand(Entity Entity) : IRequest<Entity>;
+        public record CreateCommand(IEntity Entity) : IRequest<FormEntity>;
         private ApplicationContext Context { get; }
 
         public CreateHandler(ApplicationContext context)
@@ -21,9 +21,9 @@ namespace App.Areas.Common.RequestHandlers
             Context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<Entity> Handle(CreateCommand request, CancellationToken cancellationToken)
+        public async Task<IEntity> Handle(CreateCommand request, CancellationToken cancellationToken)
         {
-            Entity createdEntity = request.Entity;
+            var createdEntity = request.Entity;
 
             try
             {

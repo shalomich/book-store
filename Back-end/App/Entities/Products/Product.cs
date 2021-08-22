@@ -3,7 +3,7 @@ using System;
 
 namespace App.Entities
 {
-    public abstract class Product : Entity
+    public abstract class Product : FormEntity
     {
         public const int MinCost = 100;
         public const int MaxDescriptionLength = 1000;

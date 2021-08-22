@@ -35,7 +35,8 @@ namespace QueryWorker
         {
             _errorMessages = new List<string>();
 
-            Func<IQueryable<T>, IQueryable<T>> pagging = data => data.Page(args.PageSize, args.PageNumber);
+            if (args.IsQueryEmpty)
+                return Transform(data, args as PaggingArgs);
 
             QueryConfiguration<T> config;
             
@@ -46,7 +47,7 @@ namespace QueryWorker
             catch(Exception exception)
             {
                 _errorMessages.Add(exception.Message);
-                return pagging(data);
+                return Transform(data,args as PaggingArgs);
             }
 
             
@@ -54,7 +55,12 @@ namespace QueryWorker
             
             _queryHead.FillQueue(queue, args, config);
 
-            return pagging(queue.Transform(data));
+            return Transform(queue.Transform(data), args as PaggingArgs);
+        }
+
+        public IQueryable<T> Transform<T>(IQueryable<T> data, PaggingArgs args) where T : class
+        {
+            return data.Page(args.PageSize, args.PageNumber);
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace App.Entities.Publications
 {
-    public class AgeLimit : Entity
+    public class AgeLimit : FormEntity
     {
     }
 }

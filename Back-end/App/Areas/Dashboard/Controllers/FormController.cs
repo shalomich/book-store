@@ -12,8 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static App.Areas.Common.RequestHandlers.GetByQueryHandler;
-using static App.Areas.Common.RequestHandlers.GetByIdHandler;
+using static App.Areas.Common.RequestHandlers.GetFormEntitiesHandler;
+using static App.Areas.Common.RequestHandlers.GetEntityByIdHandler;
 using static App.Areas.Common.RequestHandlers.CreateHandler;
 using static App.Areas.Common.RequestHandlers.UpdateHandler;
 using static App.Areas.Common.RequestHandlers.DeleteHandler;
@@ -43,27 +43,27 @@ namespace App.Areas.Dashboard.Controllers
 
         [HttpGet]
 
-        public async Task<ActionResult<ValidQueryData<IEnumerable<EntityIdentity>>>> Read([FromQuery] QueryArgs queryParams)
+        public async Task<ActionResult<ValidQueryData<IEnumerable<FormEntityIdentity>>>> Read([FromQuery] QueryArgs queryParams)
         {
-            var validQueryEntities = await _mediator.Send(new GetByQuery(EntityType, queryParams));
+            var validQueryEntities = await _mediator.Send(new GetFormEntitiesQuery(EntityType, queryParams));
 
             var entityIdentities = validQueryEntities.Data
-                .Select(entity => _mapper.Map<EntityIdentity>(entity));
+                .Select(entity => _mapper.Map<FormEntityIdentity>(entity));
 
-            return Ok(new ValidQueryData<IEnumerable<EntityIdentity>>(entityIdentities, validQueryEntities.Errors));
+            return Ok(new ValidQueryData<IEnumerable<FormEntityIdentity>>(entityIdentities, validQueryEntities.Errors));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<T>> Read(int id)
         {
-            var entity = await _mediator.Send(new GetByIdQuery(id, EntityType));
+            var entity = (FormEntity) await _mediator.Send(new GetByIdQuery(id, EntityType));
             return Ok(_mapper.Map<T>(entity));
         }
 
         [HttpPost] 
         public async Task<IActionResult> Create(T entityForm) 
         {
-            var entity = _mapper.Map(entityForm, typeof(T), EntityType) as Entity;
+            var entity = (FormEntity) _mapper.Map(entityForm, typeof(T), EntityType);
             var createdEntity = await _mediator.Send(new CreateCommand(entity));
 
             return CreatedAtAction(nameof(Read), new { id = createdEntity.Id }, createdEntity);
@@ -72,7 +72,7 @@ namespace App.Areas.Dashboard.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, T entityForm)
         {
-            var entity = _mapper.Map(entityForm, typeof(T), EntityType) as Entity;
+            var entity = (FormEntity) _mapper.Map(entityForm, typeof(T), EntityType);
 
             await _mediator.Send(new UpdateCommand(id,entity));
 
@@ -82,7 +82,7 @@ namespace App.Areas.Dashboard.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var deletedEntity = await _mediator.Send(new GetByIdQuery(id, EntityType));
+            var deletedEntity = (FormEntity) await _mediator.Send(new GetByIdQuery(id, EntityType));
             await _mediator.Send(new DeleteCommand(deletedEntity));
 
             return NoContent();

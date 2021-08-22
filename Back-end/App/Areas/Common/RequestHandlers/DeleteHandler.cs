@@ -11,7 +11,7 @@ namespace App.Areas.Common.RequestHandlers
 {
     public class DeleteHandler : IRequestHandler<DeleteCommand, Unit>
     {
-        public record DeleteCommand(Entity Entity) : IRequest<Unit>;
+        public record DeleteCommand(IEntity Entity) : IRequest<Unit>;
         private ApplicationContext Context { get; }
         public DeleteHandler(ApplicationContext context)
         {

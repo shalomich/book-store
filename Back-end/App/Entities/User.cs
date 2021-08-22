@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace App.Entities
 {
-    public class User : IdentityUser<long>
+    public class User : IdentityUser<int>, IEntity
     {
     }
 }
