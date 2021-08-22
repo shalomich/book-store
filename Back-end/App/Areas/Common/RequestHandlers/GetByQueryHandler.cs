@@ -31,7 +31,7 @@ namespace App.Areas.Common.RequestHandlers
         {
             var (entityType, queryParams) = request;
 
-            var data = await Context.Entities(entityType, queryParams).ToListAsync();
+            var data = await Context.EntitiesByQuery(entityType, queryParams).ToListAsync();
 
             return new ValidQueryData<IEnumerable<Entity>>(data, Context.DataTransformer.ErrorMesages);
         }

@@ -18,10 +18,11 @@ namespace App.QueryConfigs
             CreateFilter("releaseYear", publication => publication.ReleaseYear);
             CreateFilter("authorId", publication => publication.AuthorId);
             CreateFilter("publisherId", publication => publication.PublisherId);
-            CreateFilter("type", publication => publication.Type.Name);
-            CreateFilter("ageLimit", publication => publication.AgeLimit.Name);
-            CreateFilter("genres", publication => publication.GenresPublications
-                .Select(genre => genre.Genre.Name));
+            CreateFilter("typeId", publication => publication.TypeId.Value);
+            CreateFilter("ageLimitId", publication => publication.AgeLimitId.Value);
+            CreateFilter("coverArtId", publication => publication.CoverArtId.Value);
+            CreateFilter("genreIds", publication => publication.GenresPublications
+                .Select(genre => genre.Genre.Id));
 
             CreateSearch("author", entity => entity.Author.Name);
             CreateSearch("publisher", entity => entity.Publisher.Name);

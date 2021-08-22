@@ -14,7 +14,7 @@ namespace App.Extensions
 {
     public static class DbContextExtension
     {
-        public static IQueryable<Entity> Entities(this ApplicationContext context, Type type, QueryArgs args) =>
+        public static IQueryable<Entity> EntitiesByQuery(this ApplicationContext context, Type type, QueryArgs args) =>
         type.Name switch
         {
             nameof(Author) => context.DataTransformer.Transform(context.Authors,args),
@@ -31,6 +31,20 @@ namespace App.Extensions
         {
             nameof(Publication) => context.DataTransformer.Transform(context.Publications, args),
             _ => throw new ArgumentException()
-        };    
+        };
+
+        public static IQueryable<Entity> Entities(this ApplicationContext context, Type type)
+        {
+            if (type.IsSubclassOf(typeof(Entity)) == false)
+                throw new ArgumentException();
+
+            return (IQueryable<Entity>)context
+                .GetType()
+                .GetMethods()
+                .SingleOrDefault(method => method.Name == nameof(context.Set)
+                    && method.GetParameters().Count() == 0)
+                .MakeGenericMethod(type)
+                .Invoke(context, null);
+        }
     }
 }

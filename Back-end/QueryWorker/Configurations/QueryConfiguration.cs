@@ -30,7 +30,9 @@ namespace QueryWorker.Configurations
                         mapper.MapFrom(args => double.Parse(args.ComparedValue)));
                 builder.CreateMap<FilterArgs, CollectionFilter<TClass>>()
                     .ForMember(filter => filter.ComparedValue, mapper =>
-                        mapper.MapFrom(args => args.ComparedValue.Split(',', StringSplitOptions.None)));
+                        mapper.MapFrom(args => args.ComparedValue
+                            .Split(',', StringSplitOptions.None)
+                            .Select(str => int.Parse(str))));
                 builder.CreateMap<SearchArgs, Search<TClass>>();
             });
 
@@ -62,7 +64,7 @@ namespace QueryWorker.Configurations
             _filters.Add(propertyKey, new NumberFilter<TClass>(propertySelector));
         }
 
-        protected void CreateFilter(string propertyKey, Expression<Func<TClass, IEnumerable<string>>> propertySelector)
+        protected void CreateFilter(string propertyKey, Expression<Func<TClass, IEnumerable<int>>> propertySelector)
         {
             _filters.Add(propertyKey, new CollectionFilter<TClass>(propertySelector));
         }

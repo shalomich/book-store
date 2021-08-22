@@ -15,5 +15,14 @@ namespace App.Extensions
                 .Single(mapper => mapper.DestinationType == destinationType)
                 .SourceType;
         }
+
+        public static Type GetDestinationType(this IMapper mapper, Type sourceType, Type destinationBaseType)
+        {
+            return mapper.ConfigurationProvider
+                .GetAllTypeMaps()
+                .Single(mapper => mapper.SourceType == sourceType
+                    && mapper.DestinationType.IsSubclassOf(destinationBaseType))
+                .DestinationType;
+        }
     }
 }

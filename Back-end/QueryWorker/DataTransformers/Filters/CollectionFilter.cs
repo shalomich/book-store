@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace QueryWorker.DataTransformers.Filters
 {
-    internal class CollectionFilter<T> : Filter<T, IEnumerable<string>> where T : class
+    internal class CollectionFilter<T> : Filter<T, IEnumerable<int>> where T : class
     {
         private FilterСomparison _comparison = FilterСomparison.Equal;
-        public CollectionFilter(Expression<Func<T, IEnumerable<string>>> propertySelector) : base(propertySelector)
+        public CollectionFilter(Expression<Func<T, IEnumerable<int>>> propertySelector) : base(propertySelector)
         {
         }
 
@@ -27,9 +27,9 @@ namespace QueryWorker.DataTransformers.Filters
                 return _comparison;
             }
         }
-        protected override Expression<Func<IEnumerable<string>, bool>> ChooseComparer(IEnumerable<string> comparedValue, FilterСomparison comparison)
+        protected override Expression<Func<IEnumerable<int>, bool>> ChooseComparer(IEnumerable<int> comparedValue, FilterСomparison comparison)
         {
-            return value => value.Any(str => comparedValue.Contains(str));
+            return value => value.Any(number => comparedValue.Contains(number));
         }
     }
 }
