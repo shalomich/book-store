@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using App.Areas.Dashboard.Services;
+using App.Middlewares;
 
 namespace Store
 {
@@ -79,7 +80,7 @@ namespace Store
 
             app.UseRouting();
 
-            //app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseAuthentication();
             app.UseAuthorization();
