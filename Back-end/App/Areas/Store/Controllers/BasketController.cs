@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using static App.Areas.Common.RequestHandlers.CreateHandler;
@@ -58,9 +59,9 @@ namespace App.Areas.Store.Controllers
         }
 
         [HttpPost("product")]
-        public async Task<ActionResult<BasketProductDto>> AddBasketProduct(AddingBasketProduct addingProduct)
+        public async Task<ActionResult<BasketProductDto>> AddBasketProduct([FromBody] int productId)
         {
-            var product = (Product) await Mediator.Send(new GetByIdQuery(addingProduct.ProductId.Value, typeof(Product)));
+            var product = (Product) await Mediator.Send(new GetByIdQuery(productId, typeof(Product)));
 
             var basket = await GetUserBasket();
 
@@ -73,11 +74,11 @@ namespace App.Areas.Store.Controllers
         }
 
         [HttpPut("product/{id}")]
-        public async Task<ActionResult<BasketProductDto>> ChangeBasketProductQuantity(int id, QuantityChangedBasketProduct quantityChangedBasketProduct)
+        public async Task<ActionResult<BasketProductDto>> ChangeBasketProductQuantity(int id, [FromBody][Range(1,int.MaxValue)] int quantity)
         {
             var basketProduct = (BasketProduct) await Mediator.Send(new GetByIdQuery(id, typeof(BasketProduct)));
-            
-            basketProduct.Quantity = quantityChangedBasketProduct.Quantity;           
+
+            basketProduct.Quantity = quantity;
 
             await Mediator.Send(new UpdateCommand(id, basketProduct));
 
