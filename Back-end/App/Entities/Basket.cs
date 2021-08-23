@@ -12,5 +12,9 @@ namespace App.Entities
         public int UserId { set; get; }
         public virtual ISet<BasketProduct> BasketProducts { set; get; }
 
+        public int? TotalAmount => BasketProducts?.Sum(basketProduct => basketProduct.Quantity
+            * basketProduct.Product.Cost) ?? 0;
+
+        public int? TotalQuantity => BasketProducts?.Count() ?? 0;
     }
 }
