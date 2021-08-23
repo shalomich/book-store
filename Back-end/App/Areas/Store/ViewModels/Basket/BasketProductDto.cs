@@ -8,6 +8,7 @@ namespace App.Areas.Store.ViewModels.Basket
 {
     public record BasketProductDto
     {
+        public int Id { init; get; }
         public string Name { init; get; }
         public int Cost { init; get; }
         public int Quantity { init; get; }

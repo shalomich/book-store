@@ -15,6 +15,6 @@ namespace App.Entities
         public int? TotalAmount => BasketProducts?.Sum(basketProduct => basketProduct.Quantity
             * basketProduct.Product.Cost) ?? 0;
 
-        public int? TotalQuantity => BasketProducts?.Count() ?? 0;
+        public int? TotalQuantity => BasketProducts?.Sum(basketProduct => basketProduct.Quantity)?? 0;
     }
 }
