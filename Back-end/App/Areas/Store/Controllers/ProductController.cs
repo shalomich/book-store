@@ -18,10 +18,8 @@ using static App.Areas.Common.RequestHandlers.GetEntitiesHandler;
 
 namespace App.Areas.Store.Controllers
 {
-    [ApiController]
-    [Area("store")]
     [Route("[area]/product/[controller]")]
-    public abstract class ProductController<T> : Controller where T : Product
+    public abstract class ProductController<T> : StoreController where T : Product
     {
         protected IMediator Mediator;
         protected IMapper Mapper;

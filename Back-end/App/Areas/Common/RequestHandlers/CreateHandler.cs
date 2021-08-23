@@ -13,7 +13,7 @@ namespace App.Areas.Common.RequestHandlers
 {
     public class CreateHandler : IRequestHandler<CreateCommand, IEntity>
     {
-        public record CreateCommand(IEntity Entity) : IRequest<FormEntity>;
+        public record CreateCommand(IEntity Entity) : IRequest<IEntity>;
         private ApplicationContext Context { get; }
 
         public CreateHandler(ApplicationContext context)
