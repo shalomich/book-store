@@ -5,7 +5,8 @@ using App.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-namespace Auth.Middlewares
+
+namespace App.Middlewares
 {
     public class ErrorHandlingMiddleware
     {

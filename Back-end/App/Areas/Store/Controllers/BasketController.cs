@@ -83,5 +83,14 @@ namespace App.Areas.Store.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("product/{id}")]
+        public async Task<ActionResult<BasketProductDto>> DeleteBasketProduct(int id)
+        {
+            var basketProduct = (BasketProduct)await Mediator.Send(new GetByIdQuery(id, typeof(BasketProduct)));
+            await Mediator.Send(new DeleteCommand(basketProduct));
+
+            return NoContent();
+        }
     }
 }
