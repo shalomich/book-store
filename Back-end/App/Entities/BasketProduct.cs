@@ -12,7 +12,7 @@ namespace App.Entities
         public int BasketId { set; get; }
         public virtual Product Product { set; get; }
         public int ProductId { set; get; }
-        public int Quantity { set; get; }
+        public int Quantity { set; get; } = 1;
 
         public override bool Equals(object obj)
         {

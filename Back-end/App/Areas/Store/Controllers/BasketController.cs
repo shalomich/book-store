@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using static App.Areas.Common.RequestHandlers.CreateHandler;
 using static App.Areas.Common.RequestHandlers.DeleteHandler;
+using static App.Areas.Common.RequestHandlers.GetEntityByIdHandler;
 
 namespace App.Areas.Store.Controllers
 {
@@ -45,6 +46,29 @@ namespace App.Areas.Store.Controllers
             await Mediator.Send(new DeleteCommand(basket));
 
             return NoContent();
+        }
+
+        [HttpGet("product/{id}")]
+        public async Task<ActionResult<BasketProductDto>> GetBasketProduct(int id)
+        {
+            var basketProduct = (BasketProduct)await Mediator.Send(new GetByIdQuery(id, typeof(BasketProduct)));
+
+            return Mapper.Map<BasketProductDto>(basketProduct);
+        }
+
+        [HttpPost("product")]
+        public async Task<ActionResult<BasketProductDto>> AddBasketProduct(AddingBasketProduct addingProduct)
+        {
+            var product = (Product) await Mediator.Send(new GetByIdQuery(addingProduct.ProductId, typeof(Product)));
+
+            var basket = await GetUserBasket();
+
+            var basketProduct = new BasketProduct { Basket = basket, Product = product };
+
+            basketProduct = (BasketProduct) await Mediator.Send(new CreateCommand(basketProduct));
+
+            return CreatedAtAction(nameof(GetBasketProduct), new { id = basketProduct.Id }, 
+                Mapper.Map<BasketProductDto>(basketProduct));
         }
     }
 }

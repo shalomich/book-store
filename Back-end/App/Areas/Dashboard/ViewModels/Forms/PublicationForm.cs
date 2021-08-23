@@ -22,11 +22,11 @@ namespace App.Areas.Dashboard.ViewModels
 
         [Required]
         [FormField(FormFieldType.Select, "Издатель")]
-        public int PublisherId { init; get; }
+        public int? PublisherId { init; get; }
 
         [Required]
         [FormField(FormFieldType.Select, "Автор произведения")]
-        public int AuthorId { init; get; }
+        public int? AuthorId { init; get; }
 
         [FormField(FormFieldType.Select, "Тип произведения",false)]
         public int? TypeId { init; get; }
