@@ -69,6 +69,8 @@ namespace Store
             services.AddMediatR(GetType().Assembly);
             services.AddAutoMapper(GetType());
             services.AddCors();
+
+            services.AddSwaggerGen();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -77,6 +79,8 @@ namespace Store
             {
                 app.UseDeveloperExceptionPage();
             }
+
+           
 
             app.UseRouting();
 
@@ -90,6 +94,13 @@ namespace Store
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
         }
     }

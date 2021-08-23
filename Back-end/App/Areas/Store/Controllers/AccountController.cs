@@ -24,18 +24,6 @@ namespace App.Areas.Store.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        public IActionResult Hello()
-        {
-            return Content("hello");
-        }
-
-        [HttpGet("auth")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        public IActionResult HelloAuth()
-        {
-            return Content($"{User.Identity.IsAuthenticated}");
-        }
-
         [HttpPost("login")]
         public async Task<ActionResult<AuthorizedData>> LoginAsync(AuthForm authForm)
         {
