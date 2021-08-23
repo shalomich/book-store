@@ -21,7 +21,6 @@ namespace App.Areas.Store.Profiles
                     => mapper.MapFrom(basketProduct => basketProduct.Product.Album.TitleImage));
 
             CreateMap<Basket, BasketDto>();
-
         }
     }
 }

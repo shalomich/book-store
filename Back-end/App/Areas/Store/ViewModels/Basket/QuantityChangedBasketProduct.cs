@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace App.Areas.Store.ViewModels.Basket
 {
-    public record AddingBasketProduct
+    public record QuantityChangedBasketProduct
     {
-        [Required]
-        public int? ProductId { init; get; }
+        [Range(1,int.MaxValue)]
+        public int Quantity { init; get; }
     }
+ 
 }
