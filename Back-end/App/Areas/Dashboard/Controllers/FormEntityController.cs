@@ -26,14 +26,14 @@ namespace App.Areas.Dashboard.Controllers
 {
     [ApiController]
     [Area("dashboard")]
-    [Route("[area]/form/[controller]")]
+    [Route("[area]/form-entity/[controller]")]
     [GenericController()]
-    public class FormController<T> : Controller where T : EntityForm
+    public class FormEntityController<T> : Controller where T : EntityForm
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
-        public FormController(IMediator mediator, IMapper mapper)
+        public FormEntityController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -88,7 +88,7 @@ namespace App.Areas.Dashboard.Controllers
             return NoContent();
         }
 
-        [HttpGet("template")]
+        [HttpGet("form-template")]
         public IEnumerable<FormField> GetFormTemplate([FromServices] FormGenerator formConverter)
         {
             return formConverter.Convert(typeof(T));
