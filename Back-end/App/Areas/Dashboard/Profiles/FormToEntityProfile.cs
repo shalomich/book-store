@@ -1,4 +1,5 @@
-﻿using App.Areas.Dashboard.ViewModels;
+﻿using App.Areas.Common.ViewModels;
+using App.Areas.Dashboard.ViewModels;
 using App.Areas.Dashboard.ViewModels.Identities;
 using App.Entities;
 using App.Entities.Publications;
@@ -20,6 +21,8 @@ namespace App.Areas.Dashboard.Profiles
 
             CreateMap<FormEntity, FormEntityIdentity>()
                 .IncludeAllDerived();
+
+            CreateMap<FormEntitiesByQuery, FormEntityIdentitiesByQuery>();
         }
     }
 }

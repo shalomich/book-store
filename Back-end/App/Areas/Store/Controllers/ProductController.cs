@@ -36,12 +36,12 @@ namespace App.Areas.Store.Controllers
         {
             var productType = typeof(T);
             var products = (IQueryable<Product>) await Mediator.Send(new GetQuery(productType));
-            var productsByQuery = await Mediator.Send(new TransformQuery(products, args));
+            FormEntitiesByQuery productsByQuery = await Mediator.Send(new TransformQuery(products, args));
             var cards = productsByQuery.FormEntities
                 .ProjectTo<ProductCard>(Mapper.ConfigurationProvider)
                 .ToArray();
 
-            return new ProductCardsByQuery {Cards = cards, QueryErrors = productsByQuery.QueryErrors };
+            return Mapper.Map<ProductCardsByQuery>(productsByQuery) with { Cards = cards }; 
         }
 
         [HttpGet("{id}")]

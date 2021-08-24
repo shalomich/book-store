@@ -52,7 +52,8 @@ namespace App.Areas.Common.RequestHandlers
                 return new FormEntitiesByQuery 
                 { 
                     FormEntities = formEntities, 
-                    QueryErrors = DataTransformer.ErrorMesages 
+                    QueryErrors = DataTransformer.ErrorMesages,
+                    PaggingInfo = DataTransformer.PaggingInfo
                 };
             });
         }

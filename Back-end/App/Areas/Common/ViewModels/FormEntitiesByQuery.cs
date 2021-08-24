@@ -1,4 +1,5 @@
 ﻿using App.Entities;
+using QueryWorker.DataTransformers.Paggings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace App.Areas.Common.ViewModels
     {
         public IQueryable<FormEntity> FormEntities { init; get; }
         public string[] QueryErrors { init; get; }
+        public PaggingInfo PaggingInfo { init; get; }
     }
 }

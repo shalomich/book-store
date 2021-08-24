@@ -1,4 +1,5 @@
 ﻿using App.Areas.Dashboard.ViewModels.Identities;
+using QueryWorker.DataTransformers.Paggings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,9 @@ namespace App.Areas.Dashboard.ViewModels
 {
     public record FormEntityIdentitiesByQuery
     {
-        public FormEntityIdentity[] FormEntities { init; get; }
+        public FormEntityIdentity[] FormEntityIdentities { init; get; }
         public string[] QueryErrors { init; get; }
+        public PaggingInfo PaggingInfo { init; get; }
+
     }
 }
