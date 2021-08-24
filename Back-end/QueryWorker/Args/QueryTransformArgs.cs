@@ -8,12 +8,7 @@ namespace QueryWorker.Args
 {
     public record QueryTransformArgs
     {
-        [Range(1, int.MaxValue)]
-        public int PageSize { init; get; } = int.MaxValue;
-
-        [Required]
-        [Range(1, int.MaxValue)]
-        public int PageNumber { init; get; } = 1;
+        public PaggingArgs Pagging { init; get; } = new PaggingArgs();
         public SortingArgs[] Sortings { init; get; }
         public FilterArgs[] Filters { init; get; }
         public SearchArgs[] Searches { init; get; }

@@ -6,6 +6,7 @@ using System.Reflection;
 using QueryWorker.Args;
 using QueryWorker.Configurations;
 using QueryWorker.DataTransformers;
+using QueryWorker.DataTransformers.Paggings;
 using QueryWorker.Extensions;
 using QueryWorker.TransformerBuildNodes;
 
@@ -16,9 +17,9 @@ namespace QueryWorker
         private readonly TransformerBuildNode _queryHead;
         
         private readonly ConfigurationFinder _configurationFinder;
+        public PaggingInfo PaggingInfo { private set; get; } 
 
         private List<string> _errorMessages = new List<string>();
-
         public string[] ErrorMesages => _errorMessages.ToArray();
 
         public DataTransformerFacade(ConfigurationFinder configurationFinder)
@@ -34,10 +35,11 @@ namespace QueryWorker
 
         public IQueryable<T> Transform<T>(IQueryable<T> data, QueryTransformArgs args) where T : class
         {
-            Func<IQueryable<T>,IQueryable<T>> pagging = data => data.Page(args.PageSize, args.PageNumber);
+            var pagging = Pagging<T>.CreatePagging(data, args.Pagging);
+            PaggingInfo = pagging.PaggingInfo; 
 
             if (args.IsQueryEmpty)
-                return pagging(data);
+                return pagging.MakePage();
 
             QueryConfiguration<T> config;
             
@@ -48,7 +50,7 @@ namespace QueryWorker
             catch(Exception exception)
             {
                 _errorMessages.Add(exception.Message);
-                return pagging(data);
+                return pagging.MakePage();
             }
 
             
@@ -56,7 +58,10 @@ namespace QueryWorker
             
             _queryHead.FillQueue(queue, args, config);
 
-            return pagging(queue.Transform(data));
+            pagging = pagging with { Data = queue.Transform(data) };
+            PaggingInfo = pagging.PaggingInfo;
+
+            return pagging.MakePage();
         }
     }
 }

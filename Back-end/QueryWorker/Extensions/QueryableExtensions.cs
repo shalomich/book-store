@@ -17,16 +17,5 @@ namespace QueryWorker.Extensions
             => query.Expression.Type == typeof(IOrderedQueryable<T>)
                 ? ((IOrderedQueryable<T>)query).ThenByDescending(keySelector)
                 : query.OrderByDescending(keySelector);
-
-        public static IQueryable<T> Page<T>(this IQueryable<T> data, int pageSize, int pageNumber)
-        {
-            if (pageSize <= 0)
-                throw new ArgumentException();
-            
-            if (pageNumber <= 0)
-                throw new ArgumentException();
-
-            return data.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
-        }
     }
 }
