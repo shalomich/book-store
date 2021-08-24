@@ -14,7 +14,6 @@ namespace App
 {
     public class ApplicationContext : IdentityDbContext<User,Role,int>
     {
-        public DataTransformerFacade DataTransformer { get; }
         public DbSet<Publication> Publications { set; get; }
         public DbSet<Author> Authors { set; get; }
         public DbSet<Publisher> Publishers { set; get; }
@@ -25,13 +24,10 @@ namespace App
         public DbSet<Basket> Baskets { set; get; }
         public DbSet<BasketProduct> BasketProducts { set; get; }
 
-
-
-
-        public ApplicationContext(DbContextOptions<ApplicationContext> options, DataTransformerFacade dataTransformer) : base(options)
+        public ApplicationContext(DbContextOptions options) : base(options)
         {
-            DataTransformer = dataTransformer;
         }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

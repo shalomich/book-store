@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using static App.Areas.Common.RequestHandlers.CreateHandler;
 using static App.Areas.Common.RequestHandlers.DeleteHandler;
-using static App.Areas.Common.RequestHandlers.GetEntityByIdHandler;
+using static App.Areas.Common.RequestHandlers.GetByIdHandler;
 using static App.Areas.Common.RequestHandlers.UpdateHandler;
 
 namespace App.Areas.Store.Controllers

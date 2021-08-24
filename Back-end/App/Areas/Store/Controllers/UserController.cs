@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static App.Areas.Common.RequestHandlers.GetEntityByIdHandler;
+using static App.Areas.Common.RequestHandlers.GetByIdHandler;
 
 namespace App.Areas.Store.Controllers
 {

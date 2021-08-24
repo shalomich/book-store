@@ -16,7 +16,7 @@ namespace App.Areas.Common.RequestHandlers
 {
     public class TransformHandler : IRequestHandler<TransformQuery, FormEntitiesByQuery>
     {
-        public record TransformQuery(IQueryable<FormEntity> FormEntities, QueryArgs Args) : IRequest<FormEntitiesByQuery>;
+        public record TransformQuery(IQueryable<FormEntity> FormEntities, QueryTransformArgs Args) : IRequest<FormEntitiesByQuery>;
 
         private DataTransformerFacade DataTransformer { get; }
 
@@ -25,7 +25,7 @@ namespace App.Areas.Common.RequestHandlers
             DataTransformer = dataTransformer ?? throw new ArgumentNullException(nameof(dataTransformer));
         }
 
-        public async Task<FormEntitiesByQuery> Handle(TransformQuery request, CancellationToken cancellationToken)
+        public Task<FormEntitiesByQuery> Handle(TransformQuery request, CancellationToken cancellationToken)
         {
             var (formEntities, args) = request;
 
@@ -35,7 +35,7 @@ namespace App.Areas.Common.RequestHandlers
 
             formEntities = formEntities.AsQueryable();
 
-            return await Task.Run(() =>
+            return Task.Run(() =>
             {
                 formEntities = formEntityType.Name switch
                 {

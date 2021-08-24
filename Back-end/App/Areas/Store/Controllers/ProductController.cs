@@ -8,21 +8,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static App.Areas.Common.RequestHandlers.GetFormEntitiesHandler;
-using static App.Areas.Common.RequestHandlers.GetEntityByIdHandler;
+using static App.Areas.Common.RequestHandlers.GetByIdHandler;
 using App.Areas.Common.ViewModels;
 using App.Areas.Store.ViewModels.Cards;
 using App.Entities;
 using App.Areas.Store.ViewModels;
-using static App.Areas.Common.RequestHandlers.GetEntitiesHandler;
+using static App.Areas.Common.RequestHandlers.GetHandler;
+using static App.Areas.Common.RequestHandlers.TransformHandler;
+using AutoMapper.QueryableExtensions;
 
 namespace App.Areas.Store.Controllers
 {
     [Route("[area]/product/[controller]")]
     public abstract class ProductController<T> : StoreController where T : Product
     {
-        protected IMediator Mediator;
-        protected IMapper Mapper;
+        protected IMediator Mediator { get; }
+        protected IMapper Mapper { get; }
 
         public ProductController(IMediator mediator, IMapper mapper)
         {
@@ -31,14 +32,16 @@ namespace App.Areas.Store.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ValidQueryData<IEnumerable<ProductCard>>>> GetCards([FromQuery] QueryArgs queryParams)
+        public async Task<ActionResult<ProductCardsByQuery>> GetCards([FromQuery] QueryTransformArgs args)
         {
-            var validQueryProducts = await Mediator.Send(new GetFormEntitiesQuery(typeof(T), queryParams));
+            var productType = typeof(T);
+            var products = (IQueryable<Product>) await Mediator.Send(new GetQuery(productType));
+            var productsByQuery = await Mediator.Send(new TransformQuery(products, args));
+            var cards = productsByQuery.FormEntities
+                .ProjectTo<ProductCard>(Mapper.ConfigurationProvider)
+                .ToArray();
 
-            var productCards = validQueryProducts.Data
-                .Select(entity => Mapper.Map<ProductCard>(entity));
-
-            return Ok(new ValidQueryData<IEnumerable<ProductCard>>(productCards, validQueryProducts.Errors));
+            return new ProductCardsByQuery {Cards = cards, QueryErrors = productsByQuery.QueryErrors };
         }
 
         [HttpGet("{id}")]
@@ -51,11 +54,11 @@ namespace App.Areas.Store.Controllers
             return Ok(Mapper.Map(entity, productType, productCardType));
         }
 
-        protected async Task<IEnumerable<Option>> GetRelatedEntityOptions(Type relatedEntityType, PaggingArgs args)
+        protected async Task<IEnumerable<Option>> GetRelatedEntityOptions(Type relatedEntityType)
         {
-            var relatedEntities = await Mediator.Send(new GetEntitiesQuery(relatedEntityType, args));
+            var relatedEntities = (IQueryable<FormEntity>) await Mediator.Send(new GetQuery(relatedEntityType));
 
-            return relatedEntities.Select(genre => Mapper.Map<Option>(genre));
+            return relatedEntities.ProjectTo<Option>(Mapper.ConfigurationProvider).ToList();
         }
     }
 }

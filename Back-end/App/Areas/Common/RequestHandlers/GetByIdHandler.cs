@@ -6,18 +6,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using static App.Areas.Common.RequestHandlers.GetEntityByIdHandler;
+using static App.Areas.Common.RequestHandlers.GetByIdHandler;
 
 namespace App.Areas.Common.RequestHandlers
 {
-    public class GetEntityByIdHandler : IRequestHandler<GetByIdQuery, IEntity>
+    public class GetByIdHandler : IRequestHandler<GetByIdQuery, IEntity>
     {
         public record GetByIdQuery(int Id, Type EntityType) : IRequest<IEntity>;
         private ApplicationContext Context { get; }
 
         private const string WrongIdMessage = "Entity does not exist by this id";
 
-        public GetEntityByIdHandler(ApplicationContext context)
+        public GetByIdHandler(ApplicationContext context)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
         }
