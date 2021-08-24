@@ -30,7 +30,7 @@ namespace QueryWorker.TransformerBuildNodes
             _errorHandler = errorHandler ?? throw new ArgumentNullException(nameof(errorHandler));
         }
 
-        public void FillQueue<T>(QueryQueue<T> queue, QueryArgs queryArgs, 
+        public void FillQueue<T>(QueryQueue<T> queue, QueryTransformArgs queryArgs, 
             QueryConfiguration<T> config) where T : class
         {
             IDataTransformerArgs[] DataTransformerFacadeArgs = ChooseArgs(queryArgs);
@@ -54,6 +54,6 @@ namespace QueryWorker.TransformerBuildNodes
             _nextNode?.FillQueue(queue, queryArgs, config);
         }
 
-        protected abstract IDataTransformerArgs[] ChooseArgs(QueryArgs args);
+        protected abstract IDataTransformerArgs[] ChooseArgs(QueryTransformArgs args);
     }
 }

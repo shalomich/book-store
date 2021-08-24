@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using QueryWorker.Configurations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,10 @@ namespace QueryWorker.Extensions
     {
         public static IServiceCollection AddDataTransformer(this IServiceCollection services, Assembly currentAssembly)
         {
-            return services.AddSingleton(new DataTransformerFacade(currentAssembly));
+            services.AddSingleton(new ConfigurationFinder(currentAssembly));
+            services.AddScoped<DataTransformerFacade>();
+
+            return services;
         }
     }
 }

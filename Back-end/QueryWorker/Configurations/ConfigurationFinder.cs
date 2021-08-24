@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace QueryWorker.Configurations
 {
-    internal class ConfigurationFinder
+    public class ConfigurationFinder
     {
         private const string NotFoundConfigTemplateMesage = "Not found query configuration for type {0}";
         private readonly Assembly _assembly;

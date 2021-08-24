@@ -16,7 +16,7 @@ namespace QueryWorker.TransformerBuildNodes
         {
         }
 
-        protected override IDataTransformerArgs[] ChooseArgs(QueryArgs args)
+        protected override IDataTransformerArgs[] ChooseArgs(QueryTransformArgs args)
         {
             return args.Filters;
         }

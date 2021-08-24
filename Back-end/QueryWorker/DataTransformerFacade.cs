@@ -17,12 +17,13 @@ namespace QueryWorker
         
         private readonly ConfigurationFinder _configurationFinder;
 
-        private List<string> _errorMessages;
+        private List<string> _errorMessages = new List<string>();
+
         public string[] ErrorMesages => _errorMessages.ToArray();
 
-        public DataTransformerFacade(Assembly assembly)
+        public DataTransformerFacade(ConfigurationFinder configurationFinder)
         {
-            _configurationFinder = new ConfigurationFinder(assembly);
+            _configurationFinder = configurationFinder;
 
             Action<string> errorConservation = message => _errorMessages.Add(message);
 
@@ -31,12 +32,12 @@ namespace QueryWorker
                 .SetNextNode(new SortingBuildNode(errorConservation)));
         }
 
-        public IQueryable<T> Transform<T>(IQueryable<T> data, QueryArgs args) where T : class
+        public IQueryable<T> Transform<T>(IQueryable<T> data, QueryTransformArgs args) where T : class
         {
-            _errorMessages = new List<string>();
+            Func<IQueryable<T>,IQueryable<T>> pagging = data => data.Page(args.PageSize, args.PageNumber);
 
             if (args.IsQueryEmpty)
-                return Transform(data, args as PaggingArgs);
+                return pagging(data);
 
             QueryConfiguration<T> config;
             
@@ -47,7 +48,7 @@ namespace QueryWorker
             catch(Exception exception)
             {
                 _errorMessages.Add(exception.Message);
-                return Transform(data,args as PaggingArgs);
+                return pagging(data);
             }
 
             
@@ -55,12 +56,7 @@ namespace QueryWorker
             
             _queryHead.FillQueue(queue, args, config);
 
-            return Transform(queue.Transform(data), args as PaggingArgs);
-        }
-
-        public IQueryable<T> Transform<T>(IQueryable<T> data, PaggingArgs args) where T : class
-        {
-            return data.Page(args.PageSize, args.PageNumber);
+            return pagging(queue.Transform(data));
         }
     }
 }
