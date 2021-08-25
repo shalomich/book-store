@@ -1,0 +1,15 @@
+.product {
+  width: 10em;
+  height: 10em;
+  font-size: 1.4em;
+  margin: 1em;
+}
+
+
+.product-block {
+  display: table-cell;
+}
+
+.title {
+  margin-left: 2em;
+}

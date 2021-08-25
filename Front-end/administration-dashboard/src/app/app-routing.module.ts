@@ -8,6 +8,9 @@ const routes: Routes = [
   { path: 'products', component: MainPageComponent },
 ];
 
+/**
+ * Module for application routing.
+ */
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
