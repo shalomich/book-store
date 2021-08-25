@@ -46,7 +46,7 @@ namespace QueryWorker.DataTransformers.Paggings
                 if (value < MinPageNumber)
                     throw new ArgumentException();
 
-                if (value > PageCount)
+                if (value > PageCount && IsEmpty == false)
                     _pageNumber = PageCount;
                 else _pageNumber = value;
             }
@@ -56,11 +56,12 @@ namespace QueryWorker.DataTransformers.Paggings
             }
         }
 
+        private bool IsEmpty => DataCount == 0;
         public int DataCount => Data.Count();
         public int PageCount => (int)Math.Ceiling(DataCount / (double)PageSize);
 
-        public bool HasNextPage => PageNumber != PageCount;
-        public bool HasPreviousPage => PageNumber != MinPageNumber;
+        public bool HasNextPage => PageNumber != PageCount && IsEmpty == false;
+        public bool HasPreviousPage => PageNumber != MinPageNumber && IsEmpty == false;
 
         public PaggingInfo PaggingInfo => new PaggingInfo(PageSize, PageNumber, DataCount, PageCount, 
             HasNextPage, HasPreviousPage);

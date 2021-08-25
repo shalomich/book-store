@@ -36,10 +36,10 @@ namespace QueryWorker
         public IQueryable<T> Transform<T>(IQueryable<T> data, QueryTransformArgs args) where T : class
         {
             var pagging = Pagging<T>.CreatePagging(data, args.Pagging);
-            PaggingInfo = pagging.PaggingInfo; 
+            PaggingInfo = pagging.PaggingInfo;
 
             if (args.IsQueryEmpty)
-                return pagging.MakePage();
+                return data;//pagging.MakePage();
 
             QueryConfiguration<T> config;
             
@@ -57,6 +57,8 @@ namespace QueryWorker
             var queue = new QueryQueue<T>(); 
             
             _queryHead.FillQueue(queue, args, config);
+
+
 
             pagging = pagging with { Data = queue.Transform(data) };
             PaggingInfo = pagging.PaggingInfo;
