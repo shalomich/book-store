@@ -82,57 +82,7 @@ namespace App.Migrations
                     b.ToTable("BasketProducts");
                 });
 
-            modelBuilder.Entity("App.Entities.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("AddingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Cost")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<long>("Quantity")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("App.Entities.Products.Album", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TitleImageName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId")
-                        .IsUnique();
-
-                    b.ToTable("Albums");
-                });
-
-            modelBuilder.Entity("App.Entities.Publications.AgeLimit", b =>
+            modelBuilder.Entity("App.Entities.Books.AgeLimit", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -173,7 +123,53 @@ namespace App.Migrations
                         });
                 });
 
-            modelBuilder.Entity("App.Entities.Publications.CoverArt", b =>
+            modelBuilder.Entity("App.Entities.Books.BookType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("BookTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Художественная литература"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Манга"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Ранобэ"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Графический роман"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Артбук"
+                        });
+                });
+
+            modelBuilder.Entity("App.Entities.Books.CoverArt", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -204,7 +200,7 @@ namespace App.Migrations
                         });
                 });
 
-            modelBuilder.Entity("App.Entities.Publications.Genre", b =>
+            modelBuilder.Entity("App.Entities.Books.Genre", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -260,72 +256,76 @@ namespace App.Migrations
                         });
                 });
 
-            modelBuilder.Entity("App.Entities.Publications.GenrePublication", b =>
+            modelBuilder.Entity("App.Entities.Books.GenreBook", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
 
                     b.Property<int>("GenreId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PublicationId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("BookId");
 
                     b.HasIndex("GenreId");
 
-                    b.HasIndex("PublicationId");
-
-                    b.ToTable("GenrePublication");
+                    b.ToTable("GenreBook");
                 });
 
-            modelBuilder.Entity("App.Entities.Publications.PublicationType", b =>
+            modelBuilder.Entity("App.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("AddingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Cost")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<long>("Quantity")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("App.Entities.Products.Album", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TitleImageName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("PublicationTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Книга"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Манга"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Ранобэ"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Графический роман"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Артбук"
-                        });
+                    b.ToTable("Albums");
                 });
 
             modelBuilder.Entity("App.Entities.Publisher", b =>
@@ -379,14 +379,14 @@ namespace App.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "70e7f8d5-bd14-443b-8f21-13c83adc1815",
+                            ConcurrencyStamp = "23578efd-5f14-4054-8e9d-fbd5e1921c2c",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "a59b9e24-0ce5-4e75-a871-26665dbed366",
+                            ConcurrencyStamp = "e0558110-6e10-4132-9d64-6e370c3a839e",
                             Name = "customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -595,7 +595,7 @@ namespace App.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("App.Entities.Publication", b =>
+            modelBuilder.Entity("App.Entities.Book", b =>
                 {
                     b.HasBaseType("App.Entities.Product");
 
@@ -604,6 +604,9 @@ namespace App.Migrations
 
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
+
+                    b.Property<string>("BookFormat")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CoverArtId")
                         .HasColumnType("int");
@@ -617,9 +620,6 @@ namespace App.Migrations
 
                     b.Property<int?>("PageQuantity")
                         .HasColumnType("int");
-
-                    b.Property<string>("PublicationFormat")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PublisherId")
                         .HasColumnType("int");
@@ -647,7 +647,7 @@ namespace App.Migrations
                     b.HasIndex("Name", "ReleaseYear", "AuthorId", "PublisherId")
                         .IsUnique();
 
-                    b.ToTable("Publications");
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("App.Entities.Basket", b =>
@@ -680,6 +680,25 @@ namespace App.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("App.Entities.Books.GenreBook", b =>
+                {
+                    b.HasOne("App.Entities.Book", "Book")
+                        .WithMany("GenresBooks")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Entities.Books.Genre", "Genre")
+                        .WithMany("Books")
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Genre");
+                });
+
             modelBuilder.Entity("App.Entities.Products.Album", b =>
                 {
                     b.HasOne("App.Entities.Product", "Product")
@@ -689,25 +708,6 @@ namespace App.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("App.Entities.Publications.GenrePublication", b =>
-                {
-                    b.HasOne("App.Entities.Publications.Genre", "Genre")
-                        .WithMany("Publications")
-                        .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("App.Entities.Publication", "Publication")
-                        .WithMany("GenresPublications")
-                        .HasForeignKey("PublicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Genre");
-
-                    b.Navigation("Publication");
                 });
 
             modelBuilder.Entity("App.Products.Entities.Image", b =>
@@ -772,9 +772,9 @@ namespace App.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("App.Entities.Publication", b =>
+            modelBuilder.Entity("App.Entities.Book", b =>
                 {
-                    b.HasOne("App.Entities.Publications.AgeLimit", "AgeLimit")
+                    b.HasOne("App.Entities.Books.AgeLimit", "AgeLimit")
                         .WithMany()
                         .HasForeignKey("AgeLimitId");
 
@@ -784,13 +784,13 @@ namespace App.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("App.Entities.Publications.CoverArt", "CoverArt")
+                    b.HasOne("App.Entities.Books.CoverArt", "CoverArt")
                         .WithMany()
                         .HasForeignKey("CoverArtId");
 
                     b.HasOne("App.Entities.Product", null)
                         .WithOne()
-                        .HasForeignKey("App.Entities.Publication", "Id")
+                        .HasForeignKey("App.Entities.Book", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
@@ -800,7 +800,7 @@ namespace App.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("App.Entities.Publications.PublicationType", "Type")
+                    b.HasOne("App.Entities.Books.BookType", "Type")
                         .WithMany()
                         .HasForeignKey("TypeId");
 
@@ -820,6 +820,11 @@ namespace App.Migrations
                     b.Navigation("BasketProducts");
                 });
 
+            modelBuilder.Entity("App.Entities.Books.Genre", b =>
+                {
+                    b.Navigation("Books");
+                });
+
             modelBuilder.Entity("App.Entities.Product", b =>
                 {
                     b.Navigation("Album");
@@ -832,19 +837,14 @@ namespace App.Migrations
                     b.Navigation("Images");
                 });
 
-            modelBuilder.Entity("App.Entities.Publications.Genre", b =>
-                {
-                    b.Navigation("Publications");
-                });
-
             modelBuilder.Entity("App.Entities.User", b =>
                 {
                     b.Navigation("Basket");
                 });
 
-            modelBuilder.Entity("App.Entities.Publication", b =>
+            modelBuilder.Entity("App.Entities.Book", b =>
                 {
-                    b.Navigation("GenresPublications");
+                    b.Navigation("GenresBooks");
                 });
 #pragma warning restore 612, 618
         }

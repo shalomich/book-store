@@ -134,7 +134,7 @@ namespace App.Migrations
                     b.ToTable("Albums");
                 });
 
-            modelBuilder.Entity("App.Entities.Publications.AgeLimit", b =>
+            modelBuilder.Entity("App.Entities.Books.AgeLimit", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -175,7 +175,7 @@ namespace App.Migrations
                         });
                 });
 
-            modelBuilder.Entity("App.Entities.Publications.CoverArt", b =>
+            modelBuilder.Entity("App.Entities.Books.CoverArt", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -206,7 +206,7 @@ namespace App.Migrations
                         });
                 });
 
-            modelBuilder.Entity("App.Entities.Publications.Genre", b =>
+            modelBuilder.Entity("App.Entities.Books.Genre", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -262,7 +262,7 @@ namespace App.Migrations
                         });
                 });
 
-            modelBuilder.Entity("App.Entities.Publications.GenrePublication", b =>
+            modelBuilder.Entity("App.Entities.Books.GenrePublication", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -284,7 +284,7 @@ namespace App.Migrations
                     b.ToTable("GenrePublication");
                 });
 
-            modelBuilder.Entity("App.Entities.Publications.PublicationType", b =>
+            modelBuilder.Entity("App.Entities.Books.PublicationType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -693,9 +693,9 @@ namespace App.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("App.Entities.Publications.GenrePublication", b =>
+            modelBuilder.Entity("App.Entities.Books.GenrePublication", b =>
                 {
-                    b.HasOne("App.Entities.Publications.Genre", "Genre")
+                    b.HasOne("App.Entities.Books.Genre", "Genre")
                         .WithMany("Publications")
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -776,7 +776,7 @@ namespace App.Migrations
 
             modelBuilder.Entity("App.Entities.Publication", b =>
                 {
-                    b.HasOne("App.Entities.Publications.AgeLimit", "AgeLimit")
+                    b.HasOne("App.Entities.Books.AgeLimit", "AgeLimit")
                         .WithMany()
                         .HasForeignKey("AgeLimitId");
 
@@ -786,7 +786,7 @@ namespace App.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("App.Entities.Publications.CoverArt", "CoverArt")
+                    b.HasOne("App.Entities.Books.CoverArt", "CoverArt")
                         .WithMany()
                         .HasForeignKey("CoverArtId");
 
@@ -802,7 +802,7 @@ namespace App.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("App.Entities.Publications.PublicationType", "Type")
+                    b.HasOne("App.Entities.Books.PublicationType", "Type")
                         .WithMany()
                         .HasForeignKey("TypeId");
 
@@ -834,7 +834,7 @@ namespace App.Migrations
                     b.Navigation("Images");
                 });
 
-            modelBuilder.Entity("App.Entities.Publications.Genre", b =>
+            modelBuilder.Entity("App.Entities.Books.Genre", b =>
                 {
                     b.Navigation("Publications");
                 });

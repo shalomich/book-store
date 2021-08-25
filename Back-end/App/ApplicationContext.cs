@@ -1,7 +1,7 @@
 ﻿
 using App.DatabaseConfigs;
 using App.Entities;
-using App.Entities.Publications;
+using App.Entities.Books;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using QueryWorker;
@@ -14,10 +14,10 @@ namespace App
 {
     public class ApplicationContext : IdentityDbContext<User,Role,int>
     {
-        public DbSet<Publication> Publications { set; get; }
+        public DbSet<Book> Books { set; get; }
         public DbSet<Author> Authors { set; get; }
         public DbSet<Publisher> Publishers { set; get; }
-        public DbSet<PublicationType> PublicationTypes { set; get; }
+        public DbSet<BookType> BookTypes { set; get; }
         public DbSet<AgeLimit> AgeLimits { set; get; }
         public DbSet<CoverArt> CoverArts { set; get; }
         public DbSet<Genre> Genres { set; get; }

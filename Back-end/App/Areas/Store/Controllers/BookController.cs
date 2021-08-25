@@ -1,6 +1,6 @@
 ﻿using App.Areas.Store.ViewModels;
 using App.Entities;
-using App.Entities.Publications;
+using App.Entities.Books;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace App.Areas.Store.Controllers
 {
-    public class PublicationController : ProductController<Publication>
+    public class BookController : ProductController<Book>
     {
-        public PublicationController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
+        public BookController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
         }
 
@@ -27,7 +27,7 @@ namespace App.Areas.Store.Controllers
         [HttpGet("type")]
         public async Task<IEnumerable<Option>> GetTypeOptions()
         {
-            return await GetRelatedEntityOptions(typeof(PublicationType));
+            return await GetRelatedEntityOptions(typeof(BookType));
         }
 
         [HttpGet("age-limit")]

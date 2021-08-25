@@ -10,11 +10,11 @@ namespace App.QueryConfigs
     {
         protected ProductQueryConfig()
         {
-            CreateSorting("cost", publication => publication.Cost);
-            CreateSorting("addingDate", publication => publication.AddingDate);
+            CreateSorting("cost", book => book.Cost);
+            CreateSorting("addingDate", book => book.AddingDate);
 
-            CreateFilter("cost", publication => publication.Cost);
-            CreateFilter("quantity", publication => publication.Quantity);
+            CreateFilter("cost", book => book.Cost);
+            CreateFilter("quantity", book => book.Quantity);
         }
     }
 }

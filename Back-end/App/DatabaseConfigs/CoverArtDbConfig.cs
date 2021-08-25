@@ -1,4 +1,4 @@
-﻿using App.Entities.Publications;
+﻿using App.Entities.Books;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
@@ -15,10 +15,10 @@ namespace App.DatabaseConfigs
 
             builder.HasIndex(type => type.Name).IsUnique();
 
-            builder.HasData(new PublicationType[]
+            builder.HasData(new BookType[]
             {
-                new PublicationType {Id = 1, Name = "Мягкая"},
-                new PublicationType {Id = 2, Name = "Твердая"}
+                new BookType {Id = 1, Name = "Мягкая"},
+                new BookType {Id = 2, Name = "Твердая"}
             });
         }
     }

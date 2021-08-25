@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace App.Areas.Dashboard.ViewModels
 {
     [FormModel]
-    public record PublicationTypeForm : EntityForm
+    public record BookTypeForm : EntityForm
     {
         [Required]
         [FormField(FormFieldType.Text, "Тип издания")]

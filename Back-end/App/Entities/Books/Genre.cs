@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace App.Entities.Publications
+namespace App.Entities.Books
 {
     public class Genre : FormEntity
     {
-        public virtual ISet<GenrePublication> Publications { set; get; } 
+        public virtual ISet<GenreBook> Books { set; get; } 
     }
 }

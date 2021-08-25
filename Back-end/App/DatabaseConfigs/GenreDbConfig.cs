@@ -1,4 +1,4 @@
-﻿using App.Entities.Publications;
+﻿using App.Entities.Books;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;

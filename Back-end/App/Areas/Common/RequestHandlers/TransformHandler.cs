@@ -1,6 +1,6 @@
 ﻿using App.Areas.Common.ViewModels;
 using App.Entities;
-using App.Entities.Publications;
+using App.Entities.Books;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using QueryWorker;
@@ -42,10 +42,10 @@ namespace App.Areas.Common.RequestHandlers
                     nameof(Author) => DataTransformer.Transform((IQueryable<Author>)formEntities, args),
                     nameof(Publisher) => DataTransformer.Transform((IQueryable<Publisher>)formEntities, args),
                     nameof(Genre) => DataTransformer.Transform((IQueryable<Genre>)formEntities, args),
-                    nameof(PublicationType) => DataTransformer.Transform((IQueryable<PublicationType>)formEntities, args),
+                    nameof(BookType) => DataTransformer.Transform((IQueryable<BookType>)formEntities, args),
                     nameof(AgeLimit) => DataTransformer.Transform((IQueryable<AgeLimit>)formEntities, args),
                     nameof(CoverArt) => DataTransformer.Transform((IQueryable<CoverArt>)formEntities, args),
-                    nameof(Publication) => DataTransformer.Transform((IQueryable<Publication>)formEntities, args),
+                    nameof(Book) => DataTransformer.Transform((IQueryable<Book>)formEntities, args),
                     _ => throw new ArgumentException()
                 };
 

@@ -2,7 +2,7 @@
 using App.Areas.Dashboard.ViewModels;
 using App.Areas.Dashboard.ViewModels.Identities;
 using App.Entities;
-using App.Entities.Publications;
+using App.Entities.Books;
 using AutoMapper;
 using System;
 using System.Collections.Generic;

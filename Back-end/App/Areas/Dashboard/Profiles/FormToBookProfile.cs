@@ -1,7 +1,7 @@
 ﻿using App.Areas.Dashboard.ViewModels;
 using App.Areas.Dashboard.ViewModels.Identities;
 using App.Entities;
-using App.Entities.Publications;
+using App.Entities.Books;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -10,18 +10,18 @@ using System.Threading.Tasks;
 
 namespace App.Areas.Dashboard.Profiles
 {
-    public class FormToPublicationProfile : Profile
+    public class FormToBookProfile : Profile
     {
-        public FormToPublicationProfile()
+        public FormToBookProfile()
         {
-            CreateMap<Publication, ProductIdentity>();
-            CreateMap<PublicationForm, Publication>()
-                .ForMember(publication => publication.GenresPublications,
+            CreateMap<Book, ProductIdentity>();
+            CreateMap<BookForm, Book>()
+                .ForMember(book => book.GenresBooks,
                     mapper => mapper.MapFrom(form => form.GenreIds
-                    .Select(id => new GenrePublication { GenreId = id })))
+                    .Select(id => new GenreBook { GenreId = id })))
             .ReverseMap()
                 .ForMember(form => form.GenreIds,
-                    mapper => mapper.MapFrom(publication => publication.GenresPublications
+                    mapper => mapper.MapFrom(book => book.GenresBooks
                         .Select(genre => genre.GenreId)));
 
             CreateMap<AuthorForm, Author>()
@@ -45,7 +45,7 @@ namespace App.Areas.Dashboard.Profiles
             CreateMap<CoverArtForm, CoverArt>()
               .ReverseMap();
 
-            CreateMap<PublicationTypeForm, PublicationType>()
+            CreateMap<BookTypeForm, BookType>()
               .ReverseMap();
 
             CreateMap<AgeLimitForm, AgeLimit>()

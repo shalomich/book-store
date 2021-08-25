@@ -69,7 +69,7 @@ namespace App.Areas.Dashboard.Controllers
             var entity = (FormEntity) Mapper.Map(entityForm, typeof(T), FormEntityType);
             var createdEntity = await Mediator.Send(new CreateCommand(entity));
 
-            return CreatedAtAction(nameof(Read), new { id = createdEntity.Id }, createdEntity);
+            return CreatedAtAction(nameof(Read), new { id = createdEntity.Id }, Mapper.Map<T>(createdEntity));
         }
 
         [HttpPut("{id}")]

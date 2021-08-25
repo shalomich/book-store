@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 namespace App.Areas.Dashboard.ViewModels
 {
     [FormModel]
-    public record PublicationForm : ProductForm
+    public record BookForm : ProductForm
     {
         [Required]
-        [RegularExpression(Publication.IsbnTemplate)]
+        [RegularExpression(Book.IsbnTemplate)]
         public string Isbn { init; get; }
 
         [Required]
-        [Range(Publication.MinReleaseYear, int.MaxValue)]
+        [Range(Book.MinReleaseYear, int.MaxValue)]
         [FormField(FormFieldType.Number, "Год издания")]
         public int ReleaseYear { init; get; }
 
@@ -43,9 +43,9 @@ namespace App.Areas.Dashboard.ViewModels
         [FormField(FormFieldType.Select, "Тип обложки", false)]
         public int? CoverArtId { init; get; }
 
-        [RegularExpression(Publication.FormatTemplate)]
+        [RegularExpression(Book.FormatTemplate)]
         [FormField(FormFieldType.Text, "Размеры", false)]
-        public string PublicationFormat { init; get; }
+        public string BookFormat { init; get; }
 
         [Range(1,int.MaxValue)]
         [FormField(FormFieldType.Number, "Количество страниц", false)]

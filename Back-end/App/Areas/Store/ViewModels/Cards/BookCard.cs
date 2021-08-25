@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace App.Areas.Store.ViewModels.Cards
 {
-    public record PublicationCard : FullProductCard
+    public record BookCard : FullProductCard
     {
         public string Isbn { init; get; }
         public int ReleaseYear { init; get; }
@@ -16,7 +16,7 @@ namespace App.Areas.Store.ViewModels.Cards
         public string OriginalName { init; get; }
         public string AgeLimit { init; get; }
         public string CoverArt { init; get; } 
-        public string PublicationFormat { init; get; }    
+        public string BookFormat { init; get; }    
         public int? PageQuantity { init; get; }
      
     }
