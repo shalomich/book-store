@@ -1,10 +1,10 @@
 [
   {
-    "type": "books",
+    "type": "book",
     "name": "Книги"
   },
   {
-    "type": "pencils",
+    "type": "pencil",
     "name": "Карандаши"
   }
 ]
