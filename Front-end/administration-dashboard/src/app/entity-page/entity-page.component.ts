@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Observable, of } from 'rxjs';
+
+import { EntityPreview } from '../core/models/entity-preview';
+import Books from '../../books.json';
 
 @Component({
   selector: 'app-entity-page',
@@ -8,10 +12,14 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class EntityPageComponent implements OnInit {
 
-  private readonly entityName: string;
+  public readonly entityName: string;
+
+  private readonly entityList$: Observable<EntityPreview[]>;
 
   public constructor(private readonly activatedRoute: ActivatedRoute) {
     this.entityName = this.activatedRoute.snapshot.params.entity;
+
+    this.entityList$ = of(Books);
   }
 
   public ngOnInit(): void {
