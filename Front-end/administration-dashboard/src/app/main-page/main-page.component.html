@@ -1,7 +1,7 @@
 <h1 class="title">Товары</h1>
 <ul>
   <div>
-    <button class="product" id="{{product.type}}" *ngFor="let product of products$ | async">
+    <button routerLink="{{product.type}}" class="product" id="{{product.type}}" *ngFor="let product of products$ | async">
       {{product.name}}
     </button>
   </div>
