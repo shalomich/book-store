@@ -9,7 +9,7 @@ export class EntityPreview {
   public readonly name: string;
 
   /** Entity item's title image. */
-  public readonly titleImage: ImageDto;
+  public readonly titleImage?: ImageDto;
 
   public constructor(entity: EntityPreview) {
     this.id = entity.id;

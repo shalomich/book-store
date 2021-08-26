@@ -22,4 +22,8 @@ export class MainPageComponent implements OnInit {
   public ngOnInit(): void {
   }
 
+  public handleEntityClick(): void {
+
+  }
+
 }

@@ -10,5 +10,5 @@ export interface EntityPreviewDto {
   readonly name: string;
 
   /** Entity item's title image. */
-  readonly titleImage: ImageDto;
+  readonly titleImage?: ImageDto;
 }
