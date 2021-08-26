@@ -2,8 +2,8 @@
 export interface Products {
 
   /** Product's type. */
-  type: 'books';
+  type: string;
 
   /** Product's name. */
-  name: 'Книги';
+  name: string;
 }
