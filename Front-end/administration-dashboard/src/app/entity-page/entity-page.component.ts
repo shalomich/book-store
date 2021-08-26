@@ -14,7 +14,7 @@ export class EntityPageComponent implements OnInit {
 
   public readonly entityName: string;
 
-  private readonly entityList$: Observable<EntityPreview[]>;
+  public readonly entityList$: Observable<EntityPreview[]>;
 
   public constructor(private readonly activatedRoute: ActivatedRoute) {
     this.entityName = this.activatedRoute.snapshot.params.entity;
