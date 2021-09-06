@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\QueryWorker\QueryWorker.csproj" />
-    <ProjectReference Include="..\Storage\App.csproj" />
   </ItemGroup>
 
 </Project>
