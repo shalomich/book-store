@@ -9,7 +9,7 @@ import { IMapper } from './mapper/mapper';
  * Mapper for film entity.
  */
 @Injectable({ providedIn: 'root' })
-export class FilmMapper implements IMapper<EntityPreviewDto, EntityPreview> {
+export class EntityPreviewMapper implements IMapper<EntityPreviewDto, EntityPreview> {
 
   /** @inheritdoc */
   public toDto(data: EntityPreview): EntityPreviewDto {

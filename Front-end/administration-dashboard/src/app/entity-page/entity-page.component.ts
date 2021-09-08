@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 
 import { EntityPreview } from '../core/models/entity-preview';
 import Books from '../../books.json';
+import { EntityPreviewService } from '../core/services/entity-preview.service';
 
 @Component({
   selector: 'app-entity-page',
@@ -16,15 +17,16 @@ export class EntityPageComponent implements OnInit {
 
   public readonly entityList$: Observable<EntityPreview[]>;
 
-  public constructor(private readonly activatedRoute: ActivatedRoute) {
+  public constructor(
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly entityPreviewService: EntityPreviewService,
+  ) {
     this.entityName = this.activatedRoute.snapshot.params.entity;
 
-    this.entityList$ = of(Books);
+    this.entityList$ = this.entityPreviewService.getEntityPreview(this.entityName);
   }
 
   public ngOnInit(): void {
-    // eslint-disable-next-line no-console
-    console.log(this.entityName);
   }
 
 }
