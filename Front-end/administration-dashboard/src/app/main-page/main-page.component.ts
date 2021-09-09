@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import ProductsConfig from '../../products-config.json';
 
 import { Products } from '../core/interfaces/products';
-import {paths} from '../core/utils/paths';
+import { paths } from '../core/utils/paths';
 
 /** Main page's component. */
 @Component({
@@ -16,10 +16,9 @@ import {paths} from '../core/utils/paths';
 })
 export class MainPageComponent implements OnInit {
 
-  public readonly products$: Observable<Products[]>;
+  public readonly products = ProductsConfig as Products[];
 
-  public constructor(private readonly router: Router) {
-    this.products$ = of(ProductsConfig as Products[]);
+  public constructor() {
   }
 
   public ngOnInit(): void {
