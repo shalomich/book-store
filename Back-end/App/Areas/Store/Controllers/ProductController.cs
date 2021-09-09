@@ -16,6 +16,8 @@ using App.Areas.Store.ViewModels;
 using static App.Areas.Common.RequestHandlers.GetHandler;
 using static App.Areas.Common.RequestHandlers.TransformHandler;
 using AutoMapper.QueryableExtensions;
+using QueryWorker;
+using static App.Areas.Common.RequestHandlers.GetQueryMetadataHandler;
 
 namespace App.Areas.Store.Controllers
 {
@@ -50,6 +52,16 @@ namespace App.Areas.Store.Controllers
             var entity = await Mediator.Send(new GetByIdQuery(id, productType));
 
             return Ok(Mapper.Map(entity, productType, productCardType));
+        }
+
+        [HttpGet("metadata")]
+        public async Task<QueryMetadata> GetQueryMetadata([FromQuery] QueryTransformArgs args)
+        {
+            var productType = typeof(T);
+
+            var products = (IQueryable<Product>)await Mediator.Send(new GetQuery(productType));
+
+            return await Mediator.Send(new GetMetadataQuery(products, args));
         }
 
         protected async Task<IEnumerable<Option>> GetRelatedEntityOptions(Type relatedEntityType)

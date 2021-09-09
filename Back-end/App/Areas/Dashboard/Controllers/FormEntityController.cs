@@ -23,6 +23,8 @@ using Microsoft.AspNetCore.Authorization;
 using static App.Areas.Common.RequestHandlers.GetHandler;
 using static App.Areas.Common.RequestHandlers.TransformHandler;
 using AutoMapper.QueryableExtensions;
+using QueryWorker;
+using static App.Areas.Common.RequestHandlers.GetQueryMetadataHandler;
 
 namespace App.Areas.Dashboard.Controllers
 {
@@ -44,7 +46,6 @@ namespace App.Areas.Dashboard.Controllers
         private Type FormEntityType => Mapper.GetSourceType(typeof(T));
 
         [HttpGet]
-
         public async Task<ActionResult<FormEntityIdentity[]>> Read([FromQuery] QueryTransformArgs args)
         {
             var formEntities = (IQueryable<FormEntity>) await Mediator.Send(new GetQuery(FormEntityType));
@@ -60,6 +61,14 @@ namespace App.Areas.Dashboard.Controllers
         {
             var entity = (FormEntity) await Mediator.Send(new GetByIdQuery(id, FormEntityType));
             return Ok(Mapper.Map<T>(entity));
+        }
+
+        [HttpGet("metadata")]
+        public async Task<QueryMetadata> GetQueryMetadata([FromQuery] QueryTransformArgs args)
+        {
+            var formEntities = (IQueryable<FormEntity>) await Mediator.Send(new GetQuery(FormEntityType));
+
+            return await Mediator.Send(new GetMetadataQuery(formEntities, args));
         }
 
         [HttpPost] 
