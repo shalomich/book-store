@@ -48,5 +48,25 @@ namespace QueryWorker.TransformerBuildNodes
 
         protected abstract IDataTransformerArgs[] ChooseArgs(QueryTransformArgs args);
 
+        public void CheckBrokenDataTransformers<T>(QueryMetadata metadata, QueryTransformArgs queryArgs,
+            QueryConfiguration<T> config) where T : class
+        {
+            IDataTransformerArgs[] DataTransformerFacadeArgs = ChooseArgs(queryArgs);
+
+            if (DataTransformerFacadeArgs != null)
+            {
+                foreach (var args in DataTransformerFacadeArgs)
+                {
+                    try
+                    {
+                        config.BuildTransformer(args);         
+                    }
+                    catch (Exception)
+                    {
+                        metadata.AddBrokenDataTransformerArgs(args);
+                    }
+                }
+            }
+        }
     }
 }
