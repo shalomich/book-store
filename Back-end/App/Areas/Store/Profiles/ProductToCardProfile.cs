@@ -25,8 +25,6 @@ namespace App.Areas.Store.Profiles
                 .ForMember(card => card.NotTitleImages, mapper =>
                     mapper.MapFrom(product => product.Album.NotTitleImages))
                 .IncludeAllDerived();
-
-            CreateMap<FormEntitiesByQuery, ProductCardsByQuery>();
         }
     }
 }

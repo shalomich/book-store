@@ -63,7 +63,7 @@ namespace QueryWorker.DataTransformers.Paggings
         public bool HasNextPage => PageNumber != PageCount && IsEmpty == false;
         public bool HasPreviousPage => PageNumber != MinPageNumber && IsEmpty == false;
 
-        public PaggingInfo PaggingInfo => new PaggingInfo(PageSize, PageNumber, DataCount, PageCount, 
+        public PaggingMetadata PaggingInfo => new PaggingMetadata(PageSize, PageNumber, DataCount, PageCount, 
             HasNextPage, HasPreviousPage);
 
 

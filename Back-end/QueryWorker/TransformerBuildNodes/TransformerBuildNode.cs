@@ -12,10 +12,7 @@ namespace QueryWorker.TransformerBuildNodes
 {
     internal abstract class TransformerBuildNode
     {
-        private const string BuildingFailTemplateMessage = "Error of building {0}";
-
-        private readonly Action<string> _errorHandler;
-
+       
         protected TransformerBuildNode _nextNode;
 
         public TransformerBuildNode SetNextNode(TransformerBuildNode nextNode)
@@ -23,11 +20,6 @@ namespace QueryWorker.TransformerBuildNodes
             _nextNode = nextNode;
 
             return this;
-        }
-
-        protected TransformerBuildNode(Action<string> errorHandler)
-        {
-            _errorHandler = errorHandler ?? throw new ArgumentNullException(nameof(errorHandler));
         }
 
         public void FillQueue<T>(QueryQueue<T> queue, QueryTransformArgs queryArgs, 
@@ -46,7 +38,7 @@ namespace QueryWorker.TransformerBuildNodes
                     }
                     catch(Exception)
                     {
-                        _errorHandler(string.Format(BuildingFailTemplateMessage, args.ToString()));
+                        continue;
                     }
                 }
             }
@@ -55,5 +47,6 @@ namespace QueryWorker.TransformerBuildNodes
         }
 
         protected abstract IDataTransformerArgs[] ChooseArgs(QueryTransformArgs args);
+
     }
 }

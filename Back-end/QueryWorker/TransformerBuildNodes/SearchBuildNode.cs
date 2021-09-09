@@ -10,10 +10,6 @@ namespace QueryWorker.TransformerBuildNodes
 {
     internal class SearchBuildNode : TransformerBuildNode
     {
-        public SearchBuildNode(Action<string> errorHandler) : base(errorHandler)
-        {
-        }
-
         protected override IDataTransformerArgs[] ChooseArgs(QueryTransformArgs args)
         {
             return args.Searches;

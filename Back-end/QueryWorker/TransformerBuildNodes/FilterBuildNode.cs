@@ -12,10 +12,6 @@ namespace QueryWorker.TransformerBuildNodes
 {
     internal class FilterBuildNode : TransformerBuildNode
     {
-        public FilterBuildNode(Action<string> errorHandler) : base(errorHandler)
-        {
-        }
-
         protected override IDataTransformerArgs[] ChooseArgs(QueryTransformArgs args)
         {
             return args.Filters;
