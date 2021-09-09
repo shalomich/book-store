@@ -32,9 +32,6 @@ namespace QueryWorker
 
         public IQueryable<T> Transform<T>(IQueryable<T> data, QueryTransformArgs args) where T : class
         {
-            if (args.IsQueryEmpty)
-                return data;
-
             QueryConfiguration<T> config = _configurationFinder.Find<T>();
            
             var queue = new QueryQueue<T>(); 
@@ -44,6 +41,19 @@ namespace QueryWorker
             var pagging = _paggingFactory.Create(data, args.Pagging);
 
             return pagging.MakePage();
+        }
+
+        public QueryMetadata GetQueryMetadata<T>(IQueryable<T> data, QueryTransformArgs args) where T : class
+        {
+            QueryConfiguration<T> config = _configurationFinder.Find<T>();
+
+            var pagging = _paggingFactory.Create(data, args.Pagging);
+
+            var metaData = new QueryMetadata(pagging.Metadata);
+
+            _queryHead.CheckBrokenDataTransformers(metaData, args, config);
+
+            return metaData;
         }
     }
 }
