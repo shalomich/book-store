@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 import ProductsConfig from '../../products-config.json';
 
-import { Products } from '../core/interfaces/products';
+import { ProductType } from '../core/interfaces/product-type';
 import { paths } from '../core/utils/paths';
 
 /** Main page's component. */
@@ -16,7 +16,7 @@ import { paths } from '../core/utils/paths';
 })
 export class MainPageComponent implements OnInit {
 
-  public readonly products = ProductsConfig as Products[];
+  public readonly products = ProductsConfig as ProductType[];
 
   public constructor() {
   }
