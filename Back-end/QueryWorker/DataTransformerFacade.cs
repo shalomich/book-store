@@ -17,8 +17,8 @@ namespace QueryWorker
         private readonly TransformerBuildNode _queryHead;
         
         private readonly ConfigurationFinder _configurationFinder;
-        public PaggingMetadata PaggingInfo { private set; get; } 
 
+        private readonly PaggingFactory _paggingFactory;
         public DataTransformerFacade(ConfigurationFinder configurationFinder)
         {
             _configurationFinder = configurationFinder;
@@ -26,26 +26,22 @@ namespace QueryWorker
             _queryHead = new FilterBuildNode()
                 .SetNextNode(new SearchBuildNode()
                 .SetNextNode(new SortingBuildNode()));
+
+            _paggingFactory = new PaggingFactory();
         }
 
         public IQueryable<T> Transform<T>(IQueryable<T> data, QueryTransformArgs args) where T : class
         {
-            var pagging = Pagging<T>.CreatePagging(data, args.Pagging);
-            PaggingInfo = pagging.PaggingInfo;
-
             if (args.IsQueryEmpty)
                 return data;
 
-            QueryConfiguration<T> config;
-            
-            config = _configurationFinder.Find<T>();
+            QueryConfiguration<T> config = _configurationFinder.Find<T>();
            
             var queue = new QueryQueue<T>(); 
             
             _queryHead.FillQueue(queue, args, config);
 
-            pagging = pagging with { Data = queue.Transform(data) };
-            PaggingInfo = pagging.PaggingInfo;
+            var pagging = _paggingFactory.Create(data, args.Pagging);
 
             return pagging.MakePage();
         }
