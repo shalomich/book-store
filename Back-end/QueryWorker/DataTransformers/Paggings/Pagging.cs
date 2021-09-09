@@ -63,18 +63,11 @@ namespace QueryWorker.DataTransformers.Paggings
         public bool HasNextPage => PageNumber != PageCount && IsEmpty == false;
         public bool HasPreviousPage => PageNumber != MinPageNumber && IsEmpty == false;
 
-        public PaggingMetadata PaggingInfo => new PaggingMetadata(PageSize, PageNumber, DataCount, PageCount, 
+        public PaggingMetadata Metadata => new PaggingMetadata(PageSize, PageNumber, DataCount, PageCount, 
             HasNextPage, HasPreviousPage);
 
 
         public abstract IQueryable<T> MakePage();
-
-        public static Pagging<T> CreatePagging(IQueryable<T> data, PaggingArgs args) => args.Type switch
-        {
-            PaggingType.Flip => new FlipPagging<T>(data) { PageSize = args.PageSize, PageNumber = args.PageNumber },
-            PaggingType.Scroll => new ScrollPagging<T>(data) { PageSize = args.PageSize, PageNumber = args.PageNumber },
-            _ => throw new ArgumentException()
-        };
     }
     
 
