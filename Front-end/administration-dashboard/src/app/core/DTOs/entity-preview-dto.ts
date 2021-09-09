@@ -1,5 +1,3 @@
-import { ImageDto } from './image-dto';
-
 /** Entity preview DTO object. */
 export interface EntityPreviewDto {
 
@@ -8,7 +6,4 @@ export interface EntityPreviewDto {
 
   /** Entity item's name. */
   readonly name: string;
-
-  /** Entity item's title image. */
-  readonly titleImage?: ImageDto;
 }
