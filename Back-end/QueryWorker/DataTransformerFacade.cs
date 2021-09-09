@@ -17,20 +17,15 @@ namespace QueryWorker
         private readonly TransformerBuildNode _queryHead;
         
         private readonly ConfigurationFinder _configurationFinder;
-        public PaggingInfo PaggingInfo { private set; get; } 
-
-        private List<string> _errorMessages = new List<string>();
-        public string[] ErrorMesages => _errorMessages.ToArray();
+        public PaggingMetadata PaggingInfo { private set; get; } 
 
         public DataTransformerFacade(ConfigurationFinder configurationFinder)
         {
             _configurationFinder = configurationFinder;
 
-            Action<string> errorConservation = message => _errorMessages.Add(message);
-
-            _queryHead = new FilterBuildNode(errorConservation)
-                .SetNextNode(new SearchBuildNode(errorConservation)
-                .SetNextNode(new SortingBuildNode(errorConservation)));
+            _queryHead = new FilterBuildNode()
+                .SetNextNode(new SearchBuildNode()
+                .SetNextNode(new SortingBuildNode()));
         }
 
         public IQueryable<T> Transform<T>(IQueryable<T> data, QueryTransformArgs args) where T : class
@@ -39,26 +34,15 @@ namespace QueryWorker
             PaggingInfo = pagging.PaggingInfo;
 
             if (args.IsQueryEmpty)
-                return data;//pagging.MakePage();
+                return data;
 
             QueryConfiguration<T> config;
             
-            try
-            {
-                config = _configurationFinder.Find<T>();
-            }
-            catch(Exception exception)
-            {
-                _errorMessages.Add(exception.Message);
-                return pagging.MakePage();
-            }
-
-            
+            config = _configurationFinder.Find<T>();
+           
             var queue = new QueryQueue<T>(); 
             
             _queryHead.FillQueue(queue, args, config);
-
-
 
             pagging = pagging with { Data = queue.Transform(data) };
             PaggingInfo = pagging.PaggingInfo;

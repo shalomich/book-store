@@ -21,8 +21,6 @@ namespace App.Areas.Dashboard.Profiles
 
             CreateMap<FormEntity, FormEntityIdentity>()
                 .IncludeAllDerived();
-
-            CreateMap<FormEntitiesByQuery, FormEntityIdentitiesByQuery>();
         }
     }
 }

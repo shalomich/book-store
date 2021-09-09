@@ -1,6 +1,7 @@
 ﻿using App.Areas.Common.ViewModels;
 using App.Entities;
 using App.Entities.Books;
+using App.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using QueryWorker;
@@ -14,9 +15,9 @@ using static App.Areas.Common.RequestHandlers.TransformHandler;
 
 namespace App.Areas.Common.RequestHandlers
 {
-    public class TransformHandler : IRequestHandler<TransformQuery, FormEntitiesByQuery>
+    public class TransformHandler : IRequestHandler<TransformQuery, IQueryable<FormEntity>>
     {
-        public record TransformQuery(IQueryable<FormEntity> FormEntities, QueryTransformArgs Args) : IRequest<FormEntitiesByQuery>;
+        public record TransformQuery(IQueryable<FormEntity> FormEntities, QueryTransformArgs Args) : IRequest<IQueryable<FormEntity>>;
 
         private DataTransformerFacade DataTransformer { get; }
 
@@ -25,7 +26,7 @@ namespace App.Areas.Common.RequestHandlers
             DataTransformer = dataTransformer ?? throw new ArgumentNullException(nameof(dataTransformer));
         }
 
-        public Task<FormEntitiesByQuery> Handle(TransformQuery request, CancellationToken cancellationToken)
+        public Task<IQueryable<FormEntity>> Handle(TransformQuery request, CancellationToken cancellationToken)
         {
             var (formEntities, args) = request;
 
@@ -33,9 +34,7 @@ namespace App.Areas.Common.RequestHandlers
                 .GetGenericArguments()
                 .First();
 
-            formEntities = formEntities.AsQueryable();
-
-            return Task.Run(() =>
+            try
             {
                 formEntities = formEntityType.Name switch
                 {
@@ -48,14 +47,13 @@ namespace App.Areas.Common.RequestHandlers
                     nameof(Book) => DataTransformer.Transform((IQueryable<Book>)formEntities, args),
                     _ => throw new ArgumentException()
                 };
-
-                return new FormEntitiesByQuery 
-                { 
-                    FormEntities = formEntities, 
-                    QueryErrors = DataTransformer.ErrorMesages,
-                    PaggingInfo = DataTransformer.PaggingInfo
-                };
-            });
+            }
+            catch(Exception exception)
+            {
+                throw new BadRequestException(exception.Message);
+            }
+           
+            return Task.FromResult(formEntities);
         }
     }
 }

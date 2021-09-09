@@ -45,15 +45,14 @@ namespace App.Areas.Dashboard.Controllers
 
         [HttpGet]
 
-        public async Task<ActionResult<FormEntityIdentitiesByQuery>> Read([FromQuery] QueryTransformArgs args)
+        public async Task<ActionResult<FormEntityIdentity[]>> Read([FromQuery] QueryTransformArgs args)
         {
             var formEntities = (IQueryable<FormEntity>) await Mediator.Send(new GetQuery(FormEntityType));
-            FormEntitiesByQuery formEntitiesByQuery = await Mediator.Send(new TransformQuery(formEntities, args));
-            var formEntityIdentities = formEntitiesByQuery.FormEntities
+            var transformedFormEntities = await Mediator.Send(new TransformQuery(formEntities, args));
+            
+            return transformedFormEntities
                 .ProjectTo<FormEntityIdentity>(Mapper.ConfigurationProvider)
                 .ToArray();
-
-            return Mapper.Map<FormEntityIdentitiesByQuery>(formEntitiesByQuery) with { FormEntityIdentities = formEntityIdentities };
         }
 
         [HttpGet("{id}")]

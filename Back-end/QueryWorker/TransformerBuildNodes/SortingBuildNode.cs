@@ -12,10 +12,6 @@ namespace QueryWorker.TransformerBuildNodes
 {
     internal class SortingBuildNode : TransformerBuildNode
     {
-        public SortingBuildNode(Action<string> errorHandler) : base(errorHandler)
-        {
-        }
-
         protected override IDataTransformerArgs[] ChooseArgs(QueryTransformArgs args)
         {
             return args.Sortings;

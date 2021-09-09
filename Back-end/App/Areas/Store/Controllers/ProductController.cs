@@ -32,16 +32,14 @@ namespace App.Areas.Store.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ProductCardsByQuery>> GetCards([FromQuery] QueryTransformArgs args)
+        public async Task<ActionResult<ProductCard[]>> GetCards([FromQuery] QueryTransformArgs args)
         {
             var productType = typeof(T);
             var products = (IQueryable<Product>) await Mediator.Send(new GetQuery(productType));
-            FormEntitiesByQuery productsByQuery = await Mediator.Send(new TransformQuery(products, args));
-            var cards = productsByQuery.FormEntities
+            var transformedProducts = await Mediator.Send(new TransformQuery(products, args));
+            return transformedProducts
                 .ProjectTo<ProductCard>(Mapper.ConfigurationProvider)
                 .ToArray();
-
-            return Mapper.Map<ProductCardsByQuery>(productsByQuery) with { Cards = cards }; 
         }
 
         [HttpGet("{id}")]
