@@ -1,9 +1,6 @@
-/** Interface for ProductType config. */
-export interface ProductType {
+import { EntityType } from './entity-type';
 
-  /** Product's type. */
-  value: string;
+export interface ProductType extends EntityType{
 
-  /** Product's name. */
-  name: string;
+  relatedEntities: EntityType[];
 }
