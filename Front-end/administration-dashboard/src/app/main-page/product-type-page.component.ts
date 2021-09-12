@@ -5,11 +5,11 @@ import productTypeConfiguration from '../core/utils/product-type-configuration';
 
 /** Main page's component. */
 @Component({
-  selector: 'app-main-page',
-  templateUrl: './main-page.component.html',
-  styleUrls: ['./main-page.component.css'],
+  selector: 'app-product-type-page',
+  templateUrl: './product-type-page.component.html',
+  styleUrls: ['./product-type-page.component.css'],
 })
-export class MainPageComponent implements OnInit {
+export class ProductTypePageComponent implements OnInit {
 
   public readonly products: ProductType[] = productTypeConfiguration.getProducts();
 

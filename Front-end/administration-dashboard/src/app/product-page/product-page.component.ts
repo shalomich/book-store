@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import productTypeConfiguration from '../core/utils/product-type-configuration';
 
-import { EntityPreviewService } from '../core/services/entity-preview.service';
+import { ProductService } from '../core/services/product.service';
 import { ProductPreview } from '../core/models/product-preview';
 import { EntityType } from '../core/interfaces/entity-type';
 
@@ -15,23 +15,23 @@ import { EntityType } from '../core/interfaces/entity-type';
 })
 export class ProductPageComponent implements OnInit {
 
-  public readonly entityName: string | null;
+  public readonly productName: string | null;
 
   public readonly relatedEntities: EntityType[];
 
-  public readonly entityType: string;
+  public readonly productType: string;
 
   public readonly entityList$: Observable<ProductPreview[]>;
 
   public constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly entityPreviewService: EntityPreviewService,
+    private readonly productService: ProductService,
   ) {
-    this.entityType = this.activatedRoute.snapshot.params.product;
-    this.entityName = productTypeConfiguration.getProductName(this.entityType);
-    this.relatedEntities = productTypeConfiguration.getProductRelatedEntities(this.entityType);
+    this.productType = this.activatedRoute.snapshot.params.product;
+    this.productName = productTypeConfiguration.getProductName(this.productType);
+    this.relatedEntities = productTypeConfiguration.getProductRelatedEntities(this.productType);
 
-    this.entityList$ = this.entityPreviewService.getEntityPreview(this.entityType);
+    this.entityList$ = this.productService.getProductPage(this.productType);
   }
 
   public ngOnInit(): void {

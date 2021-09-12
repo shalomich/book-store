@@ -10,7 +10,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
 
 import { AppComponent } from './app.component';
-import { MainPageComponent } from './main-page/main-page.component';
+import { ProductTypePageComponent } from './main-page/product-type-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ProductPageComponent } from './product-page/product-page.component';
 import { ProductListItemComponent } from './product-page/product-list-item/product-list-item.component';
@@ -21,7 +21,7 @@ import { RelatedEntityListItemComponent } from './related-entity-page/related-en
 @NgModule({
   declarations: [
     AppComponent,
-    MainPageComponent,
+    ProductTypePageComponent,
     ProductPageComponent,
     ProductListItemComponent,
     RelatedEntityPageComponent,

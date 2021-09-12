@@ -3,9 +3,10 @@ import { Observable } from 'rxjs';
 
 import { ActivatedRoute } from '@angular/router';
 
-import { EntityPreviewService } from '../core/services/entity-preview.service';
+import { ProductService } from '../core/services/product.service';
 import productTypeConfiguration from '../core/utils/product-type-configuration';
 import { RelatedEntityPreview } from '../core/models/related-entity-preview';
+import { RelatedEntityService } from '../core/services/related-entity.service';
 
 @Component({
   selector: 'app-related-entity-page',
@@ -24,14 +25,14 @@ export class RelatedEntityPageComponent implements OnInit {
 
   public constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly entityPreviewService: EntityPreviewService,
+    private readonly relatedEntityService: RelatedEntityService,
   ) {
     this.entityType = this.activatedRoute.snapshot.params.relatedEntity;
     this.productType = this.activatedRoute.snapshot.params.product;
 
     this.entityName = productTypeConfiguration.getRelatedEntityName(this.productType, this.entityType);
 
-    this.entityList$ = this.entityPreviewService.getEntityPreview(this.entityType);
+    this.entityList$ = this.relatedEntityService.getRelatedEntityPage(this.entityType);
 
     // eslint-disable-next-line no-console
     console.log(this.productType);
