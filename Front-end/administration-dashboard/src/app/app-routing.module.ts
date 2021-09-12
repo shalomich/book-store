@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ProductTypePageComponent } from './main-page/product-type-page.component';
+import { ProductTypePageComponent } from './product-type-page/product-type-page.component';
 import { ProductPageComponent } from './product-page/product-page.component';
 import { RelatedEntityPageComponent } from './related-entity-page/related-entity-page.component';
 

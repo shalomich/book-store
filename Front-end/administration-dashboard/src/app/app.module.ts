@@ -10,7 +10,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
 
 import { AppComponent } from './app.component';
-import { ProductTypePageComponent } from './main-page/product-type-page.component';
+import { ProductTypePageComponent } from './product-type-page/product-type-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ProductPageComponent } from './product-page/product-page.component';
 import { ProductListItemComponent } from './product-page/product-list-item/product-list-item.component';
