@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import ProductsConfig from '../../products-config.json';
 
 import { ProductType } from '../core/interfaces/product-type';
+import { ENTITY_NAME } from '../core/utils/values';
 
 /** Main page's component. */
 @Component({
@@ -18,6 +19,10 @@ export class MainPageComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+  }
+
+  public handleProductClick(name: string) {
+    sessionStorage.setItem(ENTITY_NAME, name);
   }
 
 }
