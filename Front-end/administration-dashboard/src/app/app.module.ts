@@ -11,6 +11,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { ProductPageComponent } from './product-page/product-page.component';
 import { ProductListItemComponent } from './product-page/product-list-item/product-list-item.component';
 import { CoreModule } from './core/core.module';
+import { RelatedEntityPageComponent } from './related-entity-page/related-entity-page.component';
+import { RelatedEntityListItemComponent } from './related-entity-page/related-entity-list-item/related-entity-list-item.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { CoreModule } from './core/core.module';
     MainPageComponent,
     ProductPageComponent,
     ProductListItemComponent,
+    RelatedEntityPageComponent,
+    RelatedEntityListItemComponent,
   ],
   imports: [
     BrowserModule,

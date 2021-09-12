@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { EntityPreview } from '../../core/models/entity-preview';
+import { ProductPreview } from '../../core/models/product-preview';
 
 @Component({
   selector: 'app-entity-list-item',
@@ -10,7 +10,7 @@ import { EntityPreview } from '../../core/models/entity-preview';
 export class ProductListItemComponent implements OnInit {
 
   @Input()
-  public item: EntityPreview = {} as EntityPreview;
+  public item: ProductPreview = {} as ProductPreview;
 
   public constructor() { }
 

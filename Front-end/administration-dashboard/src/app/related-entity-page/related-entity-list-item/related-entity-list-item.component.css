@@ -1,0 +1,42 @@
+.item {
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.item-block {
+  width: 200px;
+  height: fit-content;
+  outline: 1px solid #000;
+  display: inline-block;
+  margin-bottom: 30px;
+  margin-right: 70px;
+  text-align: center;
+}
+
+.button-block {
+  height: fit-content;
+}
+
+
+.delete-button {
+  float: right;
+}
+
+.edit-button {
+  float: left;
+}
+
+.line {
+  background-color: black;
+  margin-bottom: 30px;
+  margin-top: 10px;
+  width: 200px;
+}
+
+.image {
+  height: 130px;
+  width: 80px;
+  horiz-align: center;
+}

@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 
 import productTypeConfiguration from '../core/utils/product-type-configuration';
 
-import { EntityPreview } from '../core/models/entity-preview';
 import { EntityPreviewService } from '../core/services/entity-preview.service';
+import { ProductPreview } from '../core/models/product-preview';
 
 @Component({
   selector: 'app-entity-page',
@@ -18,7 +18,7 @@ export class ProductPageComponent implements OnInit {
 
   public readonly entityType: string;
 
-  public readonly entityList$: Observable<EntityPreview[]>;
+  public readonly entityList$: Observable<ProductPreview[]>;
 
   public constructor(
     private readonly activatedRoute: ActivatedRoute,
