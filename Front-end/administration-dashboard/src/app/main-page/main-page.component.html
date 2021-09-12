@@ -1,10 +1,7 @@
 <h1 class="title">Товары</h1>
 <ul>
   <div>
-    <button (click)="this.handleProductClick(product.name)"
-            routerLink="{{product.value}}"
-            class="product"
-            *ngFor="let product of products">
+    <button routerLink="{{product.value}}" class="product" *ngFor="let product of products">
       {{product.name}}
     </button>
   </div>

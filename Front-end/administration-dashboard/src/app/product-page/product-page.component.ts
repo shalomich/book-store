@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
+
+import productTypeConfiguration from '../core/utils/product-type-configuration';
 
 import { EntityPreview } from '../core/models/entity-preview';
-import Books from '../../books.json';
 import { EntityPreviewService } from '../core/services/entity-preview.service';
-import { ENTITY_NAME } from '../core/utils/values';
 
 @Component({
   selector: 'app-entity-page',
@@ -24,9 +24,8 @@ export class ProductPageComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly entityPreviewService: EntityPreviewService,
   ) {
-    this.entityName = sessionStorage.getItem(ENTITY_NAME);
-
     this.entityType = this.activatedRoute.snapshot.params.product;
+    this.entityName = productTypeConfiguration.getProductName(this.entityType);
 
     this.entityList$ = this.entityPreviewService.getEntityPreview(this.entityType);
   }

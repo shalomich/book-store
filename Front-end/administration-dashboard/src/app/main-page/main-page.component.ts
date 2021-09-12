@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import ProductsConfig from '../../products-config.json';
-
 import { ProductType } from '../core/interfaces/product-type';
-import { ENTITY_NAME } from '../core/utils/values';
+import productTypeConfiguration from '../core/utils/product-type-configuration';
 
 /** Main page's component. */
 @Component({
@@ -13,16 +11,12 @@ import { ENTITY_NAME } from '../core/utils/values';
 })
 export class MainPageComponent implements OnInit {
 
-  public readonly products = ProductsConfig as ProductType[];
+  public readonly products: ProductType[] = productTypeConfiguration.getProducts();
 
   public constructor() {
   }
 
   public ngOnInit(): void {
-  }
-
-  public handleProductClick(name: string) {
-    sessionStorage.setItem(ENTITY_NAME, name);
   }
 
 }
