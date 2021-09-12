@@ -1,6 +1,23 @@
 .title {
-  margin-left: 65px;
-  margin-bottom: 50px;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+.related-entities-list {
+  margin-left: 3em;
+  margin-bottom: 2em;
+  width: max-content;
+  font-size: 1.2em;
+  border: thin solid black;
+}
+
+.related-entities-block {
+  display: flex;
+}
+
+.related-entity-button {
+  margin-right: 0.6em;
+  margin-top: 1em;
 }
 
 .button {
@@ -11,9 +28,10 @@
 }
 
 .list-block {
-  padding-left: 65px;
+  padding-left: 3.6em;
 }
 
-.list {
-  padding: 0;
+.back-button {
+  margin-left: 2em;
+  margin-top: 2em;
 }

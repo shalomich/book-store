@@ -5,6 +5,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CommonModule } from '@angular/common';
 
+import { MatExpansionModule } from '@angular/material/expansion';
+
+import { MatButtonModule } from '@angular/material/button';
+
 import { AppComponent } from './app.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -28,6 +32,8 @@ import { RelatedEntityListItemComponent } from './related-entity-page/related-en
     AppRoutingModule,
     CoreModule,
     BrowserAnimationsModule,
+    MatExpansionModule,
+    MatButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

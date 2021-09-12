@@ -29,9 +29,12 @@ export class RelatedEntityPageComponent implements OnInit {
     this.entityType = this.activatedRoute.snapshot.params.relatedEntity;
     this.productType = this.activatedRoute.snapshot.params.product;
 
-    this.entityName = productTypeConfiguration.getProductName(this.entityType);
+    this.entityName = productTypeConfiguration.getRelatedEntityName(this.productType, this.entityType);
 
     this.entityList$ = this.entityPreviewService.getEntityPreview(this.entityType);
+
+    // eslint-disable-next-line no-console
+    console.log(this.productType);
   }
 
   public ngOnInit(): void {

@@ -1,6 +1,6 @@
 .title {
-  margin-left: 65px;
-  margin-bottom: 50px;
+  margin-left: 1em;
+  margin-bottom: 1em;
 }
 
 .button {
@@ -16,4 +16,9 @@
 
 .list {
   padding: 0;
+}
+
+.back-button {
+  margin-left: 2em;
+  margin-top: 2em;
 }
