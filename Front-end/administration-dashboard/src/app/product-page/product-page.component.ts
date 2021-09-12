@@ -9,10 +9,10 @@ import { ENTITY_NAME } from '../core/utils/values';
 
 @Component({
   selector: 'app-entity-page',
-  templateUrl: './entity-page.component.html',
-  styleUrls: ['./entity-page.component.css'],
+  templateUrl: './product-page.component.html',
+  styleUrls: ['./product-page.component.css'],
 })
-export class EntityPageComponent implements OnInit {
+export class ProductPageComponent implements OnInit {
 
   public readonly entityName: string | null;
 
@@ -26,7 +26,7 @@ export class EntityPageComponent implements OnInit {
   ) {
     this.entityName = sessionStorage.getItem(ENTITY_NAME);
 
-    this.entityType = this.activatedRoute.snapshot.params.entity;
+    this.entityType = this.activatedRoute.snapshot.params.product;
 
     this.entityList$ = this.entityPreviewService.getEntityPreview(this.entityType);
   }

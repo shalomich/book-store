@@ -3,20 +3,21 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { CommonModule } from '@angular/common';
+
 import { AppComponent } from './app.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { AppRoutingModule } from './app-routing.module';
-import { EntityPageComponent } from './entity-page/entity-page.component';
-import { EntityListItemComponent } from './entity-page/entity-list-item/entity-list-item.component';
+import { ProductPageComponent } from './product-page/product-page.component';
+import { ProductListItemComponent } from './product-page/product-list-item/product-list-item.component';
 import { CoreModule } from './core/core.module';
-import {CommonModule} from '@angular/common';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainPageComponent,
-    EntityPageComponent,
-    EntityListItemComponent,
+    ProductPageComponent,
+    ProductListItemComponent,
   ],
   imports: [
     BrowserModule,

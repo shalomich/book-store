@@ -4,10 +4,10 @@ import { EntityPreview } from '../../core/models/entity-preview';
 
 @Component({
   selector: 'app-entity-list-item',
-  templateUrl: './entity-list-item.component.html',
-  styleUrls: ['./entity-list-item.component.css'],
+  templateUrl: './product-list-item.component.html',
+  styleUrls: ['./product-list-item.component.css'],
 })
-export class EntityListItemComponent implements OnInit {
+export class ProductListItemComponent implements OnInit {
 
   @Input()
   public item: EntityPreview = {} as EntityPreview;
