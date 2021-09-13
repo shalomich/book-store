@@ -1,6 +1,5 @@
 ﻿using App.Areas.Common.ViewModels;
 using App.Areas.Dashboard.ViewModels;
-using App.Areas.Dashboard.ViewModels.Identities;
 using App.Entities;
 using App.Entities.Products;
 using App.Products.Entities;
@@ -18,11 +17,6 @@ namespace App.Areas.Dashboard.Profiles
         {
             CreateMap<ProductForm, Product>()
                 .ReverseMap()
-                .IncludeAllDerived();
-
-            CreateMap<Product, ProductIdentity>()
-                .ForMember(identity => identity.TitleImage, mapper =>
-                    mapper.MapFrom(product => product.Album.TitleImage))
                 .IncludeAllDerived();
 
             CreateMap<AlbumDto, Album>()

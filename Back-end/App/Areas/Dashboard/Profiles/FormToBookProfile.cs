@@ -1,5 +1,4 @@
 ﻿using App.Areas.Dashboard.ViewModels;
-using App.Areas.Dashboard.ViewModels.Identities;
 using App.Entities;
 using App.Entities.Books;
 using AutoMapper;
@@ -14,7 +13,6 @@ namespace App.Areas.Dashboard.Profiles
     {
         public FormToBookProfile()
         {
-            CreateMap<Book, ProductIdentity>();
             CreateMap<BookForm, Book>()
                 .ForMember(book => book.GenresBooks,
                     mapper => mapper.MapFrom(form => form.GenreIds
@@ -25,15 +23,7 @@ namespace App.Areas.Dashboard.Profiles
                         .Select(genre => genre.GenreId)));
 
             CreateMap<AuthorForm, Author>()
-               .ForMember(author => author.Name,
-                   mapper => mapper.MapFrom(form => form.Name))
-           .ReverseMap()
-               .ForMember(form => form.Surname,
-                   mapper => mapper.MapFrom(author => author.Surname))
-               .ForMember(form => form.FirstName,
-                   mapper => mapper.MapFrom(author => author.FirstName))
-               .ForMember(form => form.Patronymic,
-                   mapper => mapper.MapFrom(author => author.Patronymic));
+              .ReverseMap();
 
             CreateMap<PublisherForm, Publisher>()
               .ReverseMap();

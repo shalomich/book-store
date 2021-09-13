@@ -1,7 +1,6 @@
 ﻿using App.Attributes.GenericController;
 using App.Areas.Store.Services;
 using App.Areas.Dashboard.ViewModels;
-using App.Areas.Dashboard.ViewModels.Identities;
 using App.Entities;
 using App.Extensions;
 using AutoMapper;
@@ -46,13 +45,13 @@ namespace App.Areas.Dashboard.Controllers
         private Type FormEntityType => Mapper.GetSourceType(typeof(T));
 
         [HttpGet]
-        public async Task<ActionResult<FormEntityIdentity[]>> Read([FromQuery] QueryTransformArgs args)
+        public async Task<ActionResult<T[]>> Read([FromQuery] QueryTransformArgs args)
         {
             var formEntities = (IQueryable<FormEntity>) await Mediator.Send(new GetQuery(FormEntityType));
             var transformedFormEntities = await Mediator.Send(new TransformQuery(formEntities, args));
             
             return transformedFormEntities
-                .ProjectTo<FormEntityIdentity>(Mapper.ConfigurationProvider)
+                .ProjectTo<T>(Mapper.ConfigurationProvider)
                 .ToArray();
         }
 

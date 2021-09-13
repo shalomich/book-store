@@ -1,6 +1,5 @@
 ﻿using App.Areas.Common.ViewModels;
 using App.Areas.Dashboard.ViewModels;
-using App.Areas.Dashboard.ViewModels.Identities;
 using App.Entities;
 using App.Entities.Books;
 using AutoMapper;
@@ -17,9 +16,6 @@ namespace App.Areas.Dashboard.Profiles
         {
             CreateMap<EntityForm, FormEntity>()
                 .ReverseMap()
-                .IncludeAllDerived();
-
-            CreateMap<FormEntity, FormEntityIdentity>()
                 .IncludeAllDerived();
         }
     }
