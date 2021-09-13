@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { RelatedEntityPreview } from '../../core/models/related-entity-preview';
+import { RelatedEntity } from '../../core/models/related-entity';
 
 @Component({
   selector: 'app-related-entity-list-item',
@@ -10,7 +10,7 @@ import { RelatedEntityPreview } from '../../core/models/related-entity-preview';
 export class RelatedEntityListItemComponent implements OnInit {
 
   @Input()
-  public item: RelatedEntityPreview = {} as RelatedEntityPreview;
+  public item: RelatedEntity = {} as RelatedEntity;
 
   public constructor() { }
 

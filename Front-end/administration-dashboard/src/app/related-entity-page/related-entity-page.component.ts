@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { ProductService } from '../core/services/product.service';
 import productTypeConfiguration from '../core/utils/product-type-configuration';
-import { RelatedEntityPreview } from '../core/models/related-entity-preview';
+import { RelatedEntity } from '../core/models/related-entity';
 import { RelatedEntityService } from '../core/services/related-entity.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class RelatedEntityPageComponent implements OnInit {
 
   public readonly entityType: string;
 
-  public readonly entityList$: Observable<RelatedEntityPreview[]>;
+  public readonly entityList$: Observable<RelatedEntity[]>;
 
   public constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -33,9 +33,6 @@ export class RelatedEntityPageComponent implements OnInit {
     this.entityName = productTypeConfiguration.getRelatedEntityName(this.productType, this.entityType);
 
     this.entityList$ = this.relatedEntityService.getRelatedEntityPage(this.entityType);
-
-    // eslint-disable-next-line no-console
-    console.log(this.productType);
   }
 
   public ngOnInit(): void {

@@ -34,6 +34,7 @@ import { RelatedEntityListItemComponent } from './related-entity-page/related-en
     BrowserAnimationsModule,
     MatExpansionModule,
     MatButtonModule,
+    CommonModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

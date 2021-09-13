@@ -1,6 +1,6 @@
 import ProductTypeConfig from '../../../products-config.json';
 import { ProductType } from '../interfaces/product-type';
-import { EntityType } from '../interfaces/entity-type';
+import { RelatedEntityType } from '../interfaces/related-entity-type';
 
 class ProductTypeConfiguration {
   private readonly productConfig: ProductType[] = ProductTypeConfig;
@@ -14,7 +14,7 @@ class ProductTypeConfiguration {
     return productName ? productName : '';
   }
 
-  public getProductRelatedEntities(type: string): EntityType[] {
+  public getProductRelatedEntities(type: string): RelatedEntityType[] {
     const relatedEntities = this.productConfig.find(productType => productType.value === type)?.relatedEntities;
     return relatedEntities ? relatedEntities : [];
   }

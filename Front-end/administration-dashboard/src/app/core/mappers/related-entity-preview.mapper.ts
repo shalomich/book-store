@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { RelatedEntityPreviewDto } from '../DTOs/related-entity-preview-dto';
-import { RelatedEntityPreview } from '../models/related-entity-preview';
+import { RelatedEntityDto } from '../DTOs/related-entity-dto';
+import { RelatedEntity } from '../models/related-entity';
 
 import { IMapper } from './mapper/mapper';
 
@@ -9,10 +9,10 @@ import { IMapper } from './mapper/mapper';
  * Mapper for film entity.
  */
 @Injectable({ providedIn: 'root' })
-export class RelatedEntityPreviewMapper implements IMapper<RelatedEntityPreviewDto, RelatedEntityPreview> {
+export class RelatedEntityPreviewMapper implements IMapper<RelatedEntityDto, RelatedEntity> {
 
   /** @inheritdoc */
-  public toDto(data: RelatedEntityPreview): RelatedEntityPreviewDto {
+  public toDto(data: RelatedEntity): RelatedEntityDto {
     return {
       id: data.id,
       name: data.name,
@@ -20,8 +20,8 @@ export class RelatedEntityPreviewMapper implements IMapper<RelatedEntityPreviewD
   }
 
   /** @inheritdoc */
-  public fromDto(data: RelatedEntityPreviewDto): RelatedEntityPreview {
-    return new RelatedEntityPreview({
+  public fromDto(data: RelatedEntityDto): RelatedEntity {
+    return new RelatedEntity({
       id: data.id,
       name: data.name,
     });
