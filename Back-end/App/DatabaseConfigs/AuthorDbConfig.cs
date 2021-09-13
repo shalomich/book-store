@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace App.DatabaseConfigs
 {
-    public class AuthorDbConfig : EntityDbConfig<Author>
+    public class AuthorDbConfig : RelatedEntityDbConfig<Author>
     {
         public override void Configure(EntityTypeBuilder<Author> builder)
         {

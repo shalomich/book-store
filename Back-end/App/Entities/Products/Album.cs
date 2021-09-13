@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace App.Entities.Products
 {
-    public class Album
+    public class Album : IEntity
     {
         private const int _maxImageCount = 5;
 

@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace App.Entities
 {
-    public class Author : FormEntity
+    public class Author : RelatedEntity
     {
         
         public const string NameMask = "^[А-ЯЁ][а-яё]* [А-ЯЁ][а-яё]*( [А-ЯЁ][а-яё]*)?$";

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace App.Entities.Books
 {
-    public class BookType : FormEntity
+    public class BookType : RelatedEntity
     {
     }
 }

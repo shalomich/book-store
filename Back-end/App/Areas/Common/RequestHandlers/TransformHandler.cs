@@ -15,9 +15,9 @@ using static App.Areas.Common.RequestHandlers.TransformHandler;
 
 namespace App.Areas.Common.RequestHandlers
 {
-    public class TransformHandler : IRequestHandler<TransformQuery, IQueryable<FormEntity>>
+    public class TransformHandler : IRequestHandler<TransformQuery, IQueryable<IFormEntity>>
     {
-        public record TransformQuery(IQueryable<FormEntity> FormEntities, QueryTransformArgs Args) : IRequest<IQueryable<FormEntity>>;
+        public record TransformQuery(IQueryable<IFormEntity> FormEntities, QueryTransformArgs Args) : IRequest<IQueryable<IFormEntity>>;
 
         private DataTransformerFacade DataTransformer { get; }
 
@@ -26,17 +26,17 @@ namespace App.Areas.Common.RequestHandlers
             DataTransformer = dataTransformer ?? throw new ArgumentNullException(nameof(dataTransformer));
         }
 
-        public Task<IQueryable<FormEntity>> Handle(TransformQuery request, CancellationToken cancellationToken)
+        public Task<IQueryable<IFormEntity>> Handle(TransformQuery request, CancellationToken cancellationToken)
         {
             var (formEntities, args) = request;
 
-            Type formEntityType = formEntities.GetType()
+            Type IFormEntityType = formEntities.GetType()
                 .GetGenericArguments()
                 .First();
 
             try
             {
-                formEntities = formEntityType.Name switch
+                formEntities = IFormEntityType.Name switch
                 {
                     nameof(Author) => DataTransformer.Transform((IQueryable<Author>)formEntities, args),
                     nameof(Publisher) => DataTransformer.Transform((IQueryable<Publisher>)formEntities, args),

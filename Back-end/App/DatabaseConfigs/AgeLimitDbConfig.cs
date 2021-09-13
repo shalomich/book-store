@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace App.DatabaseConfigs
 {
-    public class AgeLimitDbConfig : EntityDbConfig<AgeLimit>
+    public class AgeLimitDbConfig : RelatedEntityDbConfig<AgeLimit>
     {
         public override void Configure(EntityTypeBuilder<AgeLimit> builder)
         {

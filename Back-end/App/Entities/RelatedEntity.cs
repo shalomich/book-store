@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace App.Entities
 {
-    public interface IFormEntity : IEntity
+    public abstract class RelatedEntity : IFormEntity
     {
-        public string Name { set;get; }
+        public int Id { set; get; }
+        public virtual string Name { set; get; }
     }
 }

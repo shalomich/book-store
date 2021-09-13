@@ -66,7 +66,7 @@ namespace App.Areas.Store.Controllers
 
         protected async Task<IEnumerable<Option>> GetRelatedEntityOptions(Type relatedEntityType)
         {
-            var relatedEntities = (IQueryable<FormEntity>) await Mediator.Send(new GetQuery(relatedEntityType));
+            var relatedEntities = (IQueryable<RelatedEntity>) await Mediator.Send(new GetQuery(relatedEntityType));
 
             return relatedEntities.ProjectTo<Option>(Mapper.ConfigurationProvider).ToList();
         }

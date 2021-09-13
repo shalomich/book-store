@@ -15,7 +15,7 @@ namespace App.Areas.Common.RequestHandlers
 {
     public class GetQueryMetadataHandler : IRequestHandler<GetMetadataQuery, QueryMetadata>
     {
-        public record GetMetadataQuery(IQueryable<FormEntity> FormEntities, QueryTransformArgs Args) : IRequest<QueryMetadata>;
+        public record GetMetadataQuery(IQueryable<IFormEntity> FormEntities, QueryTransformArgs Args) : IRequest<QueryMetadata>;
 
         private DataTransformerFacade DataTransformer { get; }
 
