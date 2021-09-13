@@ -4,8 +4,11 @@ using System.Collections.Generic;
 
 namespace App.Entities
 {
-    public abstract class Product : FormEntity
+    public abstract class Product : IFormEntity
     {
+        public int Id { set; get; }
+        public string Name { set; get; }
+
         public const int MinCost = 100;
         public const int MaxDescriptionLength = 1000;
 

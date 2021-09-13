@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace App.Entities.Books
 {
-    public class GenreBook
+    public class GenreBook : IEntity
     {
         public int Id { set; get; }
 

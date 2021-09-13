@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 
 namespace App.QueryConfigs
 {
-    public abstract class EntityQueryConfig<T> : QueryConfiguration<T> where T : FormEntity
+    public class RelatedEntityQueryConfig<T> : QueryConfiguration<T> where T : RelatedEntity
     {
-        public EntityQueryConfig()
+        public RelatedEntityQueryConfig()
         {
             CreateSorting("name", entity => entity.Name);
             
-            CreateFilter("name",entity => entity.Name);
-
             CreateSearch("name", entity => entity.Name);
         }
     }

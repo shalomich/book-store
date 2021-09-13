@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace App.Entities
 {
-    public class Publisher : FormEntity
+    public class Publisher : RelatedEntity
     {
     }
 }

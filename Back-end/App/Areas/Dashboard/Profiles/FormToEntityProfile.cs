@@ -14,7 +14,7 @@ namespace App.Areas.Dashboard.Profiles
     {
         public FormToEntityProfile()
         {
-            CreateMap<EntityForm, FormEntity>()
+            CreateMap<EntityForm, IFormEntity>()
                 .ReverseMap()
                 .IncludeAllDerived();
         }

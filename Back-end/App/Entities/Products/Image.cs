@@ -1,11 +1,12 @@
-﻿using App.Entities.Products;
+﻿using App.Entities;
+using App.Entities.Products;
 using System;
 using System.Linq;
 
 
 namespace App.Products.Entities
 {
-    public class Image
+    public class Image : IEntity
     {
         private string _format;
 

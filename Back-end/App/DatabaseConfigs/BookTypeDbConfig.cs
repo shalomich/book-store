@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace App.DatabaseConfigs
 {
-    public class BookTypeDbConfig : EntityDbConfig<BookType>
+    public class BookTypeDbConfig : RelatedEntityDbConfig<BookType>
     {
         public override void Configure(EntityTypeBuilder<BookType> builder)
         {

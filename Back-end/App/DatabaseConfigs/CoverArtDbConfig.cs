@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace App.DatabaseConfigs
 {
-    public class CoverArtDbConfig : EntityDbConfig<CoverArt>
+    public class CoverArtDbConfig : RelatedEntityDbConfig<CoverArt>
     {
         public override void Configure(EntityTypeBuilder<CoverArt> builder)
         {

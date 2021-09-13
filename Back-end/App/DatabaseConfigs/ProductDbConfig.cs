@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace App.DatabaseConfigs
 {
-    public abstract class ProductDbConfig<T> : EntityDbConfig<T> where T : Product
+    public abstract class ProductDbConfig<T> : IEntityTypeConfiguration<T> where T : Product
     {
-        public override void Configure(EntityTypeBuilder<T> builder)
+        public virtual void Configure(EntityTypeBuilder<T> builder)
         {
-            base.Configure(builder);
+            builder.Property(entity => entity.Name).IsRequired();
         }
     }
 }

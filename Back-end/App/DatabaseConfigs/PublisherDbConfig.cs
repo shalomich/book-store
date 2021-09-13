@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace App.DatabaseConfigs
 {
-    public class PublisherDbConfig : EntityDbConfig<Publisher>
+    public class PublisherDbConfig : RelatedEntityDbConfig<Publisher>
     {
         public override void Configure(EntityTypeBuilder<Publisher> builder)
         {
