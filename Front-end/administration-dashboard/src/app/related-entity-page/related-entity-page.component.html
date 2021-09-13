@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="isValid">
   <button class="back-button" routerLink="/dashboard/product/{{productType}}">Назад</button>
   <h1 class="title">{{entityName}}</h1>
   <div class="list-block">
@@ -9,5 +9,8 @@
       <app-related-entity-list-item *ngFor="let item of entityList$ | async" [item]="item"></app-related-entity-list-item>
     </ul>
   </div>
+</div>
+<div class="error-title" *ngIf="!isValid">
+  Page Not Found (Invalid URL)
 </div>
 

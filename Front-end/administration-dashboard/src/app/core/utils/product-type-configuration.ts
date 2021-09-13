@@ -9,9 +9,9 @@ class ProductTypeConfiguration {
     return this.productConfig;
   }
 
-  public getProductName(type: string): string {
+  public getProductName(type: string): string | undefined {
     const productName = this.productConfig.find(productType => productType.value === type)?.name;
-    return productName ? productName : '';
+    return productName ? productName : undefined;
   }
 
   public getProductRelatedEntities(type: string): RelatedEntityType[] {
@@ -19,9 +19,9 @@ class ProductTypeConfiguration {
     return relatedEntities ? relatedEntities : [];
   }
 
-  public getRelatedEntityName(productType: string, relatedEntityType: string): string {
+  public getRelatedEntityName(productType: string, relatedEntityType: string): string | undefined {
     const relatedEntity = this.getProductRelatedEntities(productType).find(entity => entity.value === relatedEntityType);
-    return relatedEntity ? relatedEntity.name : '';
+    return relatedEntity ? relatedEntity.name : undefined;
   }
 }
 

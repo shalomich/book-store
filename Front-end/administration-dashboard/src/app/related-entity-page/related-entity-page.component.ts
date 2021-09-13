@@ -15,13 +15,16 @@ import { RelatedEntityService } from '../core/services/related-entity.service';
 })
 export class RelatedEntityPageComponent implements OnInit {
 
-  public readonly entityName: string;
+  public readonly entityName: string | undefined;
 
   public readonly productType: string;
 
   public readonly entityType: string;
 
   public readonly entityList$: Observable<RelatedEntity[]>;
+
+  /** URL validation status. */
+  public isValid = true;
 
   public constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -36,6 +39,9 @@ export class RelatedEntityPageComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    if (!this.entityName) {
+      this.isValid = false;
+    }
   }
 
 }

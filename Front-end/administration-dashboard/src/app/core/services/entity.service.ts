@@ -5,9 +5,9 @@ import { Observable } from 'rxjs';
 import { API_FORM_ENTITY_URI } from '../utils/values';
 
 @Injectable()
-export class EntityService {
+export abstract class EntityService {
 
-  public constructor(private readonly http: HttpClient) { }
+  protected constructor(private readonly http: HttpClient) { }
 
   protected getEntityPage<T>(entityName: string): Observable<T[]> {
     return this.http.get<T[]>(`${API_FORM_ENTITY_URI}${entityName}`);

@@ -15,13 +15,16 @@ import { EntityType } from '../core/interfaces/entity-type';
 })
 export class ProductPageComponent implements OnInit {
 
-  public readonly productName: string | null;
+  public readonly productName: string | undefined;
 
   public readonly relatedEntities: EntityType[];
 
   public readonly productType: string;
 
-  public readonly entityList$: Observable<ProductPreview[]>;
+  public readonly productList$: Observable<ProductPreview[]>;
+
+  /** URL validation status. */
+  public isValid = true;
 
   public constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -31,10 +34,13 @@ export class ProductPageComponent implements OnInit {
     this.productName = productTypeConfiguration.getProductName(this.productType);
     this.relatedEntities = productTypeConfiguration.getProductRelatedEntities(this.productType);
 
-    this.entityList$ = this.productService.getProductPage(this.productType);
+    this.productList$ = this.productService.getProductPage(this.productType);
   }
 
   public ngOnInit(): void {
+    if (!this.productName) {
+      this.isValid = false;
+    }
   }
 
 }
