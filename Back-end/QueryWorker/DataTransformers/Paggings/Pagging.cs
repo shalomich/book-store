@@ -57,13 +57,13 @@ namespace QueryWorker.DataTransformers.Paggings
         }
 
         private bool IsEmpty => DataCount == 0;
+        public int CurrentPageDataCount => MakePage().Count();
         public int DataCount => Data.Count();
         public int PageCount => (int)Math.Ceiling(DataCount / (double)PageSize);
-
         public bool HasNextPage => PageNumber != PageCount && IsEmpty == false;
         public bool HasPreviousPage => PageNumber != MinPageNumber && IsEmpty == false;
 
-        public PaggingMetadata Metadata => new PaggingMetadata(PageSize, PageNumber, DataCount, PageCount, 
+        public PaggingMetadata Metadata => new PaggingMetadata(PageSize, PageNumber, CurrentPageDataCount, DataCount, PageCount, 
             HasNextPage, HasPreviousPage);
 
 
