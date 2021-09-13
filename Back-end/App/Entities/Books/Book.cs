@@ -75,8 +75,8 @@ namespace App.Entities
         public const string IsbnTemplate = @"^978-5-\d{6}-\d{2}-\d{1}$";
         public const string FormatTemplate = @"^[1-9]\d{1}x[1-9]\d{1}x[1-9]$";
 
-        private const string IsbnSchema = "978-5-XXXXXX-XX-X";       
-        private const string FormatSchema = "(10-99)x(10-99)x(1-9)";
+        public const string IsbnSchema = "978-5-XXXXXX-XX-X";       
+        public const string FormatSchema = "[10-99]x[10-99]x[1-9]";
 
         private int _releaseYear;
         private string _Isbn;

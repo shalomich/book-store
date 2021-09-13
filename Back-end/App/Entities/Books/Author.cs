@@ -7,14 +7,14 @@ namespace App.Entities
     public class Author : FormEntity
     {
         
-        private static readonly string _nameMask = "^[А-ЯЁ][а-яё]* [А-ЯЁ][а-яё]* ([А-ЯЁ][а-яё]*)?$";
-        private const string _nameSchema = "Surname Firstname Patronymic";
+        public const string NameMask = "^[А-ЯЁ][а-яё]* [А-ЯЁ][а-яё]*( [А-ЯЁ][а-яё]*)?$";
+        public const string NameSchema = "Surname Firstname Patronymic?";
 
         public override string Name
         {
             set
             {
-                if (Regex.IsMatch(value, _nameMask) == false)
+                if (Regex.IsMatch(value, NameMask) == false)
                     throw new ArgumentException();
                 base.Name = value;
             }
@@ -25,8 +25,9 @@ namespace App.Entities
         }
 
         private string[] FIO => Name.Split(' ');
-        public string FirstName => FIO[0];
-        public string Surname => FIO[1];
+
+        public string Surname => FIO[0];
+        public string FirstName => FIO[1];
         public string Patronymic => FIO[2];
     }
 }

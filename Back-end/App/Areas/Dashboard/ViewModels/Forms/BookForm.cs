@@ -12,7 +12,7 @@ namespace App.Areas.Dashboard.ViewModels
     public record BookForm : ProductForm
     {
         [Required]
-        [RegularExpression(Book.IsbnTemplate)]
+        [RegularExpression(Book.IsbnTemplate, ErrorMessage = Book.IsbnSchema)]
         public string Isbn { init; get; }
 
         [Required]
@@ -43,7 +43,7 @@ namespace App.Areas.Dashboard.ViewModels
         [FormField(FormFieldType.Select, "Тип обложки", false)]
         public int? CoverArtId { init; get; }
 
-        [RegularExpression(Book.FormatTemplate)]
+        [RegularExpression(Book.FormatTemplate, ErrorMessage = Book.FormatSchema)]
         [FormField(FormFieldType.Text, "Размеры", false)]
         public string BookFormat { init; get; }
 

@@ -12,24 +12,9 @@ namespace App.Areas.Dashboard.ViewModels
     [FormModel]
     public record AuthorForm : EntityForm
     {
-        private const string NameTemplate = "^[А-ЯЁ][а-яё]*$";
-
-        [JsonIgnore]
-        public string Name => string.Join(' ', Surname, FirstName, Patronymic);
-
         [Required]
-        [RegularExpression(NameTemplate)]
-        [FormField(FormFieldType.Text,"Имя")]
-        public string FirstName { init; get; }
-
-        [Required]
-        [RegularExpression(NameTemplate)]
-        [FormField(FormFieldType.Text,"Фамилия")]
-        public string Surname { init; get; }
-
-        [RegularExpression(NameTemplate)]
-        [FormField(FormFieldType.Text, "Отчество",false)]
-        public string Patronymic { init; get; }
-        
+        [FormField(FormFieldType.Text, "Имя")]
+        [RegularExpression(Author.NameMask, ErrorMessage = Author.NameSchema)]
+        public string Name { init; get; }
     }
 }
