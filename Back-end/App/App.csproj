@@ -29,4 +29,8 @@
     <ProjectReference Include="..\QueryWorker\QueryWorker.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Dashboard\Services\" />
+  </ItemGroup>
+
 </Project>

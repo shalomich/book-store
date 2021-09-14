@@ -14,7 +14,8 @@ namespace App.Attributes.GenericController
         public void PopulateFeature(IEnumerable<ApplicationPart> parts, ControllerFeature feature)
         {
             var genericControllers = GetType().Assembly.GetTypes()
-                .Where(type => type.BaseType == typeof(Controller)
+                .Where(type => type.IsSubclassOf(typeof(Controller))
+                    && type.IsAbstract == false
                     && type.IsGenericType);
 
             foreach (var controller in genericControllers)

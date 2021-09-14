@@ -19,7 +19,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using App.Areas.Dashboard.Services;
 using App.Middlewares;
 
 namespace Store
@@ -47,7 +46,6 @@ namespace Store
                 .ConfigureApplicationPartManager(options => options.FeatureProviders.Add(new GenericControllerFeatureProvider())); ;
 
             services.AddScoped<JwtGenerator>();
-            services.AddScoped<FormGenerator>();
             services.AddDataTransformer(GetType().Assembly);
 
             services.AddIdentity<User, Role>()

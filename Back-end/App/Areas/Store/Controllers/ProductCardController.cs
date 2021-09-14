@@ -21,13 +21,12 @@ using static App.Areas.Common.RequestHandlers.GetQueryMetadataHandler;
 
 namespace App.Areas.Store.Controllers
 {
-    [Route("[area]/product/[controller]")]
-    public abstract class ProductController<T> : StoreController where T : Product
+    public abstract class ProductCardController<T> : StoreController where T : Product
     {
         protected IMediator Mediator { get; }
         protected IMapper Mapper { get; }
 
-        public ProductController(IMediator mediator, IMapper mapper)
+        public ProductCardController(IMediator mediator, IMapper mapper)
         {
             Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));

@@ -12,9 +12,10 @@ using System.Threading.Tasks;
 
 namespace App.Areas.Store.Controllers
 {
-    public class BookController : ProductController<Book>
+    [Route("[area]/product/book")]
+    public class BookCardController : ProductCardController<Book>
     {
-        public BookController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
+        public BookCardController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
         }
 
