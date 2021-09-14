@@ -12,9 +12,9 @@ namespace App.Entities
 
         private int _quantity;
         public int Id { set; get; }
-        public virtual Basket Basket { set; get; }
+        public Basket Basket { set; get; }
         public int BasketId { set; get; }
-        public virtual Product Product { set; get; }
+        public Product Product { set; get; }
         public int ProductId { set; get; }
         public int Quantity
         {

@@ -38,7 +38,6 @@ namespace Store
             services.AddDbContext<ApplicationContext>(options =>
             {
                 options.UseSqlServer(connectionString);
-                options.UseLazyLoadingProxies();
             });
 
             services.AddControllers()

@@ -1,63 +1,5 @@
 ﻿
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 using App.Entities.Books;
 using System;
 using System.Collections.Generic;
@@ -113,27 +55,27 @@ namespace App.Entities
             }
         }
 
-        public virtual Publisher Publisher { set; get; }
+        public Publisher Publisher { set; get; }
         public int PublisherId { set; get; }
 
-        public virtual Author Author { set; get; }
+        public Author Author { set; get; }
         public int AuthorId { set; get; }
 
-        public virtual BookType Type { set; get; }
+        public BookType Type { set; get; }
         public int? TypeId { set; get; }
 
-        public virtual ISet<GenreBook> GenresBooks { set; get; }
+        public ISet<GenreBook> GenresBooks { set; get; }
 
         public ISet<string> Genres => GenresBooks
-            .Select(genreBook => genreBook.Genre.Name)
+            ?.Select(genreBook => genreBook.Genre.Name)
             .ToHashSet();
 
         public string OriginalName { set; get; }
 
-        public virtual AgeLimit AgeLimit { set; get; }
+        public AgeLimit AgeLimit { set; get; }
         public int? AgeLimitId { set; get; }
 
-        public virtual CoverArt CoverArt { set; get; }
+        public CoverArt CoverArt { set; get; }
         public int? CoverArtId { set; get; }
 
         public string BookFormat
