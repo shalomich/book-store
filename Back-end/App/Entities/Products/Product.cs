@@ -47,7 +47,7 @@ namespace App.Entities
 
         public DateTime AddingDate {private set; get; } = DateTime.Today;
 
-        public virtual Album Album { set; get; }
+        public Album Album { set; get; }
 
         public ISet<BasketProduct> BasketProducts { set; get; }
     }

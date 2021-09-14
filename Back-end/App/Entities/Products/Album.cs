@@ -14,7 +14,7 @@ namespace App.Entities.Products
 
         public int Id { set; get; }
         public string TitleImageName { set; get; }
-        public virtual ISet<Image> Images
+        public ISet<Image> Images
         {
             set
             {

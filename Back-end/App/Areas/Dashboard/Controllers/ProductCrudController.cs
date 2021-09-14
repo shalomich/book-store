@@ -24,10 +24,10 @@ namespace App.Areas.Dashboard.Controllers
         public override async Task<ActionResult<TForm[]>> Read([FromQuery] QueryTransformArgs args)
         {
             var products = (IQueryable<Product>)await Mediator.Send(new GetQuery(FormEntityType));
-            var transformedProducts = await Mediator.Send(new TransformQuery(products, args));
+            var transformedProducts = (IQueryable<Product>)await Mediator.Send(new TransformQuery(products, args));
 
             return transformedProducts
-                .ProjectTo<TForm>(Mapper.ConfigurationProvider)
+                .Select(product => Mapper.Map<TForm>(product))
                 .ToArray();
         }
 

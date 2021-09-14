@@ -30,7 +30,7 @@ namespace App.Products.Entities
             }
         }
   
-        public virtual Album Album { set; get; }
+        public Album Album { set; get; }
         public int AlbumId { set; get; }
 
         public override bool Equals(object obj)
