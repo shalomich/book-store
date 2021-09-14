@@ -32,7 +32,7 @@ namespace App.Areas.Common.RequestHandlers
             }
             catch (Exception exception)
             {
-                throw new BadRequestException("Wrong data", exception);
+                throw new BadRequestException(exception.InnerException.Message);
             }
 
             return createdEntity;

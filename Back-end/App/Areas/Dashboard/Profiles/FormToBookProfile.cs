@@ -1,4 +1,5 @@
 ﻿using App.Areas.Dashboard.ViewModels;
+using App.Areas.Dashboard.ViewModels.Forms;
 using App.Entities;
 using App.Entities.Books;
 using AutoMapper;
@@ -22,23 +23,23 @@ namespace App.Areas.Dashboard.Profiles
                     mapper => mapper.MapFrom(book => book.GenresBooks
                         .Select(genre => genre.GenreId)));
 
-            CreateMap<AuthorForm, Author>()
+            CreateMap<RelatedEntityForm, Author>()
               .ReverseMap();
 
-            CreateMap<PublisherForm, Publisher>()
+            CreateMap<RelatedEntityForm, Publisher>()
               .ReverseMap();
 
-            CreateMap<GenreForm, Genre>()
+            CreateMap<RelatedEntityForm, Genre>()
               .ReverseMap();
 
             
-            CreateMap<CoverArtForm, CoverArt>()
+            CreateMap<RelatedEntityForm, CoverArt>()
               .ReverseMap();
 
-            CreateMap<BookTypeForm, BookType>()
+            CreateMap<RelatedEntityForm, BookType>()
               .ReverseMap();
 
-            CreateMap<AgeLimitForm, AgeLimit>()
+            CreateMap<RelatedEntityForm, AgeLimit>()
               .ReverseMap();   
         }
     }

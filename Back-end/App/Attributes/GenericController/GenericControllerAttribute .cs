@@ -14,12 +14,9 @@ namespace App.Attributes.GenericController
     { 
         public void Apply(ControllerModel controller)
         {
-            string viewModelName = controller.ControllerType.GenericTypeArguments[0].Name;
-            string resourceName = string.Join(string.Empty, Regex
-                .Matches(viewModelName, @"[A-z][a-z]+")
-                .SkipLast(1));
-
-            controller.ControllerName = resourceName;
+            string controllerName = controller.ControllerType.GenericTypeArguments[0].Name;
+            
+            controller.ControllerName = controllerName;
         }
     }
 }

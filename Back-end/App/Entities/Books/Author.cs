@@ -10,12 +10,14 @@ namespace App.Entities
         public const string NameMask = "^[А-ЯЁ][а-яё]* [А-ЯЁ][а-яё]*( [А-ЯЁ][а-яё]*)?$";
         public const string NameSchema = "Surname Firstname Patronymic?";
 
+        private readonly string WrongNameMessage = $"Name must has template {NameSchema}";
+
         public override string Name
         {
             set
             {
                 if (Regex.IsMatch(value, NameMask) == false)
-                    throw new ArgumentException();
+                    throw new ArgumentException(WrongNameMessage);
                 base.Name = value;
             }
             get

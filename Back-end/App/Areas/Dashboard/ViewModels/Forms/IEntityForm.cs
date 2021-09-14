@@ -1,4 +1,4 @@
-﻿using App.Attributes.FormModel;
+﻿using App.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace App.Areas.Dashboard.ViewModels
 {
-    [FormModel]
-    public record GenreForm : EntityForm
+    public interface IEntityForm
     {
-        [Required]
-        [FormField(FormFieldType.Text, "Жанр")]
+        public int Id { init; get; }
+
         public string Name { init; get; }
     }
 }
