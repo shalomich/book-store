@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { MainPageComponent } from './main-page/main-page.component';
-import { EntityPageComponent } from './entity-page/entity-page.component';
+import { ProductTypePageComponent } from './product-type-page/product-type-page.component';
+import { ProductPageComponent } from './product-page/product-page.component';
+import { RelatedEntityPageComponent } from './related-entity-page/related-entity-page.component';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/product', pathMatch: 'full' },
-  { path: 'product', component: MainPageComponent },
-  { path: 'product/:entity', component: EntityPageComponent},
+  { path: '', redirectTo: '/dashboard/product', pathMatch: 'full' },
+  { path: 'dashboard/product', component: ProductTypePageComponent },
+  { path: 'dashboard/product/:product', component: ProductPageComponent },
+  { path: 'dashboard/product/:product/:relatedEntity', component: RelatedEntityPageComponent },
 ];
 
 /**

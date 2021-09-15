@@ -1,10 +1,37 @@
 [
   {
     "value": "book",
-    "name": "Книги"
+    "name": "Книги",
+    "relatedEntities": [
+      {
+        "value": "ageLimit",
+        "name": "Возрастные ограничения"
+      },
+      {
+        "value": "author",
+        "name": "Авторы"
+      },
+      {
+        "value": "bookType",
+        "name": "Типы книг"
+      },
+      {
+        "value": "coverArt",
+        "name": "Типы обложек"
+      },
+      {
+        "value": "genre",
+        "name": "Жанры"
+      },
+      {
+        "value": "publisher",
+        "name": "Издатели"
+      }
+    ]
   },
   {
     "value": "pencil",
-    "name": "Карандаши"
+    "name": "Карандаши",
+    "relatedEntities": []
   }
 ]

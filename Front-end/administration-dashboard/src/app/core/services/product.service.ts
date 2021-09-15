@@ -4,23 +4,27 @@ import { Observable } from 'rxjs';
 
 import { map } from 'rxjs/operators';
 
-import { EntityPreview } from '../models/entity-preview';
-import { EntityPreviewDto } from '../DTOs/entity-preview-dto';
 import { ProductPreviewMapper } from '../mappers/product-preview.mapper';
-import { API_FORM_ENTITY_URI } from '../utils/values';
+
+import { ProductPreview } from '../models/product-preview';
+import { ProductPreviewDto } from '../DTOs/product-preview-dto';
+
+import { EntityService } from './entity.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class EntityPreviewService {
+export class ProductService extends EntityService {
 
-  constructor(
-    private readonly http: HttpClient,
+  public constructor(
+    http: HttpClient,
     private readonly productPreviewMapper: ProductPreviewMapper,
-  ) { }
+  ) {
+    super(http);
+  }
 
-  public getEntityPreview(entityName: string): Observable<EntityPreview[]> {
-    const entityItems$ = this.http.get<EntityPreviewDto[]>(`${API_FORM_ENTITY_URI}${entityName}`);
+  public getProductPage(productType: string): Observable<ProductPreview[]> {
+    const entityItems$ = super.getEntityPage<ProductPreviewDto>(productType);
 
     return entityItems$.pipe(
       map(data => data.map(item => this.productPreviewMapper.fromDto(item))),

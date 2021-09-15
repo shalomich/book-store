@@ -1,0 +1,49 @@
+.title {
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+.related-entities-list {
+  margin-left: 3em;
+  margin-bottom: 2em;
+  width: max-content;
+  font-size: 1.2em;
+  border: thin solid black;
+}
+
+.related-entities-block {
+  display: flex;
+}
+
+.related-entity-button {
+  margin-right: 0.6em;
+  margin-top: 1em;
+}
+
+.button {
+  height: 200px;
+  width: 200px;
+  float: left;
+  margin-right: 70px;
+}
+
+.list-block {
+  padding-left: 3.6em;
+}
+
+.back-button {
+  margin-left: 2em;
+  margin-top: 2em;
+}
+
+.error-title {
+  margin: auto;
+  width: max-content;
+  font-size: 2em;
+}
+
+.add-icon {
+  width: 1em;
+  height: 1em;
+  font-size: 8em;
+}

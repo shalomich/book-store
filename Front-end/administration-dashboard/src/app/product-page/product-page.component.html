@@ -1,0 +1,31 @@
+<div *ngIf="isValid">
+  <button class="back-button" routerLink="/dashboard/product">На главную</button>
+  <h1 class="title">{{productName}}</h1>
+  <mat-accordion >
+    <mat-expansion-panel class="related-entities-list">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Связанные сущности
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="related-entities-block">
+        <button class="related-entity-button" *ngFor="let entity of relatedEntities" mat-stroked-button
+                routerLink="{{entity.value}}">
+          {{entity.name}}
+        </button>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <div class="list-block">
+    <button class="button">
+      <mat-icon class="add-icon">add</mat-icon>
+    </button>
+    <ul>
+      <app-product-list-item *ngFor="let item of productList$ | async" [item]="item"></app-product-list-item>
+    </ul>
+  </div>
+</div>
+<div class="error-title" *ngIf="!isValid">
+  Page Not Found (Invalid URL)
+</div>
+
