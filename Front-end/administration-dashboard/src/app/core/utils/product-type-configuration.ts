@@ -10,8 +10,7 @@ class ProductTypeConfiguration {
   }
 
   public getProductName(type: string): string | undefined {
-    const productName = this.productConfig.find(productType => productType.value === type)?.name;
-    return productName ? productName : undefined;
+    return this.productConfig.find(productType => productType.value === type)?.name;
   }
 
   public getProductRelatedEntities(type: string): RelatedEntityType[] {
@@ -20,8 +19,7 @@ class ProductTypeConfiguration {
   }
 
   public getRelatedEntityName(productType: string, relatedEntityType: string): string | undefined {
-    const relatedEntity = this.getProductRelatedEntities(productType).find(entity => entity.value === relatedEntityType);
-    return relatedEntity ? relatedEntity.name : undefined;
+    return this.getProductRelatedEntities(productType).find(entity => entity.value === relatedEntityType)?.name;
   }
 }
 
