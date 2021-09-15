@@ -41,3 +41,9 @@
   width: max-content;
   font-size: 2em;
 }
+
+.add-icon {
+  width: 1em;
+  height: 1em;
+  font-size: 8em;
+}

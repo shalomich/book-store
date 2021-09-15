@@ -9,6 +9,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 
 import { MatButtonModule } from '@angular/material/button';
 
+import { MatIconModule } from '@angular/material/icon';
+
 import { AppComponent } from './app.component';
 import { ProductTypePageComponent } from './product-type-page/product-type-page.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -35,6 +37,7 @@ import { RelatedEntityListItemComponent } from './related-entity-page/related-en
     MatExpansionModule,
     MatButtonModule,
     CommonModule,
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

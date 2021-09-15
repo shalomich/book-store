@@ -18,7 +18,7 @@
   </mat-accordion>
   <div class="list-block">
     <button class="button">
-      plus
+      <mat-icon class="add-icon">add</mat-icon>
     </button>
     <ul>
       <app-product-list-item *ngFor="let item of productList$ | async" [item]="item"></app-product-list-item>

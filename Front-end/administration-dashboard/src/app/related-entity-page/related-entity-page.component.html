@@ -3,7 +3,7 @@
   <h1 class="title">{{entityName}}</h1>
   <div class="list-block">
     <button class="button">
-      plus
+      <mat-icon class="add-icon">add</mat-icon>
     </button>
     <ul class="list">
       <app-related-entity-list-item *ngFor="let item of entityList$ | async" [item]="item"></app-related-entity-list-item>
