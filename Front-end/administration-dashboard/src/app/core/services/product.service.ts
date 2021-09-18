@@ -6,9 +6,6 @@ import { map } from 'rxjs/operators';
 
 import { ProductPreviewMapper } from '../mappers/product-preview.mapper';
 
-import { ProductPreview } from '../models/product-preview';
-import { ProductPreviewDto } from '../DTOs/product-preview-dto';
-
 import { EntityService } from './entity.service';
 
 @Injectable({
@@ -21,13 +18,5 @@ export class ProductService extends EntityService {
     private readonly productPreviewMapper: ProductPreviewMapper,
   ) {
     super(http);
-  }
-
-  public getProductPage(productType: string): Observable<ProductPreview[]> {
-    const entityItems$ = super.getEntityPage<ProductPreviewDto>(productType);
-
-    return entityItems$.pipe(
-      map(data => data.map(item => this.productPreviewMapper.fromDto(item))),
-    );
   }
 }

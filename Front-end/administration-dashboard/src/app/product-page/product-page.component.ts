@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
 
 import productTypeConfiguration from '../core/utils/product-type-configuration';
 
-import { ProductService } from '../core/services/product.service';
 import { ProductPreview } from '../core/models/product-preview';
 import { EntityType } from '../core/interfaces/entity-type';
+import { PaginationService } from '../core/services/pagination.service';
 
 @Component({
   selector: 'app-product-page',
@@ -28,13 +28,13 @@ export class ProductPageComponent implements OnInit {
 
   public constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly productService: ProductService,
+    private readonly paginationService: PaginationService,
   ) {
     this.productType = this.activatedRoute.snapshot.params.product;
     this.productName = productTypeConfiguration.getProductName(this.productType);
     this.relatedEntities = productTypeConfiguration.getProductRelatedEntities(this.productType);
 
-    this.productList$ = this.productService.getProductPage(this.productType);
+    this.productList$ = this.paginationService.getProductPage(this.productType);
   }
 
   public ngOnInit(): void {
