@@ -4,7 +4,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProductTypePageComponent } from './product-type-page/product-type-page.component';
 import { ProductPageComponent } from './product-page/product-page.component';
 import { RelatedEntityPageComponent } from './related-entity-page/related-entity-page.component';
+import { BookFormComponent } from './forms/book-form/book-form.component';
 
+const productFormsRoutes: Routes = [
+  { path: 'dashboard/form/book', component: BookFormComponent, pathMatch: 'full' },
+  { path: 'dashboard/form/book/:id', component: BookFormComponent },
+];
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard/product', pathMatch: 'full' },
@@ -17,7 +22,7 @@ const routes: Routes = [
  * Module for application routing.
  */
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
+  imports: [RouterModule.forRoot(routes.concat(productFormsRoutes), { onSameUrlNavigation: 'reload' })],
   exports: [RouterModule],
 })
 export class AppRoutingModule { }
