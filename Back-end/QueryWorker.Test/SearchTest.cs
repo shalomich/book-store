@@ -19,7 +19,7 @@ namespace QueryWorker.Test
         [MemberData(nameof(GetTransformData))]
         public void TransformTest(Author[] input, string value, int depth, Author[] output)
         {
-            var _search = new Search<Author>(e => e.Name, value, depth);
+            var _search = new Search<Author>(e => e.Name) { ComparedValue = value, SearchDepth = depth};
 
             var result = _search.Transform(input.AsQueryable()).ToArray();
 

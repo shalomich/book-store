@@ -379,14 +379,14 @@ namespace App.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "23578efd-5f14-4054-8e9d-fbd5e1921c2c",
+                            ConcurrencyStamp = "a11e7fd6-a1be-449e-be0c-dd7ad7efb2a2",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "e0558110-6e10-4132-9d64-6e370c3a839e",
+                            ConcurrencyStamp = "86f82db5-1203-4422-a1f1-f09fb6a753c6",
                             Name = "customer",
                             NormalizedName = "CUSTOMER"
                         });

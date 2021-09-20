@@ -76,6 +76,19 @@ namespace App.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BookTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BookTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CoverArts",
                 columns: table => new
                 {
@@ -107,28 +120,15 @@ namespace App.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Cost = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<long>(type: "bigint", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    AddingDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PublicationTypes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PublicationTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -290,7 +290,7 @@ namespace App.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Publications",
+                name: "Books",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
@@ -302,44 +302,44 @@ namespace App.Migrations
                     OriginalName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AgeLimitId = table.Column<int>(type: "int", nullable: true),
                     CoverArtId = table.Column<int>(type: "int", nullable: true),
-                    PublicationFormat = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BookFormat = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PageQuantity = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Publications", x => x.Id);
+                    table.PrimaryKey("PK_Books", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Publications_AgeLimits_AgeLimitId",
+                        name: "FK_Books_AgeLimits_AgeLimitId",
                         column: x => x.AgeLimitId,
                         principalTable: "AgeLimits",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Publications_Authors_AuthorId",
+                        name: "FK_Books_Authors_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Authors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Publications_CoverArts_CoverArtId",
+                        name: "FK_Books_BookTypes_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "BookTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Books_CoverArts_CoverArtId",
                         column: x => x.CoverArtId,
                         principalTable: "CoverArts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Publications_Products_Id",
+                        name: "FK_Books_Products_Id",
                         column: x => x.Id,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Publications_PublicationTypes_TypeId",
-                        column: x => x.TypeId,
-                        principalTable: "PublicationTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Publications_Publishers_PublisherId",
+                        name: "FK_Books_Publishers_PublisherId",
                         column: x => x.PublisherId,
                         principalTable: "Publishers",
                         principalColumn: "Id",
@@ -396,27 +396,27 @@ namespace App.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GenrePublication",
+                name: "GenreBook",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PublicationId = table.Column<int>(type: "int", nullable: false),
+                    BookId = table.Column<int>(type: "int", nullable: false),
                     GenreId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GenrePublication", x => x.Id);
+                    table.PrimaryKey("PK_GenreBook", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GenrePublication_Genres_GenreId",
-                        column: x => x.GenreId,
-                        principalTable: "Genres",
+                        name: "FK_GenreBook_Books_BookId",
+                        column: x => x.BookId,
+                        principalTable: "Books",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GenrePublication_Publications_PublicationId",
-                        column: x => x.PublicationId,
-                        principalTable: "Publications",
+                        name: "FK_GenreBook_Genres_GenreId",
+                        column: x => x.GenreId,
+                        principalTable: "Genres",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -437,8 +437,20 @@ namespace App.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { 1, "7d5002cc-1611-4010-8102-f83cd6efeba8", "admin", "ADMIN" },
-                    { 2, "78216bae-c0f2-460f-84fe-60e6d12834fd", "customer", "CUSTOMER" }
+                    { 1, "a11e7fd6-a1be-449e-be0c-dd7ad7efb2a2", "admin", "ADMIN" },
+                    { 2, "86f82db5-1203-4422-a1f1-f09fb6a753c6", "customer", "CUSTOMER" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "BookTypes",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 3, "Ранобэ" },
+                    { 4, "Графический роман" },
+                    { 5, "Артбук" },
+                    { 1, "Художественная литература" },
+                    { 2, "Манга" }
                 });
 
             migrationBuilder.InsertData(
@@ -446,8 +458,8 @@ namespace App.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Мягкая" },
-                    { 2, "Твердая" }
+                    { 2, "Твердая" },
+                    { 1, "Мягкая" }
                 });
 
             migrationBuilder.InsertData(
@@ -458,22 +470,10 @@ namespace App.Migrations
                     { 1, "Драма" },
                     { 2, "Ужасы" },
                     { 3, "Научная фантастика" },
+                    { 4, "Наука" },
                     { 5, "Боевик" },
                     { 6, "Детектив" },
-                    { 7, "Фэнтези" },
-                    { 4, "Наука" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "PublicationTypes",
-                columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { 1, "Книга" },
-                    { 2, "Манга" },
-                    { 3, "Ранобэ" },
-                    { 4, "Графический роман" },
-                    { 5, "Артбук" }
+                    { 7, "Фэнтези" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -534,9 +534,10 @@ namespace App.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_BasketProducts_BasketId",
+                name: "IX_BasketProducts_BasketId_ProductId",
                 table: "BasketProducts",
-                column: "BasketId");
+                columns: new[] { "BasketId", "ProductId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_BasketProducts_ProductId",
@@ -550,20 +551,58 @@ namespace App.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Books_AgeLimitId",
+                table: "Books",
+                column: "AgeLimitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Books_AuthorId",
+                table: "Books",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Books_CoverArtId",
+                table: "Books",
+                column: "CoverArtId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Books_Isbn",
+                table: "Books",
+                column: "Isbn",
+                unique: true,
+                filter: "[Isbn] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Books_PublisherId",
+                table: "Books",
+                column: "PublisherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Books_TypeId",
+                table: "Books",
+                column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookTypes_Name",
+                table: "BookTypes",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CoverArts_Name",
                 table: "CoverArts",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_GenrePublication_GenreId",
-                table: "GenrePublication",
-                column: "GenreId");
+                name: "IX_GenreBook_BookId",
+                table: "GenreBook",
+                column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GenrePublication_PublicationId",
-                table: "GenrePublication",
-                column: "PublicationId");
+                name: "IX_GenreBook_GenreId",
+                table: "GenreBook",
+                column: "GenreId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Genres_Name",
@@ -580,44 +619,6 @@ namespace App.Migrations
                 name: "IX_Images_Name_AlbumId",
                 table: "Images",
                 columns: new[] { "Name", "AlbumId" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Publications_AgeLimitId",
-                table: "Publications",
-                column: "AgeLimitId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Publications_AuthorId",
-                table: "Publications",
-                column: "AuthorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Publications_CoverArtId",
-                table: "Publications",
-                column: "CoverArtId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Publications_Isbn",
-                table: "Publications",
-                column: "Isbn",
-                unique: true,
-                filter: "[Isbn] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Publications_PublisherId",
-                table: "Publications",
-                column: "PublisherId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Publications_TypeId",
-                table: "Publications",
-                column: "TypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PublicationTypes_Name",
-                table: "PublicationTypes",
-                column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -648,7 +649,7 @@ namespace App.Migrations
                 name: "BasketProducts");
 
             migrationBuilder.DropTable(
-                name: "GenrePublication");
+                name: "GenreBook");
 
             migrationBuilder.DropTable(
                 name: "Images");
@@ -660,10 +661,10 @@ namespace App.Migrations
                 name: "Baskets");
 
             migrationBuilder.DropTable(
-                name: "Genres");
+                name: "Books");
 
             migrationBuilder.DropTable(
-                name: "Publications");
+                name: "Genres");
 
             migrationBuilder.DropTable(
                 name: "Albums");
@@ -678,10 +679,10 @@ namespace App.Migrations
                 name: "Authors");
 
             migrationBuilder.DropTable(
-                name: "CoverArts");
+                name: "BookTypes");
 
             migrationBuilder.DropTable(
-                name: "PublicationTypes");
+                name: "CoverArts");
 
             migrationBuilder.DropTable(
                 name: "Publishers");
