@@ -39,6 +39,7 @@ export class BookService extends EntityService {
   }
 
   private getBookRelatedEntityItems(book: BookDto): Observable<SingleBookRelatedEntities> {
+    console.log(book);
     return combineLatest([
       this.relatedEntityService.getSingleItem(BookRelatedEntitiesNames.Publisher, book.publisherId),
       this.relatedEntityService.getSingleItem(BookRelatedEntitiesNames.Author, book.authorId),

@@ -21,7 +21,8 @@
       <mat-icon class="add-icon">add</mat-icon>
     </button>
     <ul>
-      <app-product-list-item *ngFor="let item of productList$ | async" [item]="item"></app-product-list-item>
+      <app-product-list-item *ngFor="let item of productList$ | async"
+                             [productType]="productType" [item]="item"></app-product-list-item>
     </ul>
   </div>
 </div>
