@@ -22,4 +22,23 @@ export class RelatedEntityService extends EntityService {
   ) {
     super(http);
   }
+
+  public getSingleItem(relatedEntityType: string, itemId: number): Observable<RelatedEntity> {
+    const entityItem$ = super.getSingleEntityItem<RelatedEntityDto>(relatedEntityType, itemId);
+
+    return entityItem$.pipe(
+      map(item => this.relatedEntityMapper.fromDto(item)),
+    );
+  }
+
+  public getItems(relatedEntityType: string, idsArray: number[]): Observable<RelatedEntity[]> {
+    const entityItems$ = super.getAllEntityItems<RelatedEntityDto>(relatedEntityType);
+
+    if (idsArray.length) {
+      return entityItems$.pipe(
+        map(data => data.filter(item => idsArray.find(num => num === item.id) !== undefined)),
+      );
+    }
+    return entityItems$;
+  }
 }

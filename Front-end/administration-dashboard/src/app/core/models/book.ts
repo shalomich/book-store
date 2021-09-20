@@ -15,23 +15,23 @@ export class Book {
 
   album: Album;
 
-  isbn: string;
+  ISBN: string;
 
   releaseYear: number;
 
-  publisherId: RelatedEntity;
+  publisher: RelatedEntity;
 
-  authorId: RelatedEntity;
+  author: RelatedEntity;
 
-  typeId: RelatedEntity;
+  type: RelatedEntity;
 
-  genreIds: RelatedEntity[];
+  genres: RelatedEntity[];
 
   originalName: string;
 
-  ageLimitId: RelatedEntity;
+  ageLimit: RelatedEntity;
 
-  coverArtId: RelatedEntity;
+  coverArt: RelatedEntity;
 
   bookFormat: string;
 
@@ -45,15 +45,15 @@ export class Book {
     this.quantity = book.quantity;
     this.description = book.description;
     this.album = book.album;
-    this.isbn = book.isbn;
+    this.ISBN = book.ISBN;
     this.releaseYear = book.releaseYear;
-    this.publisherId = book.publisherId;
-    this.authorId = book.authorId;
-    this.typeId = book.typeId;
-    this.genreIds = book.genreIds;
+    this.publisher = book.publisher;
+    this.author = book.author;
+    this.type = book.type;
+    this.genres = book.genres;
     this.originalName = book.originalName;
-    this.ageLimitId = book.ageLimitId;
-    this.coverArtId = book.coverArtId;
+    this.ageLimit = book.ageLimit;
+    this.coverArt = book.coverArt;
     this.bookFormat = book.bookFormat;
     this.pageQuantity = book.pageQuantity;
   }

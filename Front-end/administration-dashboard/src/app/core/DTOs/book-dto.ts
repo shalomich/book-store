@@ -7,7 +7,7 @@ export interface BookDto {
   quantity: number;
   description: string;
   album: Album;
-  isbn: string;
+  ISBN: string;
   releaseYear: number;
   publisherId: number;
   authorId: number;

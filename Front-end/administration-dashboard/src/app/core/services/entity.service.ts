@@ -12,4 +12,12 @@ export abstract class EntityService {
   protected getEntityPage<T>(entityName: string): Observable<T[]> {
     return this.http.get<T[]>(`${API_FORM_ENTITY_URI}${entityName}`);
   }
+
+  protected getSingleEntityItem<T>(entityName: string, itemId: number): Observable<T> {
+    return this.http.get<T>(`${API_FORM_ENTITY_URI}${entityName}/${itemId}`);
+  }
+
+  protected getAllEntityItems<T>(entityName: string): Observable<T[]> {
+    return this.http.get<T[]>(`${API_FORM_ENTITY_URI}${entityName}`);
+  }
 }
