@@ -8,29 +8,31 @@ using System.Threading.Tasks;
 namespace QueryWorker.DataTransformers.Paggings
 {
     
-    internal abstract record Pagging<T>
+    internal class Pagging<T> : DataTransformer<T> where T : class
     {
         public const int MinPageNumber = 1;
-        public const int MaxPageSize = 60;
+
+        public readonly int _maxPageSize = 60;
 
         private int _pageSize = int.MaxValue;
         private int _pageNumber = MinPageNumber;
-        public Pagging(IQueryable<T> data)
+
+        public Pagging()
         {
-            Data = data;
+
         }
 
-        public IQueryable<T> Data { init; get; }
+        public Pagging(int maxPageSize)
+        {
+            MaxPageSize = maxPageSize;
+        }
 
         public int PageSize
         {
             init
             {
-                if (value <= 0)
-                    throw new ArgumentException();
-
-                if (value > MaxPageSize)
-                    _pageSize = MaxPageSize;
+                if (value <= 0 || value > _maxPageSize)
+                    _pageSize = _maxPageSize;
                 else _pageSize = value;
             }
             get
@@ -44,11 +46,9 @@ namespace QueryWorker.DataTransformers.Paggings
             init
             {
                 if (value < MinPageNumber)
-                    throw new ArgumentException();
-
-                if (value > PageCount && IsEmpty == false)
-                    _pageNumber = PageCount;
-                else _pageNumber = value;
+                    _pageNumber = MinPageNumber;
+                else 
+                    _pageNumber = value;
             }
             get
             {
@@ -56,18 +56,31 @@ namespace QueryWorker.DataTransformers.Paggings
             }
         }
 
-        private bool IsEmpty => DataCount == 0;
-        public int CurrentPageDataCount => MakePage().Count();
-        public int DataCount => Data.Count();
-        public int PageCount => (int)Math.Ceiling(DataCount / (double)PageSize);
-        public bool HasNextPage => PageNumber != PageCount && IsEmpty == false;
-        public bool HasPreviousPage => PageNumber != MinPageNumber && IsEmpty == false;
+        public int MaxPageSize
+        {
+            init
+            {
+                if (value <= 0)
+                    throw new ArgumentException();
 
-        public PaggingMetadata Metadata => new PaggingMetadata(PageSize, PageNumber, CurrentPageDataCount, DataCount, PageCount, 
-            HasNextPage, HasPreviousPage);
+                _maxPageSize = value;
+            }
+            get
+            {
+                return _pageSize;
+            }
+        }
 
-
-        public abstract IQueryable<T> MakePage();
+        public void Deconstruct(out int pageSize, out int pageNumber)
+        {
+            pageSize = PageSize;
+            pageNumber = PageNumber;
+        }
+       
+        public override IQueryable<T> Transform(IQueryable<T> data)
+        {
+            return data.Skip(PageSize * (PageNumber - 1)).Take(PageSize);
+        }
     }
     
 

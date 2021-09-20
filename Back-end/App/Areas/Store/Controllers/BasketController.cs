@@ -1,5 +1,6 @@
 ﻿using App.Areas.Store.ViewModels.Basket;
 using App.Entities;
+using App.Services.QueryBuilders;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +19,14 @@ namespace App.Areas.Store.Controllers
     public class BasketController : UserController
     {
         private IMapper Mapper { get; }
-        public BasketController(IMediator mediator, IMapper mapper) : base(mediator)
+
+        private DbEntityQueryBuilder<BasketProduct> BasketProductQueryBuilder { get; }
+        public BasketController(IMediator mediator, IMapper mapper, DbEntityQueryBuilder<User> userQueryBuilder, 
+            DbEntityQueryBuilder<BasketProduct> basketProductQueryBuilder) : 
+            base(mediator, userQueryBuilder)
         {
             Mapper = mapper;
+            BasketProductQueryBuilder = basketProductQueryBuilder;
         }
 
         private async Task<Basket> GetUserBasket()
@@ -53,15 +59,15 @@ namespace App.Areas.Store.Controllers
         [HttpGet("product/{id}")]
         public async Task<ActionResult<BasketProductDto>> GetBasketProduct(int id)
         {
-            var basketProduct = (BasketProduct)await Mediator.Send(new GetByIdQuery(id, typeof(BasketProduct)));
+            var basketProduct = (BasketProduct)await Mediator.Send(new GetByIdQuery(id, BasketProductQueryBuilder));
 
             return Mapper.Map<BasketProductDto>(basketProduct);
         }
 
         [HttpPost("product")]
-        public async Task<ActionResult<BasketProductDto>> AddBasketProduct([FromBody] int productId)
+        public async Task<ActionResult<BasketProductDto>> AddBasketProduct([FromBody] int productId, [FromServices] DbEntityQueryBuilder<Product> productQueryBuilder)
         {
-            var product = (Product) await Mediator.Send(new GetByIdQuery(productId, typeof(Product)));
+            var product = (Product) await Mediator.Send(new GetByIdQuery(productId, productQueryBuilder));
 
             var basket = await GetUserBasket();
 
@@ -76,7 +82,7 @@ namespace App.Areas.Store.Controllers
         [HttpPut("product/{id}")]
         public async Task<ActionResult<BasketProductDto>> ChangeBasketProductQuantity(int id, [FromBody][Range(1,int.MaxValue)] int quantity)
         {
-            var basketProduct = (BasketProduct) await Mediator.Send(new GetByIdQuery(id, typeof(BasketProduct)));
+            var basketProduct = (BasketProduct) await Mediator.Send(new GetByIdQuery(id, BasketProductQueryBuilder));
 
             basketProduct.Quantity = quantity;
 
@@ -88,7 +94,7 @@ namespace App.Areas.Store.Controllers
         [HttpDelete("product/{id}")]
         public async Task<ActionResult<BasketProductDto>> DeleteBasketProduct(int id)
         {
-            var basketProduct = (BasketProduct)await Mediator.Send(new GetByIdQuery(id, typeof(BasketProduct)));
+            var basketProduct = (BasketProduct)await Mediator.Send(new GetByIdQuery(id, BasketProductQueryBuilder));
             await Mediator.Send(new DeleteCommand(basketProduct));
 
             return NoContent();

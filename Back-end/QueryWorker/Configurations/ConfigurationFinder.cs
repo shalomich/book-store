@@ -19,17 +19,51 @@ namespace QueryWorker.Configurations
 
         public QueryConfiguration<T> Find<T>() where T : class 
         {
-            var type = typeof(T);
-            var configurationType = typeof(QueryConfiguration<>).MakeGenericType(type);
-           
-            var configuration = _assembly.GetTypes()
-                .SingleOrDefault(type => type.IsSubclassOf(configurationType)
-                    && type.IsAbstract == false);
+            var objectType = typeof(T);
 
-            if (configuration == null)
-                throw new InvalidOperationException(string.Format(NotFoundConfigTemplateMesage, type.Name));
+            Type configurationType = null;
 
-            return Activator.CreateInstance(configuration) as QueryConfiguration<T>;
+            if ((configurationType = FindConfigurationType(objectType)) == null
+                && (configurationType = FindGenericConfigurationType(objectType)) == null)
+                throw new InvalidOperationException(string.Format(NotFoundConfigTemplateMesage, objectType.Name));
+
+            return Activator.CreateInstance(configurationType) as QueryConfiguration<T>;
+        }
+
+        private Type FindGenericConfigurationType(Type objectType)
+        {
+            var configurationBaseType = typeof(QueryConfiguration<>).MakeGenericType(objectType);
+
+            var configurationTypeCandidates = _assembly.GetTypes()
+                .Where(type => type.IsGenericType && type.IsAbstract == false);
+
+            Type configurationType = null;
+
+            foreach(var configurationTypeCandidate in configurationTypeCandidates)
+            {
+                try
+                {
+                    configurationType = configurationTypeCandidate.GetGenericTypeDefinition()
+                        .MakeGenericType(objectType);
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
+
+                if (configurationType.IsSubclassOf(configurationBaseType))
+                    return configurationType;
+            }
+
+            return null;
+        }
+        private Type FindConfigurationType(Type objectType)
+        {
+            var configurationBaseType = typeof(QueryConfiguration<>).MakeGenericType(objectType);
+
+            return _assembly.GetTypes()
+                .SingleOrDefault(type => type.IsSubclassOf(configurationBaseType)
+                        && type.IsAbstract == false); 
         }
     }
 }

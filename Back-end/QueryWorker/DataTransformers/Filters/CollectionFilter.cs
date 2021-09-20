@@ -10,6 +10,11 @@ namespace QueryWorker.DataTransformers.Filters
     internal class CollectionFilter<T> : Filter<T, IEnumerable<int>> where T : class
     {
         private FilterСomparison _comparison = FilterСomparison.Equal;
+
+        public CollectionFilter() : base()
+        {
+        }
+
         public CollectionFilter(Expression<Func<T, IEnumerable<int>>> propertySelector) : base(propertySelector)
         {
         }

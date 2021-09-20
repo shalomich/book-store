@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using App.Middlewares;
+using App.Services.QueryBuilders;
 
 namespace Store
 {
@@ -45,7 +46,10 @@ namespace Store
                 .ConfigureApplicationPartManager(options => options.FeatureProviders.Add(new GenericControllerFeatureProvider())); ;
 
             services.AddScoped<JwtGenerator>();
-            services.AddDataTransformer(GetType().Assembly);
+
+            services.AddDataTransformerBuildFacade(GetType().Assembly);
+            services.AddScoped(typeof(DbEntityQueryBuilder<>));
+            services.AddScoped(typeof(DbFormEntityQueryBuilder<>));
 
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<ApplicationContext>();
@@ -81,7 +85,7 @@ namespace Store
 
             app.UseRouting();
 
-            app.UseMiddleware<ErrorHandlingMiddleware>();
+            //app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseAuthentication();
             app.UseAuthorization();

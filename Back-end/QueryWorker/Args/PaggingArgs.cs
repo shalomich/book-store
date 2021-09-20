@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace QueryWorker.Args
 {
-    public record PaggingArgs
+    public record PaggingArgs : DataTransformerArgs
     {
 
         [Range(1, int.MaxValue)]
@@ -16,7 +16,6 @@ namespace QueryWorker.Args
 
         [Range(1, int.MaxValue)]
         public int PageNumber { init; get; } = 1;
-
-        public PaggingType Type { init; get; } = PaggingType.Flip;
+        
     }
 }

@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace QueryWorker.Args
 {
-    internal interface IDataTransformerArgs
+    public abstract record DataTransformerArgs
     {
-        public string PropertyName { init; get; }
     }
 }

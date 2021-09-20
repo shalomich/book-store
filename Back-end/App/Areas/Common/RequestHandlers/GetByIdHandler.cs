@@ -1,6 +1,8 @@
 ﻿using App.Entities;
 using App.Exceptions;
+using App.Services.QueryBuilders;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,20 +14,16 @@ namespace App.Areas.Common.RequestHandlers
 {
     public class GetByIdHandler : IRequestHandler<GetByIdQuery, IEntity>
     {
-        public record GetByIdQuery(int Id, Type EntityType) : IRequest<IEntity>;
-        private ApplicationContext Context { get; }
-
+        public record GetByIdQuery(int Id, IDbQueryBuilder<IEntity> QueryBuilder) : IRequest<IEntity>;
+       
         private const string WrongIdMessage = "Entity does not exist by this id";
 
-        public GetByIdHandler(ApplicationContext context)
-        {
-            Context = context ?? throw new ArgumentNullException(nameof(context));
-        }
         public async Task<IEntity> Handle(GetByIdQuery request, CancellationToken cancellationToken)
         {
-            var (id, entityType) = request;
+            var (id, queryBuilder) = request;
 
-            var entity = (IEntity)await Context.FindAsync(entityType, id);
+            var entity = await queryBuilder.Build()
+                .SingleOrDefaultAsync(entity => entity.Id == id);
 
             if (entity == null)
                 throw new NotFoundException(WrongIdMessage);

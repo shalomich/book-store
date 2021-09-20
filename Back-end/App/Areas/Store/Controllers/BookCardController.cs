@@ -1,6 +1,8 @@
 ﻿using App.Areas.Store.ViewModels;
 using App.Entities;
 using App.Entities.Books;
+using App.Requirements;
+using App.Services.QueryBuilders;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -15,45 +17,56 @@ namespace App.Areas.Store.Controllers
     [Route("[area]/product/book")]
     public class BookCardController : ProductCardController<Book>
     {
-        public BookCardController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
+        public BookCardController(IMediator mediator, IMapper mapper, DbFormEntityQueryBuilder<Book> queryBuilder) : base(mediator, mapper, queryBuilder)
         {
+        }
+
+        protected override void IncludeRelatedEntities(DbFormEntityQueryBuilder<Book> queryBuilder)
+        {
+            queryBuilder.AddIncludeRequirements(new IIncludeRequirement<Book>[]
+            {
+                new BookGenresIncludeRequirement(),
+                new BookAuthorIncludeRequirement(),
+                new BookPublisherIncludeRequirement(),
+                new BookDefinitionIncludeRequirement()
+            }); 
         }
 
         [HttpGet("genre")]
-        public async Task<IEnumerable<Option>> GetGenreOptions()
+        public async Task<IEnumerable<Option>> GetGenreOptions([FromServices] DbFormEntityQueryBuilder<Genre> queryBuilder)
         {
-            return await GetRelatedEntityOptions(typeof(Genre));
+            return await GetRelatedEntityOptions(queryBuilder);
         }
 
         [HttpGet("type")]
-        public async Task<IEnumerable<Option>> GetTypeOptions()
+        public async Task<IEnumerable<Option>> GetTypeOptions([FromServices] DbFormEntityQueryBuilder<BookType> queryBuilder)
         {
-            return await GetRelatedEntityOptions(typeof(BookType));
+            return await GetRelatedEntityOptions(queryBuilder);
         }
 
         [HttpGet("age-limit")]
-        public async Task<IEnumerable<Option>> GetAgeLimitOptions()
+        public async Task<IEnumerable<Option>> GetAgeLimitOptions([FromServices] DbFormEntityQueryBuilder<AgeLimit> queryBuilder)
         {
-            return await GetRelatedEntityOptions(typeof(AgeLimit));
+            return await GetRelatedEntityOptions(queryBuilder);
         }
 
         [HttpGet("cover-art")]
-        public async Task<IEnumerable<Option>> GetCoverArtOptions()
+        public async Task<IEnumerable<Option>> GetCoverArtOptions([FromServices] DbFormEntityQueryBuilder<CoverArt> queryBuilder)
         {
-            return await GetRelatedEntityOptions(typeof(CoverArt));
+            return await GetRelatedEntityOptions(queryBuilder);
         }
 
         [HttpGet("author")]
-        public async Task<IEnumerable<Option>> GetAuthorOptions()
+        public async Task<IEnumerable<Option>> GetAuthorOptions([FromServices] DbFormEntityQueryBuilder<Author> queryBuilder)
         {
-            return await GetRelatedEntityOptions(typeof(Author));
+            return await GetRelatedEntityOptions(queryBuilder);
         }
 
         [HttpGet("publisher")]
-        public async Task<IEnumerable<Option>> GetPublisherOptions()
+        public async Task<IEnumerable<Option>> GetPublisherOptions([FromServices] DbFormEntityQueryBuilder<Publisher> queryBuilder)
         {
-            return await GetRelatedEntityOptions(typeof(Publisher));
+            return await GetRelatedEntityOptions(queryBuilder);
         }
-
+        
     }
 }

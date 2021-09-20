@@ -10,28 +10,26 @@ using System.Text;
 namespace QueryWorker.DataTransformers.Filters
 {
     
-    internal abstract class Filter<TClass,TProperty> : IDataTransformer<TClass> where TClass : class
+    internal abstract class Filter<TClass,TProperty> : DataTransformer<TClass> where TClass : class
     {
-        private readonly Expression<Func<TClass, TProperty>> _propertySelector;
+        public Expression<Func<TClass, TProperty>> PropertySelector { init; get; }
         public TProperty ComparedValue { set; get; }
         public virtual FilterСomparison Comparison { set; get; } = FilterСomparison.Equal;
 
+        protected Filter()
+        {
+
+        }
         protected Filter(Expression<Func<TClass, TProperty>> propertySelector)
         {
-            _propertySelector = propertySelector ?? throw new ArgumentNullException(nameof(propertySelector));
+            PropertySelector = propertySelector ?? throw new ArgumentNullException(nameof(propertySelector));
         }
 
-        protected Filter(Expression<Func<TClass, TProperty>> propertySelector, TProperty comparedValue, FilterСomparison comparison = FilterСomparison.Equal) : this(propertySelector)
-        {
-            ComparedValue = comparedValue;
-            Comparison = comparison;
-        }
-
-        public IQueryable<TClass> Transform(IQueryable<TClass> query)
+        public override IQueryable<TClass> Transform(IQueryable<TClass> query)
         {           
             var comparer = ChooseComparer(ComparedValue, Comparison);
             
-            Expression<Func<TClass, bool>> filterExpression = _propertySelector.Compose(comparer);
+            Expression<Func<TClass, bool>> filterExpression = PropertySelector.Compose(comparer);
 
             return query.Where(filterExpression);
         }
