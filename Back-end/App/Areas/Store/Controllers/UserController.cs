@@ -17,7 +17,7 @@ namespace App.Areas.Store.Controllers
     public class UserController : StoreController
     {
         protected IMediator Mediator { get; }
-        private DbEntityQueryBuilder<User> UserQueryBuilder { get; }
+        protected DbEntityQueryBuilder<User> UserQueryBuilder { get; }
 
         public UserController(IMediator mediator, DbEntityQueryBuilder<User> userQueryBuilder)
         {
@@ -25,11 +25,11 @@ namespace App.Areas.Store.Controllers
             UserQueryBuilder = userQueryBuilder ?? throw new ArgumentNullException(nameof(userQueryBuilder));
         }
 
-        protected async Task<User> GetAuthorizedUser() { 
+        protected async Task<User> GetAuthorizedUser(DbEntityQueryBuilder<User> userQueryBuilder) { 
 
             int userId = int.Parse(User.FindFirst("id").Value);
 
-            var user = (User) await Mediator.Send(new GetByIdQuery(userId, UserQueryBuilder));
+            var user = (User) await Mediator.Send(new GetByIdQuery(userId, userQueryBuilder));
 
             return user;
         }

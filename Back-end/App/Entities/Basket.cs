@@ -8,7 +8,7 @@ namespace App.Entities
     public class Basket : IEntity
     {
         public int Id { set; get; }
-        public virtual User User { set; get; }
+        public User User { set; get; }
         public int UserId { set; get; }
         public ISet<BasketProduct> BasketProducts { set; get; }
 

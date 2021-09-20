@@ -8,7 +8,11 @@ namespace App.Entities
 {
     public class User : IdentityUser<int>, IEntity
     {
-        public virtual Basket Basket { set; get; }
-        public int? BasketId { set; get; }
+        public Basket Basket { set; get; }
+
+        public Basket CreateBasket()
+        {
+            return new Basket { User = this };
+        }
     }
 }

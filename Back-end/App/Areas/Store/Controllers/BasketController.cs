@@ -1,5 +1,6 @@
 ﻿using App.Areas.Store.ViewModels.Basket;
 using App.Entities;
+using App.Requirements;
 using App.Services.QueryBuilders;
 using AutoMapper;
 using MediatR;
@@ -19,28 +20,36 @@ namespace App.Areas.Store.Controllers
     public class BasketController : UserController
     {
         private IMapper Mapper { get; }
-
         private DbEntityQueryBuilder<BasketProduct> BasketProductQueryBuilder { get; }
+        private DbEntityQueryBuilder<Basket> BasketQueryBuilder { get; }
         public BasketController(IMediator mediator, IMapper mapper, DbEntityQueryBuilder<User> userQueryBuilder, 
-            DbEntityQueryBuilder<BasketProduct> basketProductQueryBuilder) : 
+            DbEntityQueryBuilder<BasketProduct> basketProductQueryBuilder, 
+            DbEntityQueryBuilder<Basket> basketQueryBuilder) : 
             base(mediator, userQueryBuilder)
         {
             Mapper = mapper;
             BasketProductQueryBuilder = basketProductQueryBuilder;
+            BasketQueryBuilder = basketQueryBuilder;
         }
 
         private async Task<Basket> GetUserBasket()
         {
-            var user = await GetAuthorizedUser();
+            UserQueryBuilder.AddIncludeRequirements(new UserBasketIncludeRequirement());
+            var user = await GetAuthorizedUser(UserQueryBuilder);
 
             var basket = user.Basket;
 
-            return basket ?? (Basket) await Mediator.Send(new CreateCommand(new Basket() { User = user}));
+            if (basket == null)
+                basket = (Basket)await Mediator.Send(new CreateCommand(user.CreateBasket()));
+            
+            return basket; 
         }
 
         [HttpGet]
         public async Task<ActionResult<BasketDto>> Get()
         {
+            BasketQueryBuilder.AddIncludeRequirements(new BasketProductIncludeRequirement());
+
             var basket = await GetUserBasket();
 
             return Mapper.Map<BasketDto>(basket);
