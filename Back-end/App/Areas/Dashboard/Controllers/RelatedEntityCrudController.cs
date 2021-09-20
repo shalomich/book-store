@@ -1,6 +1,7 @@
 ﻿using App.Areas.Dashboard.ViewModels.Forms;
 using App.Attributes.GenericController;
 using App.Entities;
+using App.Services.QueryBuilders;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -12,7 +13,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using static App.Areas.Common.RequestHandlers.GetByIdHandler;
 using static App.Areas.Common.RequestHandlers.GetHandler;
-using static App.Areas.Common.RequestHandlers.TransformHandler;
 
 namespace App.Areas.Dashboard.Controllers
 {
@@ -20,23 +20,24 @@ namespace App.Areas.Dashboard.Controllers
     [GenericController()]
     public class RelatedEntityCrudController<T> : FormEntityCrudController<T, RelatedEntityForm> where T : RelatedEntity
     {
-        public RelatedEntityCrudController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
+        public RelatedEntityCrudController(IMediator mediator, IMapper mapper, DbFormEntityQueryBuilder<T> queryBuilder) : base(mediator, mapper, queryBuilder)
         {
         }
 
         public override async Task<ActionResult<RelatedEntityForm[]>> Read([FromQuery] QueryTransformArgs args)
         {
-            var relatedEntities = (IQueryable<RelatedEntity>)await Mediator.Send(new GetQuery(FormEntityType));
-            var transformedRelatedEntities = await Mediator.Send(new TransformQuery(relatedEntities, args));
+            QueryBuilder.AddDataTransformation(args);
 
-            return transformedRelatedEntities
-                .ProjectTo<RelatedEntityForm>(Mapper.ConfigurationProvider)
+            var relatedEntities = await Mediator.Send(new GetQuery(QueryBuilder));
+
+            return relatedEntities
+                .Select(relatedEntity => Mapper.Map<RelatedEntityForm>(relatedEntity))
                 .ToArray();
         }
 
         public override async Task<ActionResult<RelatedEntityForm>> Read(int id)
         {
-            var relatedEntity = (RelatedEntity)await Mediator.Send(new GetByIdQuery(id, FormEntityType));
+            var relatedEntity = (RelatedEntity)await Mediator.Send(new GetByIdQuery(id, QueryBuilder));
             return Ok(Mapper.Map<RelatedEntityForm>(relatedEntity));
         }
     }

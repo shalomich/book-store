@@ -8,70 +8,60 @@ using System.Linq.Expressions;
 using AutoMapper;
 using QueryWorker.Args;
 using System.Linq;
+using QueryWorker.DataTransformers.Paggings;
 
 namespace QueryWorker.Configurations
 {
-    public abstract class QueryConfiguration<TClass> where TClass : class
+    public abstract class QueryConfiguration<TConfigured> where TConfigured : class
     {
-        private readonly Dictionary<string, Sorting<TClass>> _sortings = new Dictionary<string, Sorting<TClass>>();
-        private readonly Dictionary<string, IDataTransformer<TClass>> _filters = new Dictionary<string, IDataTransformer<TClass>>();
-        private readonly Dictionary<string, Search<TClass>> _searches = new Dictionary<string, Search<TClass>>();
+        private const int MaxPageNumber = 60;
 
-        private readonly IMapper _mapper; 
+        private Pagging<TConfigured> _pagging;
 
-        protected QueryConfiguration()
+        private readonly Dictionary<string, DataTransformer<TConfigured>> _sortings = new Dictionary<string, DataTransformer<TConfigured>>();
+        private readonly Dictionary<string, DataTransformer<TConfigured>> _filters = new Dictionary<string, DataTransformer<TConfigured>>();
+        private readonly Dictionary<string, DataTransformer<TConfigured>> _searches = new Dictionary<string, DataTransformer<TConfigured>>();
+
+        internal DataTransformer<TConfigured> GetSorting(string propertyKey) => _sortings[propertyKey];
+        internal DataTransformer<TConfigured> GetFilter(string propertyKey) => _filters[propertyKey];
+        internal DataTransformer<TConfigured> GetSearch(string propertyKey) => _searches[propertyKey];
+        internal DataTransformer<TConfigured> GetPagging() => _pagging ?? new Pagging<TConfigured>(MaxPageNumber);
+
+        protected void CreateSorting(string propertyKey,Expression<Func<TConfigured,object>> propertySelector)
         {
-            var mapperConfig = new MapperConfiguration(builder =>
-            {
-                builder.CreateMap<SortingArgs, Sorting<TClass>>();
-                builder.CreateMap<FilterArgs, StringFilter<TClass>>();
-                builder.CreateMap<FilterArgs, NumberFilter<TClass>>()
-                    .ForMember(filter => filter.ComparedValue, mapper =>
-                        mapper.MapFrom(args => double.Parse(args.ComparedValue)));
-                builder.CreateMap<FilterArgs, CollectionFilter<TClass>>()
-                    .ForMember(filter => filter.ComparedValue, mapper =>
-                        mapper.MapFrom(args => args.ComparedValue
-                            .Split(',', StringSplitOptions.None)
-                            .Select(str => int.Parse(str))));
-                builder.CreateMap<SearchArgs, Search<TClass>>();
-            });
-
-            _mapper = new Mapper(mapperConfig);
-        }
-
-        internal IDataTransformer<TClass> BuildTransformer(IDataTransformerArgs args) => args switch
-        {
-            SortingArgs sortingArgs => _mapper.Map(sortingArgs, _sortings[args.PropertyName]),
-            FilterArgs filterArgs => _mapper.Map(filterArgs, _filters[args.PropertyName]),
-            SearchArgs searchArgs => _mapper.Map(searchArgs, _searches[args.PropertyName]),
-            _ => throw new ArgumentException()
-        };
-
-        protected void CreateSorting(string propertyKey,Expression<Func<TClass,object>> propertySelector)
-        {
-            var sorting = new Sorting<TClass>(propertySelector);
+            var sorting = new Sorting<TConfigured>(propertySelector);
 
             _sortings.Add(propertyKey, sorting);
         }
 
-        protected void CreateFilter(string propertyKey,Expression<Func<TClass, string>> propertySelector)
+        protected void CreateFilter(string propertyKey,Expression<Func<TConfigured, string>> propertySelector)
         {
-            _filters.Add(propertyKey, new StringFilter<TClass>(propertySelector));
+            _filters.Add(propertyKey, new StringFilter<TConfigured>(propertySelector));
         }
 
-        protected void CreateFilter(string propertyKey,Expression<Func<TClass, double>> propertySelector)
+        protected void CreateFilter(string propertyKey,Expression<Func<TConfigured, double>> propertySelector)
         {
-            _filters.Add(propertyKey, new NumberFilter<TClass>(propertySelector));
+            _filters.Add(propertyKey, new NumberFilter<TConfigured>(propertySelector));
         }
 
-        protected void CreateFilter(string propertyKey, Expression<Func<TClass, IEnumerable<int>>> propertySelector)
+        protected void CreateFilter(string propertyKey, Expression<Func<TConfigured, IEnumerable<int>>> propertySelector)
         {
-            _filters.Add(propertyKey, new CollectionFilter<TClass>(propertySelector));
+            _filters.Add(propertyKey, new CollectionFilter<TConfigured>(propertySelector));
         }
 
-        protected void CreateSearch(string propertyKey, Expression<Func<TClass, string>> propertySelector)
+        protected void CreateSearch(string propertyKey, Expression<Func<TConfigured, string>> propertySelector)
         {
-            _searches.Add(propertyKey, new Search<TClass>(propertySelector));
+            _searches.Add(propertyKey, new Search<TConfigured>(propertySelector));
         }
+
+        protected void CreatePagging(int maxPageNumberForConfigured)
+        {
+            if (maxPageNumberForConfigured > MaxPageNumber)
+                maxPageNumberForConfigured = MaxPageNumber;
+
+            _pagging = new Pagging<TConfigured>(maxPageNumberForConfigured);
+        }
+
+
     }
 }

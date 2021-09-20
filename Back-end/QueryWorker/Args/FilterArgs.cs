@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace QueryWorker.Args
 {
-    public record FilterArgs : IDataTransformerArgs
+    public record FilterArgs : DataTransformerArgs
     {
         [Required]
         public string PropertyName { init; get; }

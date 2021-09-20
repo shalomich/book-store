@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace QueryWorker.Args
 {
-    public record SearchArgs : IDataTransformerArgs
+    public record SearchArgs : DataTransformerArgs
     {
         [Required]
         public string PropertyName { init; get; }

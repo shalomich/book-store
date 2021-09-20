@@ -10,16 +10,14 @@ namespace QueryWorker.DataTransformers.Filters
     internal class StringFilter<T> : Filter<T, string> where T : class
     {
         private FilterСomparison _comparison = FilterСomparison.Equal;
+
+        public StringFilter() : base()
+        {
+
+        }
         public StringFilter(Expression<Func<T, string>> propertySelector) : base(propertySelector)
         {
         }
-
-        public StringFilter(Expression<Func<T, string>> propertySelector, string comparedValue, 
-            FilterСomparison сomparison = FilterСomparison.Equal) 
-            : base(propertySelector, comparedValue, сomparison)
-        {
-        }
-
 
         public override FilterСomparison Comparison
         {

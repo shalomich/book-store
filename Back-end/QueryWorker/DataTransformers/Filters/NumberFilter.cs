@@ -9,6 +9,9 @@ namespace QueryWorker.DataTransformers.Filters
 {
     internal class NumberFilter<T> : Filter<T,double> where T : class
     {
+        public NumberFilter() : base()
+        {
+        }
         public NumberFilter(Expression<Func<T, double>> propertySelector) : base(propertySelector)
         {
         }

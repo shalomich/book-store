@@ -9,15 +9,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static App.Areas.Common.RequestHandlers.GetByIdHandler;
-using App.Areas.Common.ViewModels;
 using App.Areas.Store.ViewModels.Cards;
 using App.Entities;
 using App.Areas.Store.ViewModels;
 using static App.Areas.Common.RequestHandlers.GetHandler;
-using static App.Areas.Common.RequestHandlers.TransformHandler;
 using AutoMapper.QueryableExtensions;
-using QueryWorker;
-using static App.Areas.Common.RequestHandlers.GetQueryMetadataHandler;
+using static App.Areas.Common.RequestHandlers.GetPaggingMetadataHandler;
+using App.Services.QueryBuilders;
+using App.Requirements;
+using QueryWorker.Configurations;
+using System.Reflection;
+using App.QueryConfigs;
 
 namespace App.Areas.Store.Controllers
 {
@@ -25,21 +27,25 @@ namespace App.Areas.Store.Controllers
     {
         protected IMediator Mediator { get; }
         protected IMapper Mapper { get; }
+        protected DbFormEntityQueryBuilder<T> QueryBuilder { get; }
 
-        public ProductCardController(IMediator mediator, IMapper mapper)
+        protected ProductCardController(IMediator mediator, IMapper mapper, DbFormEntityQueryBuilder<T> queryBuilder)
         {
             Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            QueryBuilder = queryBuilder ?? throw new ArgumentNullException(nameof(queryBuilder));
         }
 
         [HttpGet]
         public async Task<ActionResult<ProductCard[]>> GetCards([FromQuery] QueryTransformArgs args)
         {
-            var productType = typeof(T);
-            var products = (IQueryable<Product>) await Mediator.Send(new GetQuery(productType));
-            var transformedProducts = await Mediator.Send(new TransformQuery(products, args));
-            return transformedProducts
-                .ProjectTo<ProductCard>(Mapper.ConfigurationProvider)
+            QueryBuilder.AddDataTransformation(args)
+                .AddIncludeRequirements(new ProductAlbumIncludeRequirement<T>());
+
+            var products = await Mediator.Send(new GetQuery(QueryBuilder));
+
+            return products
+                .Select(product => Mapper.Map<ProductCard>(product))
                 .ToArray();
         }
 
@@ -48,26 +54,34 @@ namespace App.Areas.Store.Controllers
         {
             var productType = typeof(T);
             var productCardType = Mapper.GetDestinationType(productType, typeof(ProductCard));
-            var entity = await Mediator.Send(new GetByIdQuery(id, productType));
+
+            QueryBuilder.AddIncludeRequirements(new ProductAlbumIncludeRequirement<T>());
+            IncludeRelatedEntities(QueryBuilder);
+
+            var entity = await Mediator.Send(new GetByIdQuery(id,QueryBuilder));
 
             return Ok(Mapper.Map(entity, productType, productCardType));
         }
 
-        [HttpGet("metadata")]
-        public async Task<QueryMetadata> GetQueryMetadata([FromQuery] QueryTransformArgs args)
+        protected abstract void IncludeRelatedEntities(DbFormEntityQueryBuilder<T> queryBuilder); 
+
+        [HttpHead]
+        public async Task GetPaggingMetadata([FromQuery] QueryTransformArgs args)
         {
-            var productType = typeof(T);
+            QueryBuilder.AddDataTransformation(args);
 
-            var products = (IQueryable<Product>)await Mediator.Send(new GetQuery(productType));
-
-            return await Mediator.Send(new GetMetadataQuery(products, args));
+            var metadata = await Mediator.Send(new GetMetadataQuery(args.Pagging, QueryBuilder));
+            
+            HttpContext.Response.Headers.Add(metadata);
         }
 
-        protected async Task<IEnumerable<Option>> GetRelatedEntityOptions(Type relatedEntityType)
+        protected async Task<IEnumerable<Option>> GetRelatedEntityOptions<TRelatedEntity>(IDbQueryBuilder<TRelatedEntity> relatedEntityqueryBuilder) where TRelatedEntity : RelatedEntity
         {
-            var relatedEntities = (IQueryable<RelatedEntity>) await Mediator.Send(new GetQuery(relatedEntityType));
+            var relatedEntities = await Mediator.Send(new GetQuery(relatedEntityqueryBuilder));
 
-            return relatedEntities.ProjectTo<Option>(Mapper.ConfigurationProvider).ToList();
+            return relatedEntities
+                .Select(relatedEntity => Mapper.Map<Option>(relatedEntity))
+                .ToArray();
         }
     }
 }

@@ -11,27 +11,24 @@ using QueryWorker.DataTransformers;
 
 namespace QueryWorker.DataTransformers
 {
-    public class Search<T> : IDataTransformer<T> where T : class
+    public class Search<T> : DataTransformer<T> where T : class
     {
         private const string LeftBorder = "(";
         private const string RightBorder = ")";
-
-        private readonly Expression<Func<T, string>> _propertySelector;
+        private Expression<Func<T, string>> PropertySelector { init; get; }
         public string ComparedValue { set; get; }
         public int SearchDepth { set; get; }
 
+        public Search()
+        {
+
+        }
         public Search(Expression<Func<T, string>> propertySelector)
         {
-            _propertySelector = propertySelector ?? throw new ArgumentNullException(nameof(propertySelector));
+            PropertySelector = propertySelector ?? throw new ArgumentNullException(nameof(propertySelector));
         }
 
-        public Search(Expression<Func<T, string>> propertySelector, string comparedValue, int searchDepth) : this(propertySelector)
-        {
-            ComparedValue = comparedValue ?? throw new ArgumentNullException(nameof(comparedValue));
-            SearchDepth = searchDepth;
-        }
-
-        public IQueryable<T> Transform(IQueryable<T> request)
+        public override IQueryable<T> Transform(IQueryable<T> request)
         {
             
             if (ComparedValue.StartsWith(LeftBorder) && ComparedValue.EndsWith(RightBorder)) {
@@ -71,7 +68,7 @@ namespace QueryWorker.DataTransformers
 
         private IQueryable<T> FilterRequest(IQueryable<T> request, string comparedValue, FilterСomparison comparison)
         {
-            var filter = new StringFilter<T>(_propertySelector, comparedValue, comparison);
+            var filter = new StringFilter<T>(PropertySelector) { ComparedValue = comparedValue, Comparison = comparison};
 
             return filter.Transform(request);
         }

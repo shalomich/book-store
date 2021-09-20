@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace QueryWorker.DataTransformers
 {
-    internal interface IDataTransformer<T> where T : class
+    public abstract class DataTransformer<T> where T : class
     {
-        IQueryable<T> Transform(IQueryable<T> data);
+        public abstract IQueryable<T> Transform(IQueryable<T> data);
     }
 }

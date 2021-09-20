@@ -1,5 +1,9 @@
 ﻿using App.Entities;
+using App.QueryConfigs;
+using App.Services.QueryBuilders;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using QueryWorker.Configurations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,33 +13,13 @@ using static App.Areas.Common.RequestHandlers.GetHandler;
 
 namespace App.Areas.Common.RequestHandlers
 {
-    public class GetHandler : IRequestHandler<GetQuery, IQueryable<IEntity>>
+    public class GetHandler : IRequestHandler<GetQuery, IEnumerable<IEntity>>
     {
-        public record GetQuery(Type EntityType) : IRequest<IQueryable<IEntity>>;
-        private ApplicationContext Context { get; }
+        public record GetQuery(IDbQueryBuilder<IEntity> QueryBuilder) : IRequest<IEnumerable<IEntity>>;
 
-        public GetHandler(ApplicationContext context)
+        public async Task<IEnumerable<IEntity>> Handle(GetQuery request, CancellationToken cancellationToken)
         {
-            Context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-
-        public async Task<IQueryable<IEntity>> Handle(GetQuery request, CancellationToken cancellationToken)
-        {
-            Type entityType = request.EntityType;
-
-            if (typeof(IEntity).IsAssignableFrom(entityType) == false)
-                throw new ArgumentException();
-
-            return await Task.Run(() => 
-            {
-                return (IQueryable<IEntity>)Context
-                .GetType()
-                .GetMethods()
-                .SingleOrDefault(method => method.Name == nameof(Context.Set)
-                    && method.GetParameters().Count() == 0)
-                .MakeGenericMethod(entityType)
-                .Invoke(Context, null);
-            });
+            return await request.QueryBuilder.Build().ToListAsync();
         }
     }
 }

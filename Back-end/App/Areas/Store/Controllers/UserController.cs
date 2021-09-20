@@ -1,4 +1,5 @@
 ﻿using App.Entities;
+using App.Services.QueryBuilders;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,16 +17,19 @@ namespace App.Areas.Store.Controllers
     public class UserController : StoreController
     {
         protected IMediator Mediator { get; }
+        private DbEntityQueryBuilder<User> UserQueryBuilder { get; }
 
-        public UserController(IMediator mediator)
+        public UserController(IMediator mediator, DbEntityQueryBuilder<User> userQueryBuilder)
         {
             Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            UserQueryBuilder = userQueryBuilder ?? throw new ArgumentNullException(nameof(userQueryBuilder));
         }
+
         protected async Task<User> GetAuthorizedUser() { 
 
             int userId = int.Parse(User.FindFirst("id").Value);
 
-            var user = (User) await Mediator.Send(new GetByIdQuery(userId, typeof(User)));
+            var user = (User) await Mediator.Send(new GetByIdQuery(userId, UserQueryBuilder));
 
             return user;
         }
