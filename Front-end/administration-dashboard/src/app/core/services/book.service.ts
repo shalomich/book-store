@@ -12,6 +12,8 @@ import { SingleBookRelatedEntities } from '../interfaces/single-book-related-ent
 
 import { BookDto } from '../DTOs/book-dto';
 
+import { BooksRelatedEntities } from '../interfaces/books-related-entities';
+
 import { EntityService } from './entity.service';
 import { RelatedEntityService } from './related-entity.service';
 
@@ -39,7 +41,6 @@ export class BookService extends EntityService {
   }
 
   private getBookRelatedEntityItems(book: BookDto): Observable<SingleBookRelatedEntities> {
-    console.log(book);
     return combineLatest([
       this.relatedEntityService.getSingleItem(BookRelatedEntitiesNames.Publisher, book.publisherId),
       this.relatedEntityService.getSingleItem(BookRelatedEntitiesNames.Author, book.authorId),
@@ -50,11 +51,31 @@ export class BookService extends EntityService {
     ]).pipe(
       map(([publisher, author, bookType, genres, ageLimit, coverArt]) => ({
             publisher,
-            authors: author,
+            author,
             bookType,
             genres,
             ageLimit,
             coverArt,
+      })),
+    );
+  }
+
+  public getAllRelatedEntitiesItems(): Observable<BooksRelatedEntities> {
+    return combineLatest([
+      this.relatedEntityService.getItems(BookRelatedEntitiesNames.Publisher),
+      this.relatedEntityService.getItems(BookRelatedEntitiesNames.Author),
+      this.relatedEntityService.getItems(BookRelatedEntitiesNames.BookType),
+      this.relatedEntityService.getItems(BookRelatedEntitiesNames.Genre),
+      this.relatedEntityService.getItems(BookRelatedEntitiesNames.AgeLimit),
+      this.relatedEntityService.getItems(BookRelatedEntitiesNames.CoverArt),
+    ]).pipe(
+      map(([publishers, authors, bookTypes, genres, ageLimits, coverArts]) => ({
+        publishers,
+        authors,
+        bookTypes,
+        genres,
+        ageLimits,
+        coverArts,
       })),
     );
   }

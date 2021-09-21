@@ -31,10 +31,10 @@ export class RelatedEntityService extends EntityService {
     );
   }
 
-  public getItems(relatedEntityType: string, idsArray: number[]): Observable<RelatedEntity[]> {
+  public getItems(relatedEntityType: string, idsArray?: number[]): Observable<RelatedEntity[]> {
     const entityItems$ = super.getAllEntityItems<RelatedEntityDto>(relatedEntityType);
 
-    if (idsArray.length) {
+    if (idsArray) {
       return entityItems$.pipe(
         map(data => data.filter(item => idsArray.find(num => num === item.id) !== undefined)),
       );
