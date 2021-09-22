@@ -21,6 +21,7 @@ using System.Text;
 using System.Threading.Tasks;
 using App.Middlewares;
 using App.Services.QueryBuilders;
+using BookStore.Persistance;
 
 namespace Store
 {
@@ -38,7 +39,8 @@ namespace Store
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationContext>(options =>
             {
-                options.UseSqlServer(connectionString);
+                options.UseSqlServer(connectionString, 
+                    builder => builder.MigrationsAssembly("BookStore.Persistance"));
             });
 
             services.AddControllers()

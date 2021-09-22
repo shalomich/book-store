@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BookStore.Domain\BookStore.Domain.csproj" />
+    <ProjectReference Include="..\BookStore.Persistance\BookStore.Persistance.csproj" />
     <ProjectReference Include="..\QueryWorker\QueryWorker.csproj" />
   </ItemGroup>
 

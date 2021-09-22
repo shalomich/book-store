@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace App.DatabaseConfigs
+namespace BookStore.Persistance.DatabaseConfigs
 {
     public class GenreDbConfig : RelatedEntityDbConfig<Genre>
     {

@@ -3,7 +3,7 @@ using BookStore.Domain.Entities.Books;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace App.DatabaseConfigs
+namespace BookStore.Persistance.DatabaseConfigs
 {
     public class BookDbConfig : ProductDbConfig<Book>
     {

@@ -1,4 +1,5 @@
 ﻿using BookStore.Domain.Entities;
+using BookStore.Domain.Entities.Products;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -6,9 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace App.DatabaseConfigs
+namespace BookStore.Persistance.DatabaseConfigs
 {
-    public class RelatedEntityDbConfig<T> : IEntityTypeConfiguration<T> where T : RelatedEntity 
+    public abstract class ProductDbConfig<T> : IEntityTypeConfiguration<T> where T : Product
     {
         public virtual void Configure(EntityTypeBuilder<T> builder)
         {
