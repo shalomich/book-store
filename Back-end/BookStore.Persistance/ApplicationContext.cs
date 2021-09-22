@@ -1,17 +1,12 @@
 ﻿
-using App.DatabaseConfigs;
 using BookStore.Domain.Entities;
 using BookStore.Domain.Entities.Books;
 using BookStore.Domain.Entities.Products;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using QueryWorker;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace App
+
+namespace BookStore.Persistance
 {
     public class ApplicationContext : IdentityDbContext<User,Role,int>
     {

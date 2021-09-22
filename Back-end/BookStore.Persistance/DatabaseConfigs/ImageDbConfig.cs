@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 
-namespace App.DatabaseConfigs
+namespace BookStore.Persistance.DatabaseConfigs
 {
     public class ImageDbConfig : IEntityTypeConfiguration<Image>
     {
