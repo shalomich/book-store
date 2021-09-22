@@ -1,4 +1,4 @@
-﻿using App.Entities;
+﻿using BookStore.Domain.Entities;
 using App.Exceptions;
 using App.Services.QueryBuilders;
 using MediatR;

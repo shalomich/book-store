@@ -2,13 +2,14 @@
 using App.Areas.Common.ViewModels;
 using App.Areas.Store.ViewModels;
 using App.Areas.Store.ViewModels.Cards;
-using App.Entities;
+using BookStore.Domain.Entities;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BookStore.Domain.Entities.Products;
 
 namespace App.Areas.Store.Profiles
 {

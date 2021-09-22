@@ -19,7 +19,7 @@ namespace App.Migrations
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("App.Entities.Author", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Author", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -38,7 +38,7 @@ namespace App.Migrations
                     b.ToTable("Authors");
                 });
 
-            modelBuilder.Entity("App.Entities.Basket", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Basket", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,7 +56,7 @@ namespace App.Migrations
                     b.ToTable("Baskets");
                 });
 
-            modelBuilder.Entity("App.Entities.BasketProduct", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.BasketProduct", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -82,7 +82,7 @@ namespace App.Migrations
                     b.ToTable("BasketProducts");
                 });
 
-            modelBuilder.Entity("App.Entities.Books.AgeLimit", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Books.AgeLimit", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -123,7 +123,7 @@ namespace App.Migrations
                         });
                 });
 
-            modelBuilder.Entity("App.Entities.Books.BookType", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Books.BookType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -169,7 +169,7 @@ namespace App.Migrations
                         });
                 });
 
-            modelBuilder.Entity("App.Entities.Books.CoverArt", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Books.CoverArt", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -200,7 +200,7 @@ namespace App.Migrations
                         });
                 });
 
-            modelBuilder.Entity("App.Entities.Books.Genre", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Books.Genre", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -256,7 +256,7 @@ namespace App.Migrations
                         });
                 });
 
-            modelBuilder.Entity("App.Entities.Books.GenreBook", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Books.GenreBook", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -278,7 +278,7 @@ namespace App.Migrations
                     b.ToTable("GenreBook");
                 });
 
-            modelBuilder.Entity("App.Entities.Product", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -306,7 +306,7 @@ namespace App.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("App.Entities.Products.Album", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Products.Album", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -328,7 +328,7 @@ namespace App.Migrations
                     b.ToTable("Albums");
                 });
 
-            modelBuilder.Entity("App.Entities.Publisher", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Publisher", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -347,7 +347,7 @@ namespace App.Migrations
                     b.ToTable("Publishers");
                 });
 
-            modelBuilder.Entity("App.Entities.Role", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -392,7 +392,7 @@ namespace App.Migrations
                         });
                 });
 
-            modelBuilder.Entity("App.Entities.User", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -595,9 +595,9 @@ namespace App.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("App.Entities.Book", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Book", b =>
                 {
-                    b.HasBaseType("App.Entities.Product");
+                    b.HasBaseType("BookStore.Domain.Entities.Product");
 
                     b.Property<int?>("AgeLimitId")
                         .HasColumnType("int");
@@ -650,26 +650,26 @@ namespace App.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("App.Entities.Basket", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Basket", b =>
                 {
-                    b.HasOne("App.Entities.User", "User")
+                    b.HasOne("BookStore.Domain.Entities.User", "User")
                         .WithOne("Basket")
-                        .HasForeignKey("App.Entities.Basket", "UserId")
+                        .HasForeignKey("BookStore.Domain.Entities.Basket", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("App.Entities.BasketProduct", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.BasketProduct", b =>
                 {
-                    b.HasOne("App.Entities.Basket", "Basket")
+                    b.HasOne("BookStore.Domain.Entities.Basket", "Basket")
                         .WithMany("BasketProducts")
                         .HasForeignKey("BasketId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("App.Entities.Product", "Product")
+                    b.HasOne("BookStore.Domain.Entities.Product", "Product")
                         .WithMany("BasketProducts")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -680,15 +680,15 @@ namespace App.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("App.Entities.Books.GenreBook", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Books.GenreBook", b =>
                 {
-                    b.HasOne("App.Entities.Book", "Book")
+                    b.HasOne("BookStore.Domain.Entities.Book", "Book")
                         .WithMany("GenresBooks")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("App.Entities.Books.Genre", "Genre")
+                    b.HasOne("BookStore.Domain.Entities.Books.Genre", "Genre")
                         .WithMany("Books")
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -699,11 +699,11 @@ namespace App.Migrations
                     b.Navigation("Genre");
                 });
 
-            modelBuilder.Entity("App.Entities.Products.Album", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Products.Album", b =>
                 {
-                    b.HasOne("App.Entities.Product", "Product")
+                    b.HasOne("BookStore.Domain.Entities.Product", "Product")
                         .WithOne("Album")
-                        .HasForeignKey("App.Entities.Products.Album", "ProductId")
+                        .HasForeignKey("BookStore.Domain.Entities.Products.Album", "ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -712,7 +712,7 @@ namespace App.Migrations
 
             modelBuilder.Entity("App.Products.Entities.Image", b =>
                 {
-                    b.HasOne("App.Entities.Products.Album", "Album")
+                    b.HasOne("BookStore.Domain.Entities.Products.Album", "Album")
                         .WithMany("Images")
                         .HasForeignKey("AlbumId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -723,7 +723,7 @@ namespace App.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("App.Entities.Role", null)
+                    b.HasOne("BookStore.Domain.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -732,7 +732,7 @@ namespace App.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("App.Entities.User", null)
+                    b.HasOne("BookStore.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -741,7 +741,7 @@ namespace App.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("App.Entities.User", null)
+                    b.HasOne("BookStore.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -750,13 +750,13 @@ namespace App.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.HasOne("App.Entities.Role", null)
+                    b.HasOne("BookStore.Domain.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("App.Entities.User", null)
+                    b.HasOne("BookStore.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -765,42 +765,42 @@ namespace App.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("App.Entities.User", null)
+                    b.HasOne("BookStore.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("App.Entities.Book", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Book", b =>
                 {
-                    b.HasOne("App.Entities.Books.AgeLimit", "AgeLimit")
+                    b.HasOne("BookStore.Domain.Entities.Books.AgeLimit", "AgeLimit")
                         .WithMany()
                         .HasForeignKey("AgeLimitId");
 
-                    b.HasOne("App.Entities.Author", "Author")
+                    b.HasOne("BookStore.Domain.Entities.Author", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("App.Entities.Books.CoverArt", "CoverArt")
+                    b.HasOne("BookStore.Domain.Entities.Books.CoverArt", "CoverArt")
                         .WithMany()
                         .HasForeignKey("CoverArtId");
 
-                    b.HasOne("App.Entities.Product", null)
+                    b.HasOne("BookStore.Domain.Entities.Product", null)
                         .WithOne()
-                        .HasForeignKey("App.Entities.Book", "Id")
+                        .HasForeignKey("BookStore.Domain.Entities.Book", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
-                    b.HasOne("App.Entities.Publisher", "Publisher")
+                    b.HasOne("BookStore.Domain.Entities.Publisher", "Publisher")
                         .WithMany()
                         .HasForeignKey("PublisherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("App.Entities.Books.BookType", "Type")
+                    b.HasOne("BookStore.Domain.Entities.Books.BookType", "Type")
                         .WithMany()
                         .HasForeignKey("TypeId");
 
@@ -815,34 +815,34 @@ namespace App.Migrations
                     b.Navigation("Type");
                 });
 
-            modelBuilder.Entity("App.Entities.Basket", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Basket", b =>
                 {
                     b.Navigation("BasketProducts");
                 });
 
-            modelBuilder.Entity("App.Entities.Books.Genre", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Books.Genre", b =>
                 {
                     b.Navigation("Books");
                 });
 
-            modelBuilder.Entity("App.Entities.Product", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Product", b =>
                 {
                     b.Navigation("Album");
 
                     b.Navigation("BasketProducts");
                 });
 
-            modelBuilder.Entity("App.Entities.Products.Album", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Products.Album", b =>
                 {
                     b.Navigation("Images");
                 });
 
-            modelBuilder.Entity("App.Entities.User", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.User", b =>
                 {
                     b.Navigation("Basket");
                 });
 
-            modelBuilder.Entity("App.Entities.Book", b =>
+            modelBuilder.Entity("BookStore.Domain.Entities.Book", b =>
                 {
                     b.Navigation("GenresBooks");
                 });

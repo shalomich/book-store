@@ -1,6 +1,6 @@
 ﻿using App.Areas.Dashboard.ViewModels.Forms;
 using App.Attributes.GenericController;
-using App.Entities;
+using BookStore.Domain.Entities;
 using App.Services.QueryBuilders;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;

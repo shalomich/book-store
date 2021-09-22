@@ -1,5 +1,5 @@
 ﻿using App.Areas.Store.ViewModels;
-using App.Entities;
+using BookStore.Domain.Entities;
 using AutoMapper;
 using System;
 using System.Collections.Generic;

@@ -1,8 +1,7 @@
 ﻿using App.Areas.Common.ViewModels;
 using App.Areas.Dashboard.ViewModels;
-using App.Entities;
-using App.Entities.Products;
-using App.Products.Entities;
+using BookStore.Domain.Entities;
+using BookStore.Domain.Entities.Products;
 using AutoMapper;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,7 @@
 using App;
 using App.Areas.Store.Services;
 using App.Attributes.GenericController;
-using App.Entities;
+using BookStore.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;

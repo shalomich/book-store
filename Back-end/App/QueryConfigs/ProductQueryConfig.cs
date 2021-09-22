@@ -1,4 +1,5 @@
-﻿using App.Entities;
+﻿using BookStore.Domain.Entities;
+using BookStore.Domain.Entities.Products;
 using QueryWorker.Configurations;
 using System;
 using System.Collections.Generic;

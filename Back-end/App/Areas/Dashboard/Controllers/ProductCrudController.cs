@@ -1,5 +1,5 @@
 ﻿using App.Areas.Dashboard.ViewModels;
-using App.Entities;
+using BookStore.Domain.Entities;
 using App.Requirements;
 using App.Services.QueryBuilders;
 using AutoMapper;
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using static App.Areas.Common.RequestHandlers.GetByIdHandler;
 using static App.Areas.Common.RequestHandlers.GetHandler;
-
+using BookStore.Domain.Entities.Products;
 
 namespace App.Areas.Dashboard.Controllers
 {

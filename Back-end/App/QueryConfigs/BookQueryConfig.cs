@@ -1,6 +1,6 @@
 ﻿using App.Areas.Dashboard.ViewModels;
-using App.Entities;
-using App.Entities.Books;
+using BookStore.Domain.Entities;
+using BookStore.Domain.Entities.Books;
 using QueryWorker.Configurations;
 using System;
 using System.Collections.Generic;

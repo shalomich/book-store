@@ -1,9 +1,10 @@
-﻿using System;
+﻿using BookStore.Domain.Entities.Products;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace App.Entities
+namespace BookStore.Domain.Entities
 {
     public class BasketProduct : IEntity
     {

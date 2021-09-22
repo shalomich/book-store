@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace App.Entities
+namespace BookStore.Domain.Entities.Books
 {
-    public interface IEntity
+    public class Publisher : RelatedEntity
     {
-        public int Id { set; get; }
     }
 }

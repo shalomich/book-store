@@ -1,4 +1,5 @@
-﻿using App.Entities;
+﻿using BookStore.Domain.Entities;
+using BookStore.Domain.Entities.Books;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
