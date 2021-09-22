@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryWorker", "QueryWorker\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryWorker.Test", "QueryWorker.Test\QueryWorker.Test.csproj", "{2B8A7A49-2A31-414C-89BD-890E8C243CC0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookStore.Domain", "BookStore.Domain\BookStore.Domain.csproj", "{2382F31C-84B6-4569-9616-0A1AA6DC14BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{2B8A7A49-2A31-414C-89BD-890E8C243CC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B8A7A49-2A31-414C-89BD-890E8C243CC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B8A7A49-2A31-414C-89BD-890E8C243CC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2382F31C-84B6-4569-9616-0A1AA6DC14BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2382F31C-84B6-4569-9616-0A1AA6DC14BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2382F31C-84B6-4569-9616-0A1AA6DC14BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2382F31C-84B6-4569-9616-0A1AA6DC14BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

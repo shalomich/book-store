@@ -1,11 +1,12 @@
 ﻿
 using App.Areas.Store.ViewModels.Cards;
-using App.Entities;
+using BookStore.Domain.Entities;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BookStore.Domain.Entities.Books;
 
 namespace App.Areas.Store.Profiles
 {

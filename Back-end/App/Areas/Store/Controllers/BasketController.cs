@@ -1,5 +1,5 @@
 ﻿using App.Areas.Store.ViewModels.Basket;
-using App.Entities;
+using BookStore.Domain.Entities;
 using App.Requirements;
 using App.Services.QueryBuilders;
 using AutoMapper;
@@ -14,6 +14,7 @@ using static App.Areas.Common.RequestHandlers.CreateHandler;
 using static App.Areas.Common.RequestHandlers.DeleteHandler;
 using static App.Areas.Common.RequestHandlers.GetByIdHandler;
 using static App.Areas.Common.RequestHandlers.UpdateHandler;
+using BookStore.Domain.Entities.Products;
 
 namespace App.Areas.Store.Controllers
 {

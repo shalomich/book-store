@@ -1,13 +1,12 @@
 ﻿
-
-using App.Entities.Books;
+using BookStore.Domain.Entities.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace App.Entities
+namespace BookStore.Domain.Entities.Books
 {
     public class Book : Product
     {

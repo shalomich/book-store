@@ -1,5 +1,5 @@
-﻿using App.Entities;
-using App.Entities.Books;
+﻿using BookStore.Domain.Entities;
+using BookStore.Domain.Entities.Books;
 using App.Exceptions;
 using App.Services.QueryBuilders;
 using MediatR;

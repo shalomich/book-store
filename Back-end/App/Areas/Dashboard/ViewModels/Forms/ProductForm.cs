@@ -1,6 +1,6 @@
 ﻿using App.Areas.Common.ViewModels;
-using App.Entities;
-using App.Entities.Products;
+using BookStore.Domain.Entities;
+using BookStore.Domain.Entities.Products;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

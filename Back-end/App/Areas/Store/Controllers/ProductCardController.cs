@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using static App.Areas.Common.RequestHandlers.GetByIdHandler;
 using App.Areas.Store.ViewModels.Cards;
-using App.Entities;
+using BookStore.Domain.Entities;
 using App.Areas.Store.ViewModels;
 using static App.Areas.Common.RequestHandlers.GetHandler;
 using AutoMapper.QueryableExtensions;
@@ -20,6 +20,7 @@ using App.Requirements;
 using QueryWorker.Configurations;
 using System.Reflection;
 using App.QueryConfigs;
+using BookStore.Domain.Entities.Products;
 
 namespace App.Areas.Store.Controllers
 {

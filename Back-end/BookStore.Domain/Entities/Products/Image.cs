@@ -1,10 +1,10 @@
-﻿using App.Entities;
-using App.Entities.Products;
+﻿using BookStore.Domain.Entities;
+using BookStore.Domain.Entities.Products;
 using System;
 using System.Linq;
 
 
-namespace App.Products.Entities
+namespace BookStore.Domain.Entities.Products
 {
     public class Image : IEntity
     {

@@ -1,7 +1,8 @@
 ﻿
 using App.DatabaseConfigs;
-using App.Entities;
-using App.Entities.Books;
+using BookStore.Domain.Entities;
+using BookStore.Domain.Entities.Books;
+using BookStore.Domain.Entities.Products;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using QueryWorker;

@@ -1,8 +1,8 @@
-﻿using App.Entities.Products;
+﻿using BookStore.Domain.Entities.Products;
 using System;
 using System.Collections.Generic;
 
-namespace App.Entities
+namespace BookStore.Domain.Entities.Products
 {
     public abstract class Product : IFormEntity
     {

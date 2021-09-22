@@ -1,7 +1,7 @@
 ﻿using App.Areas.Store.Services;
 using App.Areas.Store.ViewModels;
 using App.Areas.Store.ViewModels.Authorization;
-using App.Entities;
+using BookStore.Domain.Entities;
 using App.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

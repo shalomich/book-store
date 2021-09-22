@@ -1,6 +1,6 @@
 ﻿using App.Areas.Store.ViewModels;
-using App.Entities;
-using App.Entities.Books;
+using BookStore.Domain.Entities;
+using BookStore.Domain.Entities.Books;
 using App.Requirements;
 using App.Services.QueryBuilders;
 using AutoMapper;

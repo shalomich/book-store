@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 
 
-namespace App.Entities
+namespace BookStore.Domain.Entities.Books
 {
     public class Author : RelatedEntity
     {

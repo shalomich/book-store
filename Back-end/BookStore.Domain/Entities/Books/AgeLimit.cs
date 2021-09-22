@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace App.Entities.Books
+namespace BookStore.Domain.Entities.Books
 {
-    public class BookType : RelatedEntity
+    public class AgeLimit : RelatedEntity
     {
     }
 }

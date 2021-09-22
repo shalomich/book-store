@@ -1,7 +1,7 @@
 ﻿using App.Attributes.GenericController;
 using App.Areas.Store.Services;
 using App.Areas.Dashboard.ViewModels;
-using App.Entities;
+using BookStore.Domain.Entities;
 using App.Extensions;
 using AutoMapper;
 using MediatR;

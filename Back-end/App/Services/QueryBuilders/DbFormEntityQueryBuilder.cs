@@ -1,4 +1,4 @@
-﻿using App.Entities;
+﻿using BookStore.Domain.Entities;
 using App.Extensions;
 using QueryWorker;
 using QueryWorker.Args;
