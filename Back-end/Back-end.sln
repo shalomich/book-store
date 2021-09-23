@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App", "App\App.csproj", "{00100D42-513A-418A-92B4-062F03BBC666}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Test", "App.Test\App.Test.csproj", "{42954C1A-90F5-4BCF-B524-3054766032FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.WebApi", "BookStore.WebApi\BookStore.WebApi.csproj", "{00100D42-513A-418A-92B4-062F03BBC666}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryWorker", "QueryWorker\QueryWorker.csproj", "{1A3CAFD1-5335-4D2B-BD0C-A55ACF72587E}"
 EndProject
@@ -15,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Domain", "BookSto
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Persistance", "BookStore.Persistance\BookStore.Persistance.csproj", "{383AEC47-5ABE-48C0-9BA0-9033F0CC076F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookStore.Application", "BookStore.Application\BookStore.Application.csproj", "{EBD07790-090A-4317-92BC-1CB8631C2B7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Application", "BookStore.Application\BookStore.Application.csproj", "{EBD07790-090A-4317-92BC-1CB8631C2B7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,10 +25,6 @@ Global
 		{00100D42-513A-418A-92B4-062F03BBC666}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00100D42-513A-418A-92B4-062F03BBC666}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00100D42-513A-418A-92B4-062F03BBC666}.Release|Any CPU.Build.0 = Release|Any CPU
-		{42954C1A-90F5-4BCF-B524-3054766032FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{42954C1A-90F5-4BCF-B524-3054766032FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{42954C1A-90F5-4BCF-B524-3054766032FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{42954C1A-90F5-4BCF-B524-3054766032FA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1A3CAFD1-5335-4D2B-BD0C-A55ACF72587E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1A3CAFD1-5335-4D2B-BD0C-A55ACF72587E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A3CAFD1-5335-4D2B-BD0C-A55ACF72587E}.Release|Any CPU.ActiveCfg = Release|Any CPU
