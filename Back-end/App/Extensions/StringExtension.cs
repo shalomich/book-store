@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Store.Extensions
+namespace App.Extensions
 {
     public static class StringExtension
     {

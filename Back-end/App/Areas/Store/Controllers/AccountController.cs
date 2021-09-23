@@ -1,5 +1,6 @@
-﻿using App.Areas.Store.ViewModels;
-using App.Areas.Store.ViewModels.Authorization;
+﻿
+using BookStore.Application.Commands.Account;
+using BookStore.Application.ViewModels.Account;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,8 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static App.Areas.Store.RequestHandlers.LoginHandler;
-using static App.Areas.Store.RequestHandlers.RegistrationHandler;
 
 namespace App.Areas.Store.Controllers
 {

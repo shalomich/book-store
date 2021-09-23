@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace App.Areas.Dashboard.ViewModels
+namespace App.Areas.Dashboard.ViewModels.Forms
 {
     public interface IEntityForm
     {

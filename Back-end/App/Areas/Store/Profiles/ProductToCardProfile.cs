@@ -1,5 +1,5 @@
 ﻿
-using App.Areas.Common.ViewModels;
+
 using App.Areas.Store.ViewModels;
 using App.Areas.Store.ViewModels.Cards;
 using BookStore.Domain.Entities;

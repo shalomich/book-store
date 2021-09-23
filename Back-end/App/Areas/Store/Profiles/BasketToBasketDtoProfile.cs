@@ -1,10 +1,11 @@
-﻿using App.Areas.Store.ViewModels.Basket;
+﻿
 using BookStore.Domain.Entities;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BookStore.Application.Dto;
 
 namespace App.Areas.Store.Profiles
 {

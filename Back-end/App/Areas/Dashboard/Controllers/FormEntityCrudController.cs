@@ -1,6 +1,4 @@
-﻿using App.Attributes.GenericController;
-using App.Areas.Store.Services;
-using App.Areas.Dashboard.ViewModels;
+﻿
 using BookStore.Domain.Entities;
 using App.Extensions;
 using AutoMapper;
@@ -11,13 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static App.Areas.Common.RequestHandlers.GetByIdHandler;
-using static App.Areas.Common.RequestHandlers.CreateHandler;
-using static App.Areas.Common.RequestHandlers.UpdateHandler;
-using static App.Areas.Common.RequestHandlers.DeleteHandler;
-using static App.Areas.Common.RequestHandlers.GetPaggingMetadataHandler;
-using App.Exceptions;
-using App.Services.QueryBuilders;
+using App.Areas.Dashboard.ViewModels.Forms;
+using BookStore.Application.Services.DbQueryBuilders;
+using BookStore.Application.Queries;
+using BookStore.Application.Exceptions;
+using BookStore.Application.Commands;
 
 namespace App.Areas.Dashboard.Controllers
 {

@@ -1,12 +1,12 @@
-﻿using App.Areas.Common.ViewModels;
-using App.Areas.Dashboard.ViewModels;
-using BookStore.Domain.Entities;
+﻿
 using BookStore.Domain.Entities.Products;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Areas.Dashboard.ViewModels.Forms;
+using BookStore.Application.Dto;
 
 namespace App.Areas.Dashboard.Profiles
 {
