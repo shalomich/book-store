@@ -1,4 +1,5 @@
-﻿using App.Areas.Common.ViewModels;
+﻿
+using BookStore.Application.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;

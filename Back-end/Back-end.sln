@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryWorker", "QueryWorker\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryWorker.Test", "QueryWorker.Test\QueryWorker.Test.csproj", "{2B8A7A49-2A31-414C-89BD-890E8C243CC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookStore.Domain", "BookStore.Domain\BookStore.Domain.csproj", "{2382F31C-84B6-4569-9616-0A1AA6DC14BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Domain", "BookStore.Domain\BookStore.Domain.csproj", "{2382F31C-84B6-4569-9616-0A1AA6DC14BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookStore.Persistance", "BookStore.Persistance\BookStore.Persistance.csproj", "{383AEC47-5ABE-48C0-9BA0-9033F0CC076F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Persistance", "BookStore.Persistance\BookStore.Persistance.csproj", "{383AEC47-5ABE-48C0-9BA0-9033F0CC076F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookStore.Application", "BookStore.Application\BookStore.Application.csproj", "{EBD07790-090A-4317-92BC-1CB8631C2B7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{383AEC47-5ABE-48C0-9BA0-9033F0CC076F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{383AEC47-5ABE-48C0-9BA0-9033F0CC076F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{383AEC47-5ABE-48C0-9BA0-9033F0CC076F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBD07790-090A-4317-92BC-1CB8631C2B7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBD07790-090A-4317-92BC-1CB8631C2B7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBD07790-090A-4317-92BC-1CB8631C2B7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBD07790-090A-4317-92BC-1CB8631C2B7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

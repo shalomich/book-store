@@ -1,7 +1,5 @@
-﻿using App.Areas.Store.ViewModels.Basket;
+﻿
 using BookStore.Domain.Entities;
-using App.Requirements;
-using App.Services.QueryBuilders;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +8,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using static App.Areas.Common.RequestHandlers.CreateHandler;
-using static App.Areas.Common.RequestHandlers.DeleteHandler;
-using static App.Areas.Common.RequestHandlers.GetByIdHandler;
-using static App.Areas.Common.RequestHandlers.UpdateHandler;
 using BookStore.Domain.Entities.Products;
+using BookStore.Application.Services.DbQueryBuilders;
+using BookStore.Application.DbQueryConfigs.IncludeRequirements;
+using BookStore.Application.Commands;
+using BookStore.Application.Queries;
+using BookStore.Application.Dto;
 
 namespace App.Areas.Store.Controllers
 {

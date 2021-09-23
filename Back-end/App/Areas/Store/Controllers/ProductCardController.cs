@@ -8,19 +8,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static App.Areas.Common.RequestHandlers.GetByIdHandler;
 using App.Areas.Store.ViewModels.Cards;
 using BookStore.Domain.Entities;
 using App.Areas.Store.ViewModels;
-using static App.Areas.Common.RequestHandlers.GetHandler;
 using AutoMapper.QueryableExtensions;
-using static App.Areas.Common.RequestHandlers.GetPaggingMetadataHandler;
-using App.Services.QueryBuilders;
-using App.Requirements;
-using QueryWorker.Configurations;
-using System.Reflection;
-using App.QueryConfigs;
 using BookStore.Domain.Entities.Products;
+using BookStore.Application.Services.DbQueryBuilders;
+using BookStore.Application.DbQueryConfigs.IncludeRequirements;
+using BookStore.Application.Queries;
 
 namespace App.Areas.Store.Controllers
 {

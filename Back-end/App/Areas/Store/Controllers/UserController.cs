@@ -1,5 +1,6 @@
-﻿using BookStore.Domain.Entities;
-using App.Services.QueryBuilders;
+﻿using BookStore.Application.Queries;
+using BookStore.Application.Services.DbQueryBuilders;
+using BookStore.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static App.Areas.Common.RequestHandlers.GetByIdHandler;
 
 namespace App.Areas.Store.Controllers
 {

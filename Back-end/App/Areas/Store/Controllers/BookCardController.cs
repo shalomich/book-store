@@ -1,8 +1,6 @@
 ﻿using App.Areas.Store.ViewModels;
 using BookStore.Domain.Entities;
 using BookStore.Domain.Entities.Books;
-using App.Requirements;
-using App.Services.QueryBuilders;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BookStore.Application.Services.DbQueryBuilders;
+using BookStore.Application.DbQueryConfigs.IncludeRequirements;
 
 namespace App.Areas.Store.Controllers
 {

@@ -1,7 +1,4 @@
-﻿using App.Areas.Dashboard.ViewModels;
-using BookStore.Domain.Entities;
-using App.Requirements;
-using App.Services.QueryBuilders;
+﻿
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BookStore.Domain.Entities.Books;
+using App.Areas.Dashboard.ViewModels.Forms;
+using BookStore.Application.Services.DbQueryBuilders;
+using BookStore.Application.DbQueryConfigs.IncludeRequirements;
 
 namespace App.Areas.Dashboard.Controllers
 {

@@ -1,4 +1,5 @@
-﻿using App.Areas.Common.ViewModels;
+﻿
+using BookStore.Application.Dto;
 using BookStore.Domain.Entities;
 using BookStore.Domain.Entities.Products;
 using System;
@@ -7,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace App.Areas.Dashboard.ViewModels
+namespace App.Areas.Dashboard.ViewModels.Forms
 {
     public record ProductForm : IEntityForm
     {

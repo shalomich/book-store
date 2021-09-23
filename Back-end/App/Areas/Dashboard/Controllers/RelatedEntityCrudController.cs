@@ -1,7 +1,6 @@
 ﻿using App.Areas.Dashboard.ViewModels.Forms;
 using App.Attributes.GenericController;
 using BookStore.Domain.Entities;
-using App.Services.QueryBuilders;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -11,8 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static App.Areas.Common.RequestHandlers.GetByIdHandler;
-using static App.Areas.Common.RequestHandlers.GetHandler;
+using BookStore.Application.Services.DbQueryBuilders;
+using BookStore.Application.Queries;
 
 namespace App.Areas.Dashboard.Controllers
 {

@@ -1,5 +1,7 @@
-﻿using App.Areas.Common.ViewModels;
+﻿
 
+
+using BookStore.Application.Dto;
 
 namespace App.Areas.Store.ViewModels.Cards
 {

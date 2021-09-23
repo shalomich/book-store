@@ -1,5 +1,4 @@
 using App;
-using App.Areas.Store.Services;
 using App.Attributes.GenericController;
 using BookStore.Domain.Entities;
 using MediatR;
@@ -20,10 +19,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using App.Middlewares;
-using App.Services.QueryBuilders;
 using BookStore.Persistance;
+using BookStore.Application.Services;
+using BookStore.Application.Services.DbQueryBuilders;
+using System.Reflection;
 
-namespace Store
+namespace App
 {
     public class Startup
     {
@@ -36,6 +37,8 @@ namespace Store
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var applicationAssembly = AppDomain.CurrentDomain.GetAssemblies()
+                .Single(assebmly => assebmly.GetName().Name == "BookStore.Application");
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationContext>(options =>
             {
@@ -49,7 +52,7 @@ namespace Store
 
             services.AddScoped<JwtGenerator>();
 
-            services.AddDataTransformerBuildFacade(GetType().Assembly);
+            services.AddDataTransformerBuildFacade(applicationAssembly);
             services.AddScoped(typeof(DbEntityQueryBuilder<>));
             services.AddScoped(typeof(DbFormEntityQueryBuilder<>));
 
@@ -69,7 +72,7 @@ namespace Store
                     };
                 });
 
-            services.AddMediatR(GetType().Assembly);
+            services.AddMediatR(applicationAssembly);
             services.AddAutoMapper(GetType());
             services.AddCors();
 
