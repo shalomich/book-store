@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 
 import { BookFormComponent } from './book-form/book-form.component';
+import { RelatedEntityFormComponent } from './related-entity-form/related-entity-form.component';
 
 
 @NgModule({
@@ -25,7 +26,7 @@ import { BookFormComponent } from './book-form/book-form.component';
     MatSelectModule,
     MatOptionModule,
   ],
-  declarations: [BookFormComponent],
+  declarations: [BookFormComponent, RelatedEntityFormComponent],
   exports: [MatFormFieldModule],
 })
-export class FormsModule { }
+export class FormModule { }

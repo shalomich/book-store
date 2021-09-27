@@ -17,7 +17,7 @@ import { BooksRelatedEntities } from '../../core/interfaces/books-related-entiti
 })
 export class BookFormComponent implements OnInit, OnDestroy {
 
-  /** Film form group. */
+  /** Book form group. */
   public bookForm: FormGroup;
 
   /** Observable with object with all book related entities items. */
@@ -63,7 +63,7 @@ export class BookFormComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     if (this.currentBookId) {
       const sub = this.bookToEdit$?.subscribe(book => {
-        this.bookForm.patchValue({
+        this.bookForm.setValue({
           ...book,
           publisher: String(book.publisher.id),
           author: String(book.author.id),

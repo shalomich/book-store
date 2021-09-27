@@ -28,14 +28,13 @@ export abstract class EntityService {
   }
 
   protected addEntityItem<T>(entityName: string, data: T): Observable<void> {
-    this.http.post<T>(`${API_FORM_ENTITY_URI}${entityName}`, data, this.httpOptions);
+    this.http.post<T>(`${API_FORM_ENTITY_URI}${entityName}`, data, this.httpOptions).subscribe();
 
     return of();
   }
 
   protected editEntityItem<T>(entityName: string, id: number, data: T): Observable<void> {
-    this.http.put<T>(`${API_FORM_ENTITY_URI}${entityName}/${id}`, data, this.httpOptions)
-      .subscribe();
+    this.http.put<T>(`${API_FORM_ENTITY_URI}${entityName}/${id}`, data, this.httpOptions).subscribe();
 
     return of();
   }
