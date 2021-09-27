@@ -28,7 +28,7 @@ namespace BookStore.WebApi.Attributes.GenericController
                      .First()
                      .BaseType;
 
-                    var genericControllerTypes = GetType().Assembly.GetTypes()
+                    var genericControllerTypes = genericControllerBaseType.Assembly.GetTypes()
                         .Where(type => type.IsSubclassOf(genericControllerBaseType)
                             && type.IsAbstract == false)
                         .ToArray();
