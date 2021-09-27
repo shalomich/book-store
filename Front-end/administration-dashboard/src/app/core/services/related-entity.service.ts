@@ -23,6 +23,19 @@ export class RelatedEntityService extends EntityService {
     super(http);
   }
 
+  public addRelatedEntityItem(dataToAdd: RelatedEntity, entityName: string): Observable<void> {
+    const relatedEntityItem = this.relatedEntityMapper.toDto(dataToAdd);
+    relatedEntityItem.id = 0;
+
+    return super.addEntityItem<RelatedEntityDto>(entityName, relatedEntityItem);
+  }
+
+  public editRelatedEntityItem(dataToEdit: RelatedEntity, entityName: string): Observable<void> {
+    const relatedEntityItem = this.relatedEntityMapper.toDto(dataToEdit);
+
+    return super.editEntityItem<RelatedEntityDto>(entityName, relatedEntityItem.id, relatedEntityItem);
+  }
+
   public getSingleItem(relatedEntityType: string, itemId: number): Observable<RelatedEntity> {
     const entityItem$ = super.getSingleEntityItem<RelatedEntityDto>(relatedEntityType, itemId);
 

@@ -30,7 +30,7 @@ export class BookFormComponent implements OnInit, OnDestroy {
   /** All subscriptions inside component. */
   private readonly subscriptions = new Subscription();
 
-  constructor(
+  public constructor(
     private readonly bookService: BookService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
@@ -45,8 +45,7 @@ export class BookFormComponent implements OnInit, OnDestroy {
       cost: new FormControl('', [Validators.required]),
       quantity: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
-
-      // album: new FormControl('', [Validators.required]),
+      album: new FormControl(''),
       ISBN: new FormControl('', [Validators.required]),
       releaseYear: new FormControl('', [Validators.required]),
       originalName: new FormControl('', [Validators.required]),
@@ -64,13 +63,13 @@ export class BookFormComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     if (this.currentBookId) {
       const sub = this.bookToEdit$?.subscribe(book => {
-        this.bookForm.setValue({
+        this.bookForm.patchValue({
           ...book,
-          publisher: book.publisher.id,
-          author: book.author.id,
-          type: book.type.id,
-          ageLimit: book.ageLimit.id,
-          coverArt: book.coverArt.id,
+          publisher: String(book.publisher.id),
+          author: String(book.author.id),
+          type: String(book.type.id),
+          ageLimit: String(book.ageLimit.id),
+          coverArt: String(book.coverArt.id),
           genres: book.genres.map(genre => String(genre.id)),
         });
       });
@@ -83,7 +82,6 @@ export class BookFormComponent implements OnInit, OnDestroy {
   }
 
   public handleFormSubmit(): void {
-    console.log('hi');
     const sub = this.relatedEntities$.subscribe(entities => {
       const book: Book = {
         ...this.bookForm.value,
@@ -95,12 +93,12 @@ export class BookFormComponent implements OnInit, OnDestroy {
         genres: entities.genres.filter(genre => this.bookForm.value.genres.includes(String(genre.id))),
       };
       if (this.currentBookId) {
-        console.log(book);
+        this.bookService.editBook(book);
       } else {
-        console.log(book);
+        this.bookService.addBook(book);
       }
 
-      // this.router.navigateByUrl('/dashboard/product/book');
+      this.router.navigateByUrl('/dashboard/product/book');
     });
     this.subscriptions.add(sub);
   }

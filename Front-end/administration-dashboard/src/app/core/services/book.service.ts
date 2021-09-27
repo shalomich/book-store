@@ -32,31 +32,24 @@ export class BookService extends EntityService {
     super(http);
   }
 
+  public addBook(bookToAdd: Book): Observable<void> {
+    const book = this.bookMapper.toDto(bookToAdd);
+    book.id = 0;
+
+    return super.addEntityItem<BookDto>(this.productType, book);
+  }
+
+  public editBook(bookToEdit: Book): Observable<void> {
+    const book = this.bookMapper.toDto(bookToEdit);
+
+    return super.editEntityItem<BookDto>(this.productType, book.id, book);
+  }
+
   public getSingleBook(bookId: number): Observable<Book> {
     return super.getSingleEntityItem<BookDto>(this.productType, bookId).pipe(
       switchMap(book => this.getBookRelatedEntityItems(book).pipe(
         map(relatedEntitiesItems => this.bookMapper.fromDto(book, relatedEntitiesItems)),
       )),
-    );
-  }
-
-  private getBookRelatedEntityItems(book: BookDto): Observable<SingleBookRelatedEntities> {
-    return combineLatest([
-      this.relatedEntityService.getSingleItem(BookRelatedEntitiesNames.Publisher, book.publisherId),
-      this.relatedEntityService.getSingleItem(BookRelatedEntitiesNames.Author, book.authorId),
-      this.relatedEntityService.getSingleItem(BookRelatedEntitiesNames.BookType, book.typeId),
-      this.relatedEntityService.getItems(BookRelatedEntitiesNames.Genre, book.genreIds),
-      this.relatedEntityService.getSingleItem(BookRelatedEntitiesNames.AgeLimit, book.ageLimitId),
-      this.relatedEntityService.getSingleItem(BookRelatedEntitiesNames.CoverArt, book.coverArtId),
-    ]).pipe(
-      map(([publisher, author, type, genres, ageLimit, coverArt]) => ({
-            publisher,
-            author,
-            type,
-            genres,
-            ageLimit,
-            coverArt,
-      })),
     );
   }
 
@@ -76,6 +69,26 @@ export class BookService extends EntityService {
         genres,
         ageLimits,
         coverArts,
+      })),
+    );
+  }
+
+  private getBookRelatedEntityItems(book: BookDto): Observable<SingleBookRelatedEntities> {
+    return combineLatest([
+      this.relatedEntityService.getSingleItem(BookRelatedEntitiesNames.Publisher, book.publisherId),
+      this.relatedEntityService.getSingleItem(BookRelatedEntitiesNames.Author, book.authorId),
+      this.relatedEntityService.getSingleItem(BookRelatedEntitiesNames.BookType, book.typeId),
+      this.relatedEntityService.getItems(BookRelatedEntitiesNames.Genre, book.genreIds),
+      this.relatedEntityService.getSingleItem(BookRelatedEntitiesNames.AgeLimit, book.ageLimitId),
+      this.relatedEntityService.getSingleItem(BookRelatedEntitiesNames.CoverArt, book.coverArtId),
+    ]).pipe(
+      map(([publisher, author, type, genres, ageLimit, coverArt]) => ({
+        publisher,
+        author,
+        type,
+        genres,
+        ageLimit,
+        coverArt,
       })),
     );
   }
