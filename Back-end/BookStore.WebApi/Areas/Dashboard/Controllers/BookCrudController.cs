@@ -10,6 +10,7 @@ using BookStore.Domain.Entities.Books;
 using BookStore.Application.Services.DbQueryBuilders;
 using BookStore.Application.DbQueryConfigs.IncludeRequirements;
 using BookStore.WebApi.Areas.Dashboard.ViewModels.Forms;
+using BookStore.Application.Queries;
 
 namespace BookStore.WebApi.Areas.Dashboard.Controllers
 {
@@ -26,6 +27,12 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
             {
                 new BookGenresIncludeRequirement()
             });
+        }
+
+        [HttpGet("isbn-existed")]
+        public async Task<bool> CheckIsbnExisted([FromQuery] string isbn)
+        {
+            return await Mediator.Send(new CheckIsbnExistedQuery(isbn));
         }
     }
 }
