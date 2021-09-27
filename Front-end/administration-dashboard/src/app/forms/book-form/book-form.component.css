@@ -1,0 +1,92 @@
+.back-button {
+  margin-left: 2em;
+  margin-top: 2em;
+}
+
+.form-inner {
+  padding: 50px;
+  width: 40%;
+  margin-right: auto;
+  margin-left: auto;
+  min-width: 300px;
+}
+
+.mat-form-field {
+  display: block;
+}
+
+.form-inner button[type="submit"] {
+  background-color: var(--white-color);
+  border: 1px solid var(--main-color);
+  color: var(--black-color);
+  text-decoration: none;
+  padding: 10px;
+  margin-right: 50px;
+  height: min-content;
+  font-size: 1.4em;
+  width: 100%;
+}
+
+.form-inner button[type="submit"]:hover {
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+  background-color: var(--main-color);
+  color: var(--white-color);
+}
+
+.form-inner textarea {
+  resize: none;
+  line-height: 1.5;
+  height: 10em;
+}
+.form-inner h3 {
+  margin-top: 0;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 24px;
+  color: var(--black-color);
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid var(--main-color);
+}
+
+.selects-block {
+  display: inline-block;
+  width: 19em;
+  margin-right: 10px;
+}
+
+.form-inner label {
+  font-weight: bold;
+}
+
+.error-message {
+  color: darkred;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 730px) {
+  .form-inner {
+    width: 70%;
+    padding: 50px 0 0 0;
+  }
+
+  .form-inner label {
+    font-size: 0.8em;
+  }
+
+  .form-inner h3 {
+    font-size: 1.0em;
+  }
+
+  .form-inner input, .form-inner textarea, .form-inner select {
+    font-size: 0.8em;
+  }
+
+  .form-inner button[type="submit"] {
+    font-size: 1.0em;
+  }
+}
+

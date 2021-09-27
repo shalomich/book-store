@@ -19,6 +19,7 @@ import { ProductListItemComponent } from './product-page/product-list-item/produ
 import { CoreModule } from './core/core.module';
 import { RelatedEntityPageComponent } from './related-entity-page/related-entity-page.component';
 import { RelatedEntityListItemComponent } from './related-entity-page/related-entity-list-item/related-entity-list-item.component';
+import { FormsModule } from './forms/forms.module';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { RelatedEntityListItemComponent } from './related-entity-page/related-en
     MatButtonModule,
     CommonModule,
     MatIconModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

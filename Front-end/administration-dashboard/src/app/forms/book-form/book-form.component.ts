@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { EMPTY, Observable, Subscription } from 'rxjs';
 
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -15,7 +15,7 @@ import { BooksRelatedEntities } from '../../core/interfaces/books-related-entiti
   templateUrl: './book-form.component.html',
   styleUrls: ['./book-form.component.css'],
 })
-export class BookFormComponent implements OnInit {
+export class BookFormComponent implements OnInit, OnDestroy {
 
   /** Film form group. */
   public bookForm: FormGroup;
@@ -33,6 +33,7 @@ export class BookFormComponent implements OnInit {
   constructor(
     private readonly bookService: BookService,
     private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
   ) {
     this.currentBookId = activatedRoute.snapshot.params.id;
     this.bookToEdit$ = this.currentBookId ? this.bookService.getSingleBook(this.currentBookId) : EMPTY;
@@ -44,7 +45,8 @@ export class BookFormComponent implements OnInit {
       cost: new FormControl('', [Validators.required]),
       quantity: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
-      album: new FormControl('', [Validators.required]),
+
+      // album: new FormControl('', [Validators.required]),
       ISBN: new FormControl('', [Validators.required]),
       releaseYear: new FormControl('', [Validators.required]),
       originalName: new FormControl('', [Validators.required]),
@@ -71,9 +73,35 @@ export class BookFormComponent implements OnInit {
           coverArt: book.coverArt.id,
           genres: book.genres.map(genre => String(genre.id)),
         });
-        console.log(this.bookForm.value);
       });
       this.subscriptions.add(sub);
     }
+  }
+
+  public ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
+
+  public handleFormSubmit(): void {
+    console.log('hi');
+    const sub = this.relatedEntities$.subscribe(entities => {
+      const book: Book = {
+        ...this.bookForm.value,
+        author: entities.authors.find(author => author.id === Number(this.bookForm.value.author)),
+        publisher: entities.publishers.find(publisher => publisher.id === Number(this.bookForm.value.publisher)),
+        type: entities.types.find(type => type.id === Number(this.bookForm.value.type)),
+        coverArt: entities.coverArts.find(coverArt => coverArt.id === Number(this.bookForm.value.coverArt)),
+        ageLimit: entities.ageLimits.find(ageLimit => ageLimit.id === Number(this.bookForm.value.ageLimit)),
+        genres: entities.genres.filter(genre => this.bookForm.value.genres.includes(String(genre.id))),
+      };
+      if (this.currentBookId) {
+        console.log(book);
+      } else {
+        console.log(book);
+      }
+
+      // this.router.navigateByUrl('/dashboard/product/book');
+    });
+    this.subscriptions.add(sub);
   }
 }

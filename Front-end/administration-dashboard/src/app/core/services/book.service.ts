@@ -49,10 +49,10 @@ export class BookService extends EntityService {
       this.relatedEntityService.getSingleItem(BookRelatedEntitiesNames.AgeLimit, book.ageLimitId),
       this.relatedEntityService.getSingleItem(BookRelatedEntitiesNames.CoverArt, book.coverArtId),
     ]).pipe(
-      map(([publisher, author, bookType, genres, ageLimit, coverArt]) => ({
+      map(([publisher, author, type, genres, ageLimit, coverArt]) => ({
             publisher,
             author,
-            bookType,
+            type,
             genres,
             ageLimit,
             coverArt,
@@ -69,10 +69,10 @@ export class BookService extends EntityService {
       this.relatedEntityService.getItems(BookRelatedEntitiesNames.AgeLimit),
       this.relatedEntityService.getItems(BookRelatedEntitiesNames.CoverArt),
     ]).pipe(
-      map(([publishers, authors, bookTypes, genres, ageLimits, coverArts]) => ({
+      map(([publishers, authors, types, genres, ageLimits, coverArts]) => ({
         publishers,
         authors,
-        bookTypes,
+        types,
         genres,
         ageLimits,
         coverArts,

@@ -51,7 +51,7 @@ export class BookMapper implements IMapper<BookDto, Book> {
       releaseYear: data.releaseYear,
       publisher: relatedEntitiesItems.publisher,
       author: relatedEntitiesItems.author,
-      type: relatedEntitiesItems.bookType,
+      type: relatedEntitiesItems.type,
       genres: relatedEntitiesItems.genres,
       originalName: data.originalName,
       ageLimit: relatedEntitiesItems.ageLimit,

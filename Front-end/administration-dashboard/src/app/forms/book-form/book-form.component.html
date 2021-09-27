@@ -1,1 +1,112 @@
-<p>book-form works!</p>
+<button class="back-button" routerLink="/dashboard/product/book">Назад</button>
+<div *ngIf="relatedEntities$ | async as entities; else loading" class="form-inner">
+  <h3>Форма книги</h3>
+  <form (submit)="handleFormSubmit()" [formGroup]="bookForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Название</mat-label>
+      <input formControlName="name" matInput placeholder="Введите название">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Оригинальное название</mat-label>
+      <input formControlName="originalName" matInput placeholder="Введите название">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Автор</mat-label>
+      <mat-select formControlName="author">
+        <mat-option *ngFor="let author of (relatedEntities$ | async)?.authors" value="{{author.id}}">
+          {{author.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Издатель</mat-label>
+      <mat-select formControlName="publisher">
+        <mat-option *ngFor="let publisher of (relatedEntities$ | async)?.publishers" value="{{publisher.id}}">
+          {{publisher.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Жанры</mat-label>
+      <mat-select formControlName="genres" multiple>
+        <mat-option *ngFor="let genre of (relatedEntities$ | async)?.genres" value="{{genre.id}}">
+          {{genre.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Описание</mat-label>
+      <textarea formControlName="description" matInput></textarea>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Тип</mat-label>
+      <mat-select formControlName="type">
+        <mat-option *ngFor="let type of (relatedEntities$ | async)?.types" value="{{type.id}}">
+          {{type.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Обложка</mat-label>
+      <mat-select formControlName="coverArt">
+        <mat-option *ngFor="let coverArt of (relatedEntities$ | async)?.coverArts" value="{{coverArt.id}}">
+          {{coverArt.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Возрастное ограничение</mat-label>
+      <mat-select formControlName="ageLimit">
+        <mat-option *ngFor="let ageLimit of (relatedEntities$ | async)?.ageLimits" value="{{ageLimit.id}}">
+          {{ageLimit.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field  appearance="fill">
+      <mat-label>Год выпуска</mat-label>
+      <input formControlName="releaseYear" type="number" matInput>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Количество страниц</mat-label>
+      <input type="number" formControlName="pageQuantity" matInput>
+    </mat-form-field>
+    <br>
+    <mat-form-field  appearance="fill">
+      <mat-label>ISBN</mat-label>
+      <input formControlName="ISBN" matInput>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Цена</mat-label>
+      <input formControlName="cost" type="number" matInput>
+    </mat-form-field>
+    <br>
+    <mat-form-field  appearance="fill">
+      <mat-label>Количество</mat-label>
+      <input formControlName="quantity" type="number" matInput>
+    </mat-form-field>
+    <br>
+    <mat-form-field  appearance="fill">
+      <mat-label>Формат (ДxШxВ)</mat-label>
+      <input formControlName="bookFormat" matInput>
+    </mat-form-field>
+    <br>
+    <button [disabled]="!bookForm.valid" type="submit">Подтвердить</button>
+  </form>
+</div>
+
+<ng-template #loading>
+  <div class="loading-block">
+    <span>Loading...</span>
+  </div>
+</ng-template>

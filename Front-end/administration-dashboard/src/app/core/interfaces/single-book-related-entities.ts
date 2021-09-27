@@ -4,7 +4,7 @@ export interface SingleBookRelatedEntities {
   genres: RelatedEntity[];
   ageLimit: RelatedEntity;
   author: RelatedEntity;
-  bookType: RelatedEntity;
+  type: RelatedEntity;
   coverArt: RelatedEntity;
   publisher: RelatedEntity;
 }
