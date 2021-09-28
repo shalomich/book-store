@@ -14,7 +14,7 @@ import { EntityService } from './entity.service';
 @Injectable({
   providedIn: 'root',
 })
-export class RelatedEntityService {
+export class RelatedEntityCrudService {
 
   public constructor(
     private readonly http: HttpClient,

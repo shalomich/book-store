@@ -8,10 +8,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { map } from 'rxjs/operators';
 
-import { BookService } from '../../core/services/book.service';
+import { BookCrudService } from '../../core/services/book-crud.service';
 import { Book } from '../../core/models/book';
 import { BooksRelatedEntities } from '../../core/interfaces/books-related-entities';
-import { RelatedEntityService } from '../../core/services/related-entity.service';
+import { RelatedEntityCrudService } from '../../core/services/related-entity-crud.service';
 import { BookRelatedEntitiesNames } from '../../core/utils/values';
 
 @Component({
@@ -35,10 +35,10 @@ export class BookFormComponent implements OnInit, OnDestroy {
   private readonly subscriptions = new Subscription();
 
   public constructor(
-    private readonly bookService: BookService,
+    private readonly bookService: BookCrudService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
-    private readonly relatedEntityService: RelatedEntityService,
+    private readonly relatedEntityService: RelatedEntityCrudService,
   ) {
     this.currentBookId = activatedRoute.snapshot.params.id;
     this.bookToEdit$ = this.currentBookId ? this.bookService.getSingleBook(this.currentBookId) : EMPTY;

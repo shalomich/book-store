@@ -14,7 +14,7 @@ import { EntityService } from './entity.service';
 @Injectable({
   providedIn: 'root',
 })
-export class BookService {
+export class BookCrudService {
 
   private readonly productType = 'book';
 

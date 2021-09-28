@@ -6,9 +6,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { BooksRelatedEntities } from '../../core/interfaces/books-related-entities';
 import { Book } from '../../core/models/book';
-import { BookService } from '../../core/services/book.service';
+import { BookCrudService } from '../../core/services/book-crud.service';
 import { RelatedEntity } from '../../core/models/related-entity';
-import { RelatedEntityService } from '../../core/services/related-entity.service';
+import { RelatedEntityCrudService } from '../../core/services/related-entity-crud.service';
 
 @Component({
   selector: 'app-related-entity-form',
@@ -30,7 +30,7 @@ export class RelatedEntityFormComponent implements OnInit {
   private readonly subscriptions = new Subscription();
 
   public constructor(
-    private readonly relatedEntityService: RelatedEntityService,
+    private readonly relatedEntityService: RelatedEntityCrudService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
   ) {
