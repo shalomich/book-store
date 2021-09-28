@@ -1,14 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { EMPTY, Observable, Subscription } from 'rxjs';
+import { combineLatest, EMPTY, Observable, Subscription } from 'rxjs';
 
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { map } from 'rxjs/operators';
+
 import { BookService } from '../../core/services/book.service';
 import { Book } from '../../core/models/book';
 import { BooksRelatedEntities } from '../../core/interfaces/books-related-entities';
+import { RelatedEntityService } from '../../core/services/related-entity.service';
+import { BookRelatedEntitiesNames } from '../../core/utils/values';
 
 @Component({
   selector: 'app-book-form',
@@ -34,10 +38,27 @@ export class BookFormComponent implements OnInit, OnDestroy {
     private readonly bookService: BookService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
+    private readonly relatedEntityService: RelatedEntityService,
   ) {
     this.currentBookId = activatedRoute.snapshot.params.id;
     this.bookToEdit$ = this.currentBookId ? this.bookService.getSingleBook(this.currentBookId) : EMPTY;
-    this.relatedEntities$ = this.bookService.getAllRelatedEntitiesItems();
+    this.relatedEntities$ = combineLatest([
+      this.relatedEntityService.getItems(BookRelatedEntitiesNames.Publisher),
+      this.relatedEntityService.getItems(BookRelatedEntitiesNames.Author),
+      this.relatedEntityService.getItems(BookRelatedEntitiesNames.BookType),
+      this.relatedEntityService.getItems(BookRelatedEntitiesNames.Genre),
+      this.relatedEntityService.getItems(BookRelatedEntitiesNames.AgeLimit),
+      this.relatedEntityService.getItems(BookRelatedEntitiesNames.CoverArt),
+    ]).pipe(
+      map(([publishers, authors, types, genres, ageLimits, coverArts]) => ({
+        publishers,
+        authors,
+        types,
+        genres,
+        ageLimits,
+        coverArts,
+      })),
+    );
 
     this.bookForm = new FormGroup({
       id: new FormControl(''),
@@ -51,12 +72,12 @@ export class BookFormComponent implements OnInit, OnDestroy {
       originalName: new FormControl('', [Validators.required]),
       bookFormat: new FormControl('', [Validators.required]),
       pageQuantity: new FormControl('', [Validators.required]),
-      publisher: new FormControl('', [Validators.required]),
-      author: new FormControl('', [Validators.required]),
-      type: new FormControl('', [Validators.required]),
-      ageLimit: new FormControl('', [Validators.required]),
-      coverArt: new FormControl('', [Validators.required]),
-      genres: new FormControl([], [Validators.required]),
+      publisherId: new FormControl('', [Validators.required]),
+      authorId: new FormControl('', [Validators.required]),
+      typeId: new FormControl('', [Validators.required]),
+      ageLimitId: new FormControl('', [Validators.required]),
+      coverArtId: new FormControl('', [Validators.required]),
+      genreIds: new FormControl([], [Validators.required]),
     });
   }
 
@@ -65,12 +86,12 @@ export class BookFormComponent implements OnInit, OnDestroy {
       const sub = this.bookToEdit$?.subscribe(book => {
         this.bookForm.setValue({
           ...book,
-          publisher: String(book.publisher.id),
-          author: String(book.author.id),
-          type: String(book.type.id),
-          ageLimit: String(book.ageLimit.id),
-          coverArt: String(book.coverArt.id),
-          genres: book.genres.map(genre => String(genre.id)),
+          publisherId: String(book.publisherId),
+          authorId: String(book.authorId),
+          typeId: String(book.typeId),
+          ageLimitId: String(book.ageLimitId),
+          coverArtId: String(book.coverArtId),
+          genreIds: book.genreIds.map(genre => String(genre)),
         });
       });
       this.subscriptions.add(sub);
@@ -82,24 +103,21 @@ export class BookFormComponent implements OnInit, OnDestroy {
   }
 
   public handleFormSubmit(): void {
-    const sub = this.relatedEntities$.subscribe(entities => {
-      const book: Book = {
-        ...this.bookForm.value,
-        author: entities.authors.find(author => author.id === Number(this.bookForm.value.author)),
-        publisher: entities.publishers.find(publisher => publisher.id === Number(this.bookForm.value.publisher)),
-        type: entities.types.find(type => type.id === Number(this.bookForm.value.type)),
-        coverArt: entities.coverArts.find(coverArt => coverArt.id === Number(this.bookForm.value.coverArt)),
-        ageLimit: entities.ageLimits.find(ageLimit => ageLimit.id === Number(this.bookForm.value.ageLimit)),
-        genres: entities.genres.filter(genre => this.bookForm.value.genres.includes(String(genre.id))),
-      };
-      if (this.currentBookId) {
-        this.bookService.editBook(book);
-      } else {
-        this.bookService.addBook(book);
-      }
+    const book: Book = {
+      ...this.bookForm.value,
+      authorId: this.bookForm.value.authorId,
+      publisherId: this.bookForm.value.publisherId,
+      typeId: this.bookForm.value.typeId,
+      coverArtId: this.bookForm.value.coverArtId,
+      ageLimitId: this.bookForm.value.ageLimitId,
+      genreIds: this.bookForm.value.genreIds,
+    };
+    if (this.currentBookId) {
+      this.bookService.editBook(book);
+    } else {
+      this.bookService.addBook(book);
+    }
 
-      this.router.navigateByUrl('/dashboard/product/book');
-    });
-    this.subscriptions.add(sub);
+    this.router.navigateByUrl('/dashboard/product/book');
   }
 }

@@ -44,7 +44,7 @@ export class RelatedEntityService {
   }
 
   public getItems(relatedEntityType: string, idsArray?: number[]): Observable<RelatedEntity[]> {
-    const entityItems$ = this.entityService.getAll<RelatedEntityDto>(relatedEntityType);
+    const entityItems$ = this.entityService.get<RelatedEntityDto>(relatedEntityType);
 
     if (idsArray) {
       return entityItems$.pipe(

@@ -14,7 +14,7 @@
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Автор</mat-label>
-      <mat-select formControlName="author">
+      <mat-select formControlName="authorId">
         <mat-option *ngFor="let author of (relatedEntities$ | async)?.authors" value="{{author.id}}">
           {{author.name}}
         </mat-option>
@@ -23,7 +23,7 @@
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Издатель</mat-label>
-      <mat-select formControlName="publisher">
+      <mat-select formControlName="publisherId">
         <mat-option *ngFor="let publisher of (relatedEntities$ | async)?.publishers" value="{{publisher.id}}">
           {{publisher.name}}
         </mat-option>
@@ -32,7 +32,7 @@
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Жанры</mat-label>
-      <mat-select formControlName="genres" multiple>
+      <mat-select formControlName="genreIds" multiple>
         <mat-option *ngFor="let genre of (relatedEntities$ | async)?.genres" value="{{genre.id}}">
           {{genre.name}}
         </mat-option>
@@ -46,7 +46,7 @@
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Тип</mat-label>
-      <mat-select formControlName="type">
+      <mat-select formControlName="typeId">
         <mat-option *ngFor="let type of (relatedEntities$ | async)?.types" value="{{type.id}}">
           {{type.name}}
         </mat-option>
@@ -55,7 +55,7 @@
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Обложка</mat-label>
-      <mat-select formControlName="coverArt">
+      <mat-select formControlName="coverArtId">
         <mat-option *ngFor="let coverArt of (relatedEntities$ | async)?.coverArts" value="{{coverArt.id}}">
           {{coverArt.name}}
         </mat-option>
@@ -64,7 +64,7 @@
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Возрастное ограничение</mat-label>
-      <mat-select formControlName="ageLimit">
+      <mat-select formControlName="ageLimitId">
         <mat-option *ngFor="let ageLimit of (relatedEntities$ | async)?.ageLimits" value="{{ageLimit.id}}">
           {{ageLimit.name}}
         </mat-option>

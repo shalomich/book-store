@@ -28,8 +28,8 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, './coverage/administration-dashboard'),
       subdir: '.',
       reporters: [
-        { type: 'html' },
-        { type: 'text-summary' }
+        { typeId: 'html' },
+        { typeId: 'text-summary' }
       ]
     },
     reporters: ['progress', 'kjhtml'],

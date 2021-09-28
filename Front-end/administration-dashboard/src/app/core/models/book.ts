@@ -19,19 +19,19 @@ export class Book {
 
   releaseYear: number;
 
-  publisher: RelatedEntity;
+  publisherId: number;
 
-  author: RelatedEntity;
+  authorId: number;
 
-  type: RelatedEntity;
+  typeId: number;
 
-  genres: RelatedEntity[];
+  genreIds: number[];
 
   originalName: string;
 
-  ageLimit: RelatedEntity;
+  ageLimitId: number;
 
-  coverArt: RelatedEntity;
+  coverArtId: number;
 
   bookFormat: string;
 
@@ -47,13 +47,13 @@ export class Book {
     this.album = book.album;
     this.ISBN = book.ISBN;
     this.releaseYear = book.releaseYear;
-    this.publisher = book.publisher;
-    this.author = book.author;
-    this.type = book.type;
-    this.genres = book.genres;
+    this.publisherId = book.publisherId;
+    this.authorId = book.authorId;
+    this.typeId = book.typeId;
+    this.genreIds = book.genreIds;
     this.originalName = book.originalName;
-    this.ageLimit = book.ageLimit;
-    this.coverArt = book.coverArt;
+    this.ageLimitId = book.ageLimitId;
+    this.coverArtId = book.coverArtId;
     this.bookFormat = book.bookFormat;
     this.pageQuantity = book.pageQuantity;
   }

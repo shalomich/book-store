@@ -30,7 +30,7 @@ export class PaginationService {
   ) { }
 
   public getProductPage(productType: string): Observable<ProductPreview[]> {
-    const entityItems$ = this.entityService.getEntityPage<ProductPreviewDto>(productType);
+    const entityItems$ = this.entityService.get<ProductPreviewDto>(productType);
 
     return entityItems$.pipe(
       map(data => data.map(item => this.productPreviewMapper.fromDto(item))),
@@ -38,7 +38,7 @@ export class PaginationService {
   }
 
   public getRelatedEntityPage(relatedEntityType: string): Observable<RelatedEntity[]> {
-    const entityItems$ = this.entityService.getEntityPage<RelatedEntityDto>(relatedEntityType);
+    const entityItems$ = this.entityService.get<RelatedEntityDto>(relatedEntityType);
 
     return entityItems$.pipe(
       map(data => data.map(item => this.relatedEntityMapper.fromDto(item))),

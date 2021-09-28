@@ -2,10 +2,6 @@ import { Injectable } from '@angular/core';
 
 import { BookDto } from '../DTOs/book-dto';
 import { Book } from '../models/book';
-import { RelatedEntityService } from '../services/related-entity.service';
-
-import { SingleBookRelatedEntities } from '../interfaces/single-book-related-entities';
-import { RelatedEntity } from '../models/related-entity';
 
 import { IMapper } from './mapper/mapper';
 
@@ -26,20 +22,20 @@ export class BookMapper implements IMapper<BookDto, Book> {
       album: data.album,
       isbn: data.ISBN,
       releaseYear: data.releaseYear,
-      publisherId: data.publisher.id,
-      authorId: data.author.id,
-      typeId: data.type.id,
-      genreIds: data.genres.map(genre => genre.id),
+      publisherId: data.publisherId,
+      authorId: data.authorId,
+      typeId: data.typeId,
+      genreIds: data.genreIds,
       originalName: data.originalName,
-      ageLimitId: data.ageLimit.id,
-      coverArtId: data.coverArt.id,
+      ageLimitId: data.ageLimitId,
+      coverArtId: data.coverArtId,
       bookFormat: data.bookFormat,
       pageQuantity: data.pageQuantity,
     };
   }
 
   /** @inheritdoc */
-  public fromDto(data: BookDto, relatedEntitiesItems: SingleBookRelatedEntities): Book {
+  public fromDto(data: BookDto): Book {
     return new Book({
       id: data.id,
       name: data.name,
@@ -49,13 +45,13 @@ export class BookMapper implements IMapper<BookDto, Book> {
       album: data.album,
       ISBN: data.isbn,
       releaseYear: data.releaseYear,
-      publisher: relatedEntitiesItems.publisher,
-      author: relatedEntitiesItems.author,
-      type: relatedEntitiesItems.type,
-      genres: relatedEntitiesItems.genres,
+      publisherId: data.publisherId,
+      authorId: data.authorId,
+      typeId: data.typeId,
+      genreIds: data.genreIds,
       originalName: data.originalName,
-      ageLimit: relatedEntitiesItems.ageLimit,
-      coverArt: relatedEntitiesItems.coverArt,
+      ageLimitId: data.ageLimitId,
+      coverArtId: data.coverArtId,
       bookFormat: data.bookFormat,
       pageQuantity: data.pageQuantity,
     });

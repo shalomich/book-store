@@ -5,9 +5,8 @@ import { Observable, of } from 'rxjs';
 import { API_FORM_ENTITY_URI } from '../utils/values';
 
 @Injectable({
-    providedIn: 'root',
-}
-)
+  providedIn: 'root',
+})
 export class EntityService {
 
   private httpOptions = {
@@ -18,20 +17,16 @@ export class EntityService {
 
   public constructor(private readonly http: HttpClient) { }
 
-  public getEntityPage<T>(entityName: string): Observable<T[]> {
-    return this.http.get<T[]>(`${API_FORM_ENTITY_URI}${entityName}`);
-  }
-
   public getById<T>(entityName: string, itemId: number): Observable<T> {
     return this.http.get<T>(`${API_FORM_ENTITY_URI}${entityName}/${itemId}`);
   }
 
-  public getAll<T>(entityName: string): Observable<T[]> {
+  public get<T>(entityName: string): Observable<T[]> {
     return this.http.get<T[]>(`${API_FORM_ENTITY_URI}${entityName}`);
   }
 
   public add<T>(entityName: string, data: T): Observable<void> {
-    this.http.post<T>(`${API_FORM_ENTITY_URI}${entityName}`, data, this.httpOptions).subscribe(data => console.log(data));
+    this.http.post<T>(`${API_FORM_ENTITY_URI}${entityName}`, data, this.httpOptions).subscribe();
 
     return of();
   }
