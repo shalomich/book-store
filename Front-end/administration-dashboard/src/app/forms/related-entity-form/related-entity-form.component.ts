@@ -4,9 +4,6 @@ import { EMPTY, Observable, Subscription } from 'rxjs';
 
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { BooksRelatedEntities } from '../../core/interfaces/books-related-entities';
-import { Book } from '../../core/models/book';
-import { BookCrudService } from '../../core/services/book-crud.service';
 import { RelatedEntity } from '../../core/models/related-entity';
 import { RelatedEntityCrudService } from '../../core/services/related-entity-crud.service';
 
@@ -22,7 +19,7 @@ export class RelatedEntityFormComponent implements OnInit {
 
   private readonly entityItemToEdit$: Observable<RelatedEntity>;
 
-  private readonly currentId: number;
+  public readonly currentId: number;
 
   public readonly entityName: string;
 
@@ -69,6 +66,11 @@ export class RelatedEntityFormComponent implements OnInit {
       this.relatedEntityService.addRelatedEntityItem(item, this.entityName);
     }
 
+    this.router.navigateByUrl(`/dashboard/product/book/${this.entityName}`);
+  }
+
+  public handleDelete() {
+    this.relatedEntityService.deleteRelatedEntityItem(this.entityName, this.currentId);
     this.router.navigateByUrl(`/dashboard/product/book/${this.entityName}`);
   }
 

@@ -36,4 +36,10 @@ export class EntityService {
 
     return of();
   }
+
+  public delete<T>(entityName: string, id: number): Observable<void> {
+    this.http.delete<T>(`${API_FORM_ENTITY_URI}${entityName}/${id}`, this.httpOptions).subscribe();
+
+    return of();
+  }
 }

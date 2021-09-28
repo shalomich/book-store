@@ -29,7 +29,7 @@ export class BookFormComponent implements OnInit, OnDestroy {
 
   private readonly bookToEdit$: Observable<Book>;
 
-  private readonly currentBookId: number;
+  public readonly currentBookId: number;
 
   /** All subscriptions inside component. */
   private readonly subscriptions = new Subscription();
@@ -118,6 +118,11 @@ export class BookFormComponent implements OnInit, OnDestroy {
       this.bookService.addBook(book);
     }
 
+    this.router.navigateByUrl('/dashboard/product/book');
+  }
+
+  public handleDelete() {
+    this.bookService.deleteBook(this.currentBookId);
     this.router.navigateByUrl('/dashboard/product/book');
   }
 }
