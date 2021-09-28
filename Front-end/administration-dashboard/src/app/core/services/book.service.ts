@@ -20,33 +20,32 @@ import { RelatedEntityService } from './related-entity.service';
 @Injectable({
   providedIn: 'root',
 })
-export class BookService extends EntityService {
+export class BookService {
 
   private readonly productType = 'book';
 
   public constructor(
-    http: HttpClient,
+    private readonly http: HttpClient,
     private readonly bookMapper: BookMapper,
     private readonly relatedEntityService: RelatedEntityService,
-  ) {
-    super(http);
-  }
+    private readonly entityService: EntityService,
+  ) { }
 
   public addBook(bookToAdd: Book): Observable<void> {
     const book = this.bookMapper.toDto(bookToAdd);
     book.id = 0;
 
-    return super.addEntityItem<BookDto>(this.productType, book);
+    return this.entityService.add<BookDto>(this.productType, book);
   }
 
   public editBook(bookToEdit: Book): Observable<void> {
     const book = this.bookMapper.toDto(bookToEdit);
 
-    return super.editEntityItem<BookDto>(this.productType, book.id, book);
+    return this.entityService.edit<BookDto>(this.productType, book.id, book);
   }
 
   public getSingleBook(bookId: number): Observable<Book> {
-    return super.getSingleEntityItem<BookDto>(this.productType, bookId).pipe(
+    return this.entityService.getById<BookDto>(this.productType, bookId).pipe(
       switchMap(book => this.getBookRelatedEntityItems(book).pipe(
         map(relatedEntitiesItems => this.bookMapper.fromDto(book, relatedEntitiesItems)),
       )),

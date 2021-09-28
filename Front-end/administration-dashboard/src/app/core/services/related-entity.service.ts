@@ -14,30 +14,29 @@ import { EntityService } from './entity.service';
 @Injectable({
   providedIn: 'root',
 })
-export class RelatedEntityService extends EntityService {
+export class RelatedEntityService {
 
   public constructor(
-    http: HttpClient,
+    private readonly http: HttpClient,
     private readonly relatedEntityMapper: RelatedEntityMapper,
-  ) {
-    super(http);
-  }
+    private readonly entityService: EntityService,
+  ) { }
 
   public addRelatedEntityItem(dataToAdd: RelatedEntity, entityName: string): Observable<void> {
     const relatedEntityItem = this.relatedEntityMapper.toDto(dataToAdd);
     relatedEntityItem.id = 0;
 
-    return super.addEntityItem<RelatedEntityDto>(entityName, relatedEntityItem);
+    return this.entityService.add<RelatedEntityDto>(entityName, relatedEntityItem);
   }
 
   public editRelatedEntityItem(dataToEdit: RelatedEntity, entityName: string): Observable<void> {
     const relatedEntityItem = this.relatedEntityMapper.toDto(dataToEdit);
 
-    return super.editEntityItem<RelatedEntityDto>(entityName, relatedEntityItem.id, relatedEntityItem);
+    return this.entityService.edit<RelatedEntityDto>(entityName, relatedEntityItem.id, relatedEntityItem);
   }
 
   public getSingleItem(relatedEntityType: string, itemId: number): Observable<RelatedEntity> {
-    const entityItem$ = super.getSingleEntityItem<RelatedEntityDto>(relatedEntityType, itemId);
+    const entityItem$ = this.entityService.getById<RelatedEntityDto>(relatedEntityType, itemId);
 
     return entityItem$.pipe(
       map(item => this.relatedEntityMapper.fromDto(item)),
@@ -45,7 +44,7 @@ export class RelatedEntityService extends EntityService {
   }
 
   public getItems(relatedEntityType: string, idsArray?: number[]): Observable<RelatedEntity[]> {
-    const entityItems$ = super.getAllEntityItems<RelatedEntityDto>(relatedEntityType);
+    const entityItems$ = this.entityService.getAll<RelatedEntityDto>(relatedEntityType);
 
     if (idsArray) {
       return entityItems$.pipe(

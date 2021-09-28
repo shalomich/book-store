@@ -20,18 +20,17 @@ import { EntityService } from './entity.service';
 @Injectable({
   providedIn: 'root',
 })
-export class PaginationService extends EntityService {
+export class PaginationService {
 
   public constructor(
-    http: HttpClient,
+    private readonly http: HttpClient,
     private readonly productPreviewMapper: ProductPreviewMapper,
     private readonly relatedEntityMapper: RelatedEntityMapper,
-  ) {
-    super(http);
-  }
+    private readonly entityService: EntityService,
+  ) { }
 
   public getProductPage(productType: string): Observable<ProductPreview[]> {
-    const entityItems$ = super.getEntityPage<ProductPreviewDto>(productType);
+    const entityItems$ = this.entityService.getEntityPage<ProductPreviewDto>(productType);
 
     return entityItems$.pipe(
       map(data => data.map(item => this.productPreviewMapper.fromDto(item))),
@@ -39,7 +38,7 @@ export class PaginationService extends EntityService {
   }
 
   public getRelatedEntityPage(relatedEntityType: string): Observable<RelatedEntity[]> {
-    const entityItems$ = super.getEntityPage<RelatedEntityDto>(relatedEntityType);
+    const entityItems$ = this.entityService.getEntityPage<RelatedEntityDto>(relatedEntityType);
 
     return entityItems$.pipe(
       map(data => data.map(item => this.relatedEntityMapper.fromDto(item))),

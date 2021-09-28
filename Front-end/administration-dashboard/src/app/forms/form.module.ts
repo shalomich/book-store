@@ -13,6 +13,7 @@ import { MatOptionModule } from '@angular/material/core';
 
 import { BookFormComponent } from './book-form/book-form.component';
 import { RelatedEntityFormComponent } from './related-entity-form/related-entity-form.component';
+import { CoreModule } from '../core/core.module';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { RelatedEntityFormComponent } from './related-entity-form/related-entity
     RouterModule,
     MatSelectModule,
     MatOptionModule,
+    CoreModule,
   ],
   declarations: [BookFormComponent, RelatedEntityFormComponent],
   exports: [MatFormFieldModule],
