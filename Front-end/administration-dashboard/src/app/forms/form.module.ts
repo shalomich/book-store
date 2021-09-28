@@ -14,20 +14,22 @@ import { MatOptionModule } from '@angular/material/core';
 import { BookFormComponent } from './book-form/book-form.component';
 import { RelatedEntityFormComponent } from './related-entity-form/related-entity-form.component';
 import { CoreModule } from '../core/core.module';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    Forms,
-    ReactiveFormsModule,
-    RouterModule,
-    MatSelectModule,
-    MatOptionModule,
-    CoreModule,
-  ],
+    imports: [
+        CommonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        Forms,
+        ReactiveFormsModule,
+        RouterModule,
+        MatSelectModule,
+        MatOptionModule,
+        CoreModule,
+        MatButtonModule,
+    ],
   declarations: [BookFormComponent, RelatedEntityFormComponent],
   exports: [MatFormFieldModule],
 })

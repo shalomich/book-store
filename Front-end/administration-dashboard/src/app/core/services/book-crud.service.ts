@@ -37,6 +37,10 @@ export class BookCrudService {
     return this.entityService.edit<BookDto>(this.productType, book.id, book);
   }
 
+  public deleteBook(bookId: number): Observable<void> {
+    return this.entityService.delete<BookDto>(this.productType, bookId);
+  }
+
   public getSingleBook(bookId: number): Observable<Book> {
     return this.entityService.getById<BookDto>(this.productType, bookId)
       .pipe(
