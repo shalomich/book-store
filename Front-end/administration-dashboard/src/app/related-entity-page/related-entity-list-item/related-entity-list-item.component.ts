@@ -12,6 +12,9 @@ export class RelatedEntityListItemComponent implements OnInit {
   @Input()
   public item: RelatedEntity = {} as RelatedEntity;
 
+  @Input()
+  public entityType = '';
+
   public constructor() { }
 
   public ngOnInit(): void {

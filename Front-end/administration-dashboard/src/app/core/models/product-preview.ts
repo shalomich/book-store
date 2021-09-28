@@ -1,4 +1,4 @@
-import { ImageDto } from '../DTOs/image-dto';
+import { Image } from '../interfaces/image';
 
 import { EntityPreview } from './entity-preview';
 
@@ -6,7 +6,7 @@ import { EntityPreview } from './entity-preview';
 export class ProductPreview extends EntityPreview {
 
   /** Entity item's title image. */
-  public readonly titleImage?: ImageDto;
+  public readonly titleImage?: Image;
 
   public constructor(entity: ProductPreview) {
     super(entity);

@@ -12,6 +12,9 @@ export class ProductListItemComponent implements OnInit {
   @Input()
   public item: ProductPreview = {} as ProductPreview;
 
+  @Input()
+  public productType = '';
+
   public constructor() { }
 
   public ngOnInit(): void {

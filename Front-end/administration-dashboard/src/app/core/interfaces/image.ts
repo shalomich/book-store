@@ -1,5 +1,8 @@
-/** Image DTO object. */
-export interface ImageDto {
+/** Image object. */
+export interface Image {
+
+  /** Image's name. */
+  readonly name: string;
 
   /** Image's format. */
   readonly format: string;

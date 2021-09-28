@@ -1,0 +1,12 @@
+<button class="back-button" routerLink="/dashboard/product/book/{{entityName}}">Назад</button>
+<div class="form-inner">
+  <h3>Форма</h3>
+  <form (submit)="handleFormSubmit()" [formGroup]="relatedEntityForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Название</mat-label>
+      <input formControlName="name" matInput placeholder="Введите название">
+    </mat-form-field>
+    <br>
+    <button [disabled]="!relatedEntityForm.valid" type="submit">Подтвердить</button>
+  </form>
+</div>

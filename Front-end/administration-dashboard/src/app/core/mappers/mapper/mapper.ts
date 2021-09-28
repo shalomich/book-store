@@ -6,7 +6,7 @@ export interface IMapper<TDto, TDomain> {
   /**
    * Maps from DTO to Domain model.
    */
-  fromDto(data: TDto, relatedEntities: []): TDomain;
+  fromDto(data: TDto): TDomain;
 
   /**
    * Maps from Domain to DTO model.

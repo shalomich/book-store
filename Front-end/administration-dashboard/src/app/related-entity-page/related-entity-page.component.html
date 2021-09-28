@@ -2,11 +2,15 @@
   <button class="back-button" routerLink="/dashboard/product/{{productType}}">Назад</button>
   <h1 class="title">{{entityName}}</h1>
   <div class="list-block">
-    <button class="button">
+    <button routerLink="/dashboard/form/{{entityType}}" class="button">
       <mat-icon class="add-icon">add</mat-icon>
     </button>
     <ul class="list">
-      <app-related-entity-list-item *ngFor="let item of entityList$ | async" [item]="item"></app-related-entity-list-item>
+      <app-related-entity-list-item
+        *ngFor="let item of entityList$ | async"
+        [item]="item"
+        [entityType]="entityType">
+      </app-related-entity-list-item>
     </ul>
   </div>
 </div>

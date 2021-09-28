@@ -1,4 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --main-color: dimgray;
+  --white-color: white;
+  --black-color: black;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.loading-block {
+  margin-left: 45vw;
+  margin-top: 35vh;
+  font-size: 1.8em;
+}
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
