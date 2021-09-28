@@ -3,6 +3,13 @@
   margin-top: 2em;
 }
 
+.delete-button {
+  float: right;
+  margin-right: 5em;
+  margin-top: 2em;
+  font-size: 1.4em;
+}
+
 .form-inner {
   padding: 50px;
   width: 40%;

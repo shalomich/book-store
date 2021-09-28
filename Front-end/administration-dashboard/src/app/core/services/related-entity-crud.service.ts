@@ -10,6 +10,7 @@ import { RelatedEntityMapper } from '../mappers/related-entity.mapper';
 import { RelatedEntityDto } from '../DTOs/related-entity-dto';
 
 import { EntityService } from './entity.service';
+import { BookDto } from '../DTOs/book-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +34,10 @@ export class RelatedEntityCrudService {
     const relatedEntityItem = this.relatedEntityMapper.toDto(dataToEdit);
 
     return this.entityService.edit<RelatedEntityDto>(entityName, relatedEntityItem.id, relatedEntityItem);
+  }
+
+  public deleteRelatedEntityItem(entityName: string, itemId: number): Observable<void> {
+    return this.entityService.delete<RelatedEntityDto>(entityName, itemId);
   }
 
   public getSingleItem(relatedEntityType: string, itemId: number): Observable<RelatedEntity> {

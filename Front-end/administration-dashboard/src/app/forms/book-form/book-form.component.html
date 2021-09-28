@@ -1,4 +1,5 @@
 <button class="back-button" routerLink="/dashboard/product/book">Назад</button>
+<button (click)="handleDelete()" *ngIf="currentBookId" mat-raised-button  color="warn" class="delete-button" >Удалить</button>
 <div *ngIf="relatedEntities$ | async as entities; else loading" class="form-inner">
   <h3>Форма книги</h3>
   <form (submit)="handleFormSubmit()" [formGroup]="bookForm">
