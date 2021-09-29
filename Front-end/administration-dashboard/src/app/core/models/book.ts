@@ -1,19 +1,8 @@
-import { Album } from '../interfaces/album';
 
-import { RelatedEntity } from './related-entity';
+import {Product} from "./product";
 
-export class Book {
-  id: number;
+export class Book extends Product{
 
-  name: string;
-
-  cost: number;
-
-  quantity: number;
-
-  description: string;
-
-  album: Album;
 
   ISBN: string;
 
@@ -39,12 +28,7 @@ export class Book {
 
 
   public constructor(book: Book) {
-    this.id = book.id;
-    this.name = book.name;
-    this.cost = book.cost;
-    this.quantity = book.quantity;
-    this.description = book.description;
-    this.album = book.album;
+    super(book);
     this.ISBN = book.ISBN;
     this.releaseYear = book.releaseYear;
     this.publisherId = book.publisherId;

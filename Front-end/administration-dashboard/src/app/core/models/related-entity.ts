@@ -1,4 +1,4 @@
-import { EntityPreview } from './entity-preview';
+import {Entity} from "./entity";
 
-export class RelatedEntity extends EntityPreview {}
+export class RelatedEntity extends Entity {}
 
