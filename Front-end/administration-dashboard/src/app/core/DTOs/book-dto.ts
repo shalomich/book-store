@@ -1,12 +1,6 @@
-import { Album } from '../interfaces/album';
+import {ProductDto} from './product-dto';
 
-export interface BookDto {
-  id: number;
-  name: string;
-  cost: number;
-  quantity: number;
-  description: string;
-  album: Album;
+export interface BookDto extends ProductDto{
   isbn: string;
   releaseYear: number;
   publisherId: number;
