@@ -1,25 +1,29 @@
-import ProductTypeConfig from '../../../products-config.json';
-import { ProductType } from '../interfaces/product-type';
-import { RelatedEntityType } from '../interfaces/related-entity-type';
+
+import { ProductConfig } from '../interfaces/product-config';
+import { BookConfig } from './book-config';
+import { EntityType } from '../interfaces/entity-type';
 
 class ProductTypeConfiguration {
-  private readonly productConfig: ProductType[] = ProductTypeConfig;
+  private readonly productConfigs: Array<ProductConfig> = [new BookConfig()];
 
-  public getProducts(): ProductType[] {
-    return this.productConfig;
+  private getProductConfig(type: string) {
+    return this.productConfigs.find(config => config.entityType.value == type);
+  }
+
+  public getProductTypes(): EntityType[] {
+    return this.productConfigs.map(config => config.entityType);
   }
 
   public getProductName(type: string): string | undefined {
-    return this.productConfig.find(productType => productType.value === type)?.name;
+    return this.getProductConfig(type)?.entityType.name;
   }
 
-  public getProductRelatedEntities(type: string): RelatedEntityType[] {
-    const relatedEntities = this.productConfig.find(productType => productType.value === type)?.relatedEntities;
-    return relatedEntities ? relatedEntities : [];
+  public getProductRelatedEntityTypes(type: string): EntityType[] {
+    return this.getProductConfig((type))?.relatedEntityConfigs.map(config => config.entityType) ?? [];
   }
 
   public getRelatedEntityName(productType: string, relatedEntityType: string): string | undefined {
-    return this.getProductRelatedEntities(productType).find(entity => entity.value === relatedEntityType)?.name;
+    return this.getProductRelatedEntityTypes(productType).find(entity => entity.value === relatedEntityType)?.name;
   }
 }
 

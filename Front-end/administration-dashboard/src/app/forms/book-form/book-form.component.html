@@ -16,7 +16,7 @@
     <mat-form-field appearance="fill">
       <mat-label>Автор</mat-label>
       <mat-select formControlName="authorId">
-        <mat-option *ngFor="let author of (relatedEntities$ | async)?.authors" value="{{author.id}}">
+        <mat-option *ngFor="let author of authors$ | async" value="{{author.id}}">
           {{author.name}}
         </mat-option>
       </mat-select>
@@ -25,7 +25,7 @@
     <mat-form-field appearance="fill">
       <mat-label>Издатель</mat-label>
       <mat-select formControlName="publisherId">
-        <mat-option *ngFor="let publisher of (relatedEntities$ | async)?.publishers" value="{{publisher.id}}">
+        <mat-option *ngFor="let publisher of publishers$ | async" value="{{publisher.id}}">
           {{publisher.name}}
         </mat-option>
       </mat-select>
@@ -34,7 +34,7 @@
     <mat-form-field appearance="fill">
       <mat-label>Жанры</mat-label>
       <mat-select formControlName="genreIds" multiple>
-        <mat-option *ngFor="let genre of (relatedEntities$ | async)?.genres" value="{{genre.id}}">
+        <mat-option *ngFor="let genre of genres$ | async" value="{{genre.id}}">
           {{genre.name}}
         </mat-option>
       </mat-select>
@@ -48,7 +48,7 @@
     <mat-form-field appearance="fill">
       <mat-label>Тип</mat-label>
       <mat-select formControlName="typeId">
-        <mat-option *ngFor="let type of (relatedEntities$ | async)?.types" value="{{type.id}}">
+        <mat-option *ngFor="let type of bookTypes$ | async" value="{{type.id}}">
           {{type.name}}
         </mat-option>
       </mat-select>
@@ -57,7 +57,7 @@
     <mat-form-field appearance="fill">
       <mat-label>Обложка</mat-label>
       <mat-select formControlName="coverArtId">
-        <mat-option *ngFor="let coverArt of (relatedEntities$ | async)?.coverArts" value="{{coverArt.id}}">
+        <mat-option *ngFor="let coverArt of coverArts$ | async" value="{{coverArt.id}}">
           {{coverArt.name}}
         </mat-option>
       </mat-select>
@@ -66,7 +66,7 @@
     <mat-form-field appearance="fill">
       <mat-label>Возрастное ограничение</mat-label>
       <mat-select formControlName="ageLimitId">
-        <mat-option *ngFor="let ageLimit of (relatedEntities$ | async)?.ageLimits" value="{{ageLimit.id}}">
+        <mat-option *ngFor="let ageLimit of ageLimits$ | async" value="{{ageLimit.id}}">
           {{ageLimit.name}}
         </mat-option>
       </mat-select>

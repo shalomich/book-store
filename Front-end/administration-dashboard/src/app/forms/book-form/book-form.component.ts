@@ -10,9 +10,9 @@ import { map } from 'rxjs/operators';
 
 import { BookCrudService } from '../../core/services/book-crud.service';
 import { Book } from '../../core/models/book';
-import { BooksRelatedEntities } from '../../core/interfaces/books-related-entities';
 import { RelatedEntityCrudService } from '../../core/services/related-entity-crud.service';
-import { BookRelatedEntitiesNames } from '../../core/utils/values';
+import {RelatedEntity} from "../../core/models/related-entity";
+import { BookConfig } from '../../core/utils/book-config';
 
 @Component({
   selector: 'app-book-form',
@@ -21,17 +21,19 @@ import { BookRelatedEntitiesNames } from '../../core/utils/values';
 })
 export class BookFormComponent implements OnInit, OnDestroy {
 
-  /** Book form group. */
   public bookForm: FormGroup;
 
-  /** Observable with object with all book related entities items. */
-  public readonly relatedEntities$: Observable<BooksRelatedEntities>;
+  public readonly authors$: Observable<RelatedEntity[]>;
+  public readonly publishers$: Observable<RelatedEntity[]>;
+  public readonly bookTypes$: Observable<RelatedEntity[]>;
+  public readonly genres$: Observable<RelatedEntity[]>;
+  public readonly ageLimits$: Observable<RelatedEntity[]>;
+  public readonly coverArts$: Observable<RelatedEntity[]>;
 
   private readonly bookToEdit$: Observable<Book>;
 
   public readonly currentBookId: number;
 
-  /** All subscriptions inside component. */
   private readonly subscriptions = new Subscription();
 
   public constructor(
@@ -39,26 +41,19 @@ export class BookFormComponent implements OnInit, OnDestroy {
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly relatedEntityService: RelatedEntityCrudService,
+    private readonly bookConfig: BookConfig
   ) {
     this.currentBookId = activatedRoute.snapshot.params.id;
-    this.bookToEdit$ = this.currentBookId ? this.bookService.getSingleBook(this.currentBookId) : EMPTY;
-    this.relatedEntities$ = combineLatest([
-      this.relatedEntityService.getItems(BookRelatedEntitiesNames.Publisher),
-      this.relatedEntityService.getItems(BookRelatedEntitiesNames.Author),
-      this.relatedEntityService.getItems(BookRelatedEntitiesNames.BookType),
-      this.relatedEntityService.getItems(BookRelatedEntitiesNames.Genre),
-      this.relatedEntityService.getItems(BookRelatedEntitiesNames.AgeLimit),
-      this.relatedEntityService.getItems(BookRelatedEntitiesNames.CoverArt),
-    ]).pipe(
-      map(([publishers, authors, types, genres, ageLimits, coverArts]) => ({
-        publishers,
-        authors,
-        types,
-        genres,
-        ageLimits,
-        coverArts,
-      })),
-    );
+    this.bookToEdit$ = this.currentBookId ? this.bookService.getById(this.currentBookId) : EMPTY;
+
+    const {AuthorConfig, PublisherConfig, BookTypeConfig, GenreConfig, AgeLimitConfig, CoverArtConfig} = bookConfig;
+
+    this.authors$ = this.relatedEntityService.get(AuthorConfig.entityType.value);
+    this.publishers$ = this.relatedEntityService.get(PublisherConfig.entityType.value);
+    this.bookTypes$ = this.relatedEntityService.get(BookTypeConfig.entityType.value);
+    this.genres$ = this.relatedEntityService.get(GenreConfig.entityType.value);
+    this.ageLimits$ = this.relatedEntityService.get(AgeLimitConfig.entityType.value);
+    this.coverArts$ = this.relatedEntityService.get(CoverArtConfig.entityType.value);
 
     this.bookForm = new FormGroup({
       id: new FormControl(''),
@@ -113,16 +108,16 @@ export class BookFormComponent implements OnInit, OnDestroy {
       genreIds: this.bookForm.value.genreIds,
     };
     if (this.currentBookId) {
-      this.bookService.editBook(book);
+      this.bookService.edit(book);
     } else {
-      this.bookService.addBook(book);
+      this.bookService.add(book);
     }
 
     this.router.navigateByUrl('/dashboard/product/book');
   }
 
   public handleDelete() {
-    this.bookService.deleteBook(this.currentBookId);
+    this.bookService.delete(this.currentBookId);
     this.router.navigateByUrl('/dashboard/product/book');
   }
 }

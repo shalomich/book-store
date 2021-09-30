@@ -2,14 +2,17 @@ import { Image } from '../interfaces/image';
 
 import { EntityPreview } from './entity-preview';
 
-/** Entity preview class. */
-export class ProductPreview extends EntityPreview {
+export class ProductPreview {
 
-  /** Entity item's title image. */
+  public readonly id: number;
+
+  public readonly name: string;
+
   public readonly titleImage?: Image;
 
-  public constructor(entity: ProductPreview) {
-    super(entity);
-    this.titleImage = entity.titleImage;
+  public constructor(preview: ProductPreview) {
+    this.id = preview.id;
+    this.name = preview.name;
+    this.titleImage = preview.titleImage;
   }
 }
