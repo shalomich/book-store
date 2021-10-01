@@ -9,8 +9,9 @@ import { RelatedEntity } from '../models/related-entity';
 import { RelatedEntityMapper } from '../mappers/related-entity.mapper';
 import { RelatedEntityDto } from '../DTOs/related-entity-dto';
 
-import { EntityService } from './entity.service';
+import { EntityRestService } from './entity-rest.service';
 import { BookDto } from '../DTOs/book-dto';
+import {RelatedEntityPreview} from "../models/related-entity-preview";
 
 @Injectable({
   providedIn: 'root',
@@ -20,42 +21,37 @@ export class RelatedEntityCrudService {
   public constructor(
     private readonly http: HttpClient,
     private readonly relatedEntityMapper: RelatedEntityMapper,
-    private readonly entityService: EntityService,
+    private readonly entityService: EntityRestService,
   ) { }
 
-  public addRelatedEntityItem(dataToAdd: RelatedEntity, entityName: string): Observable<void> {
-    const relatedEntityItem = this.relatedEntityMapper.toDto(dataToAdd);
-    relatedEntityItem.id = 0;
+  public add(entityType: string, relatedEntity: RelatedEntity): Observable<void> {
+    const relatedEntityDto = this.relatedEntityMapper.toDto(relatedEntity);
+    relatedEntityDto.id = 0;
 
-    return this.entityService.add<RelatedEntityDto>(entityName, relatedEntityItem);
+    return this.entityService.add(entityType, relatedEntityDto);
   }
 
-  public editRelatedEntityItem(dataToEdit: RelatedEntity, entityName: string): Observable<void> {
-    const relatedEntityItem = this.relatedEntityMapper.toDto(dataToEdit);
+  public edit(entityType: string, relatedEntity: RelatedEntity): Observable<void> {
+    const relatedEntityDto = this.relatedEntityMapper.toDto(relatedEntity);
 
-    return this.entityService.edit<RelatedEntityDto>(entityName, relatedEntityItem.id, relatedEntityItem);
+    return this.entityService.edit(entityType, relatedEntityDto.id, relatedEntityDto);
   }
 
-  public deleteRelatedEntityItem(entityName: string, itemId: number): Observable<void> {
-    return this.entityService.delete<RelatedEntityDto>(entityName, itemId);
+  public delete(entityType: string, id: number): Observable<void> {
+    return this.entityService.delete(entityType, id);
   }
 
-  public getSingleItem(relatedEntityType: string, itemId: number): Observable<RelatedEntity> {
-    const entityItem$ = this.entityService.getById<RelatedEntityDto>(relatedEntityType, itemId);
-
-    return entityItem$.pipe(
-      map(item => this.relatedEntityMapper.fromDto(item)),
-    );
-  }
-
-  public getItems(relatedEntityType: string, idsArray?: number[]): Observable<RelatedEntity[]> {
-    const entityItems$ = this.entityService.get<RelatedEntityDto>(relatedEntityType);
-
-    if (idsArray) {
-      return entityItems$.pipe(
-        map(data => data.filter(item => idsArray.find(num => num === item.id) !== undefined)),
+  public getById(entityType: string, id: number): Observable<RelatedEntity> {
+    return this.entityService.getById(entityType, id)
+      .pipe(
+        map(entityDto => this.relatedEntityMapper.fromDto(entityDto as RelatedEntityDto)),
       );
-    }
-    return entityItems$;
+  }
+
+  public get(entityType: string): Observable<RelatedEntity[]> {
+
+    return this.entityService.get(entityType).pipe(
+      map(entityDtos => entityDtos.map(entityDto => this.relatedEntityMapper.fromDto(entityDto as RelatedEntityDto))),
+    );
   }
 }
