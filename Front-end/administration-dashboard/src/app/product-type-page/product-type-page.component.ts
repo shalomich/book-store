@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ProductType } from '../core/interfaces/product-type';
-import productTypeConfiguration from '../core/utils/product-type-configuration';
+import { EntityType } from '../core/interfaces/entity-type';
+import { ProductTypeConfigurationService } from '../core/services/product-type-configuration.service';
 
 /** Main page's component. */
 @Component({
@@ -11,12 +11,14 @@ import productTypeConfiguration from '../core/utils/product-type-configuration';
 })
 export class ProductTypePageComponent implements OnInit {
 
-  public readonly products: ProductType[] = productTypeConfiguration.getProducts();
+  public readonly products: EntityType[]
 
-  public constructor() {
+  public constructor(productTypeConfiguration : ProductTypeConfigurationService) {
+    this.products = productTypeConfiguration.getProductTypes();
   }
 
   public ngOnInit(): void {
+
   }
 
 }
