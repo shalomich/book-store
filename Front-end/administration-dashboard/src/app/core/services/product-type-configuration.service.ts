@@ -29,5 +29,26 @@ export class ProductTypeConfigurationService {
   public getRelatedEntityName(productType: string, relatedEntityType: string): string | undefined {
     return this.getProductRelatedEntityTypes(productType).find(entity => entity.value === relatedEntityType)?.name;
   }
+
+  public isProduct(entityType: string): boolean {
+    return this.getProductTypes().some(productType => productType.value == entityType);
+  }
+
+  public isRelatedEntity(entityType: string): boolean {
+    let isRelatedEntityStatus = false;
+
+    for (let productConfig of this.productConfigs) {
+      if (productConfig.relatedEntityConfigs.some(config => config.entityType.value == entityType)) {
+        isRelatedEntityStatus = true;
+        break;
+      }
+    }
+
+    return  isRelatedEntityStatus;
+  }
+
+  public isEntity(entityType: string): boolean {
+    return this.isProduct(entityType) || this.isRelatedEntity(entityType);
+  }
 }
 
