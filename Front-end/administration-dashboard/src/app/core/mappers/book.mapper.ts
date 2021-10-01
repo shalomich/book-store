@@ -2,14 +2,13 @@ import { Injectable } from '@angular/core';
 
 import { BookDto } from '../DTOs/book-dto';
 import { Book } from '../models/book';
-
-import { IMapper } from './mapper/mapper';
+import { Mapper } from './mapper/mapper';
 
 /**
  * Mapper for film entity.
  */
 @Injectable({ providedIn: 'root' })
-export class BookMapper implements IMapper<BookDto, Book> {
+export class BookMapper extends Mapper<BookDto, Book> {
 
   /** @inheritdoc */
   public toDto(data: Book): BookDto {
