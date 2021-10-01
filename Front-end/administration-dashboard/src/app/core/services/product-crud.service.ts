@@ -8,15 +8,22 @@ import {ProductDto} from "../DTOs/product-dto";
 import {Product} from "../models/product";
 import { Mapper } from '../mappers/mapper/mapper';
 import { Injectable } from '@angular/core';
+import { ProductTypeConfigurationService } from './product-type-configuration.service';
+import { ProductConfig } from '../interfaces/product-config';
 
 export abstract class ProductCrudService<TProductDto extends ProductDto, TProduct extends Product> {
 
-  protected abstract  readonly type : string
+  protected get type() : string {
+    return this.config.entityType.value;
+  }
 
   protected constructor (
     private readonly mapper: Mapper<TProductDto, TProduct>,
-    protected readonly entityService: EntityRestService,
-  ) { }
+    private readonly config: ProductConfig,
+    protected readonly entityService: EntityRestService
+  ) {
+
+  }
 
   public add(product: TProduct): Observable<void> {
     const productDto = this.mapper.toDto(product);
