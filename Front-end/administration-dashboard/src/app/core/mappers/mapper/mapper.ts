@@ -1,15 +1,9 @@
-/**
- * Maps DTO into Model, or Model into DTO.
- */
-export interface IMapper<TDto, TDomain> {
+import { IFromDtoMapper } from './from-dto-mapper';
+import { IToDtoMapper } from './to-dto-mapper';
+import { Injectable } from '@angular/core';
 
-  /**
-   * Maps from DTO to Domain model.
-   */
-  fromDto(data: TDto): TDomain;
+export abstract class Mapper<TDto, TDomain> implements IFromDtoMapper<TDto, TDomain>,IToDtoMapper<TDto, TDomain> {
+  abstract fromDto(data: TDto): TDomain
 
-  /**
-   * Maps from Domain to DTO model.
-   */
-  toDto(data: TDomain): TDto;
+  abstract toDto(data: TDomain): TDto
 }

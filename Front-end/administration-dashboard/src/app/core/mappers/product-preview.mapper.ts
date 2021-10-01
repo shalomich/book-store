@@ -1,31 +1,22 @@
 import { Injectable } from '@angular/core';
 
-import { ProductPreviewDto } from '../DTOs/product-preview-dto';
 import { ProductPreview } from '../models/product-preview';
 
-import { IMapper } from './mapper/mapper';
+import {ProductDto} from "../DTOs/product-dto";
+import {Image} from "../interfaces/image";
+import { Mapper } from './mapper/mapper';
+import { IFromDtoMapper } from './mapper/from-dto-mapper';
 
-/**
- * Mapper for film entity.
- */
 @Injectable({ providedIn: 'root' })
-export class ProductPreviewMapper implements IMapper<ProductPreviewDto, ProductPreview> {
+export class ProductPreviewMapper implements IFromDtoMapper<ProductDto, ProductPreview> {
 
   /** @inheritdoc */
-  public toDto(data: ProductPreview): ProductPreviewDto {
-    return {
-      id: data.id,
-      name: data.name,
-      titleImage: data.titleImage,
-    };
-  }
-
-  /** @inheritdoc */
-  public fromDto(data: ProductPreviewDto): ProductPreview {
+  public fromDto(data: ProductDto): ProductPreview {
+    console.log(data)
     return new ProductPreview({
       id: data.id,
       name: data.name,
-      titleImage: data.titleImage,
+      titleImage: data.album?.images.find(image => image.name == data.album.titleImageName),
     });
   }
 }
