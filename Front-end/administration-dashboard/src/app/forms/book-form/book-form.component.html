@@ -4,12 +4,7 @@
             && (ageLimits$ | async) && (genres$ | async) && (coverArts$ | async); else loading" class="form-inner">
   <h3>Форма книги</h3>
   <form (submit)="handleFormSubmit()" [formGroup]="bookForm">
-    <app-file-upload [filesControl]="bookForm.controls.images"></app-file-upload>
-    <mat-form-field appearance="fill">
-      <mat-label>Титульное изображение</mat-label>
-      <input formControlName="titleImageName" matInput placeholder="Введите название">
-    </mat-form-field>
-    <br>
+    <app-file-upload [imagesControl]="bookForm.controls.album"></app-file-upload>
     <mat-form-field appearance="fill">
       <mat-label>Название</mat-label>
       <input formControlName="name" matInput placeholder="Введите название">

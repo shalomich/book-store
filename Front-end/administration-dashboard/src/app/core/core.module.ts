@@ -5,12 +5,15 @@ import { Base64ToImgSrcPipe } from './pipes/base64-to-img-src.pipe';
 
 
 @NgModule({
-  declarations: [
-    Base64ToImgSrcPipe
-  ],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-  ],
+    declarations: [
+        Base64ToImgSrcPipe
+    ],
+    imports: [
+        CommonModule,
+        HttpClientModule,
+    ],
+    exports: [
+        Base64ToImgSrcPipe
+    ]
 })
 export class CoreModule { }

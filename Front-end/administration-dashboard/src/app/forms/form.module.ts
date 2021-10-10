@@ -15,7 +15,7 @@ import { BookFormComponent } from './book-form/book-form.component';
 import { RelatedEntityFormComponent } from './related-entity-form/related-entity-form.component';
 import { CoreModule } from '../core/core.module';
 import { MatButtonModule } from '@angular/material/button';
-import { FileUploadComponent } from './file-upload/file-upload.component';
+import { ImageUploadComponent } from './image-upload/image-upload.component';
 
 
 @NgModule({
@@ -31,7 +31,7 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
         CoreModule,
         MatButtonModule,
     ],
-  declarations: [BookFormComponent, RelatedEntityFormComponent, FileUploadComponent],
+  declarations: [BookFormComponent, RelatedEntityFormComponent, ImageUploadComponent],
   exports: [MatFormFieldModule],
 })
 export class FormModule { }
