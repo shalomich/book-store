@@ -21,7 +21,7 @@ export class RelatedEntityFormComponent implements OnInit {
 
   public readonly currentId: number;
 
-  public readonly entityName: string;
+  public readonly entityType: string;
 
   /** All subscriptions inside component. */
   private readonly subscriptions = new Subscription();
@@ -32,8 +32,8 @@ export class RelatedEntityFormComponent implements OnInit {
     private readonly router: Router,
   ) {
     this.currentId = activatedRoute.snapshot.params.id;
-    this.entityName = activatedRoute.snapshot.params.relatedEntity;
-    this.entityItemToEdit$ = this.currentId ? this.relatedEntityService.getSingleItem(this.entityName, this.currentId) : EMPTY;
+    this.entityType = activatedRoute.snapshot.params.relatedEntity;
+    this.entityItemToEdit$ = this.currentId ? this.relatedEntityService.getById(this.entityType, this.currentId) : EMPTY;
 
     this.relatedEntityForm = new FormGroup({
       id: new FormControl(''),
@@ -61,17 +61,17 @@ export class RelatedEntityFormComponent implements OnInit {
       ...this.relatedEntityForm.value,
     };
     if (this.currentId) {
-      this.relatedEntityService.editRelatedEntityItem(item, this.entityName);
+      this.relatedEntityService.edit(this.entityType, item);
     } else {
-      this.relatedEntityService.addRelatedEntityItem(item, this.entityName);
+      this.relatedEntityService.add(this.entityType, item);
     }
 
-    this.router.navigateByUrl(`/dashboard/product/book/${this.entityName}`);
+    this.router.navigateByUrl(`/dashboard/product/book/${this.entityType}`);
   }
 
   public handleDelete() {
-    this.relatedEntityService.deleteRelatedEntityItem(this.entityName, this.currentId);
-    this.router.navigateByUrl(`/dashboard/product/book/${this.entityName}`);
+    this.relatedEntityService.delete(this.entityType, this.currentId);
+    this.router.navigateByUrl(`/dashboard/product/book/${this.entityType}`);
   }
 
 }

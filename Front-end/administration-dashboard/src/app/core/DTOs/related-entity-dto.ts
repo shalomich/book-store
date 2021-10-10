@@ -1,3 +1,3 @@
-import { EntityPreviewDto } from './entity-preview-dto';
+import { EntityDto } from './entity-dto';
 
-export interface RelatedEntityDto extends EntityPreviewDto {}
+export interface RelatedEntityDto extends EntityDto {}

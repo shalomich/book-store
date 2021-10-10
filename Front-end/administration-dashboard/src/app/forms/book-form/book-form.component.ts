@@ -10,9 +10,12 @@ import { map } from 'rxjs/operators';
 
 import { BookCrudService } from '../../core/services/book-crud.service';
 import { Book } from '../../core/models/book';
-import { BooksRelatedEntities } from '../../core/interfaces/books-related-entities';
 import { RelatedEntityCrudService } from '../../core/services/related-entity-crud.service';
-import { BookRelatedEntitiesNames } from '../../core/utils/values';
+import { RelatedEntity } from '../../core/models/related-entity';
+import { BookConfig } from '../../core/utils/book-config';
+import { Mapper } from '../../core/mappers/mapper/mapper';
+import { BookDto } from '../../core/DTOs/book-dto';
+import { BookMapper } from '../../core/mappers/book.mapper';
 
 @Component({
   selector: 'app-book-form',
@@ -21,17 +24,24 @@ import { BookRelatedEntitiesNames } from '../../core/utils/values';
 })
 export class BookFormComponent implements OnInit, OnDestroy {
 
-  /** Book form group. */
   public bookForm: FormGroup;
 
-  /** Observable with object with all book related entities items. */
-  public readonly relatedEntities$: Observable<BooksRelatedEntities>;
+  public readonly authors$: Observable<RelatedEntity[]>;
 
-  private readonly bookToEdit$: Observable<Book>;
+  public readonly publishers$: Observable<RelatedEntity[]>;
+
+  public readonly bookTypes$: Observable<RelatedEntity[]>;
+
+  public readonly genres$: Observable<RelatedEntity[]>;
+
+  public readonly ageLimits$: Observable<RelatedEntity[]>;
+
+  public readonly coverArts$: Observable<RelatedEntity[]>;
 
   public readonly currentBookId: number;
 
-  /** All subscriptions inside component. */
+  private readonly bookToEdit$: Observable<Book>;
+
   private readonly subscriptions = new Subscription();
 
   public constructor(
@@ -39,45 +49,38 @@ export class BookFormComponent implements OnInit, OnDestroy {
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly relatedEntityService: RelatedEntityCrudService,
+    private readonly bookConfig: BookConfig,
   ) {
     this.currentBookId = activatedRoute.snapshot.params.id;
-    this.bookToEdit$ = this.currentBookId ? this.bookService.getSingleBook(this.currentBookId) : EMPTY;
-    this.relatedEntities$ = combineLatest([
-      this.relatedEntityService.getItems(BookRelatedEntitiesNames.Publisher),
-      this.relatedEntityService.getItems(BookRelatedEntitiesNames.Author),
-      this.relatedEntityService.getItems(BookRelatedEntitiesNames.BookType),
-      this.relatedEntityService.getItems(BookRelatedEntitiesNames.Genre),
-      this.relatedEntityService.getItems(BookRelatedEntitiesNames.AgeLimit),
-      this.relatedEntityService.getItems(BookRelatedEntitiesNames.CoverArt),
-    ]).pipe(
-      map(([publishers, authors, types, genres, ageLimits, coverArts]) => ({
-        publishers,
-        authors,
-        types,
-        genres,
-        ageLimits,
-        coverArts,
-      })),
-    );
+    this.bookToEdit$ = this.currentBookId ? this.bookService.getById(this.currentBookId) : EMPTY;
+
+    const { authorConfig, publisherConfig, bookTypeConfig, genreConfig, ageLimitConfig, coverArtConfig } = bookConfig;
+
+    this.authors$ = this.relatedEntityService.get(authorConfig.entityType.value);
+    this.publishers$ = this.relatedEntityService.get(publisherConfig.entityType.value);
+    this.bookTypes$ = this.relatedEntityService.get(bookTypeConfig.entityType.value);
+    this.genres$ = this.relatedEntityService.get(genreConfig.entityType.value);
+    this.ageLimits$ = this.relatedEntityService.get(ageLimitConfig.entityType.value);
+    this.coverArts$ = this.relatedEntityService.get(coverArtConfig.entityType.value);
 
     this.bookForm = new FormGroup({
       id: new FormControl(''),
       name: new FormControl('', [Validators.required]),
       cost: new FormControl('', [Validators.required]),
       quantity: new FormControl('', [Validators.required]),
-      description: new FormControl('', [Validators.required]),
+      description: new FormControl(''),
       album: new FormControl(''),
       ISBN: new FormControl('', [Validators.required]),
       releaseYear: new FormControl('', [Validators.required]),
-      originalName: new FormControl('', [Validators.required]),
-      bookFormat: new FormControl('', [Validators.required]),
-      pageQuantity: new FormControl('', [Validators.required]),
+      originalName: new FormControl(''),
+      bookFormat: new FormControl(''),
+      pageQuantity: new FormControl(''),
       publisherId: new FormControl('', [Validators.required]),
       authorId: new FormControl('', [Validators.required]),
       typeId: new FormControl('', [Validators.required]),
       ageLimitId: new FormControl('', [Validators.required]),
-      coverArtId: new FormControl('', [Validators.required]),
-      genreIds: new FormControl([], [Validators.required]),
+      coverArtId: new FormControl(''),
+      genreIds: new FormControl([]),
     });
   }
 
@@ -113,16 +116,16 @@ export class BookFormComponent implements OnInit, OnDestroy {
       genreIds: this.bookForm.value.genreIds,
     };
     if (this.currentBookId) {
-      this.bookService.editBook(book);
+      this.bookService.edit(book);
     } else {
-      this.bookService.addBook(book);
+      this.bookService.add(book);
     }
 
     this.router.navigateByUrl('/dashboard/product/book');
   }
 
   public handleDelete() {
-    this.bookService.deleteBook(this.currentBookId);
+    this.bookService.delete(this.currentBookId);
     this.router.navigateByUrl('/dashboard/product/book');
   }
 }

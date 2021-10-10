@@ -9,8 +9,11 @@ import { RelatedEntity } from '../models/related-entity';
 import { RelatedEntityMapper } from '../mappers/related-entity.mapper';
 import { RelatedEntityDto } from '../DTOs/related-entity-dto';
 
-import { EntityService } from './entity.service';
 import { BookDto } from '../DTOs/book-dto';
+import { RelatedEntityPreview } from '../models/related-entity-preview';
+
+import { EntityRestService } from './entity-rest.service';
+import { ProductTypeConfigurationService } from './product-type-configuration.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,42 +23,48 @@ export class RelatedEntityCrudService {
   public constructor(
     private readonly http: HttpClient,
     private readonly relatedEntityMapper: RelatedEntityMapper,
-    private readonly entityService: EntityService,
+    private readonly entityService: EntityRestService,
+    private readonly productTypeService: ProductTypeConfigurationService,
   ) { }
 
-  public addRelatedEntityItem(dataToAdd: RelatedEntity, entityName: string): Observable<void> {
-    const relatedEntityItem = this.relatedEntityMapper.toDto(dataToAdd);
-    relatedEntityItem.id = 0;
-
-    return this.entityService.add<RelatedEntityDto>(entityName, relatedEntityItem);
-  }
-
-  public editRelatedEntityItem(dataToEdit: RelatedEntity, entityName: string): Observable<void> {
-    const relatedEntityItem = this.relatedEntityMapper.toDto(dataToEdit);
-
-    return this.entityService.edit<RelatedEntityDto>(entityName, relatedEntityItem.id, relatedEntityItem);
-  }
-
-  public deleteRelatedEntityItem(entityName: string, itemId: number): Observable<void> {
-    return this.entityService.delete<RelatedEntityDto>(entityName, itemId);
-  }
-
-  public getSingleItem(relatedEntityType: string, itemId: number): Observable<RelatedEntity> {
-    const entityItem$ = this.entityService.getById<RelatedEntityDto>(relatedEntityType, itemId);
-
-    return entityItem$.pipe(
-      map(item => this.relatedEntityMapper.fromDto(item)),
-    );
-  }
-
-  public getItems(relatedEntityType: string, idsArray?: number[]): Observable<RelatedEntity[]> {
-    const entityItems$ = this.entityService.get<RelatedEntityDto>(relatedEntityType);
-
-    if (idsArray) {
-      return entityItems$.pipe(
-        map(data => data.filter(item => idsArray.find(num => num === item.id) !== undefined)),
-      );
+  private checkRelatedEntityType(entityType: string) {
+    if (!this.productTypeService.isRelatedEntity(entityType)) {
+      throw 'Can\'t continue operation with no related entity type';
     }
-    return entityItems$;
+  }
+
+  public add(entityType: string, relatedEntity: RelatedEntity): Observable<void> {
+    this.checkRelatedEntityType(entityType);
+    const relatedEntityDto = this.relatedEntityMapper.toDto(relatedEntity);
+    relatedEntityDto.id = 0;
+
+    return this.entityService.add(entityType, relatedEntityDto);
+  }
+
+  public edit(entityType: string, relatedEntity: RelatedEntity): Observable<void> {
+    this.checkRelatedEntityType(entityType);
+    const relatedEntityDto = this.relatedEntityMapper.toDto(relatedEntity);
+
+    return this.entityService.edit(entityType, relatedEntityDto.id, relatedEntityDto);
+  }
+
+  public delete(entityType: string, id: number): Observable<void> {
+    this.checkRelatedEntityType(entityType);
+    return this.entityService.delete(entityType, id);
+  }
+
+  public getById(entityType: string, id: number): Observable<RelatedEntity> {
+    this.checkRelatedEntityType(entityType);
+    return this.entityService.getById(entityType, id)
+      .pipe(
+        map(entityDto => this.relatedEntityMapper.fromDto(entityDto as RelatedEntityDto)),
+      );
+  }
+
+  public get(entityType: string): Observable<RelatedEntity[]> {
+    this.checkRelatedEntityType(entityType);
+    return this.entityService.get(entityType).pipe(
+      map(entityDtos => entityDtos.map(entityDto => this.relatedEntityMapper.fromDto(entityDto as RelatedEntityDto))),
+    );
   }
 }
