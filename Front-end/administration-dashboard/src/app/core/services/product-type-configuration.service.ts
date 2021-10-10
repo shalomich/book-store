@@ -1,8 +1,10 @@
 
+import { Injectable } from '@angular/core';
+
 import { ProductConfig } from '../interfaces/product-config';
 import { BookConfig } from '../utils/book-config';
 import { EntityType } from '../interfaces/entity-type';
-import { Injectable } from '@angular/core';
+
 
 @Injectable({
   providedIn: 'root',
@@ -37,14 +39,14 @@ export class ProductTypeConfigurationService {
   public isRelatedEntity(entityType: string): boolean {
     let isRelatedEntityStatus = false;
 
-    for (let productConfig of this.productConfigs) {
+    for (const productConfig of this.productConfigs) {
       if (productConfig.relatedEntityConfigs.some(config => config.entityType.value == entityType)) {
         isRelatedEntityStatus = true;
         break;
       }
     }
 
-    return  isRelatedEntityStatus;
+    return isRelatedEntityStatus;
   }
 
   public isEntity(entityType: string): boolean {

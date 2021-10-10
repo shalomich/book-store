@@ -10,10 +10,11 @@ import { ProductPreviewMapper } from '../mappers/product-preview.mapper';
 import { ProductPreview } from '../models/product-preview';
 import { RelatedEntityDto } from '../DTOs/related-entity-dto';
 
+import { RelatedEntityPreviewMapper } from '../mappers/related-entity-preview.mapper';
+import { RelatedEntityPreview } from '../models/related-entity-preview';
+import { ProductDto } from '../DTOs/product-dto';
+
 import { EntityRestService } from './entity-rest.service';
-import {RelatedEntityPreviewMapper} from "../mappers/related-entity-preview.mapper";
-import {RelatedEntityPreview} from "../models/related-entity-preview";
-import {ProductDto} from "../DTOs/product-dto";
 
 @Injectable({
   providedIn: 'root',

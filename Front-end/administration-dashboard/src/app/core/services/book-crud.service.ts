@@ -9,15 +9,16 @@ import { Book } from '../models/book';
 
 import { BookDto } from '../DTOs/book-dto';
 
-import { EntityRestService } from './entity-rest.service';
-import {ProductCrudService} from "./product-crud.service";
-import { ProductTypeConfigurationService } from './product-type-configuration.service';
 import { BookConfig } from '../utils/book-config';
+
+import { EntityRestService } from './entity-rest.service';
+import { ProductCrudService } from './product-crud.service';
+import { ProductTypeConfigurationService } from './product-type-configuration.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class BookCrudService extends ProductCrudService<BookDto, Book>{
+export class BookCrudService extends ProductCrudService<BookDto, Book> {
   protected getType(): string {
     return 'book';
   }

@@ -1,26 +1,35 @@
 
-import {EntityRestService} from "./entity-rest.service";
-import {Book} from "../models/book";
-import {Observable} from "rxjs";
-import {BookDto} from "../DTOs/book-dto";
-import {map} from "rxjs/operators";
-import {ProductDto} from "../DTOs/product-dto";
-import {Product} from "../models/product";
-import { Mapper } from '../mappers/mapper/mapper';
+
+import { Observable } from 'rxjs';
+
+import { map } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
-import { ProductTypeConfigurationService } from './product-type-configuration.service';
+
+import { BookDto } from '../DTOs/book-dto';
+import { ProductDto } from '../DTOs/product-dto';
+import { Product } from '../models/product';
+import { Mapper } from '../mappers/mapper/mapper';
+
+
+import { Book } from '../models/book';
+
 import { ProductConfig } from '../interfaces/product-config';
+
+import { ProductTypeConfigurationService } from './product-type-configuration.service';
+
+import { EntityRestService } from './entity-rest.service';
 
 export abstract class ProductCrudService<TProductDto extends ProductDto, TProduct extends Product> {
 
-  protected get type() : string {
+  protected get type(): string {
     return this.config.entityType.value;
   }
 
-  protected constructor (
+  protected constructor(
     private readonly mapper: Mapper<TProductDto, TProduct>,
     private readonly config: ProductConfig,
-    protected readonly entityService: EntityRestService
+    protected readonly entityService: EntityRestService,
   ) {
 
   }

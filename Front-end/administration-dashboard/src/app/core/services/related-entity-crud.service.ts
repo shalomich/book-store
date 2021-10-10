@@ -9,9 +9,10 @@ import { RelatedEntity } from '../models/related-entity';
 import { RelatedEntityMapper } from '../mappers/related-entity.mapper';
 import { RelatedEntityDto } from '../DTOs/related-entity-dto';
 
-import { EntityRestService } from './entity-rest.service';
 import { BookDto } from '../DTOs/book-dto';
-import {RelatedEntityPreview} from "../models/related-entity-preview";
+import { RelatedEntityPreview } from '../models/related-entity-preview';
+
+import { EntityRestService } from './entity-rest.service';
 import { ProductTypeConfigurationService } from './product-type-configuration.service';
 
 @Injectable({
@@ -23,12 +24,13 @@ export class RelatedEntityCrudService {
     private readonly http: HttpClient,
     private readonly relatedEntityMapper: RelatedEntityMapper,
     private readonly entityService: EntityRestService,
-    private readonly productTypeService: ProductTypeConfigurationService
+    private readonly productTypeService: ProductTypeConfigurationService,
   ) { }
 
-  private checkRelatedEntityType(entityType:string) {
-    if (!this.productTypeService.isRelatedEntity(entityType))
-      throw "Can't continue operation with no related entity type"
+  private checkRelatedEntityType(entityType: string) {
+    if (!this.productTypeService.isRelatedEntity(entityType)) {
+      throw 'Can\'t continue operation with no related entity type';
+    }
   }
 
   public add(entityType: string, relatedEntity: RelatedEntity): Observable<void> {

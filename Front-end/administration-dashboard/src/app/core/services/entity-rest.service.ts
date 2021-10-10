@@ -3,7 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 
 import { API_FORM_ENTITY_URI } from '../utils/values';
-import {EntityDto} from "../DTOs/entity-dto";
+import { EntityDto } from '../DTOs/entity-dto';
+
 import { ProductTypeConfigurationService } from './product-type-configuration.service';
 
 @Injectable({
@@ -17,16 +18,17 @@ export class EntityRestService {
     }),
   };
 
-  public constructor(private readonly http: HttpClient, private readonly productTypeService: ProductTypeConfigurationService ) { }
+  public constructor(private readonly http: HttpClient, private readonly productTypeService: ProductTypeConfigurationService) { }
 
-  private checkEntityType(entityType:string) {
-    if (!this.productTypeService.isEntity(entityType))
-      throw "Can't continue operation with no entity type"
+  private checkEntityType(entityType: string) {
+    if (!this.productTypeService.isEntity(entityType)) {
+      throw 'Can\'t continue operation with no entity type';
+    }
   }
 
   public getById(entityType: string, itemId: number): Observable<EntityDto> {
     this.checkEntityType(entityType);
-    this.productTypeService.isEntity(entityType)
+    this.productTypeService.isEntity(entityType);
     return this.http.get<EntityDto>(`${API_FORM_ENTITY_URI}${entityType}/${itemId}`);
   }
 
