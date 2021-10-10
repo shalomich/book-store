@@ -7,7 +7,7 @@ import { Image } from '../interfaces/image';
 class FileHelper {
   public fileToImage(inputFile: File): Observable<Image> {
     return readFileAsDataURL(inputFile).pipe(
-      map(file => this.base64ToObject(file, inputFile.name)),
+      map(file => this.base64ToObject(file, inputFile.name.split('.')[0])),
     );
   }
 

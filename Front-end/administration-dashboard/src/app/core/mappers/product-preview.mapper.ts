@@ -13,11 +13,10 @@ export class ProductPreviewMapper implements IFromDtoMapper<ProductDto, ProductP
 
   /** @inheritdoc */
   public fromDto(data: ProductDto): ProductPreview {
-    console.log(data);
     return new ProductPreview({
       id: data.id,
       name: data.name,
-      titleImage: data.album?.images.find(image => image.name == data.album.titleImageName),
+      titleImage: data.album?.images.find(image => image.name === data.album.titleImageName),
     });
   }
 }
