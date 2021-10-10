@@ -15,6 +15,7 @@ import { BookFormComponent } from './book-form/book-form.component';
 import { RelatedEntityFormComponent } from './related-entity-form/related-entity-form.component';
 import { CoreModule } from '../core/core.module';
 import { MatButtonModule } from '@angular/material/button';
+import { FileUploadComponent } from './file-upload/file-upload.component';
 
 
 @NgModule({
@@ -30,7 +31,7 @@ import { MatButtonModule } from '@angular/material/button';
         CoreModule,
         MatButtonModule,
     ],
-  declarations: [BookFormComponent, RelatedEntityFormComponent],
+  declarations: [BookFormComponent, RelatedEntityFormComponent, FileUploadComponent],
   exports: [MatFormFieldModule],
 })
 export class FormModule { }

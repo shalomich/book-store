@@ -11,9 +11,9 @@ import { ProductTypeConfigurationService } from '../core/services/product-type-c
 })
 export class ProductTypePageComponent implements OnInit {
 
-  public readonly products: EntityType[]
+  public readonly products: EntityType[];
 
-  public constructor(productTypeConfiguration : ProductTypeConfigurationService) {
+  public constructor(productTypeConfiguration: ProductTypeConfigurationService) {
     this.products = productTypeConfiguration.getProductTypes();
   }
 
