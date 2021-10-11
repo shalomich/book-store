@@ -8,12 +8,47 @@ namespace BookStore.Domain.Entities.Products
 {
     public class Image : IEntity
     {
+        public const int MinHeight = 1;
+        public const int MinWidth = 1;
+
         private string _format;
+        private int _height;
+        private int _width;
 
         public static readonly string[] FormatConsts = { "image/png", "image/jpeg" };
 
         public int Id { set; get; }
         public string Name { set; get; }
+
+        public int Height
+        {
+            set
+            {
+                if (value <= 0)
+                    throw new ArgumentOutOfRangeException();
+                _height = value;
+            }
+
+            get
+            {
+                return _height;
+            }
+        }
+
+        public int Width
+        {
+            set
+            {
+                if (value <= 0)
+                    throw new ArgumentOutOfRangeException();
+                _width = value;
+            }
+
+            get
+            {
+                return _width;
+            }
+        }
 
         public string Data { set; get; }
         public string Format
