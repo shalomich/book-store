@@ -46,9 +46,11 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
         [HttpHead]
         public async Task GetPaggingMetadata([FromQuery] QueryTransformArgs args)
         {
+            int dataCount = QueryBuilder.Build().Count();
+
             QueryBuilder.AddDataTransformation(args);
 
-            var metadata = await Mediator.Send(new GetMetadataQuery(args.Pagging, QueryBuilder));
+            var metadata = await Mediator.Send(new GetMetadataQuery(dataCount, args.Pagging, QueryBuilder));
 
             HttpContext.Response.Headers.Add(metadata);
         }

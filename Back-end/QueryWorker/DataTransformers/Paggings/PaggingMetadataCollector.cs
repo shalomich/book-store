@@ -12,7 +12,7 @@ namespace QueryWorker.DataTransformers.Paggings
 {
     public class PaggingMetadataCollector<T> where T : class
     {
-        public PaggingMetadata Collect(PaggingArgs args, IQueryable<T> objects)
+        public PaggingMetadata Collect(int dataCount, PaggingArgs args, IQueryable<T> objects)
         {
             var pagging = new Pagging<T>() { PageSize = args.PageSize, PageNumber = args.PageNumber };
             
@@ -22,21 +22,21 @@ namespace QueryWorker.DataTransformers.Paggings
                 PageSize: pageSize,
                 PageNumber: pageNumber,
                 DataCount: FindDataCount(objects),
-                CurrentPageDataCount: FindDataCount(pagging.Transform(objects)),
-                PageCount: FindPageCount(objects, pageSize),
-                HasNextPage: HasNextPage(objects, pageSize, pageNumber),
-                HasPreviousPage: HasPreviousPage(objects, pageNumber, Pagging<T>.MinPageNumber)
+                CurrentPageDataCount: FindDataCount(objects),
+                PageCount: FindPageCount(dataCount, pageSize),
+                HasNextPage: HasNextPage(dataCount, pageSize, pageNumber, objects),
+                HasPreviousPage: HasPreviousPage(pageNumber, Pagging<T>.MinPageNumber, objects)
             );
         }
 
         private int FindDataCount(IQueryable<T> objects) => objects.Count();
-        private int FindPageCount(IQueryable<T> objects, int pageSize) 
-            => (int)Math.Ceiling(FindDataCount(objects) / (double) pageSize);
+        private int FindPageCount(int dataCount, int pageSize) 
+            => (int)Math.Ceiling(dataCount / (double) pageSize);
 
         private bool IsEmpty(IQueryable<T> objects) => FindDataCount(objects) == 0;
-        private bool HasNextPage(IQueryable<T> objects, int pageSize, int pageNumber) 
-            => pageNumber != FindPageCount(objects, pageSize) && IsEmpty(objects) == false;
-        private bool HasPreviousPage(IQueryable<T> objects, int pageNumber, int minPageNumber) 
+        private bool HasNextPage(int dataCount, int pageSize, int pageNumber, IQueryable<T> objects) 
+            => pageNumber != FindPageCount(dataCount, pageSize) && IsEmpty(objects) == false;
+        private bool HasPreviousPage(int pageNumber, int minPageNumber, IQueryable<T> objects) 
             => pageNumber != minPageNumber && IsEmpty(objects) == false;
 
     }
