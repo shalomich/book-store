@@ -13,6 +13,7 @@
       </app-related-entity-list-item>
     </ul>
   </div>
+  <paggination-panel *ngIf="(pageCount$ | async) as pageCount; else null" [pageCount]="pageCount" (pageTurnedOver)="pageChanged($event)"></paggination-panel>
 </div>
 <div class="error-title" *ngIf="!isValid">
   Page Not Found (Invalid URL)

@@ -1,5 +1,4 @@
 export const API_FORM_ENTITY_URI = 'https://localhost:44327/dashboard/form-entity/';
-
 export const MIN_IMAGE_HEIGHT = 800;
 export const MIN_IMAGE_WIDTH = 600;
 
@@ -15,7 +14,10 @@ export const ISBN_EXISTS_ERROR = 'Книга с таким ISBN уже суще�
 export const BOOK_IMAGES_AMOUNT_ERROR = 'Количество фотографий должно быть от 1 до 5!';
 export const BOOK_IMAGE_SIZE_ERROR = 'Минимальный размер изображения - 600x800!';
 export const TITLE_IMAGE_NAME_NOT_EXIST_ERROR = 'Изображение с таким названием не выбрано!';
+
 export const MIN_COST = 100;
 export const MIN_QUANTITY = 1;
 export const MIN_RELEASE_YEAR = 2000;
+
+export const RELATED_ENTITY_PAGE_SIZE = 1;
 
