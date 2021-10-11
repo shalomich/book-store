@@ -22,6 +22,7 @@ import { CoreModule } from './core/core.module';
 import { RelatedEntityPageComponent } from './related-entity-page/related-entity-page.component';
 import { RelatedEntityListItemComponent } from './related-entity-page/related-entity-list-item/related-entity-list-item.component';
 import { FormModule } from './forms/form.module';
+import { PagginationPanelComponent } from './paggination-panel/paggination-panel.component';
 
 
 export let InjectorInstance: Injector;
@@ -34,6 +35,7 @@ export let InjectorInstance: Injector;
     ProductListItemComponent,
     RelatedEntityPageComponent,
     RelatedEntityListItemComponent,
+    PagginationPanelComponent
   ],
   imports: [
     BrowserModule,
