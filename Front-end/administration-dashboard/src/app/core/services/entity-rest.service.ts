@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { API_FORM_ENTITY_URI } from '../utils/values';
 import { EntityDto } from '../DTOs/entity-dto';
@@ -22,25 +23,23 @@ export class EntityRestService {
 
   private checkEntityType(entityType: string) {
     if (!this.productTypeService.isEntity(entityType)) {
-      throw 'Can\'t continue operation with no entity type';
+      throw "Can't continue operation with no entity type";
     }
   }
 
   public getById(entityType: string, itemId: number): Observable<EntityDto> {
     this.checkEntityType(entityType);
-    this.productTypeService.isEntity(entityType);
     return this.http.get<EntityDto>(`${API_FORM_ENTITY_URI}${entityType}/${itemId}`);
   }
 
-  public get(entityType: string): Observable<EntityDto[]> {
-    this.checkEntityType(entityType);
-    return this.http.get<EntityDto[]>(`${API_FORM_ENTITY_URI}${entityType}`);
+  public get(entityType: string, params?: HttpParams): Observable<EntityDto[]> {
+      this.checkEntityType(entityType);
+      return this.http.get<EntityDto[]>(`${API_FORM_ENTITY_URI}${entityType}`, {params: params});
   }
 
   public add(entityType: string, data: EntityDto): Observable<void> {
     this.checkEntityType(entityType);
     this.http.post<EntityDto>(`${API_FORM_ENTITY_URI}${entityType}`, data, this.httpOptions).subscribe();
-
     return of();
   }
 
@@ -56,5 +55,11 @@ export class EntityRestService {
     this.http.delete<EntityDto>(`${API_FORM_ENTITY_URI}${entityType}/${id}`, this.httpOptions).subscribe();
 
     return of();
+  }
+
+  public getPageCount(entityType: string, params?: HttpParams): Observable<number> {
+    this.checkEntityType(entityType);
+    return this.http.head(`${API_FORM_ENTITY_URI}${entityType}`, {observe: 'response', params: params})
+      .pipe(map(responce => parseInt(responce.headers.get('pageCount')!)));
   }
 }
