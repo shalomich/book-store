@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Application.Queries
 {
-    public record GetMetadataQuery(PaggingArgs Args, IDbQueryBuilder<IFormEntity> QueryBuilder) : IRequest<PaggingMetadata>;
+    public record GetMetadataQuery(int dataCount, PaggingArgs Args, IDbQueryBuilder<IFormEntity> QueryBuilder) : IRequest<PaggingMetadata>;
 
     public class GetPaggingMetadataHandler : IRequestHandler<GetMetadataQuery, PaggingMetadata>
     {        
@@ -26,9 +26,9 @@ namespace BookStore.Application.Queries
 
         public Task<PaggingMetadata> Handle(GetMetadataQuery request, CancellationToken cancellationToken)
         {
-            var (args, queryBuilder) = request;
+            var (dataCount, args, queryBuilder) = request;
 
-            return Task.FromResult(Collector.Collect(args, queryBuilder.Build()));
+            return Task.FromResult(Collector.Collect(dataCount, args, queryBuilder.Build()));
         }
     }
 }

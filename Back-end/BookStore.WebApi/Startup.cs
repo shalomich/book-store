@@ -95,7 +95,11 @@ namespace BookStore.WebApi
             app.UseAuthentication();
             app.UseAuthorization();
             
-            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .WithExposedHeaders("pageCount"));
 
             app.UseEndpoints(endpoints =>
             {
