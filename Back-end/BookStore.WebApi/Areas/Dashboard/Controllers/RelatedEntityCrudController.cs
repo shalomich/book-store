@@ -40,5 +40,11 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
             var relatedEntity = (RelatedEntity)await Mediator.Send(new GetByIdQuery(id, QueryBuilder));
             return Ok(Mapper.Map<RelatedEntityForm>(relatedEntity));
         }
+
+        [HttpGet("name-existed")]
+        public async Task<bool> CheckNameExisted([FromQuery] string name)
+        {
+            return await Mediator.Send(new CheckRelatedEntityNameQuery(name, QueryBuilder));
+        }
     }
 }
