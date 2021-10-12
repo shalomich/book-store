@@ -13,19 +13,19 @@ namespace BookStore.Application.DbQueryConfigs.DataTransformersConfigs
     {
         public BookDataTransformerConfig()
         {
-            CreateSorting("releaseYear", book => book.ReleaseYear);
+            CreateSorting(nameof(Book.ReleaseYear), book => book.ReleaseYear);
 
-            CreateFilter("releaseYear", book => book.ReleaseYear);
-            CreateFilter("authorId", book => book.AuthorId);
-            CreateFilter("publisherId", book => book.PublisherId);
-            CreateFilter("typeId", book => book.TypeId.Value);
-            CreateFilter("ageLimitId", book => book.AgeLimitId.Value);
-            CreateFilter("coverArtId", book => book.CoverArtId.Value);
+            CreateFilter(nameof(Book.ReleaseYear), book => book.ReleaseYear);
+            CreateFilter(nameof(Book.AuthorId), book => book.AuthorId);
+            CreateFilter(nameof(Book.PublisherId), book => book.PublisherId);
+            CreateFilter(nameof(Book.TypeId), book => book.TypeId.Value);
+            CreateFilter(nameof(Book.AgeLimitId), book => book.AgeLimitId.Value);
+            CreateFilter(nameof(Book.CoverArtId), book => book.CoverArtId.Value);
             CreateFilter("genreIds", book => book.GenresBooks
                 .Select(genre => genre.Genre.Id));
 
-            CreateSearch("author", entity => entity.Author.Name);
-            CreateSearch("publisher", entity => entity.Publisher.Name);
+            CreateSearch(nameof(Book.AuthorId), entity => entity.Author.Name);
+            CreateSearch(nameof(Book.PublisherId), entity => entity.Publisher.Name);
         }
     }
 }
