@@ -11,9 +11,9 @@ namespace BookStore.Application.DbQueryConfigs.DataTransformersConfigs
     {
         public RelatedEntityQueryConfig()
         {
-            CreateSorting("name", entity => entity.Name);
+            CreateSorting(nameof(RelatedEntity.Name), entity => entity.Name);
             
-            CreateSearch("name", entity => entity.Name);
+            CreateSearch(nameof(RelatedEntity.Name), entity => entity.Name);
         }
     }
 }

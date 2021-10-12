@@ -12,15 +12,15 @@ namespace BookStore.Application.DbQueryConfigs.DataTransformersConfigs
     {
         protected ProductDataTransformerConfig()
         {
-            CreateSorting("name", entity => entity.Name);
-            CreateSorting("cost", book => book.Cost);
-            CreateSorting("addingDate", book => book.AddingDate);
+            CreateSorting(nameof(Product.Name), entity => entity.Name);
+            CreateSorting(nameof(Product.Cost), book => book.Cost);
+            CreateSorting(nameof(Product.AddingDate), book => book.AddingDate);
 
-            CreateFilter("name", entity => entity.Name);
-            CreateFilter("cost", book => book.Cost);
-            CreateFilter("quantity", book => book.Quantity);
+            CreateFilter(nameof(Product.Name), entity => entity.Name);
+            CreateFilter(nameof(Product.Cost), book => book.Cost);
+            CreateFilter(nameof(Product.Quantity), book => book.Quantity);
             
-            CreateSearch("name", entity => entity.Name);
+            CreateSearch(nameof(Product.Name), entity => entity.Name);
         }
     }
 }
