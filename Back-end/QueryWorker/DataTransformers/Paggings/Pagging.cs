@@ -11,15 +11,16 @@ namespace QueryWorker.DataTransformers.Paggings
     internal class Pagging<T> : DataTransformer<T> where T : class
     {
         public const int MinPageNumber = 1;
+        public const int FixedMaxPageSize = 60;
 
-        public readonly int _maxPageSize = 60;
+        private readonly int _maxPageSize;
 
         private int _pageSize = int.MaxValue;
         private int _pageNumber = MinPageNumber;
 
         public Pagging()
         {
-
+            MaxPageSize = FixedMaxPageSize;
         }
 
         public Pagging(int maxPageSize)
@@ -63,7 +64,10 @@ namespace QueryWorker.DataTransformers.Paggings
                 if (value <= 0)
                     throw new ArgumentException();
 
-                _maxPageSize = value;
+                if (value > FixedMaxPageSize)
+                    _maxPageSize = FixedMaxPageSize;
+                else
+                    _maxPageSize = value;
             }
             get
             {
