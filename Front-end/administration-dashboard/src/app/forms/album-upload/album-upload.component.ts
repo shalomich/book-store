@@ -4,31 +4,29 @@ import { AbstractControl, FormControl } from '@angular/forms';
 import { combineLatest, merge, of, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
-import fileHelper from '../../core/utils/file-helper';
 import { Album } from '../../core/interfaces/album';
+import { ImageConverterService } from '../../core/services/image-converter.service';
 
 @Component({
   selector: 'app-file-upload',
-  templateUrl: './image-upload.component.html',
-  styleUrls: ['./image-upload.component.css'],
+  templateUrl: './album-upload.component.html',
+  styleUrls: ['./album-upload.component.css'],
 })
-export class ImageUploadComponent implements OnInit, OnDestroy {
+export class AlbumUploadComponent implements OnInit, OnDestroy {
 
   @Input()
   public imagesControl: AbstractControl = new FormControl();
 
-  public images: File[] = [];
-
-  public titleImageName = new FormControl('');
+  public titleImageNameControl = new FormControl('');
 
   private readonly subscriptions = new Subscription();
 
-  public constructor() {}
+  public constructor(private readonly imageConverterService: ImageConverterService) {}
 
   public ngOnInit(): void {
-    const sub = this.titleImageName.valueChanges.pipe(
+    const sub = this.titleImageNameControl.valueChanges.pipe(
       map(_ => this.imagesControl.setValue({
-        titleImageName: this.titleImageName.value,
+        titleImageName: this.titleImageNameControl.value,
         ...this.imagesControl.value,
       })),
     ).subscribe();
@@ -45,7 +43,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     const files: File[] = Array.prototype.slice.call(target.files);
 
     const sub = of(files).pipe(
-      map(filesData => filesData.map(file => fileHelper.fileToImage(file))),
+      map(filesData => filesData.map(file => this.imageConverterService.fileToImage(file))),
       switchMap(filesData => combineLatest(filesData)),
       map(filesData => this.imagesControl.setValue({
         images: filesData,
