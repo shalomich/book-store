@@ -18,6 +18,7 @@ export class ProductListItemComponent implements OnInit {
   public constructor() { }
 
   public ngOnInit(): void {
+    console.log(this.item);
   }
 
 }

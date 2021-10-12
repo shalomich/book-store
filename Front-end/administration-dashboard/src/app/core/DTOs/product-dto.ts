@@ -1,4 +1,5 @@
 import { Album } from '../interfaces/album';
+
 import { EntityDto } from './entity-dto';
 
 export interface ProductDto extends EntityDto {

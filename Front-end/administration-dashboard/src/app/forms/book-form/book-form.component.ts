@@ -69,7 +69,7 @@ export class BookFormComponent implements OnInit, OnDestroy {
       cost: new FormControl('', [Validators.required]),
       quantity: new FormControl('', [Validators.required]),
       description: new FormControl(''),
-      album: new FormControl(''),
+      album: new FormControl(null),
       ISBN: new FormControl('', [Validators.required]),
       releaseYear: new FormControl('', [Validators.required]),
       originalName: new FormControl(''),
@@ -99,6 +99,8 @@ export class BookFormComponent implements OnInit, OnDestroy {
       });
       this.subscriptions.add(sub);
     }
+
+    this.bookForm.valueChanges.subscribe(data => console.log(data));
   }
 
   public ngOnDestroy() {

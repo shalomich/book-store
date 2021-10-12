@@ -1,0 +1,12 @@
+<div>
+  <span>Изображения</span>
+  <input accept="image/png, image/jpeg, image/jpg" multiple (change)="handleFilesChange($event)"
+         type="file" placeholder="Выберите изображения">
+</div>
+<br>
+<mat-form-field appearance="fill">
+  <mat-label>Титульное изображение</mat-label>
+  <input [formControl]="titleImageNameControl" matInput placeholder="Введите название">
+</mat-form-field>
+<br>
+

@@ -2,6 +2,9 @@
   <div class="item">
     <p>Id: {{item.id}}</p>
     <p>Название: {{item.name}}</p>
+    <div class="image-block">
+      <img class="title-image" *ngIf="item.titleImage" alt="Title Image" src="{{item.titleImage | base64ToImgSrc}}">
+    </div>
   </div>
   <div class="button-block">
     <hr class="line"/>
