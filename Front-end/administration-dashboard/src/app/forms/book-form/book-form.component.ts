@@ -109,26 +109,41 @@ export class BookFormComponent implements OnInit, OnDestroy {
   }
 
   public handleFormSubmit(): void {
-    const book: Book = {
-      ...this.bookForm.value,
-      authorId: this.bookForm.value.authorId,
-      publisherId: this.bookForm.value.publisherId,
-      typeId: this.bookForm.value.typeId,
-      coverArtId: this.bookForm.value.coverArtId,
-      ageLimitId: this.bookForm.value.ageLimitId,
-      genreIds: this.bookForm.value.genreIds,
-    };
-    if (this.currentBookId) {
-      this.bookService.edit(book);
+    if (this.bookForm.invalid) {
+      this.validateAllFormFields(this.bookForm);
     } else {
-      this.bookService.add(book);
-    }
+      const book: Book = {
+        ...this.bookForm.value,
+        authorId: this.bookForm.value.authorId,
+        publisherId: this.bookForm.value.publisherId,
+        typeId: this.bookForm.value.typeId,
+        coverArtId: this.bookForm.value.coverArtId,
+        ageLimitId: this.bookForm.value.ageLimitId,
+        genreIds: this.bookForm.value.genreIds,
+      };
+      if (this.currentBookId) {
+        this.bookService.edit(book);
+      } else {
+        this.bookService.add(book);
+      }
 
-    this.router.navigateByUrl('/dashboard/product/book');
+      this.router.navigateByUrl('/dashboard/product/book');
+    }
   }
 
   public handleDelete() {
     this.bookService.delete(this.currentBookId);
     this.router.navigateByUrl('/dashboard/product/book');
+  }
+
+  private validateAllFormFields(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      if (control instanceof FormControl) {
+        control.markAsTouched({ onlySelf: true });
+      } else if (control instanceof FormGroup) {
+        this.validateAllFormFields(control);
+      }
+    });
   }
 }

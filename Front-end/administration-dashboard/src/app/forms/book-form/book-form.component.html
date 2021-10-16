@@ -8,11 +8,13 @@
     <mat-form-field appearance="fill">
       <mat-label>Название</mat-label>
       <input formControlName="name" matInput placeholder="Введите название" required>
+      <mat-error *ngIf="bookForm.invalid">This field is required!</mat-error>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Оригинальное название</mat-label>
       <input formControlName="originalName" matInput placeholder="Введите название">
+      <mat-error *ngIf="bookForm.invalid">This field is required!</mat-error>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
@@ -22,6 +24,7 @@
           {{author.name}}
         </mat-option>
       </mat-select>
+      <mat-error *ngIf="bookForm.invalid">This field is required!</mat-error>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
@@ -31,6 +34,7 @@
           {{publisher.name}}
         </mat-option>
       </mat-select>
+      <mat-error *ngIf="bookForm.invalid">This field is required!</mat-error>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
@@ -40,11 +44,13 @@
           {{genre.name}}
         </mat-option>
       </mat-select>
+      <mat-error *ngIf="bookForm.invalid">This field is required!</mat-error>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Описание</mat-label>
       <textarea formControlName="description" matInput required></textarea>
+      <mat-error *ngIf="bookForm.invalid">This field is required!</mat-error>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
@@ -54,6 +60,7 @@
           {{type.name}}
         </mat-option>
       </mat-select>
+      <mat-error *ngIf="bookForm.invalid">This field is required!</mat-error>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
@@ -63,6 +70,7 @@
           {{coverArt.name}}
         </mat-option>
       </mat-select>
+      <mat-error *ngIf="bookForm.invalid">This field is required!</mat-error>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
@@ -72,16 +80,19 @@
           {{ageLimit.name}}
         </mat-option>
       </mat-select>
+      <mat-error *ngIf="bookForm.invalid">This field is required!</mat-error>
     </mat-form-field>
     <br>
     <mat-form-field  appearance="fill">
       <mat-label>Год выпуска</mat-label>
       <input formControlName="releaseYear" type="number" matInput required>
+      <mat-error *ngIf="bookForm.invalid">This field is required!</mat-error>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Количество страниц</mat-label>
       <input type="number" formControlName="pageQuantity" matInput required>
+      <mat-error *ngIf="bookForm.invalid">This field is required!</mat-error>
     </mat-form-field>
     <br>
     <mat-form-field  appearance="fill">
@@ -90,16 +101,19 @@
       <mat-error *ngIf="bookForm.controls.ISBN.errors?.isbnValidator">
         {{bookForm.controls.ISBN.errors?.isbnValidator}}
       </mat-error>
+      <mat-error *ngIf="bookForm.invalid">This field is required!</mat-error>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Цена</mat-label>
       <input formControlName="cost" type="number" matInput required>
+      <mat-error *ngIf="bookForm.invalid">This field is required!</mat-error>
     </mat-form-field>
     <br>
     <mat-form-field  appearance="fill">
       <mat-label>Количество</mat-label>
       <input formControlName="quantity" type="number" matInput required>
+      <mat-error *ngIf="bookForm.invalid">This field is required!</mat-error>
     </mat-form-field>
     <br>
     <mat-form-field  appearance="fill">
@@ -108,9 +122,10 @@
       <mat-error *ngIf="bookForm.controls.bookFormat.errors?.bookFormatValidator">
         {{bookForm.controls.bookFormat.errors?.bookFormatValidator}}
       </mat-error>
+      <mat-error *ngIf="bookForm.invalid">This field is required!</mat-error>
     </mat-form-field>
     <br>
-    <button [disabled]="!bookForm.valid" type="submit">Подтвердить</button>
+    <button type="submit">Подтвердить</button>
   </form>
 </div>
 
