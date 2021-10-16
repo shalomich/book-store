@@ -4,8 +4,9 @@ import { HttpClient } from '@angular/common/http';
 
 import { map } from 'rxjs/operators';
 
-import { API_FORM_ENTITY_URI } from '../utils/values';
+import { API_FORM_ENTITY_URI, MIN_IMAGE_HEIGHT, MIN_IMAGE_WIDTH } from '../utils/values';
 import { InjectorInstance } from '../../app.module';
+import { Album } from '../interfaces/album';
 
 export class BookFormValidation {
 
@@ -41,6 +42,33 @@ export class BookFormValidation {
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control.value.match('^[1-9]\\d{1}x[1-9]\\d{1}x[1-9]$') && control.value) {
         return { bookFormatValidator: 'Incorrect book format!' };
+      }
+
+      return null;
+    };
+  }
+
+  public static imagesValid(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value as Album;
+
+      if (value.images.length <= 0 || value.images.length > 5) {
+        return { imagesValidator: 'Images amount should be from 1 to 5!' };
+      }
+
+      if (value.images.find(image => (image.height < MIN_IMAGE_HEIGHT) || (image.width < MIN_IMAGE_WIDTH))) {
+        return { imagesValidator: 'Minimum image size should be 600x800!' };
+      }
+
+      return null;
+    };
+  }
+
+  public static isTitleImageNameValid(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value as Album;
+      if (!value.images.find(image => image.name === value.titleImageName)) {
+        return { titleImageNameValidator: 'Image with such name was not selected!' };
       }
 
       return null;
