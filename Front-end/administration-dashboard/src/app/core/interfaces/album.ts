@@ -1,6 +1,6 @@
-import { Image } from './image';
+import { Base64Image } from './base64-image';
 
 export interface Album {
   titleImageName: string;
-  images: Image[];
+  images: Base64Image[];
 }

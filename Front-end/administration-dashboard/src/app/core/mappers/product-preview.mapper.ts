@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ProductPreview } from '../models/product-preview';
 
 import { ProductDto } from '../DTOs/product-dto';
-import { Image } from '../interfaces/image';
+import { Base64Image } from '../interfaces/base64-image';
 
 import { Mapper } from './mapper/mapper';
 import { IFromDtoMapper } from './mapper/from-dto-mapper';

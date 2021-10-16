@@ -1,29 +1,43 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Image } from '../interfaces/image';
+import { Observable, Subject } from 'rxjs';
+
 import { readFileAsDataURL } from '@webacad/observable-file-reader';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
+
+import { Base64Image } from '../interfaces/base64-image';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ImageConverterService {
 
-  constructor() { }
+  public constructor() { }
 
-  public fileToImage(inputFile: File): Observable<Image> {
+  public fileToImage(inputFile: File): Observable<Base64Image> {
     return readFileAsDataURL(inputFile).pipe(
-      map(file => {
-        let fileString = file.split(':')[1];
-        const format = fileString.split(';')[0];
-        fileString = fileString.split(';')[1];
-        const data = fileString.split(',')[1];
+      switchMap(file => {
+        const image = new Image();
+        image.src = file;
 
-        return {
-          name: inputFile.name.split('.')[0],
-          format,
-          data,
+        const resultImage$ = new Subject<Base64Image>();
+
+        image.onload = function() {
+          let fileString = file.split(':')[1];
+          const format = fileString.split(';')[0];
+          fileString = fileString.split(';')[1];
+          const data = fileString.split(',')[1];
+
+          resultImage$.next({
+            name: inputFile.name.split('.')[0],
+            format,
+            data,
+            height: image.height,
+            width: image.width,
+          });
         };
+
+
+        return resultImage$.pipe();
       }),
     );
   }

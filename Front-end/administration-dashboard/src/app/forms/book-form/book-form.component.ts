@@ -100,7 +100,7 @@ export class BookFormComponent implements OnInit, OnDestroy {
     this.bookForm.controls.ISBN.setAsyncValidators([BookFormValidation.isISBNValid(null)]);
 
     this.bookForm.valueChanges.subscribe(() => {
-      console.log(this.bookForm.controls.bookFormat.errors);
+      console.log(this.bookForm.value);
     });
   }
 

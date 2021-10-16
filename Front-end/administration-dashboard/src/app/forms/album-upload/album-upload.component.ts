@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
 
 import { combineLatest, merge, of, Subscription } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, startWith, switchMap } from 'rxjs/operators';
 
 import { Album } from '../../core/interfaces/album';
 import { ImageConverterService } from '../../core/services/image-converter.service';
@@ -25,6 +25,7 @@ export class AlbumUploadComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     const sub = this.titleImageNameControl.valueChanges.pipe(
+      startWith(this.titleImageNameControl.value as string),
       map(_ => this.imagesControl.setValue({
         titleImageName: this.titleImageNameControl.value,
         ...this.imagesControl.value,
@@ -46,6 +47,7 @@ export class AlbumUploadComponent implements OnInit, OnDestroy {
       map(filesData => filesData.map(file => this.imageConverterService.fileToImage(file))),
       switchMap(filesData => combineLatest(filesData)),
       map(filesData => this.imagesControl.setValue({
+        ...this.titleImageNameControl.value,
         images: filesData,
       } as Album)),
     )
