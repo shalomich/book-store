@@ -1,21 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { combineLatest, EMPTY, Observable, Subscription } from 'rxjs';
+import { EMPTY, Observable, Subscription } from 'rxjs';
 
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
-import { map } from 'rxjs/operators';
 
 import { BookCrudService } from '../../core/services/book-crud.service';
 import { Book } from '../../core/models/book';
 import { RelatedEntityCrudService } from '../../core/services/related-entity-crud.service';
 import { RelatedEntity } from '../../core/models/related-entity';
 import { BookConfig } from '../../core/utils/book-config';
-import { Mapper } from '../../core/mappers/mapper/mapper';
-import { BookDto } from '../../core/DTOs/book-dto';
-import { BookMapper } from '../../core/mappers/book.mapper';
+import { BookFormValidation } from '../../core/validators/book-form-validation';
 
 @Component({
   selector: 'app-book-form',
@@ -68,18 +64,18 @@ export class BookFormComponent implements OnInit, OnDestroy {
       name: new FormControl('', [Validators.required]),
       cost: new FormControl('', [Validators.required]),
       quantity: new FormControl('', [Validators.required]),
-      description: new FormControl(''),
+      description: new FormControl('', [Validators.required]),
       album: new FormControl(null),
       ISBN: new FormControl('', [Validators.required]),
       releaseYear: new FormControl('', [Validators.required]),
       originalName: new FormControl(''),
-      bookFormat: new FormControl(''),
+      bookFormat: new FormControl('', [Validators.required, BookFormValidation.isBookFormatValid()]),
       pageQuantity: new FormControl(''),
       publisherId: new FormControl('', [Validators.required]),
       authorId: new FormControl('', [Validators.required]),
       typeId: new FormControl('', [Validators.required]),
       ageLimitId: new FormControl('', [Validators.required]),
-      coverArtId: new FormControl(''),
+      coverArtId: new FormControl('', [Validators.required]),
       genreIds: new FormControl([]),
     });
   }
@@ -96,11 +92,16 @@ export class BookFormComponent implements OnInit, OnDestroy {
           coverArtId: String(book.coverArtId),
           genreIds: book.genreIds.map(genre => String(genre)),
         });
+
+        this.bookForm.controls.ISBN.setAsyncValidators([BookFormValidation.isISBNValid(book.ISBN)]);
       });
       this.subscriptions.add(sub);
     }
+    this.bookForm.controls.ISBN.setAsyncValidators([BookFormValidation.isISBNValid(null)]);
 
-    this.bookForm.valueChanges.subscribe(data => console.log(data));
+    this.bookForm.valueChanges.subscribe(() => {
+      console.log(this.bookForm.controls.bookFormat.errors);
+    });
   }
 
   public ngOnDestroy() {

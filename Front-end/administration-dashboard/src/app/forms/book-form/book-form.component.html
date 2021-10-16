@@ -7,7 +7,7 @@
     <app-file-upload [imagesControl]="bookForm.controls.album"></app-file-upload>
     <mat-form-field appearance="fill">
       <mat-label>Название</mat-label>
-      <input formControlName="name" matInput placeholder="Введите название">
+      <input formControlName="name" matInput placeholder="Введите название" required>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
@@ -17,7 +17,7 @@
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Автор</mat-label>
-      <mat-select formControlName="authorId">
+      <mat-select formControlName="authorId" required>
         <mat-option *ngFor="let author of authors$ | async" value="{{author.id}}">
           {{author.name}}
         </mat-option>
@@ -26,7 +26,7 @@
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Издатель</mat-label>
-      <mat-select formControlName="publisherId">
+      <mat-select formControlName="publisherId" required>
         <mat-option *ngFor="let publisher of publishers$ | async" value="{{publisher.id}}">
           {{publisher.name}}
         </mat-option>
@@ -35,7 +35,7 @@
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Жанры</mat-label>
-      <mat-select formControlName="genreIds" multiple>
+      <mat-select formControlName="genreIds" multiple required>
         <mat-option *ngFor="let genre of genres$ | async" value="{{genre.id}}">
           {{genre.name}}
         </mat-option>
@@ -44,12 +44,12 @@
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Описание</mat-label>
-      <textarea formControlName="description" matInput></textarea>
+      <textarea formControlName="description" matInput required></textarea>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Тип</mat-label>
-      <mat-select formControlName="typeId">
+      <mat-select formControlName="typeId" required>
         <mat-option *ngFor="let type of bookTypes$ | async" value="{{type.id}}">
           {{type.name}}
         </mat-option>
@@ -58,7 +58,7 @@
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Обложка</mat-label>
-      <mat-select formControlName="coverArtId">
+      <mat-select formControlName="coverArtId" required>
         <mat-option *ngFor="let coverArt of coverArts$ | async" value="{{coverArt.id}}">
           {{coverArt.name}}
         </mat-option>
@@ -67,7 +67,7 @@
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Возрастное ограничение</mat-label>
-      <mat-select formControlName="ageLimitId">
+      <mat-select formControlName="ageLimitId" required>
         <mat-option *ngFor="let ageLimit of ageLimits$ | async" value="{{ageLimit.id}}">
           {{ageLimit.name}}
         </mat-option>
@@ -76,32 +76,38 @@
     <br>
     <mat-form-field  appearance="fill">
       <mat-label>Год выпуска</mat-label>
-      <input formControlName="releaseYear" type="number" matInput>
+      <input formControlName="releaseYear" type="number" matInput required>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Количество страниц</mat-label>
-      <input type="number" formControlName="pageQuantity" matInput>
+      <input type="number" formControlName="pageQuantity" matInput required>
     </mat-form-field>
     <br>
     <mat-form-field  appearance="fill">
       <mat-label>ISBN</mat-label>
-      <input formControlName="ISBN" matInput>
+      <input formControlName="ISBN" matInput required>
+      <mat-error *ngIf="bookForm.controls.ISBN.errors?.isbnValidator">
+        {{bookForm.controls.ISBN.errors?.isbnValidator}}
+      </mat-error>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Цена</mat-label>
-      <input formControlName="cost" type="number" matInput>
+      <input formControlName="cost" type="number" matInput required>
     </mat-form-field>
     <br>
     <mat-form-field  appearance="fill">
       <mat-label>Количество</mat-label>
-      <input formControlName="quantity" type="number" matInput>
+      <input formControlName="quantity" type="number" matInput required>
     </mat-form-field>
     <br>
     <mat-form-field  appearance="fill">
       <mat-label>Формат (ДxШxВ)</mat-label>
-      <input formControlName="bookFormat" matInput>
+      <input formControlName="bookFormat" matInput required>
+      <mat-error *ngIf="bookForm.controls.bookFormat.errors?.bookFormatValidator">
+        {{bookForm.controls.bookFormat.errors?.bookFormatValidator}}
+      </mat-error>
     </mat-form-field>
     <br>
     <button [disabled]="!bookForm.valid" type="submit">Подтвердить</button>
