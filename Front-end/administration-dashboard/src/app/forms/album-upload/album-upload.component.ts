@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
 
 import { combineLatest, merge, of, Subscription } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, startWith, switchMap } from 'rxjs/operators';
 
 import { Album } from '../../core/interfaces/album';
 import { ImageConverterService } from '../../core/services/image-converter.service';
@@ -15,7 +15,7 @@ import { ImageConverterService } from '../../core/services/image-converter.servi
 export class AlbumUploadComponent implements OnInit, OnDestroy {
 
   @Input()
-  public imagesControl: AbstractControl = new FormControl();
+  public albumControl: AbstractControl = new FormControl();
 
   public titleImageNameControl = new FormControl('');
 
@@ -25,9 +25,10 @@ export class AlbumUploadComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     const sub = this.titleImageNameControl.valueChanges.pipe(
-      map(_ => this.imagesControl.setValue({
+      startWith(this.titleImageNameControl.value as string),
+      map(_ => this.albumControl.setValue({
+        ...this.albumControl.value,
         titleImageName: this.titleImageNameControl.value,
-        ...this.imagesControl.value,
       })),
     ).subscribe();
 
@@ -42,15 +43,23 @@ export class AlbumUploadComponent implements OnInit, OnDestroy {
     const target = event.target as HTMLInputElement;
     const files: File[] = Array.prototype.slice.call(target.files);
 
-    const sub = of(files).pipe(
-      map(filesData => filesData.map(file => this.imageConverterService.fileToImage(file))),
-      switchMap(filesData => combineLatest(filesData)),
-      map(filesData => this.imagesControl.setValue({
-        images: filesData,
-      } as Album)),
-    )
-      .subscribe();
+    if (!files.length) {
+      this.albumControl.setValue({
+        ...this.albumControl.value,
+        images: [],
+      } as Album);
+    } else {
+      const sub = of(files).pipe(
+        map(filesData => filesData.map(file => this.imageConverterService.fileToImage(file))),
+        switchMap(filesData => combineLatest(filesData)),
+        map(filesData => this.albumControl.setValue({
+          ...this.albumControl.value,
+          images: filesData,
+        } as Album)),
+      )
+        .subscribe();
 
-    this.subscriptions.add(sub);
+      this.subscriptions.add(sub);
+    }
   }
 }

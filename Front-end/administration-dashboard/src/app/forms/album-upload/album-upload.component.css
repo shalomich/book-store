@@ -1,0 +1,5 @@
+.album {
+  display: flex;
+  border: 0.1em solid gray;
+  padding: 0.4em;
+}

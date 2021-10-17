@@ -11,6 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { MatIconModule } from '@angular/material/icon';
 
+import { Injector } from '@angular/core';
+
 import { AppComponent } from './app.component';
 import { ProductTypePageComponent } from './product-type-page/product-type-page.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -20,6 +22,9 @@ import { CoreModule } from './core/core.module';
 import { RelatedEntityPageComponent } from './related-entity-page/related-entity-page.component';
 import { RelatedEntityListItemComponent } from './related-entity-page/related-entity-list-item/related-entity-list-item.component';
 import { FormModule } from './forms/form.module';
+
+
+export let InjectorInstance: Injector;
 
 @NgModule({
   declarations: [
@@ -43,4 +48,8 @@ import { FormModule } from './forms/form.module';
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {
+  public constructor(private injector: Injector) {
+    InjectorInstance = this.injector;
+  }
+}
