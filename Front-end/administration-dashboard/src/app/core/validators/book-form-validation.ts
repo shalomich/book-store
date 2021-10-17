@@ -4,7 +4,13 @@ import { HttpClient } from '@angular/common/http';
 
 import { map } from 'rxjs/operators';
 
-import { API_FORM_ENTITY_URI, MIN_IMAGE_HEIGHT, MIN_IMAGE_WIDTH } from '../utils/values';
+import {
+  API_FORM_ENTITY_URI, BOOK_FORMAT_ERROR,
+  BOOK_FORMAT_REGULAR_EXPRESSION, BOOK_IMAGE_SIZE_ERROR, BOOK_IMAGES_AMOUNT_ERROR, ISBN_EXISTS_ERROR, ISBN_FORMAT_ERROR,
+  ISBN_REGULAR_EXPRESSION, MAX_IMAGES_COUNT,
+  MIN_IMAGE_HEIGHT,
+  MIN_IMAGE_WIDTH, MIN_IMAGES_COUNT, TITLE_IMAGE_NAME_NOT_EXIST_ERROR
+} from '../utils/values';
 import { InjectorInstance } from '../../app.module';
 import { Album } from '../interfaces/album';
 
@@ -20,17 +26,17 @@ export class BookFormValidation {
           return of(null);
         }
       }
-      if (!control.value.match('^978-5-\\d{6}-\\d{2}-\\d{1}$')) {
-        return of({ isbnValidator: 'Incorrect ISBN format!' });
+      if (!control.value.match(ISBN_REGULAR_EXPRESSION)) {
+        return of({ isbnValidator: ISBN_FORMAT_ERROR });
       }
 
       const httpClient = InjectorInstance.get<HttpClient>(HttpClient);
 
-      return httpClient.get(`${API_FORM_ENTITY_URI}/book/isbn-existed?isbn=${control.value}`)
+      return httpClient.get(`${API_FORM_ENTITY_URI}book/isbn-existed?isbn=${control.value}`)
         .pipe(
           map(response => {
             if (response) {
-              return of({ isbnValidator: 'Book with such ISBN already exists!' });
+              return of({ isbnValidator: ISBN_EXISTS_ERROR });
             }
             return null;
           }),
@@ -40,8 +46,8 @@ export class BookFormValidation {
 
   public static isBookFormatValid(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (!control.value.match('^[1-9]\\d{1}x[1-9]\\d{1}x[1-9]$') && control.value) {
-        return { bookFormatValidator: 'Incorrect book format!' };
+      if (!control.value.match(BOOK_FORMAT_REGULAR_EXPRESSION) && control.value) {
+        return { bookFormatValidator: BOOK_FORMAT_ERROR };
       }
 
       return null;
@@ -52,12 +58,12 @@ export class BookFormValidation {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value as Album;
 
-      if (value.images.length <= 0 || value.images.length > 5) {
-        return { imagesValidator: 'Images amount should be from 1 to 5!' };
+      if (value.images.length <= MIN_IMAGES_COUNT || value.images.length > MAX_IMAGES_COUNT) {
+        return { imagesValidator: BOOK_IMAGES_AMOUNT_ERROR };
       }
 
       if (value.images.find(image => (image.height < MIN_IMAGE_HEIGHT) || (image.width < MIN_IMAGE_WIDTH))) {
-        return { imagesValidator: 'Minimum image size should be 600x800!' };
+        return { imagesValidator: BOOK_IMAGE_SIZE_ERROR };
       }
 
       return null;
@@ -68,7 +74,7 @@ export class BookFormValidation {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value as Album;
       if (!value.images.find(image => image.name === value.titleImageName)) {
-        return { titleImageNameValidator: 'Image with such name was not selected!' };
+        return { titleImageNameValidator: TITLE_IMAGE_NAME_NOT_EXIST_ERROR };
       }
 
       return null;
