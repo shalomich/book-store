@@ -14,5 +14,8 @@ export const ISBN_FORMAT_ERROR = 'Некорректный формат ISBN!';
 export const ISBN_EXISTS_ERROR = 'Книга с таким ISBN уже существует!';
 export const BOOK_IMAGES_AMOUNT_ERROR = 'Количество фотографий должно быть от 1 до 5!';
 export const BOOK_IMAGE_SIZE_ERROR = 'Минимальный размер изображения - 600x800!';
-export const TITLE_IMAGE_NAME_NOT_EXIST_ERROR = 'Изображение с таким именем не выбрано!';
+export const TITLE_IMAGE_NAME_NOT_EXIST_ERROR = 'Изображение с таким названием не выбрано!';
+export const MIN_COST = 100;
+export const MIN_QUANTITY = 1;
+export const MIN_RELEASE_YEAR = 2000;
 

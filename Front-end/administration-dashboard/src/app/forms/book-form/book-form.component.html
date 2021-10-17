@@ -5,11 +5,11 @@
   <h3>Форма книги</h3>
   <form (submit)="handleFormSubmit()" [formGroup]="bookForm">
     <app-file-upload [albumControl]="bookForm.controls.album"></app-file-upload>
-    <mat-error *ngIf="this.bookForm.controls.album.errors?.titleImageNameValidator && this.bookForm.controls.album.value.titleImageName">
-      {{this.bookForm.controls.album.errors?.titleImageNameValidator}}
-    </mat-error>
     <mat-error *ngIf="this.bookForm.controls.album.errors?.imagesValidator">
       {{this.bookForm.controls.album.errors?.imagesValidator}}
+    </mat-error>
+    <mat-error *ngIf="this.bookForm.controls.album.errors?.titleImageNameValidator && this.bookForm.controls.album.value.titleImageName">
+      {{this.bookForm.controls.album.errors?.titleImageNameValidator}}
     </mat-error>
     <mat-form-field appearance="fill">
       <mat-label>Название</mat-label>
@@ -82,7 +82,7 @@
     <br>
     <mat-form-field  appearance="fill">
       <mat-label>Год выпуска</mat-label>
-      <input formControlName="releaseYear" type="number" matInput required>
+      <input placeholder="Не ранее 2000г." formControlName="releaseYear" type="number" matInput required>
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
@@ -92,7 +92,7 @@
     <br>
     <mat-form-field  appearance="fill">
       <mat-label>ISBN</mat-label>
-      <input formControlName="ISBN" matInput required>
+      <input placeholder="978-5-XXXXXX-XX-X" formControlName="ISBN" matInput required>
       <mat-error *ngIf="bookForm.controls.ISBN.errors?.isbnValidator">
         {{bookForm.controls.ISBN.errors?.isbnValidator}}
       </mat-error>
@@ -100,7 +100,7 @@
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Цена</mat-label>
-      <input formControlName="cost" type="number" matInput required>
+      <input placeholder="Не менее 100" formControlName="cost" type="number" matInput required>
     </mat-form-field>
     <br>
     <mat-form-field  appearance="fill">
@@ -110,7 +110,7 @@
     <br>
     <mat-form-field  appearance="fill">
       <mat-label>Формат (ДxШxВ)</mat-label>
-      <input formControlName="bookFormat" matInput required>
+      <input placeholder="[10-99]x[10-99]x[1-9]" formControlName="bookFormat" matInput required>
       <mat-error *ngIf="bookForm.controls.bookFormat.errors?.bookFormatValidator">
         {{bookForm.controls.bookFormat.errors?.bookFormatValidator}}
       </mat-error>

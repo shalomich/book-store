@@ -36,7 +36,7 @@ export class BookFormValidation {
         .pipe(
           map(response => {
             if (response) {
-              return of({ isbnValidator: ISBN_EXISTS_ERROR });
+              return { isbnValidator: ISBN_EXISTS_ERROR };
             }
             return null;
           }),
