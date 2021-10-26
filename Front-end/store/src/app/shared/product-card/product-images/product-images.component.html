@@ -1,1 +1,8 @@
-<p>product-images works!</p>
+<div class="images-block">
+  <div class="not-title-images">
+    <img alt="Изображение" *ngFor="let image of notTitleImages" [src]="image | base64ToImgSrc" />
+  </div>
+  <div class="title-image">
+    <img [src]="titleImage | base64ToImgSrc" alt="Титульное изображение" />
+  </div>
+</div>

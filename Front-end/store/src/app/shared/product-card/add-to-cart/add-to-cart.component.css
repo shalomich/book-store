@@ -1,0 +1,36 @@
+.add-to-cart-block {
+  position: absolute;
+  height: 7em;
+  left: 66.5vw;
+  top: 66.5vh;
+  border: 0.2em solid gray;
+  border-radius: 0.6em;
+  padding: 1em;
+}
+
+.add-to-cart {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2em;
+}
+
+.add-to-cart span {
+  height: min-content;
+  font-size: 1.4em;
+  margin-right: 1em;
+}
+
+.add-to-cart button {
+  height: min-content;
+  font-size: 1em;
+  border: 0.1em solid gray;
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+.add-to-cart button:hover {
+  background-color: gray;
+  color: white;
+}

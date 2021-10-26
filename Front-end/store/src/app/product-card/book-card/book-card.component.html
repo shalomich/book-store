@@ -1,5 +1,5 @@
 <div *ngIf="(book$ | async) as book" class="book-card">
-  <app-product-images></app-product-images>
+  <app-product-images [titleImage]="book.titleImage" [notTitleImages]="book.notTitleImages"></app-product-images>
   <div class="info-block">
     <div class="info-field">
       <div class="field-name">ID Товара</div>
@@ -52,4 +52,5 @@
     </mat-expansion-panel-header>
     <p>{{book.description}}</p>
   </mat-expansion-panel>
+  <app-add-to-cart [cost]="book.cost"></app-add-to-cart>
 </div>
