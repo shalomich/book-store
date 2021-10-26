@@ -25,6 +25,7 @@ import { FormModule } from './forms/form.module';
 
 export let InjectorInstance: Injector;
 import {RangeFilterComponent} from "./shared/range-filter/range-filter.component";
+import { PlentyFilterComponent } from './shared/plenty-filter/plenty-filter.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,9 @@ import {RangeFilterComponent} from "./shared/range-filter/range-filter.component
     ProductListItemComponent,
     RelatedEntityPageComponent,
     RelatedEntityListItemComponent,
-    RangeFilterComponent
+    RangeFilterComponent,
+    RangeFilterComponent,
+    PlentyFilterComponent
   ],
   imports: [
     BrowserModule,
