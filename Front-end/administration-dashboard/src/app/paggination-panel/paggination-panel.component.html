@@ -1,1 +1,22 @@
-<div id="buttons-container"></div>
+<div [ngSwitch]="state">
+  <div *ngSwitchCase="'FULL'">
+    <button *ngFor="let number of pageNumbers" [value]="number" (click)="onPageButtonClicked($event)" [disabled]="number == pageNumber">{{number}}</button>
+  </div>
+  <div *ngSwitchCase="'LEFT'">
+    <button *ngFor="let number of pageNumbers" [value]="number" (click)="onPageButtonClicked($event)" [disabled]="number == pageNumber">{{number}}</button>
+    <button disabled>...</button>
+    <button [value]="pageCount" (click)="onPageButtonClicked($event)">{{pageCount}}</button>
+  </div>
+  <div *ngSwitchCase="'CENTRE'">
+    <button [value]="1" (click)="onPageButtonClicked($event)">1</button>
+    <button disabled>...</button>
+    <button *ngFor="let number of pageNumbers" [value]="number" (click)="onPageButtonClicked($event)" [disabled]="number == pageNumber">{{number}}</button>
+    <button disabled>...</button>
+    <button [value]="pageCount" (click)="onPageButtonClicked($event)">{{pageCount}}</button>
+  </div>
+  <div *ngSwitchCase="'RIGHT'">
+    <button [value]="1" (click)="onPageButtonClicked($event)">1</button>
+    <button disabled>...</button>
+    <button *ngFor="let number of pageNumbers" [value]="number" (click)="onPageButtonClicked($event)" [disabled]="number == pageNumber">{{number}}</button>
+  </div>
+</div>
