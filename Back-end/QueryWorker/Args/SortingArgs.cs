@@ -12,11 +12,5 @@ namespace QueryWorker.Args
         [Required]
         public string PropertyName { init; get; }
         public bool IsAscending { init; get; } = true;
-
-        public override string ToString()
-        {
-            return $"Sorting(propertyName: {PropertyName}," +
-                $"isAscending: {IsAscending})";
-        }
     }
 }

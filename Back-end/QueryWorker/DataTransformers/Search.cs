@@ -8,39 +8,35 @@ using System.Text;
 using System.Threading.Tasks;
 using QueryWorker.DataTransformers.Filters;
 using QueryWorker.DataTransformers;
+using QueryWorker.DataTransformers.Filters.ExpressionCreator.String;
 
 namespace QueryWorker.DataTransformers
 {
-    public class Search<T> : DataTransformer<T> where T : class
+    internal sealed record Search<T> : IDataTransformer<T> where T : class
     {
         private const string LeftBorder = "(";
         private const string RightBorder = ")";
         private Expression<Func<T, string>> PropertySelector { init; get; }
-        public string ComparedValue { set; get; }
-        public int SearchDepth { set; get; }
+        public string ComparedValue { init; get; }
+        public int SearchDepth { init; get; }
 
-        public Search()
-        {
-
-        }
         public Search(Expression<Func<T, string>> propertySelector)
         {
             PropertySelector = propertySelector ?? throw new ArgumentNullException(nameof(propertySelector));
         }
 
-        public override IQueryable<T> Transform(IQueryable<T> request)
-        {
-            
+        public IQueryable<T> Transform(IQueryable<T> query)
+        {      
             if (ComparedValue.StartsWith(LeftBorder) && ComparedValue.EndsWith(RightBorder)) {
                 
-                string comparedValue = ComparedValue.Replace(LeftBorder, string.Empty)
+                string parsedValue = ComparedValue.Replace(LeftBorder, string.Empty)
                     .Replace(RightBorder, string.Empty);
 
-                return FilterRequest(request, comparedValue, FilterСomparison.Equal);
+                return CreateEqualFilter(parsedValue).Transform(query);
             }
 
             Func<string, IQueryable<T>> containsComparedValue = comparedValue
-                 => FilterRequest(request, comparedValue, FilterСomparison.EqualOrMore);
+                 => CreateContainsFilter(comparedValue).Transform(query);
 
             var buildedRequest = containsComparedValue(ComparedValue);
             
@@ -65,12 +61,20 @@ namespace QueryWorker.DataTransformers
 
             return buildedRequest;
         }
-
-        private IQueryable<T> FilterRequest(IQueryable<T> request, string comparedValue, FilterСomparison comparison)
+        private Filter<T> CreateContainsFilter(string comparedValue)
         {
-            var filter = new StringFilter<T>(PropertySelector) { ComparedValue = comparedValue, Comparison = comparison};
+            return new Filter<T>(new StringContainsExpressionCreator<T>(PropertySelector)) 
+            { 
+                ComparedValue = comparedValue 
+            };
+        }
 
-            return filter.Transform(request);
+        private Filter<T> CreateEqualFilter(string comparedValue)
+        {
+            return new Filter<T>(new StringEqualExpressionCreator<T>(PropertySelector))
+            {
+                ComparedValue = comparedValue
+            };
         }
     }
 }

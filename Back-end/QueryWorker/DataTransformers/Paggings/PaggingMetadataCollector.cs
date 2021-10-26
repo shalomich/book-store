@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using QueryWorker.Args;
 using QueryWorker.Configurations;
-using QueryWorker.TransformerBuilders;
 using System;
 using System.Collections.Generic;
 using System.Linq;

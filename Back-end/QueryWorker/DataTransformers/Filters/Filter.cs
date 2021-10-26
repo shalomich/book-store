@@ -5,34 +5,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-
+using QueryWorker.DataTransformers.Filters.ExpressionCreator;
 
 namespace QueryWorker.DataTransformers.Filters
 {
     
-    internal abstract class Filter<TClass,TProperty> : DataTransformer<TClass> where TClass : class
+    internal sealed record Filter<T> : IDataTransformer<T> where T : class
     {
-        public Expression<Func<TClass, TProperty>> PropertySelector { init; get; }
-        public TProperty ComparedValue { set; get; }
-        public virtual FilterСomparison Comparison { set; get; } = FilterСomparison.Equal;
+        private IFilterExpressionCreator<T> ExpressionCreator { get; }
+        public string ComparedValue { init; get; }
 
-        protected Filter()
+        public Filter(IFilterExpressionCreator<T> expressionBuilder)
         {
-
-        }
-        protected Filter(Expression<Func<TClass, TProperty>> propertySelector)
-        {
-            PropertySelector = propertySelector ?? throw new ArgumentNullException(nameof(propertySelector));
+            ExpressionCreator = expressionBuilder ?? throw new ArgumentNullException(nameof(expressionBuilder));
         }
 
-        public override IQueryable<TClass> Transform(IQueryable<TClass> query)
+        public IQueryable<T> Transform(IQueryable<T> query)
         {           
-            var comparer = ChooseComparer(ComparedValue, Comparison);
-            
-            Expression<Func<TClass, bool>> filterExpression = PropertySelector.Compose(comparer);
-
-            return query.Where(filterExpression);
+            return query.Where(ExpressionCreator.CreateFiltering(ComparedValue));
         }
-        protected abstract Expression<Func<TProperty, bool>> ChooseComparer(TProperty comparedValue, FilterСomparison comparison);
     }
 }

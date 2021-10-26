@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using QueryWorker.Configurations;
 using QueryWorker.DataTransformers.Paggings;
-using QueryWorker.TransformerBuilders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +16,6 @@ namespace QueryWorker.Extensions
         {
             services.AddSingleton(new ConfigurationFinder(currentAssembly));
             services.AddScoped(typeof(DataTransformerBuildFacade<>));
-
-            services.AddScoped(typeof(FilterBuilder<>));
-            services.AddScoped(typeof(SortingBuilder<>));
-            services.AddScoped(typeof(SearchBuilder<>));
-            services.AddScoped(typeof(PaggingBuilder<>));
 
             services.AddScoped(typeof(PaggingMetadataCollector<>));
 

@@ -8,48 +8,47 @@ using Microsoft.AspNetCore.Mvc;
 using QueryWorker.Args;
 using QueryWorker.Configurations;
 using QueryWorker.DataTransformers;
-using QueryWorker.TransformerBuilders;
+using QueryWorker.DataTransformers.Filters;
+using QueryWorker.DataTransformers.Paggings;
 
 namespace QueryWorker
 {
     public class DataTransformerBuildFacade<T> where T : class
     {
-        private FilterBuilder<T> FilterBuilder { get; }
-        private SortingBuilder<T> SortingBuilder { get; }
-        private SearchBuilder<T> SearchBuilder { get; }
-        private PaggingBuilder<T> PaggingBuilder { get; }
-
         private QueryConfiguration<T> Configuration { get; }
-
-        public DataTransformerBuildFacade(FilterBuilder<T> filterBuilder, SortingBuilder<T> sortingBuilder, 
-            SearchBuilder<T> searchBuilder, PaggingBuilder<T> paggingBuilder, ConfigurationFinder configurationFinder)
+        public DataTransformerBuildFacade(ConfigurationFinder configurationFinder)
         {
-            FilterBuilder = filterBuilder ?? throw new ArgumentNullException(nameof(filterBuilder));
-            SortingBuilder = sortingBuilder ?? throw new ArgumentNullException(nameof(sortingBuilder));
-            SearchBuilder = searchBuilder ?? throw new ArgumentNullException(nameof(searchBuilder));
-            PaggingBuilder = paggingBuilder ?? throw new ArgumentNullException(nameof(paggingBuilder));
-            
             Configuration = configurationFinder.Find<T>();
         }
 
-        public DataTransformer<T> BuildFilter(FilterArgs args)
+        public IDataTransformer<T> BuildFilter(FilterArgs args)
         {
-            return FilterBuilder.Build(args, Configuration);
+            Filter<T> filter = Configuration.GetFilter(args.PropertyName, args.Comparison);
+
+            return filter with { ComparedValue = args.ComparedValue};
         }
 
-        public DataTransformer<T> BuildSorting(SortingArgs args)
+        public IDataTransformer<T> BuildSorting(SortingArgs args)
         {
-            return SortingBuilder.Build(args, Configuration);
+            Sorting<T> sorting = Configuration.GetSorting(args.PropertyName);
+
+            return sorting with { IsAscending = args.IsAscending };
         }
 
-        public DataTransformer<T> BuildSearch(SearchArgs args)
+        public IDataTransformer<T> BuildSearch(SearchArgs args)
         {
-            return SearchBuilder.Build(args, Configuration);
+            Search<T> search = Configuration.GetSearch(args.PropertyName);
+
+            return search with { ComparedValue = args.ComparedValue, SearchDepth = args.SearchDepth };
         }
 
-        public DataTransformer<T> BuildPagging(PaggingArgs args)
+        public IDataTransformer<T> BuildPagging(PaggingArgs args)
         {
-            return PaggingBuilder.Build(args, Configuration);
+            return new Pagging<T>
+            {
+                PageSize = args.PageSize,
+                PageNumber = args.PageNumber
+            };
         }
     }
 }

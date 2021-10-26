@@ -9,9 +9,9 @@ namespace BookStore.Application.Services.DbQueryBuilders.DbQueryBuildItems
 {
     public class DataTransformerBuildItem<T> : IQueryBuildItem<T> where T : class, IFormEntity
     {
-        private DataTransformer<T> _dataTransformer;
+        private IDataTransformer<T> _dataTransformer;
 
-        public DataTransformerBuildItem(DataTransformer<T> dataTransformer)
+        public DataTransformerBuildItem(IDataTransformer<T> dataTransformer)
         {
             _dataTransformer = dataTransformer ?? throw new ArgumentNullException(nameof(dataTransformer));
         }

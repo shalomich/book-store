@@ -22,12 +22,12 @@ namespace BookStore.Application.Services.DbQueryBuilders
 
         public DbFormEntityQueryBuilder<T> AddDataTransformation(QueryTransformArgs args)
         {
-            if (args == null)
+            if (args == null || args.IsQueryEmpty)
                 return this;
 
             foreach (var filterArgs in args.Filters.EmptyIfNull())
                 AddBuildItem(CreateDataTransformerBuildItem(() => BuildFacade.BuildFilter(filterArgs)));
-            
+
             foreach (var sortingArgs in args.Sortings.EmptyIfNull())
                 AddBuildItem(CreateDataTransformerBuildItem(() => BuildFacade.BuildSorting(sortingArgs)));
 
@@ -44,7 +44,7 @@ namespace BookStore.Application.Services.DbQueryBuilders
             return this;
         }
 
-        private DataTransformerBuildItem<T> CreateDataTransformerBuildItem(Func<DataTransformer<T>> transformerBuild) 
+        private DataTransformerBuildItem<T> CreateDataTransformerBuildItem(Func<IDataTransformer<T>> transformerBuild) 
         {
             try
             {
@@ -54,8 +54,6 @@ namespace BookStore.Application.Services.DbQueryBuilders
             {
                 return null;
             }
-        } 
-
-
+        }
     }
 }

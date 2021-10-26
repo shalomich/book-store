@@ -8,32 +8,21 @@ using System.Threading.Tasks;
 namespace QueryWorker.DataTransformers.Paggings
 {
     
-    internal class Pagging<T> : DataTransformer<T> where T : class
+    internal sealed record Pagging<T> : IDataTransformer<T> where T : class
     {
         public const int MinPageNumber = 1;
-        public const int FixedMaxPageSize = 60;
 
-        private readonly int _maxPageSize;
+        public const int MaxPageSize = 60;
 
         private int _pageSize = int.MaxValue;
         private int _pageNumber = MinPageNumber;
-
-        public Pagging()
-        {
-            MaxPageSize = FixedMaxPageSize;
-        }
-
-        public Pagging(int maxPageSize)
-        {
-            MaxPageSize = maxPageSize;
-        }
 
         public int PageSize
         {
             init
             {
-                if (value <= 0 || value > _maxPageSize)
-                    _pageSize = _maxPageSize;
+                if (value <= 0 || value > MaxPageSize)
+                    _pageSize = MaxPageSize;
                 else _pageSize = value;
             }
             get
@@ -57,31 +46,13 @@ namespace QueryWorker.DataTransformers.Paggings
             }
         }
 
-        public int MaxPageSize
-        {
-            init
-            {
-                if (value <= 0)
-                    throw new ArgumentException();
-
-                if (value > FixedMaxPageSize)
-                    _maxPageSize = FixedMaxPageSize;
-                else
-                    _maxPageSize = value;
-            }
-            get
-            {
-                return _pageSize;
-            }
-        }
-
         public void Deconstruct(out int pageSize, out int pageNumber)
         {
             pageSize = PageSize;
             pageNumber = PageNumber;
         }
        
-        public override IQueryable<T> Transform(IQueryable<T> data)
+        public IQueryable<T> Transform(IQueryable<T> data)
         {
             return data.Skip(PageSize * (PageNumber - 1)).Take(PageSize);
         }
