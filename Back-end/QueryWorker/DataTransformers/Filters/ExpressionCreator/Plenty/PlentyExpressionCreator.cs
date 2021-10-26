@@ -22,7 +22,7 @@ namespace QueryWorker.DataTransformers.Filters.ExpressionCreator.Plenty
                         .Split(',', StringSplitOptions.None)
                         .Select(str => int.Parse(str));
                         
-            Expression<Func<IEnumerable<int>,bool>> comparer = value => value.Intersect(parsedValues).Count() != 0;
+            Expression<Func<IEnumerable<int>,bool>> comparer = value => value.Any(number => parsedValues.Contains(number));
 
             return PropertySelector.Compose(comparer);
         }
