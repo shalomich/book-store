@@ -1,0 +1,34 @@
+.book-card {
+  display: flex;
+  margin: 10em auto 0 auto;
+  width: fit-content;
+}
+
+.info-block {
+  width: fit-content;
+}
+
+.info-field {
+  display: flex;
+  margin-bottom: 1em;
+}
+
+.field-name {
+  color: gray;
+  width: 10em;
+}
+
+.field-value {
+  width: 15em;
+}
+
+
+.field-name, .field-value {
+  font-size: 1em;
+}
+
+.description {
+  height: fit-content;
+  width: 30em;
+  margin-left: 0;
+}
