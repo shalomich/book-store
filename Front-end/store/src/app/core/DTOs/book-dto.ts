@@ -11,7 +11,7 @@ export interface BookDto {
 
   readonly cost: string;
 
-  readonly ISBN: string;
+  readonly isbn: string;
 
   readonly authorName: string;
 

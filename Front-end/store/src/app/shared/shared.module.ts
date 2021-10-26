@@ -6,12 +6,15 @@ import { AddToCartComponent } from './product-card/add-to-cart/add-to-cart.compo
 
 
 @NgModule({
-  declarations: [
-    ProductImagesComponent,
-    AddToCartComponent
-  ],
-  imports: [
-    CommonModule
-  ]
+    declarations: [
+        ProductImagesComponent,
+        AddToCartComponent
+    ],
+    exports: [
+        ProductImagesComponent
+    ],
+    imports: [
+        CommonModule
+    ]
 })
 export class SharedModule { }

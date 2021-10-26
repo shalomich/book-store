@@ -1,1 +1,55 @@
-<p>book-card works!</p>
+<div *ngIf="(book$ | async) as book" class="book-card">
+  <app-product-images></app-product-images>
+  <div class="info-block">
+    <div class="info-field">
+      <div class="field-name">ID Товара</div>
+      <div class="field-value">{{book.id}}</div>
+    </div>
+    <div class="info-field">
+      <div class="field-name">Автор</div>
+      <div class="field-value">{{book.authorName}}</div>
+    </div>
+    <div class="info-field">
+      <div class="field-name">Издательство</div>
+      <div class="field-value">{{book.publisherName}}</div>
+    </div>
+    <div class="info-field">
+      <div class="field-name">Год издания</div>
+      <div class="field-value">{{book.releaseYear}}</div>
+    </div>
+    <div class="info-field">
+      <div class="field-name">ISBN</div>
+      <div class="field-value">{{book.isbn}}</div>
+    </div>
+    <div class="info-field">
+      <div class="field-name">Кол-во страниц</div>
+      <div class="field-value">{{book.pageQuantity}}</div>
+    </div>
+    <div class="info-field">
+      <div class="field-name">Тип</div>
+      <div class="field-value">{{book.type}}</div>
+    </div>
+    <div class="info-field">
+      <div class="field-name">Жанры</div>
+      <div class="field-value">{{book.genres.join(', ')}}</div>
+    </div>
+    <div class="info-field">
+      <div class="field-name">Тип обложки</div>
+      <div class="field-value">{{book.coverArt}}</div>
+    </div>
+    <div class="info-field">
+      <div class="field-name">Возрастное ограничение</div>
+      <div class="field-value">{{book.ageLimit}}</div>
+    </div>
+    <div class="info-field">
+      <div class="field-name">Формат</div>
+      <div class="field-value">{{book.bookFormat}}</div>
+    </div>
+  </div>
+  <mat-expansion-panel expanded class="description">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Описание</mat-panel-title>
+    </mat-expansion-panel-header>
+    <p>{{book.description}}</p>
+  </mat-expansion-panel>
+</div>

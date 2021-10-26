@@ -29,7 +29,7 @@ export class Book {
 
   public pageQuantity: number;
 
-  public ISBN: string;
+  public isbn: string;
 
   public quantity: number;
 
@@ -39,6 +39,7 @@ export class Book {
 
 
   public constructor(book: Book) {
+    this.id = book.id;
     this.name = book.name;
     this.originalName = book.originalName;
     this.description = book.description;
@@ -55,6 +56,6 @@ export class Book {
     this.quantity = book.quantity;
     this.notTitleImages = book.notTitleImages;
     this.titleImage = book.titleImage;
-    this.ISBN = book.ISBN;
+    this.isbn = book.isbn;
   }
 }
