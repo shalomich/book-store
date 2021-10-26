@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {PaggingPanelState} from "../core/enums/pagging-panel-state";
 
 @Component({
   selector: 'paggination-panel',
@@ -7,80 +8,60 @@ import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 export class PagginationPanelComponent implements OnInit {
 
   private readonly maxButtonCount = 9;
-  private readonly maxButtonTogetherCount = 7;
+  private readonly maxButtonTogetherCount = this.maxButtonCount - 2;
 
-  private pageNumber = 1;
+  public readonly pageNumber = 1;
+
+  public state: PaggingPanelState | undefined;
+  public pageNumbers: Array<number> | undefined;
 
   @Input() pageCount = 1;
 
   @Output() pageTurnedOver = new EventEmitter<number>();
 
-  private createPageButton(number: number) {
-    let button = document.createElement('button');
-    button.value = number.toString();
-    button.textContent = number.toString();
-    button.onclick = (event: MouseEvent) => {
-      const nextPageNumber = parseInt((event.target as HTMLButtonElement).value);
-      this.pageTurnedOver.emit(nextPageNumber);
-      this.pageNumber = nextPageNumber;
+  private setState() {
+    const createRange = (first: number, last: number) => {
+      const range: Array<number> = [];
+
+      for (let i = first; i <= last; i++)
+        range.push(i);
+
+      return range;
     };
 
-    if (number == this.pageNumber)
-      button.disabled = true;
-
-    return button;
-  }
-
-  private createPassButton()  {
-    let button = document.createElement('button');
-    button.disabled = true;
-    button.textContent = '...';
-
-    return button;
-  }
-
-  private buildPagginationPanel(): void {
-    const buttonsContainer = document.getElementById('buttons-container')! as HTMLDivElement;
-
-    const addPageButton = (number: number) => buttonsContainer.appendChild(this.createPageButton(number));
-    const addPassButton = () => buttonsContainer.appendChild(this.createPassButton());
-
     if (this.pageCount <= this.maxButtonCount) {
-      for (let i = 1; i <= this.pageCount; i++)
-        addPageButton(i);
-
+      this.state = PaggingPanelState.FULL;
+      this.pageNumbers = createRange(1, this.pageCount);
       return;
     }
 
-    if (this.pageNumber < this.maxButtonTogetherCount) {
-      for (let i = 1; i <= this.maxButtonTogetherCount; i++)
-        addPageButton(i);
+    const leftOrientationExtremeButtonNumber = this.maxButtonTogetherCount;
+    const rightOrientationExtremeButtonNumber = this.pageCount - this.maxButtonTogetherCount + 1;
 
-      addPassButton();
-      addPageButton(this.pageCount);
+    switch (true) {
+      case (this.pageNumber < leftOrientationExtremeButtonNumber):
+        this.state = PaggingPanelState.LEFT;
+        this.pageNumbers = createRange(1, leftOrientationExtremeButtonNumber);
+        break;
+      case (this.pageNumber >= leftOrientationExtremeButtonNumber && this.pageNumber <= rightOrientationExtremeButtonNumber):
+        this.state = PaggingPanelState.CENTRE;
+        const borderDistance = Math.trunc((this.maxButtonTogetherCount - 2) / 2);
+        this.pageNumbers = createRange(this.pageNumber - borderDistance, this.pageNumber + borderDistance);
+        break;
+      case (this.pageNumber > rightOrientationExtremeButtonNumber):
+        this.state = PaggingPanelState.RIGHT;
+        this.pageNumbers = createRange(rightOrientationExtremeButtonNumber, this.pageCount)
+        break;
+      default: throw 'error'
     }
-    else if (this.pageNumber > this.pageCount - this.maxButtonTogetherCount + 1){
-      addPageButton(1);
-      addPassButton();
+  }
 
-      for (let i = this.pageCount - this.maxButtonTogetherCount + 1; i <= this.pageCount; i++)
-        addPageButton(i);
-    }
-    else {
-      addPageButton(1);
-      addPassButton();
-
-      const borderDistance = Math.trunc((this.maxButtonTogetherCount - 2) / 2);
-      for (let i = this.pageNumber - borderDistance; i <= this.pageNumber + borderDistance; i++)
-        addPageButton(i);
-
-      addPassButton();
-      addPageButton(this.pageCount);
-    }
+  public onPageButtonClicked(event: MouseEvent) {
+    const nextPageNumber = parseInt((event.target as HTMLButtonElement).value);
+    this.pageTurnedOver.emit(nextPageNumber);
   }
 
   public ngOnInit(): void {
-    this.buildPagginationPanel();
+    this.setState();
   }
-
 }
