@@ -23,8 +23,8 @@ import { RelatedEntityPageComponent } from './related-entity-page/related-entity
 import { RelatedEntityListItemComponent } from './related-entity-page/related-entity-list-item/related-entity-list-item.component';
 import { FormModule } from './forms/form.module';
 
-
 export let InjectorInstance: Injector;
+import {RangeFilterComponent} from "./shared/range-filter/range-filter.component";
 
 @NgModule({
   declarations: [
@@ -34,6 +34,7 @@ export let InjectorInstance: Injector;
     ProductListItemComponent,
     RelatedEntityPageComponent,
     RelatedEntityListItemComponent,
+    RangeFilterComponent
   ],
   imports: [
     BrowserModule,
