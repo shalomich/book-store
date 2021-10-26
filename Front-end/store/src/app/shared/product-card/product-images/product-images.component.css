@@ -1,0 +1,29 @@
+.images-block {
+  display: flex;
+  height: fit-content;
+  margin-right: 2em;
+}
+
+.not-title-images img {
+  display: block;
+  width: 4em;
+  height: 6em;
+  margin-right: 1em;
+  margin-bottom: 1.3em;
+  border: 0.3em solid gray;
+  background-color: gray;
+}
+
+.title-image {
+  height: min-content;
+  width: min-content;
+  padding: 0;
+}
+
+.title-image img {
+  width: 20em;
+  height: 30em;
+  margin: 0;
+  border: 0.2em solid gray;
+  background-color: gray;
+}
