@@ -1,62 +1,73 @@
-﻿
-using QueryWorker.Extensions;
-using QueryWorker.DataTransformers;
+﻿using QueryWorker.DataTransformers;
 using QueryWorker.DataTransformers.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using AutoMapper;
-using QueryWorker.Args;
-using System.Linq;
-using QueryWorker.DataTransformers.Paggings;
+using QueryWorker.DataTransformers.Filters.ExpressionCreator.Number;
+using QueryWorker.DataTransformers.Filters.ExpressionCreator.String;
+using QueryWorker.DataTransformers.Filters.ExpressionCreator.Plenty;
+using QueryWorker.Extensions;
 
 namespace QueryWorker.Configurations
 {
-    public abstract class QueryConfiguration<TConfigured> where TConfigured : class
+    public abstract class QueryConfiguration<T> where T : class
     {
-        private Pagging<TConfigured> _pagging;
+        private readonly Dictionary<string, Sorting<T>> _sortings = new Dictionary<string, Sorting<T>>();
+        private readonly Dictionary<string, Search<T>> _searches = new Dictionary<string, Search<T>>();
+        private readonly Dictionary<(string, FilterСomparison), Filter<T>> _filters = new Dictionary<(string, FilterСomparison), Filter<T>>();
 
-        private readonly Dictionary<string, DataTransformer<TConfigured>> _sortings = new Dictionary<string, DataTransformer<TConfigured>>();
-        private readonly Dictionary<string, DataTransformer<TConfigured>> _filters = new Dictionary<string, DataTransformer<TConfigured>>();
-        private readonly Dictionary<string, DataTransformer<TConfigured>> _searches = new Dictionary<string, DataTransformer<TConfigured>>();
-
-        internal DataTransformer<TConfigured> GetSorting(string propertyKey) => _sortings[propertyKey];
-        internal DataTransformer<TConfigured> GetFilter(string propertyKey) => _filters[propertyKey];
-        internal DataTransformer<TConfigured> GetSearch(string propertyKey) => _searches[propertyKey];
-        internal DataTransformer<TConfigured> GetPagging() => _pagging ?? new Pagging<TConfigured>();
-
-        protected void CreateSorting(string propertyKey,Expression<Func<TConfigured,object>> propertySelector)
+        internal Sorting<T> GetSorting(string propertyName) => _sortings[propertyName];
+        internal Filter<T> GetFilter(string propertyName, FilterСomparison сomparison) 
+            => _filters[(propertyName, сomparison)];
+        internal Search<T> GetSearch(string propertyName) => _searches[propertyName];
+        
+        protected void CreateSorting(string propertyName,Expression<Func<T,object>> propertySelector)
         {
-            var sorting = new Sorting<TConfigured>(propertySelector);
+            var sorting = new Sorting<T>(propertySelector);
 
-            _sortings.Add(propertyKey.ToLowFirstLetter(), sorting);
+            _sortings.Add(propertyName.ToLowFirstLetter(), sorting);
         }
 
-        protected void CreateFilter(string propertyKey,Expression<Func<TConfigured, string>> propertySelector)
+        protected void CreateRangeFilter(string propertyName,Expression<Func<T, string>> propertySelector)
         {
-            _filters.Add(propertyKey.ToLowFirstLetter(), new StringFilter<TConfigured>(propertySelector));
+            propertyName = propertyName.ToLowFirstLetter();
+
+            _filters.Add(key: (propertyName, FilterСomparison.Equal),
+                value: new Filter<T>(new StringEqualExpressionCreator<T>(propertySelector)));
+            
+            _filters.Add(key: (propertyName, FilterСomparison.EqualOrMore),
+                value: new Filter<T>(new StringContainsExpressionCreator<T>(propertySelector)));
+            
+            _filters.Add(key: (propertyName, FilterСomparison.EqualOrLess),
+                value: new Filter<T>(new StringContainedExpressionCreator<T>(propertySelector)));
         }
 
-        protected void CreateFilter(string propertyKey,Expression<Func<TConfigured, double>> propertySelector)
+        protected void CreateRangeFilter(string propertyName,Expression<Func<T, double>> propertySelector)
         {
-            _filters.Add(propertyKey.ToLowFirstLetter(), new NumberFilter<TConfigured>(propertySelector));
+            propertyName = propertyName.ToLowFirstLetter();
+
+            _filters.Add(key: (propertyName, FilterСomparison.EqualOrLess), 
+                value: new Filter<T>(new NumberEqualOrLessExpressionCreator<T>(propertySelector)));
+
+            _filters.Add(key: (propertyName, FilterСomparison.EqualOrMore),
+                value: new Filter<T>(new NumberEqualOrMoreExpressionCreator<T>(propertySelector)));
         }
 
-        protected void CreateFilter(string propertyKey, Expression<Func<TConfigured, IEnumerable<int>>> propertySelector)
+        protected void CreatePlentyFilter(string propertyName, Expression<Func<T, IEnumerable<int>>> propertySelector)
         {
-            _filters.Add(propertyKey.ToLowFirstLetter(), new CollectionFilter<TConfigured>(propertySelector));
+            _filters.Add(key: (propertyName.ToLowFirstLetter(), FilterСomparison.Equal),
+                value: new Filter<T>(new PlentyExpressionCreator<T>(propertySelector)));
         }
 
-        protected void CreateSearch(string propertyKey, Expression<Func<TConfigured, string>> propertySelector)
+        protected void CreatePlentyFilter(string propertyName, Expression<Func<T, int>> propertySelector)
         {
-            _searches.Add(propertyKey.ToLowFirstLetter(), new Search<TConfigured>(propertySelector));
+            _filters.Add(key: (propertyName.ToLowFirstLetter(), FilterСomparison.Equal),
+                value: new Filter<T>(new NumberPlentyExpressionCreator<T>(propertySelector)));
         }
-
-        protected void CreatePagging(int maxPageNumberForConfigured)
+        protected void CreateSearch(string propertyName, Expression<Func<T, string>> propertySelector)
         {
-            _pagging = new Pagging<TConfigured>(maxPageNumberForConfigured);
+            _searches.Add(propertyName.ToLowFirstLetter(), new Search<T>(propertySelector));
         }
-
-
     }
 }

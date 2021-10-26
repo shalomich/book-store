@@ -15,13 +15,13 @@ namespace BookStore.Application.DbQueryConfigs.DataTransformersConfigs
         {
             CreateSorting(nameof(Book.ReleaseYear), book => book.ReleaseYear);
 
-            CreateFilter(nameof(Book.ReleaseYear), book => book.ReleaseYear);
-            CreateFilter(nameof(Book.AuthorId), book => book.AuthorId);
-            CreateFilter(nameof(Book.PublisherId), book => book.PublisherId);
-            CreateFilter(nameof(Book.TypeId), book => book.TypeId.Value);
-            CreateFilter(nameof(Book.AgeLimitId), book => book.AgeLimitId.Value);
-            CreateFilter(nameof(Book.CoverArtId), book => book.CoverArtId.Value);
-            CreateFilter("genreIds", book => book.GenresBooks
+            CreateRangeFilter("releaseYear", book => book.ReleaseYear);
+            CreatePlentyFilter("authorId", book => book.AuthorId);
+            CreatePlentyFilter("publisherId", book => book.PublisherId);
+            CreatePlentyFilter("typeId", book => book.TypeId.Value);
+            CreatePlentyFilter("ageLimitId", book => book.AgeLimitId.Value);
+            CreatePlentyFilter("coverArtId", book => book.CoverArtId.Value);
+            CreatePlentyFilter("genreIds", book => book.GenresBooks
                 .Select(genre => genre.Genre.Id));
 
             CreateSearch(nameof(Book.AuthorId), entity => entity.Author.Name);

@@ -14,12 +14,5 @@ namespace QueryWorker.Args
         public string ComparedValue { init; get; }
 
         public FilterСomparison Comparison { init; get; } = FilterСomparison.Equal;
-
-        public override string ToString()
-        {
-            return $"Filter(propertyName: {PropertyName}, " +
-                $"comparedValue: {ComparedValue}," +
-                $"comparison: {Comparison})";
-        }
     }
 }
