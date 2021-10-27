@@ -9,9 +9,9 @@ export class ProductsSearchComponent implements OnInit {
 
 
 
-  constructor() { }
+  public constructor() { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
   }
 
 }
