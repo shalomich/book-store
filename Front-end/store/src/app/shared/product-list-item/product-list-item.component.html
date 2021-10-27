@@ -1,0 +1,13 @@
+<div class="item-block">
+  <div class="item">
+    <p>Id: {{item.id}}</p>
+    <p>Название: {{item.name}}</p>
+    <div class="image-block">
+      <img class="title-image" *ngIf="item.titleImage" alt="Title Base64Image" src="{{item.titleImage | base64ToImgSrc}}">
+    </div>
+  </div>
+  <div class="button-block">
+    <hr class="line"/>
+    <button class="add-to-cart-button" mat-button>Добавить в корзину</button>
+  </div>
+</div>
