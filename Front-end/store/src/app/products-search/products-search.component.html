@@ -1,1 +1,5 @@
-<p>products-search works!</p>
+<div class="books-list">
+  <app-product-list-item *ngFor="let book of books$ | async" [item]="book"></app-product-list-item>
+</div>
+
+<pagination-controls id="paginationPanel"></pagination-controls>

@@ -4,18 +4,21 @@ import { ProductImagesComponent } from './product-card/product-images/product-im
 import { AddToCartComponent } from './product-card/add-to-cart/add-to-cart.component';
 import {CoreModule} from '../core/core.module';
 import {MatButtonModule} from '@angular/material/button';
+import {ProductListItemComponent} from './product-list-item/product-list-item.component';
 
 
 
 @NgModule({
     declarations: [
         ProductImagesComponent,
-        AddToCartComponent
+        AddToCartComponent,
+        ProductListItemComponent
     ],
-  exports: [
-    ProductImagesComponent,
-    AddToCartComponent
-  ],
+    exports: [
+        ProductImagesComponent,
+        AddToCartComponent,
+        ProductListItemComponent
+    ],
     imports: [
         CommonModule,
         CoreModule,

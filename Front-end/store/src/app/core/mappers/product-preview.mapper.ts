@@ -11,7 +11,7 @@ import {ProductPreview} from '../models/product-preview';
  * Mapper for film entity.
  */
 @Injectable({ providedIn: 'root' })
-export class BookMapper extends Mapper<ProductPreviewDto, ProductPreview> {
+export class ProductPreviewMapper extends Mapper<ProductPreviewDto, ProductPreview> {
 
   /** @inheritdoc */
   public toDto(data: ProductPreview): ProductPreviewDto {

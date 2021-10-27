@@ -14,20 +14,22 @@ import { ProductCardModule } from './product-card/product-card.module';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { ProductsSearchComponent } from './products-search/products-search.component';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 
 @NgModule({
   declarations: [AppComponent, ProductsSearchComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    ProductCardModule,
-    CommonModule,
-    CoreModule,
-    SharedModule,
-    HttpClientModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        ProductCardModule,
+        CommonModule,
+        CoreModule,
+        SharedModule,
+        HttpClientModule,
+        NgxPaginationModule,
+    ],
   providers: [],
   bootstrap: [AppComponent],
 })
