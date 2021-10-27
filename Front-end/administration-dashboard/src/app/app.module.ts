@@ -26,6 +26,9 @@ import { FormModule } from './forms/form.module';
 export let InjectorInstance: Injector;
 import {RangeFilterComponent} from "./shared/range-filter/range-filter.component";
 import { PlentyFilterComponent } from './shared/plenty-filter/plenty-filter.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -48,6 +51,9 @@ import { PlentyFilterComponent } from './shared/plenty-filter/plenty-filter.comp
     MatExpansionModule,
     MatButtonModule,
     MatIconModule,
+    MatSelectModule,
+    MatInputModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
