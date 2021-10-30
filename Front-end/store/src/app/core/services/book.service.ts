@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { map } from 'rxjs/operators';
+
+import { Observable } from 'rxjs';
 
 import { BookDto } from '../DTOs/book-dto';
 import { PRODUCT_URL } from '../utils/values';
 import { BookMapper } from '../mappers/book.mapper';
-import {Observable} from 'rxjs';
-import {ProductPreview} from '../models/product-preview';
-import {ProductPreviewDto} from '../DTOs/product-preview-dto';
-import {ProductPreviewMapper} from '../mappers/product-preview.mapper';
+import { ProductPreview } from '../models/product-preview';
+import { ProductPreviewDto } from '../DTOs/product-preview-dto';
+import { ProductPreviewMapper } from '../mappers/product-preview.mapper';
 
 @Injectable({
   providedIn: 'root',
@@ -36,5 +37,13 @@ export class BookService {
     return this.http.get<ProductPreviewDto[]>(`${PRODUCT_URL}${this.type}`, { params }).pipe(
       map(books => books.map(book => this.productPreviewMapper.fromDto(book))),
     );
+  }
+
+  public getPageCount(params?: HttpParams): Observable<number> {
+    return this.http.head(`${PRODUCT_URL}${this.type}`, { observe: 'response', params })
+      .pipe(map(response => {
+        console.log(response);
+        return parseInt(<string>response.headers.get('pageCount'))
+      }));
   }
 }
