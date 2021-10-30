@@ -43,7 +43,7 @@ export class BookService {
     return this.http.head(`${PRODUCT_URL}${this.type}`, { observe: 'response', params })
       .pipe(map(response => {
         console.log(response);
-        return parseInt(<string>response.headers.get('pageCount'))
+        return parseInt(<string>response.headers.get('pageCount'));
       }));
   }
 }

@@ -1,7 +1,17 @@
 <div class="books-list">
-  <app-product-list-item *ngFor="let book of (books$ | async)! | paginate: { id: 'paginationPanel', itemsPerPage: 10, currentPage: 1 }"
+  <app-product-list-item *ngFor="let book of (books$ | async)! | paginate: config"
                          [item]="book">
   </app-product-list-item>
 </div>
 
-<pagination-controls id="paginationPanel"></pagination-controls>
+<div class="pagination-block">
+  <pagination-controls class="custom-pagination" id="paginationPanel"
+                       [maxSize]="7"
+                       nextLabel=""
+                       previousLabel=""
+                       [autoHide]="true"
+                       [responsive]="true"
+                       (pageChange)="onPageChanged($event)">
+  </pagination-controls>
+</div>
+
