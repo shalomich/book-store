@@ -34,7 +34,12 @@ namespace BookStore.Application.Services.DbQueryBuilders
             foreach (var searchArgs in args.Searches.EmptyIfNull())
                 AddBuildItem(CreateDataTransformerBuildItem(() => BuildFacade.BuildSearch(searchArgs)));
 
-            AddBuildItem(CreateDataTransformerBuildItem(() => BuildFacade.BuildPagging(args.Pagging)));
+            return this;
+        }
+
+        public DbFormEntityQueryBuilder<T> AddPagging(PaggingArgs args)
+        {
+            AddBuildItem(CreateDataTransformerBuildItem(() => BuildFacade.BuildPagging(args)));
 
             return this;
         }

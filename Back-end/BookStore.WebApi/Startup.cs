@@ -99,7 +99,7 @@ namespace BookStore.WebApi
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .WithExposedHeaders("pageCount"));
+                .WithExposedHeaders("dataCount"));
 
             app.UseEndpoints(endpoints =>
             {

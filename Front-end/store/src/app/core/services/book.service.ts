@@ -19,7 +19,7 @@ export class BookService {
 
   private readonly type = 'book';
 
-  constructor(
+  public constructor(
     private readonly http: HttpClient,
     private readonly bookMapper: BookMapper,
     private readonly productPreviewMapper: ProductPreviewMapper,
@@ -39,11 +39,10 @@ export class BookService {
     );
   }
 
-  public getPageCount(params?: HttpParams): Observable<number> {
+  public getQuantity(params?: HttpParams): Observable<number> {
     return this.http.head(`${PRODUCT_URL}${this.type}`, { observe: 'response', params })
       .pipe(map(response => {
-        console.log(response);
-        return parseInt(<string>response.headers.get('pageCount'));
+        return parseInt(<string>response.headers.get('dataCount'));
       }));
   }
 }

@@ -35,9 +35,11 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ProductCard[]>> GetCards([FromQuery] QueryTransformArgs args)
+        public async Task<ActionResult<ProductCard[]>> GetCards([FromQuery] QueryTransformArgs transformArgs, [FromQuery] PaggingArgs paggingArgs)
         {
-            QueryBuilder.AddDataTransformation(args)
+            QueryBuilder
+                .AddDataTransformation(transformArgs)
+                .AddPagging(paggingArgs)
                 .AddIncludeRequirements(new ProductAlbumIncludeRequirement<T>());
 
             var products = await Mediator.Send(new GetQuery(QueryBuilder));
@@ -64,13 +66,11 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         protected abstract void IncludeRelatedEntities(DbFormEntityQueryBuilder<T> queryBuilder); 
 
         [HttpHead]
-        public async Task GetPaggingMetadata([FromQuery] QueryTransformArgs args)
+        public async Task GetPaggingMetadata([FromQuery] QueryTransformArgs transformArgs, [FromQuery] PaggingArgs paggingArgs)
         {
-            int dataCount = QueryBuilder.Build().Count();
+            QueryBuilder.AddDataTransformation(transformArgs);
 
-            QueryBuilder.AddDataTransformation(args);
-
-            var metadata = await Mediator.Send(new GetMetadataQuery(dataCount, args.Pagging, QueryBuilder));
+            var metadata = await Mediator.Send(new GetMetadataQuery(paggingArgs, QueryBuilder));
             
             HttpContext.Response.Headers.Add(metadata);
         }

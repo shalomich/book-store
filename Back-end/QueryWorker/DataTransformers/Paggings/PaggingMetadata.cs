@@ -6,6 +6,5 @@ using System.Threading.Tasks;
 
 namespace QueryWorker.DataTransformers.Paggings
 {
-    public record PaggingMetadata(int PageSize, int PageNumber, int DataCount, int CurrentPageDataCount, int PageCount, 
-        bool HasNextPage, bool HasPreviousPage);
+    public record PaggingMetadata(int PageSize, int PageNumber, int DataCount, int CurrentPageDataCount, int PageCount);
 }

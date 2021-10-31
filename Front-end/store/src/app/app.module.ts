@@ -10,20 +10,20 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { ProductCardModule } from './product-card/product-card.module';
+import { ProductCardPageModule } from './product-card-page/product-card-page.module';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
-import { ProductsSearchComponent } from './products-search/products-search.component';
+import { BookSearchPageComponent } from './book-search-page/book-search-page.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 
 
 @NgModule({
-  declarations: [AppComponent, ProductsSearchComponent],
+  declarations: [AppComponent, BookSearchPageComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
-        ProductCardModule,
+        ProductCardPageModule,
         CommonModule,
         CoreModule,
         SharedModule,

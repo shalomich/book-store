@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -13,16 +13,16 @@ import { Book } from '../core/models/book';
 import { PaginationOptions } from '../core/interfaces/pagination-options';
 import { ProductParamsBuilderService } from '../core/services/product-params-builder.service';
 import { ProductPreview } from '../core/models/product-preview';
-import { PAGE_NUMBER, PAGE_SIZE } from '../core/utils/constants/pagination';
+import { PAGE_NUMBER, PAGE_SIZE } from '../core/utils/values';
 
 @AutoUnsubscribe()
 @Component({
-  selector: 'app-products-search',
-  templateUrl: './products-search.component.html',
-  styleUrls: ['./products-search.component.css'],
+  selector: 'app-book-search-page',
+  templateUrl: './book-search-page.component.html',
+  styleUrls: ['./book-search-page.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ProductsSearchComponent implements OnInit, OnDestroy {
+export class BookSearchPageComponent implements OnInit, OnDestroy {
 
   public readonly books$: Observable<ProductPreview[]>;
 
@@ -55,10 +55,11 @@ export class ProductsSearchComponent implements OnInit, OnDestroy {
     this.paginationOptions$.asObservable().pipe(
       switchMap(options => {
         this.productParamsBuilderService.setPaging(options);
-        return this.bookService.getPageCount(this.productParamsBuilderService.params);
+        return this.bookService.getQuantity(this.productParamsBuilderService.params);
       }),
-    ).subscribe(pageCount => {
-      this.config.totalItems = pageCount * this.config.itemsPerPage;
+
+    ).subscribe(quantity => {
+      this.config.totalItems = quantity;
     });
   }
 
