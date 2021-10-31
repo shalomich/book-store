@@ -15,11 +15,8 @@ export class ProductParamsBuilderService {
   }
 
   public setPaging(paginationOptions: PaginationOptions): ProductParamsBuilderService {
-    this._params = this._params.set('pagging.pageSize', paginationOptions.pageSize);
-
-    if (paginationOptions.pageNumber) {
-      this._params = this._params.set('pagging.pageNumber', paginationOptions.pageNumber);
-    }
+    this._params = this._params.set('pageSize', paginationOptions.pageSize);
+    this._params = this._params.set('pageNumber', paginationOptions.pageNumber);
 
     return this;
   }

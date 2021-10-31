@@ -24,9 +24,11 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
         {
         }
 
-        public override async Task<ActionResult<TForm[]>> Read([FromQuery] QueryTransformArgs args)
+        public override async Task<ActionResult<TForm[]>> Read([FromQuery] QueryTransformArgs transformArgs, [FromQuery] PaggingArgs paggingArgs)
         {
-            QueryBuilder.AddDataTransformation(args)
+            QueryBuilder
+                .AddDataTransformation(transformArgs)
+                .AddPagging(paggingArgs)
                 .AddIncludeRequirements(new ProductAlbumIncludeRequirement<TProduct>());
 
             var products = await Mediator.Send(new GetQuery(QueryBuilder));

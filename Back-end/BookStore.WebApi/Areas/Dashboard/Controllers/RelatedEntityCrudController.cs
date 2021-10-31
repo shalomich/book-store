@@ -24,9 +24,11 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
         {
         }
 
-        public override async Task<ActionResult<RelatedEntityForm[]>> Read([FromQuery] QueryTransformArgs args)
+        public override async Task<ActionResult<RelatedEntityForm[]>> Read([FromQuery] QueryTransformArgs transformArgs, [FromQuery] PaggingArgs paggingArgs)
         {
-            QueryBuilder.AddDataTransformation(args);
+            QueryBuilder
+                .AddDataTransformation(transformArgs)
+                .AddPagging(paggingArgs);
 
             var relatedEntities = await Mediator.Send(new GetQuery(QueryBuilder));
 

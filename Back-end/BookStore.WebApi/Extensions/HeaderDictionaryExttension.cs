@@ -16,8 +16,6 @@ namespace BookStore.WebApi.Extensions
             headers.Add(nameof(metadata.DataCount), metadata.DataCount.ToString());
             headers.Add(nameof(metadata.CurrentPageDataCount), metadata.CurrentPageDataCount.ToString());
             headers.Add(nameof(metadata.PageCount), metadata.PageCount.ToString());
-            headers.Add(nameof(metadata.HasNextPage), metadata.HasNextPage.ToString());
-            headers.Add(nameof(metadata.HasPreviousPage), metadata.HasPreviousPage.ToString());
         }
     }
 }

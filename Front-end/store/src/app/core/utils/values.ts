@@ -1,1 +1,4 @@
 export const PRODUCT_URL = 'https://localhost:44327/store/product/';
+
+export const PAGE_SIZE = 1;
+export const PAGE_NUMBER = 1;
