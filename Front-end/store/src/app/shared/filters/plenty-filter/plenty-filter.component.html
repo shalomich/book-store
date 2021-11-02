@@ -1,0 +1,7 @@
+<mat-form-field appearance="fill">
+  <mat-select (selectionChange)="onSelectChanged($event)" multiple>
+    <mat-option *ngFor="let relatedEntity of relatedEntities$ | async" [value]="relatedEntity.id">
+      {{relatedEntity.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
