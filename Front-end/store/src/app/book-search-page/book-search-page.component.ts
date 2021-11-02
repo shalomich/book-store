@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable, Subject} from 'rxjs';
 
 import { map, switchMap } from 'rxjs/operators';
 
@@ -14,6 +14,7 @@ import { PaginationOptions } from '../core/interfaces/pagination-options';
 import { ProductParamsBuilderService } from '../core/services/product-params-builder.service';
 import { ProductPreview } from '../core/models/product-preview';
 import { PAGE_NUMBER, PAGE_SIZE } from '../core/utils/values';
+import { FilterOptions } from '../core/interfaces/filter-options';
 
 @AutoUnsubscribe()
 @Component({
@@ -24,7 +25,7 @@ import { PAGE_NUMBER, PAGE_SIZE } from '../core/utils/values';
 })
 export class BookSearchPageComponent implements OnInit, OnDestroy {
 
-  public readonly books$: Observable<ProductPreview[]>;
+  public books$: Observable<ProductPreview[]>;
 
   public config: PaginationInstance = {
     id: 'paginationPanel',
@@ -38,14 +39,16 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
     pageNumber: PAGE_NUMBER,
   });
 
+  public readonly filterOptions$: Subject<FilterOptions> = new Subject<FilterOptions>();
+
   public constructor(
     private readonly bookService: BookService,
     private readonly productParamsBuilderService: ProductParamsBuilderService,
   ) {
     this.books$ = this.paginationOptions$.asObservable().pipe(
-      switchMap(options => {
-        this.productParamsBuilderService.setPaging(options);
-        this.config.currentPage = options.pageNumber;
+      switchMap(pagination => {
+        this.productParamsBuilderService.setPaging(pagination);
+        this.config.currentPage = pagination.pageNumber;
         return this.bookService.get(this.productParamsBuilderService.params);
       }),
     );
@@ -58,7 +61,8 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
         return this.bookService.getQuantity(this.productParamsBuilderService.params);
       }),
 
-    ).subscribe(quantity => {
+    )
+      .subscribe(quantity => {
       this.config.totalItems = quantity;
     });
   }
@@ -73,4 +77,13 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
     });
   }
 
+  public applyFilters() {
+    this.books$ = this.filterOptions$.asObservable()
+      .pipe(
+        switchMap(filter => {
+          this.productParamsBuilderService.addFilter(filter);
+          return this.bookService.get(this.productParamsBuilderService.params);
+        }),
+      );
+  }
 }

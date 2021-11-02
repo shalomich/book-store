@@ -15,10 +15,11 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { BookSearchPageComponent } from './book-search-page/book-search-page.component';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { BookFilterComponent } from './book-search-page/book-filter/book-filter.component';
 
 
 @NgModule({
-  declarations: [AppComponent, BookSearchPageComponent],
+  declarations: [AppComponent, BookSearchPageComponent, BookFilterComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,

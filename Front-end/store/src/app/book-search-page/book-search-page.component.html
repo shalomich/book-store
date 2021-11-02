@@ -1,8 +1,12 @@
-<div class="books-list">
-  <app-product-list-item *ngFor="let book of (books$ | async)! | paginate: config"
-                         [item]="book">
-  </app-product-list-item>
+<div>
+  <app-book-filter></app-book-filter>
+  <div class="books-list">
+    <app-product-list-item *ngFor="let book of (books$ | async)! | paginate: config"
+                           [item]="book">
+    </app-product-list-item>
+  </div>
 </div>
+
 
 <div class="pagination-block">
   <pagination-controls class="custom-pagination" id="paginationPanel"
