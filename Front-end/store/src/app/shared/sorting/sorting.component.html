@@ -5,7 +5,9 @@
       <mat-option [value]="item[1]" (onSelectionChange)="onOptionChanged($event)">
         {{item[0]}}
       </mat-option>
-      <button (click)="onOrderButtonClick(item[1])">click</button>
+      <button mat-button (click)="onOrderButtonClick(item[1])">
+        <mat-icon>{{getOrder(item[1]) ? 'arrow_upward' : 'arrow_downward'}}</mat-icon>
+      </button>
     </ng-container>
   </mat-select>
 </mat-form-field>
