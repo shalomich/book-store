@@ -4,9 +4,10 @@ import { HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { PaginationOptions } from '../interfaces/pagination-options';
+
 import { FilterOptions } from '../interfaces/filter-options';
-import { PAGE_SIZE } from '../utils/values';
 import { SearchOptions } from '../interfaces/search-options';
+import {SortingOptions} from "../interfaces/sorting-options";
 
 @Injectable({
   providedIn: 'root',
@@ -14,8 +15,8 @@ import { SearchOptions } from '../interfaces/search-options';
 export class ProductParamsBuilderService {
 
   public paginationOptions$: BehaviorSubject<PaginationOptions> = new BehaviorSubject<PaginationOptions>({
-    pageNumber: 1,
-    pageSize: PAGE_SIZE,
+    pageNumber: 0,
+    pageSize: 0,
   });
 
   public pageCount$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
@@ -25,6 +26,8 @@ export class ProductParamsBuilderService {
       values: {},
     },
   );
+
+  public sortingOptions$: BehaviorSubject<Array<SortingOptions>> = new BehaviorSubject<Array<SortingOptions>>([]);
 
   public searchOptions$: BehaviorSubject<SearchOptions> = new BehaviorSubject<SearchOptions>(
     {
@@ -39,6 +42,11 @@ export class ProductParamsBuilderService {
   public changePageCount: (params: HttpParams) => Observable<number> = params => new Observable<number>();
 
   constructor() {
+    this.paginationOptions$.asObservable()
+      .subscribe(options => {
+        this.onParamsChanged(this.buildParams());
+      });
+
     this.filterOptions$.asObservable()
       .subscribe(options => {
         this.resetPaging();
@@ -48,9 +56,9 @@ export class ProductParamsBuilderService {
           .subscribe(pageCount => this.pageCount$.next(pageCount));
       });
 
-    this.paginationOptions$.asObservable()
+    this.sortingOptions$.asObservable()
       .subscribe(options => {
-        this.onParamsChanged(this.buildParams());
+        this.resetPaging();
       });
 
     this.searchOptions$.asObservable()
@@ -78,6 +86,7 @@ export class ProductParamsBuilderService {
     let params = new HttpParams();
 
     params = this.buildFilters(params);
+    params = this.buildSorting(params);
     params = this.buildSearch(params);
 
     return this.buildPaging(params);
@@ -100,6 +109,18 @@ export class ProductParamsBuilderService {
       params = params.set(`filters[${index}].propertyName`, propertyName);
       params = params.set(`filters[${index}].comparedValue`, value);
     });
+
+    return params;
+  }
+
+  private buildSorting(params: HttpParams): HttpParams {
+
+    for (let i = 0; i < this.sortingOptions$.value.length; i++) {
+      const {propertyName, isAscending} = this.sortingOptions$.value[i];
+
+      params = params.set(`sortings[${i}].propertyName`, propertyName);
+      params = params.set(`sortings[${i}].isAscending`, isAscending);
+    }
 
     return params;
   }
