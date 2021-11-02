@@ -40,4 +40,10 @@ export class SortingComponent {
       this.sortingOptions$.next(this.options);
     }
   }
+
+  public getOrder(propertyName: string) {
+    const option = this.options.find(option => option.propertyName == propertyName)!;
+
+    return option === undefined ? true : option.isAscending;
+  }
 }
