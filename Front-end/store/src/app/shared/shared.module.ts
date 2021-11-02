@@ -8,7 +8,8 @@ import { CoreModule } from '../core/core.module';
 import { ProductImagesComponent } from './product-card/product-images/product-images.component';
 import { AddToCartComponent } from './product-card/add-to-cart/add-to-cart.component';
 
-
+import {SortingComponent} from "./sorting/sorting.component";
+import {MatOptionModule} from "@angular/material/core";
 import { ProductListItemComponent } from './product-list-item/product-list-item.component';
 import { RangeFilterComponent } from './filters/range-filter/range-filter.component';
 import { PlentyFilterComponent } from './filters/plenty-filter/plenty-filter.component';
@@ -31,7 +32,8 @@ import {NgxPaginationModule} from "ngx-pagination";
     RangeFilterComponent,
     PlentyFilterComponent,
     FilterGroupComponent,
-    PaginationPanelComponent
+    PaginationPanelComponent,
+    SortingComponent
   ],
   exports: [
     ProductImagesComponent,
@@ -40,7 +42,8 @@ import {NgxPaginationModule} from "ngx-pagination";
     RangeFilterComponent,
     PlentyFilterComponent,
     FilterGroupComponent,
-    PaginationPanelComponent
+    PaginationPanelComponent,
+    SortingComponent
   ],
   imports: [
     CommonModule,
@@ -53,7 +56,8 @@ import {NgxPaginationModule} from "ngx-pagination";
     MatExpansionModule,
     MatIconModule,
     MatInputModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    MatOptionModule
   ]
 })
 export class SharedModule { }
