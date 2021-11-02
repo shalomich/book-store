@@ -37,7 +37,7 @@ export class BookFormComponent implements OnInit, OnDestroy {
 
   public readonly currentBookId: number;
 
-  private readonly bookToEdit$: Observable<Book>;
+  public readonly bookToEdit$: Observable<Book>;
 
   private readonly subscriptions = new Subscription();
 
@@ -114,6 +114,7 @@ export class BookFormComponent implements OnInit, OnDestroy {
     if (this.bookForm.invalid) {
       this.validateAllFormFields(this.bookForm);
     } else {
+      console.log(this.bookForm.value.album)
       const book: Book = {
         ...this.bookForm.value,
         authorId: this.bookForm.value.authorId,

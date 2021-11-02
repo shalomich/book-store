@@ -1,7 +1,8 @@
 <button class="back-button" routerLink="/dashboard/product/book">Назад</button>
 <button (click)="handleDelete()" *ngIf="currentBookId" mat-raised-button  color="warn" class="delete-button" >Удалить</button>
 <div *ngIf="(authors$ | async) && (publishers$ | async) && (bookTypes$ | async)
-            && (ageLimits$ | async) && (genres$ | async) && (coverArts$ | async); else loading" class="form-inner">
+            && (ageLimits$ | async) && (genres$ | async) && (coverArts$ | async)
+            && (currentBookId && (bookToEdit$ | async)); else loading" class="form-inner">
   <h3>Форма книги</h3>
   <form (submit)="handleFormSubmit()" [formGroup]="bookForm">
     <app-file-upload [albumControl]="bookForm.controls.album"></app-file-upload>

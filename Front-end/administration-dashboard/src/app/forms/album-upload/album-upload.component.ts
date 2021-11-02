@@ -24,8 +24,8 @@ export class AlbumUploadComponent implements OnInit, OnDestroy {
   public constructor(private readonly imageConverterService: ImageConverterService) {}
 
   public ngOnInit(): void {
+    this.titleImageNameControl.setValue(this.albumControl.value.titleImageName);
     const sub = this.titleImageNameControl.valueChanges.pipe(
-      startWith(this.titleImageNameControl.value as string),
       map(_ => this.albumControl.setValue({
         ...this.albumControl.value,
         titleImageName: this.titleImageNameControl.value,
