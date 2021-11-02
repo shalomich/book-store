@@ -8,6 +8,7 @@ import { PaginationOptions } from '../interfaces/pagination-options';
 import { FilterOptions } from '../interfaces/filter-options';
 import { SearchOptions } from '../interfaces/search-options';
 import {SortingOptions} from "../interfaces/sorting-options";
+import {PAGE_SIZE} from "../utils/values";
 
 @Injectable({
   providedIn: 'root',
@@ -15,8 +16,8 @@ import {SortingOptions} from "../interfaces/sorting-options";
 export class ProductParamsBuilderService {
 
   public paginationOptions$: BehaviorSubject<PaginationOptions> = new BehaviorSubject<PaginationOptions>({
-    pageNumber: 0,
-    pageSize: 0,
+    pageNumber: 1,
+    pageSize: PAGE_SIZE,
   });
 
   public pageCount$: BehaviorSubject<number> = new BehaviorSubject<number>(0);

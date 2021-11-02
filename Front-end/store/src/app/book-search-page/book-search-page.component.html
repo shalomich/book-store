@@ -7,13 +7,12 @@
         <app-plenty-filter label="Возрастное ограничение" class="filter-elem" propertyName="ageLimit" [relatedEntities$]="ageLimits$"></app-plenty-filter>
         <app-plenty-filter label="Тип обложки" class="filter-elem" propertyName="coverArt" [relatedEntities$]="coverArts$"></app-plenty-filter>
     </filter-group>
-
+    <sorting [propertyNamesWithText]="propertyNamesWithText" [sortingOptions$]="productParamsBuilderService.sortingOptions$"></sorting>
   <div class="books-list">
     <app-product-list-item *ngFor="let book of (books$ | async)! | paginate: panel.config"
                            [item]="book">
     </app-product-list-item>
   </div>
-</div>
 <div class="pagination-block">
   <pagination-panel class="pagination-panel" [pageCount$]="productParamsBuilderService.pageCount$"
                     [paginationOptions$]="productParamsBuilderService.paginationOptions$"

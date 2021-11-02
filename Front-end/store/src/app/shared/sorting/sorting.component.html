@@ -1,0 +1,8 @@
+<mat-form-field appearance="fill">
+  <mat-label>Сортировка</mat-label>
+  <mat-select multiple (selectionChange)="onSelectChanged($event)">
+    <mat-option *ngFor="let item of propertyNamesWithText; let i = index" [value]="item[1]">
+      {{item[0]}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
