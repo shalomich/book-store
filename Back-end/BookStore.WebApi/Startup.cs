@@ -73,7 +73,7 @@ namespace BookStore.WebApi
                 });
 
             services.AddMediatR(applicationAssembly);
-            services.AddAutoMapper(GetType());
+            services.AddAutoMapper(Assembly.GetExecutingAssembly(), applicationAssembly);
             services.AddCors();
 
             services.AddSwaggerGen();
