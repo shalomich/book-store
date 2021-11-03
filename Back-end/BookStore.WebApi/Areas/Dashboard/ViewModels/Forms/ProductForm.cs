@@ -27,6 +27,6 @@ namespace BookStore.WebApi.Areas.Dashboard.ViewModels.Forms
         [MaxLength(Product.MaxDescriptionLength)]
         public string Description { set; get; }
 
-        public AlbumDto Album { set; get; }
+        public AlbumForm Album { set; get; }
     }
 }
