@@ -9,9 +9,9 @@ using BookStore.Application.Dto;
 
 namespace BookStore.WebApi.Areas.Store.Profiles
 {
-    public class BasketToBasketDtoProfile : Profile
+    public class BasketToDtoProfile : Profile
     {
-        public BasketToBasketDtoProfile()
+        public BasketToDtoProfile()
         {
             CreateMap<BasketProduct, BasketProductDto>()
                 .ForMember(dto => dto.Name, mapper
