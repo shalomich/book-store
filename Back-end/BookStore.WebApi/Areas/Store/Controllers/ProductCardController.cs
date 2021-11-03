@@ -18,6 +18,7 @@ using BookStore.Application.Queries;
 using BookStore.WebApi.Areas.Store.ViewModels.Cards;
 using BookStore.WebApi.Areas.Store.ViewModels;
 using BookStore.WebApi.Extensions;
+using BookStore.Application.Dto;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
 {
@@ -75,9 +76,11 @@ namespace BookStore.WebApi.Areas.Store.Controllers
             HttpContext.Response.Headers.Add(metadata);
         }
 
-        protected Task<IEnumerable<IEntity>> GetRelatedEntities<TRelatedEntity>(IDbQueryBuilder<TRelatedEntity> relatedEntityqueryBuilder) where TRelatedEntity : RelatedEntity
+        protected async Task<IEnumerable<RelatedEntityDto>> GetRelatedEntities<TRelatedEntity>(IDbQueryBuilder<TRelatedEntity> relatedEntityqueryBuilder) where TRelatedEntity : RelatedEntity
         {
-            return Mediator.Send(new GetQuery(relatedEntityqueryBuilder));
+            var relatedEntities = await Mediator.Send(new GetQuery(relatedEntityqueryBuilder));
+
+            return relatedEntities.Select(relatedEntity => Mapper.Map<RelatedEntityDto>(relatedEntity));
         }
     }
 }

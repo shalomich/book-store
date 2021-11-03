@@ -12,6 +12,7 @@ using BookStore.Application.Services.DbQueryBuilders;
 using BookStore.Application.DbQueryConfigs.IncludeRequirements;
 using BookStore.WebApi.Areas.Store.ViewModels;
 using BookStore.Domain.Entities;
+using BookStore.Application.Dto;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
 {
@@ -34,32 +35,32 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpGet("genre")]
-        public async Task<IEnumerable<IEntity>> GetGenres([FromServices] DbFormEntityQueryBuilder<Genre> relatedEntityQueryBuilder)
+        public async Task<IEnumerable<RelatedEntityDto>> GetGenres([FromServices] DbFormEntityQueryBuilder<Genre> relatedEntityQueryBuilder)
         {
   
             return await GetRelatedEntities(relatedEntityQueryBuilder);
         }
 
         [HttpGet("type")]
-        public async Task<IEnumerable<IEntity>> GetTypes([FromServices] DbFormEntityQueryBuilder<BookType> relatedEntityQueryBuilder)
+        public async Task<IEnumerable<RelatedEntityDto>> GetTypes([FromServices] DbFormEntityQueryBuilder<BookType> relatedEntityQueryBuilder)
         {
             return await GetRelatedEntities(relatedEntityQueryBuilder);
         }
 
         [HttpGet("age-limit")]
-        public async Task<IEnumerable<IEntity>> GetAgeLimits([FromServices] DbFormEntityQueryBuilder<AgeLimit> relatedEntityQueryBuilder)
+        public async Task<IEnumerable<RelatedEntityDto>> GetAgeLimits([FromServices] DbFormEntityQueryBuilder<AgeLimit> relatedEntityQueryBuilder)
         {
             return await GetRelatedEntities(relatedEntityQueryBuilder);
         }
 
         [HttpGet("cover-art")]
-        public async Task<IEnumerable<IEntity>> GetCoverArts([FromServices] DbFormEntityQueryBuilder<CoverArt> relatedEntityQueryBuilder)
+        public async Task<IEnumerable<RelatedEntityDto>> GetCoverArts([FromServices] DbFormEntityQueryBuilder<CoverArt> relatedEntityQueryBuilder)
         {
             return await GetRelatedEntities(relatedEntityQueryBuilder);
         }
 
         [HttpGet("author")]
-        public async Task<IEnumerable<IEntity>> GetAuthors([FromRoute] PaggingArgs paggingArgs, 
+        public async Task<IEnumerable<RelatedEntityDto>> GetAuthors([FromRoute] PaggingArgs paggingArgs, 
             [FromServices] DbFormEntityQueryBuilder<Author> relatedEntityQueryBuilder)
         {
             relatedEntityQueryBuilder.AddPagging(paggingArgs);
@@ -68,7 +69,7 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpGet("publisher")]
-        public async Task<IEnumerable<IEntity>> GetPublishers([FromRoute] PaggingArgs paggingArgs, 
+        public async Task<IEnumerable<RelatedEntityDto>> GetPublishers([FromRoute] PaggingArgs paggingArgs, 
             [FromServices] DbFormEntityQueryBuilder<Publisher> relatedEntityQueryBuilder)
         {
             relatedEntityQueryBuilder.AddPagging(paggingArgs);
