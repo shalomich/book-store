@@ -7,24 +7,5 @@ using System.Threading.Tasks;
 
 namespace BookStore.Application.Dto
 {
-    public record ImageDto
-    {
-        [Required]
-        public string Name { init; get; }
-
-        [Required]
-        public string Format { init; get; }
-
-        [Required]
-        public string Data { init; get; }
-
-        [Required]
-        [Range(Image.MinHeight, int.MaxValue)]
-        public int Height { init; get; }
-        
-        [Required]
-        [Range(Image.MinWidth, int.MaxValue)]
-        public int Width { init; get; }
-
-    }
+    public record ImageDto(string Name, string Data, string Format, int Height, int Width);
 }

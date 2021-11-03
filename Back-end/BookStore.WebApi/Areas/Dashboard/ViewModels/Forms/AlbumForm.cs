@@ -4,11 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BookStore.Application.Dto
+namespace BookStore.WebApi.Areas.Dashboard.ViewModels.Forms
 {
-    public record AlbumDto
+    public record AlbumForm
     {
+        [Required]
         public string TitleImageName { init; get; }
-        public ISet<ImageDto> Images { init; get; }
+
+        [Required]
+        public ISet<ImageForm> Images { init; get; }
     }
 }

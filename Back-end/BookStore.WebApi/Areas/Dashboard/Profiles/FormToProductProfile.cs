@@ -18,10 +18,10 @@ namespace BookStore.WebApi.Areas.Dashboard.Profiles
                 .ReverseMap()
                 .IncludeAllDerived();
 
-            CreateMap<AlbumDto, Album>()
+            CreateMap<AlbumForm, Album>()
                 .ReverseMap();
 
-            CreateMap<ImageDto, Image>()
+            CreateMap<ImageForm, Image>()
                 .ReverseMap();       
         }
     }
