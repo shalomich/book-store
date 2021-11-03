@@ -11,19 +11,20 @@ using System.Threading.Tasks;
 using BookStore.Application.Services.DbQueryBuilders;
 using BookStore.Application.DbQueryConfigs.IncludeRequirements;
 using BookStore.WebApi.Areas.Store.ViewModels;
+using BookStore.Domain.Entities;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
 {
     [Route("[area]/product/book")]
     public class BookCardController : ProductCardController<Book>
     {
-        public BookCardController(IMediator mediator, IMapper mapper, DbFormEntityQueryBuilder<Book> queryBuilder) : base(mediator, mapper, queryBuilder)
+        public BookCardController(IMediator mediator, IMapper mapper, DbFormEntityQueryBuilder<Book> productQueryBuilder) : base(mediator, mapper, productQueryBuilder)
         {
         }
 
-        protected override void IncludeRelatedEntities(DbFormEntityQueryBuilder<Book> queryBuilder)
+        protected override void IncludeRelatedEntities()
         {
-            queryBuilder.AddIncludeRequirements(new IIncludeRequirement<Book>[]
+            ProductQueryBuilder.AddIncludeRequirements(new IIncludeRequirement<Book>[]
             {
                 new BookGenresIncludeRequirement(),
                 new BookAuthorIncludeRequirement(),
@@ -33,39 +34,46 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpGet("genre")]
-        public async Task<IEnumerable<Option>> GetGenreOptions([FromServices] DbFormEntityQueryBuilder<Genre> queryBuilder)
+        public async Task<IEnumerable<IEntity>> GetGenres([FromServices] DbFormEntityQueryBuilder<Genre> relatedEntityQueryBuilder)
         {
-            return await GetRelatedEntityOptions(queryBuilder);
+  
+            return await GetRelatedEntities(relatedEntityQueryBuilder);
         }
 
         [HttpGet("type")]
-        public async Task<IEnumerable<Option>> GetTypeOptions([FromServices] DbFormEntityQueryBuilder<BookType> queryBuilder)
+        public async Task<IEnumerable<IEntity>> GetTypes([FromServices] DbFormEntityQueryBuilder<BookType> relatedEntityQueryBuilder)
         {
-            return await GetRelatedEntityOptions(queryBuilder);
+            return await GetRelatedEntities(relatedEntityQueryBuilder);
         }
 
         [HttpGet("age-limit")]
-        public async Task<IEnumerable<Option>> GetAgeLimitOptions([FromServices] DbFormEntityQueryBuilder<AgeLimit> queryBuilder)
+        public async Task<IEnumerable<IEntity>> GetAgeLimits([FromServices] DbFormEntityQueryBuilder<AgeLimit> relatedEntityQueryBuilder)
         {
-            return await GetRelatedEntityOptions(queryBuilder);
+            return await GetRelatedEntities(relatedEntityQueryBuilder);
         }
 
         [HttpGet("cover-art")]
-        public async Task<IEnumerable<Option>> GetCoverArtOptions([FromServices] DbFormEntityQueryBuilder<CoverArt> queryBuilder)
+        public async Task<IEnumerable<IEntity>> GetCoverArts([FromServices] DbFormEntityQueryBuilder<CoverArt> relatedEntityQueryBuilder)
         {
-            return await GetRelatedEntityOptions(queryBuilder);
+            return await GetRelatedEntities(relatedEntityQueryBuilder);
         }
 
         [HttpGet("author")]
-        public async Task<IEnumerable<Option>> GetAuthorOptions([FromServices] DbFormEntityQueryBuilder<Author> queryBuilder)
+        public async Task<IEnumerable<IEntity>> GetAuthors([FromRoute] PaggingArgs paggingArgs, 
+            [FromServices] DbFormEntityQueryBuilder<Author> relatedEntityQueryBuilder)
         {
-            return await GetRelatedEntityOptions(queryBuilder);
+            relatedEntityQueryBuilder.AddPagging(paggingArgs);
+
+            return await GetRelatedEntities(relatedEntityQueryBuilder);
         }
 
         [HttpGet("publisher")]
-        public async Task<IEnumerable<Option>> GetPublisherOptions([FromServices] DbFormEntityQueryBuilder<Publisher> queryBuilder)
+        public async Task<IEnumerable<IEntity>> GetPublishers([FromRoute] PaggingArgs paggingArgs, 
+            [FromServices] DbFormEntityQueryBuilder<Publisher> relatedEntityQueryBuilder)
         {
-            return await GetRelatedEntityOptions(queryBuilder);
+            relatedEntityQueryBuilder.AddPagging(paggingArgs);
+
+            return await GetRelatedEntities(relatedEntityQueryBuilder);
         }
         
     }

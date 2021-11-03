@@ -25,24 +25,26 @@ namespace BookStore.WebApi.Areas.Store.Controllers
     {
         protected IMediator Mediator { get; }
         protected IMapper Mapper { get; }
-        protected DbFormEntityQueryBuilder<T> QueryBuilder { get; }
+        protected DbFormEntityQueryBuilder<T> ProductQueryBuilder { get; }
 
-        protected ProductCardController(IMediator mediator, IMapper mapper, DbFormEntityQueryBuilder<T> queryBuilder)
+        protected ProductCardController(IMediator mediator, IMapper mapper, DbFormEntityQueryBuilder<T> productQueryBuilder)
         {
             Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            QueryBuilder = queryBuilder ?? throw new ArgumentNullException(nameof(queryBuilder));
+            ProductQueryBuilder = productQueryBuilder ?? throw new ArgumentNullException(nameof(productQueryBuilder));
         }
+
+        protected abstract void IncludeRelatedEntities();
 
         [HttpGet]
         public async Task<ActionResult<ProductCard[]>> GetCards([FromQuery] QueryTransformArgs transformArgs, [FromQuery] PaggingArgs paggingArgs)
         {
-            QueryBuilder
+            ProductQueryBuilder
                 .AddDataTransformation(transformArgs)
                 .AddPagging(paggingArgs)
                 .AddIncludeRequirements(new ProductAlbumIncludeRequirement<T>());
 
-            var products = await Mediator.Send(new GetQuery(QueryBuilder));
+            var products = await Mediator.Send(new GetQuery(ProductQueryBuilder));
 
             return products
                 .Select(product => Mapper.Map<ProductCard>(product))
@@ -55,33 +57,27 @@ namespace BookStore.WebApi.Areas.Store.Controllers
             var productType = typeof(T);
             var productCardType = Mapper.GetDestinationType(productType, typeof(ProductCard));
 
-            QueryBuilder.AddIncludeRequirements(new ProductAlbumIncludeRequirement<T>());
-            IncludeRelatedEntities(QueryBuilder);
+            ProductQueryBuilder.AddIncludeRequirements(new ProductAlbumIncludeRequirement<T>());
+            IncludeRelatedEntities();
 
-            var entity = await Mediator.Send(new GetByIdQuery(id,QueryBuilder));
+            var entity = await Mediator.Send(new GetByIdQuery(id, ProductQueryBuilder));
 
             return Ok(Mapper.Map(entity, productType, productCardType));
         }
 
-        protected abstract void IncludeRelatedEntities(DbFormEntityQueryBuilder<T> queryBuilder); 
-
         [HttpHead]
         public async Task GetPaggingMetadata([FromQuery] QueryTransformArgs transformArgs, [FromQuery] PaggingArgs paggingArgs)
         {
-            QueryBuilder.AddDataTransformation(transformArgs);
+            ProductQueryBuilder.AddDataTransformation(transformArgs);
 
-            var metadata = await Mediator.Send(new GetMetadataQuery(paggingArgs, QueryBuilder));
+            var metadata = await Mediator.Send(new GetMetadataQuery(paggingArgs, ProductQueryBuilder));
             
             HttpContext.Response.Headers.Add(metadata);
         }
 
-        protected async Task<IEnumerable<Option>> GetRelatedEntityOptions<TRelatedEntity>(IDbQueryBuilder<TRelatedEntity> relatedEntityqueryBuilder) where TRelatedEntity : RelatedEntity
+        protected Task<IEnumerable<IEntity>> GetRelatedEntities<TRelatedEntity>(IDbQueryBuilder<TRelatedEntity> relatedEntityqueryBuilder) where TRelatedEntity : RelatedEntity
         {
-            var relatedEntities = await Mediator.Send(new GetQuery(relatedEntityqueryBuilder));
-
-            return relatedEntities
-                .Select(relatedEntity => Mapper.Map<Option>(relatedEntity))
-                .ToArray();
+            return Mediator.Send(new GetQuery(relatedEntityqueryBuilder));
         }
     }
 }
