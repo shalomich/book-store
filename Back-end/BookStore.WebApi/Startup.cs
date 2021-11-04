@@ -90,7 +90,7 @@ namespace BookStore.WebApi
 
             app.UseRouting();
 
-            //app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseAuthentication();
             app.UseAuthorization();
