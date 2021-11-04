@@ -10,6 +10,9 @@ namespace QueryWorker.DataTransformers.Filters.ExpressionCreator
 {
     internal class RangeExpressionCreator<T> : IFilterExpressionCreator<T> where T : class
     {
+        private const string Separator = "...";
+        private const int DefaultLowBound = int.MinValue;
+        private const int DefaultHighBound = int.MaxValue;
         private Expression<Func<T, int>> PropertySelector { get; }
         public RangeExpressionCreator(Expression<Func<T, int>> propertySelector)
         {
@@ -27,11 +30,19 @@ namespace QueryWorker.DataTransformers.Filters.ExpressionCreator
 
         private void Parse(string filterValue, out int lowBound, out int highBound)
         {
-            var bounds = filterValue.Split("...")
-                .Select(str => int.Parse(str)).ToArray();
+            if (filterValue.Contains(Separator) == false)
+            {
+                lowBound = DefaultLowBound;
+                highBound = DefaultHighBound;
+                return;
+            }
 
-            lowBound = bounds[0];
-            highBound = bounds[1];
+            var bounds = filterValue.Split(Separator).ToArray();
+            if (int.TryParse(bounds[0], out lowBound) == false)
+                lowBound = DefaultLowBound;
+
+            if (int.TryParse(bounds[1], out highBound) == false)
+                highBound = DefaultHighBound;
         }
     }
 }

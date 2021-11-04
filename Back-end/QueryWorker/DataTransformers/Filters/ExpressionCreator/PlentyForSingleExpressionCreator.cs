@@ -10,6 +10,7 @@ namespace QueryWorker.DataTransformers.Filters.ExpressionCreator
 {
     internal class PlentyForSingleExpressionCreator<T> : IFilterExpressionCreator<T> where T : class
     {
+        private const string Separator = ",";
         private Expression<Func<T, int>> PropertySelector { get; }
 
         public PlentyForSingleExpressionCreator(Expression<Func<T, int>> propertySelector)
@@ -27,9 +28,15 @@ namespace QueryWorker.DataTransformers.Filters.ExpressionCreator
         }
         private void Parse(string filterValue, out IEnumerable<int> options)
         {
-            options = filterValue.Split(',')
-                .Select(str => int.Parse(str))
-                .ToArray();
+            var values = new HashSet<int>();
+
+            foreach(string value in filterValue.Split(Separator))
+            {
+                if (int.TryParse(value, out int parsedValue))
+                    values.Add(parsedValue);
+            };
+
+            options = values;
         }
     }
 }
