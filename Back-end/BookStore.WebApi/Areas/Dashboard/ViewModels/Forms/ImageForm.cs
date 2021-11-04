@@ -1,4 +1,7 @@
 ﻿using BookStore.Domain.Entities.Products;
+using BookStore.Domain.Enums;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +16,9 @@ namespace BookStore.WebApi.Areas.Dashboard.ViewModels.Forms
         public string Name { init; get; }
 
         [Required]
-        public string Format { init; get; }
+        [EnumDataType(typeof(ImageFormat))]
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ImageFormat Format { init; get; }
 
         [Required]
         public string Data { init; get; }

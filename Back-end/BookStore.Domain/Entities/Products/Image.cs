@@ -1,5 +1,6 @@
 ﻿using BookStore.Domain.Entities;
 using BookStore.Domain.Entities.Products;
+using BookStore.Domain.Enums;
 using System;
 using System.Linq;
 
@@ -11,11 +12,8 @@ namespace BookStore.Domain.Entities.Products
         public const int MinHeight = 1;
         public const int MinWidth = 1;
 
-        private string _format;
         private int _height;
         private int _width;
-
-        public static readonly string[] FormatConsts = { "image/png", "image/jpeg" };
 
         public int Id { set; get; }
         public string Name { set; get; }
@@ -50,21 +48,8 @@ namespace BookStore.Domain.Entities.Products
             }
         }
 
-        public string Data { set; get; }
-        public string Format
-        {
-            set
-            {
-                if (FormatConsts.Contains(value) == false)
-                    throw new ArgumentOutOfRangeException();
-                _format = value;
-            }
-            get
-            {
-                return _format;
-            }
-        }
-  
+        public string Data { set; get; }        
+        public ImageFormat Format { set; get; } 
         public Album Album { set; get; }
         public int AlbumId { set; get; }
 
