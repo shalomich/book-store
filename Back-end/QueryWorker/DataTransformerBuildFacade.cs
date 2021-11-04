@@ -23,7 +23,7 @@ namespace QueryWorker
 
         public IDataTransformer<T> BuildFilter(FilterArgs args)
         {
-            Filter<T> filter = Configuration.GetFilter(args.PropertyName, args.Comparison);
+            Filter<T> filter = Configuration.GetFilter(args.PropertyName);
 
             return filter with { ComparedValue = args.ComparedValue};
         }

@@ -4,11 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using QueryWorker.DataTransformers.Filters;
-using QueryWorker.DataTransformers;
-using QueryWorker.DataTransformers.Filters.ExpressionCreator.String;
 
 namespace QueryWorker.DataTransformers
 {
@@ -32,13 +27,10 @@ namespace QueryWorker.DataTransformers
                 string parsedValue = ComparedValue.Replace(LeftBorder, string.Empty)
                     .Replace(RightBorder, string.Empty);
 
-                return CreateEqualFilter(parsedValue).Transform(query);
+                return EqualFilter(parsedValue, query);
             }
 
-            Func<string, IQueryable<T>> containsComparedValue = comparedValue
-                 => CreateContainsFilter(comparedValue).Transform(query);
-
-            var buildedRequest = containsComparedValue(ComparedValue);
+            var buildedQuery = ContainsFilter(ComparedValue, query);
             
             var words = ComparedValue.Split();
 
@@ -47,7 +39,7 @@ namespace QueryWorker.DataTransformers
             foreach (string word in words)
             {
                 if (word != ComparedValue)
-                    buildedRequest = buildedRequest.Union(containsComparedValue(word));
+                    buildedQuery = buildedQuery.Union(ContainsFilter(word, query));
 
                 if (SearchDepth > 0)
                 {
@@ -57,24 +49,22 @@ namespace QueryWorker.DataTransformers
             }
                
             foreach (string substring in substrings)
-                buildedRequest = buildedRequest.Union(containsComparedValue(substring));
+                buildedQuery = buildedQuery.Union(ContainsFilter(substring, query));
 
-            return buildedRequest;
+            return buildedQuery;
         }
-        private Filter<T> CreateContainsFilter(string comparedValue)
+        private IQueryable<T> ContainsFilter(string comparedValue, IQueryable<T> query)
         {
-            return new Filter<T>(new StringContainsExpressionCreator<T>(PropertySelector)) 
-            { 
-                ComparedValue = comparedValue 
-            };
+            Expression<Func<string, bool>> comparer = value => value.Contains(comparedValue);
+
+            return query.Where(PropertySelector.Compose(comparer));
         }
 
-        private Filter<T> CreateEqualFilter(string comparedValue)
+        private IQueryable<T> EqualFilter(string comparedValue, IQueryable<T> query)
         {
-            return new Filter<T>(new StringEqualExpressionCreator<T>(PropertySelector))
-            {
-                ComparedValue = comparedValue
-            };
+            Expression<Func<string, bool>> comparer = value => value == comparedValue;
+
+            return query.Where(PropertySelector.Compose(comparer));
         }
     }
 }

@@ -12,7 +12,5 @@ namespace QueryWorker.Args
         
         [Required]
         public string ComparedValue { init; get; }
-
-        public FilterСomparison Comparison { init; get; } = FilterСomparison.Equal;
     }
 }

@@ -9,7 +9,7 @@ namespace BookStore.WebApi.Areas.Store.ViewModels.Cards
 {
     public abstract record FullProductCard : ProductCard
     {
-        public uint Quantity { init; get; }
+        public int Quantity { init; get; }
         public string Description { init; get; }
         public ISet<ImageDto> NotTitleImages { init; get; }
     }

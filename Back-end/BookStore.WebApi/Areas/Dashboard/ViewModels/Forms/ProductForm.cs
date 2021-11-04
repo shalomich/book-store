@@ -22,7 +22,8 @@ namespace BookStore.WebApi.Areas.Dashboard.ViewModels.Forms
         public int Cost { init; get; }
 
         [Required]
-        public uint Quantity { set; get; }
+        [Range(Product.MinQuantity, int.MaxValue)]
+        public int Quantity { set; get; }
 
         [MaxLength(Product.MaxDescriptionLength)]
         public string Description { set; get; }
