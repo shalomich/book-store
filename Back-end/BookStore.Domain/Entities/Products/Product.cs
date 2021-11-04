@@ -10,9 +10,11 @@ namespace BookStore.Domain.Entities.Products
         public string Name { set; get; }
 
         public const int MinCost = 100;
+        public const int MinQuantity = 100;
         public const int MaxDescriptionLength = 1000;
 
         private int _cost;
+        private int _quantity;
         private string _description;
 
         public int Cost
@@ -29,7 +31,19 @@ namespace BookStore.Domain.Entities.Products
             }
         }
 
-        public uint Quantity { set; get; }
+        public int Quantity 
+        {
+            set
+            {
+                if (value < MinQuantity)
+                    throw new ArgumentOutOfRangeException();
+                _quantity = value;
+            }
+            get
+            {
+                return _quantity;
+            }
+        }
 
         public string Description
         {

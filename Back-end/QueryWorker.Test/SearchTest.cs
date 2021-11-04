@@ -8,6 +8,7 @@ using Xunit;
 
 namespace QueryWorker.Test
 {
+    /*
     public class SearchTest
     {
         public class Author
@@ -55,5 +56,5 @@ namespace QueryWorker.Test
                 new Author[] { authors[0], authors[1], authors[2], authors[3],authors[7]} };
 
         }
-    }
+    }*/
 }

@@ -4,14 +4,16 @@ using BookStore.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace App.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20211104141419_ChangeBookQuantityColumnType")]
+    partial class ChangeBookQuantityColumnType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -333,8 +335,9 @@ namespace App.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Format")
-                        .HasColumnType("int");
+                    b.Property<string>("Format")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Height")
                         .HasColumnType("int");
@@ -416,14 +419,14 @@ namespace App.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "61053d86-5260-4eb1-be8d-b4bf028e1a64",
+                            ConcurrencyStamp = "db1912f9-b239-41b2-ac38-65d949290c64",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "9c1023ac-3e9a-4d59-8b83-4fabad1ee14d",
+                            ConcurrencyStamp = "592fa808-3c3c-41cc-9b91-265aecb9bb30",
                             Name = "customer",
                             NormalizedName = "CUSTOMER"
                         });
