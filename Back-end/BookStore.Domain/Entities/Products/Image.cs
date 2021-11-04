@@ -70,13 +70,14 @@ namespace BookStore.Domain.Entities.Products
 
         public override bool Equals(object obj)
         {
-            return obj is Image image &&
-                   Name == image.Name;
+            return obj is Image image 
+                && Name == image.Name
+                && AlbumId == image.AlbumId;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Name);
+            return HashCode.Combine(Name, AlbumId);
         }
     }
 }

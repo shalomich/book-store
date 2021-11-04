@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookStore.Domain.Entities.Products;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace BookStore.WebApi.Areas.Dashboard.ViewModels.Forms
         [Required]
         public string TitleImageName { init; get; }
 
-        [Required]
+        [Required, MinLength(Album.MinImageCount), MaxLength(Album.MaxImageCount)]
         public ISet<ImageForm> Images { init; get; }
     }
 }

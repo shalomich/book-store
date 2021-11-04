@@ -8,7 +8,9 @@ namespace BookStore.Domain.Entities.Products
 {
     public class Album : IEntity
     {
-        private const int _maxImageCount = 5;
+        public const int MinImageCount = 1;
+
+        public const int MaxImageCount = 5;
 
         private ISet<Image> _images;
 
@@ -18,8 +20,13 @@ namespace BookStore.Domain.Entities.Products
         {
             set
             {
-                if (value.Count > _maxImageCount)
+                if (value == null)
+                    throw new ArgumentNullException();
+
+                if (value.Count < MinImageCount 
+                    || value.Count > MaxImageCount)
                     throw new ArgumentException();
+                
                 _images = value;
             }
 

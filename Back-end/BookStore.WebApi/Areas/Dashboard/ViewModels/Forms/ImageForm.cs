@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.WebApi.Areas.Dashboard.ViewModels.Forms
 {
-    public record ImageForm
+    public class ImageForm : IEquatable<ImageForm>
     {
         [Required]
         public string Name { init; get; }
@@ -25,5 +25,21 @@ namespace BookStore.WebApi.Areas.Dashboard.ViewModels.Forms
         [Required]
         [Range(Image.MinWidth, int.MaxValue)]
         public int Width { init; get; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Image other
+                && Equals(other);
+        }
+
+        public bool Equals(ImageForm other)
+        {
+            return Name == other.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Name);
+        }
     }
 }
