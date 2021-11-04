@@ -14,6 +14,8 @@ using BookStore.Application.Exceptions;
 using BookStore.Application.Commands;
 using BookStore.WebApi.Areas.Dashboard.ViewModels.Forms;
 using BookStore.WebApi.Extensions;
+using BookStore.Domain.Entities.Books;
+using BookStore.Application.DbQueryConfigs.IncludeRequirements;
 
 namespace BookStore.WebApi.Areas.Dashboard.Controllers
 {
@@ -38,9 +40,15 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
         [HttpGet]
         public abstract Task<ActionResult<TForm[]>> Read([FromQuery] QueryTransformArgs args, [FromQuery] PaggingArgs paggingArgs);
 
+        protected abstract Task<TFormEntity> ReadById(int id);
 
         [HttpGet("{id}")]
-        public abstract Task<ActionResult<TForm>> Read(int id);
+        public async Task<ActionResult<TForm>> Read(int id)
+        {
+            TFormEntity formEntity = await ReadById(id);
+
+            return Ok(Mapper.Map<TForm>(formEntity));
+        }
 
 
         [HttpHead]
@@ -63,10 +71,11 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
             return CreatedAtAction(nameof(Read), new { id = createdEntity.Id }, Mapper.Map<TForm>(createdEntity));
         }
 
+        
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, TForm entityForm)
+        public async Task<IActionResult> Update(int id, TForm entityForm, [FromServices] DbFormEntityQueryBuilder<Book> queryBuilder)
         {
-            var formEntity = (TFormEntity) await Mediator.Send(new GetByIdQuery(id, QueryBuilder));
+            TFormEntity formEntity = await ReadById(id);
             
             formEntity = Mapper.Map(entityForm, formEntity);
 
