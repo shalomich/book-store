@@ -1,5 +1,5 @@
 <div>
-  <app-book-filter></app-book-filter>
+  <app-book-filter [onApply]="applyFilters"></app-book-filter>
   <div class="books-list">
     <app-product-list-item *ngFor="let book of (books$ | async)! | paginate: config"
                            [item]="book">

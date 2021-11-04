@@ -11,6 +11,9 @@ import { BookMapper } from '../mappers/book.mapper';
 import { ProductPreview } from '../models/product-preview';
 import { ProductPreviewDto } from '../DTOs/product-preview-dto';
 import { ProductPreviewMapper } from '../mappers/product-preview.mapper';
+import { RelatedEntityDto } from '../DTOs/related-entity-dto';
+import { RelatedEntityMapper } from '../mappers/related-entity.mapper';
+import { RelatedEntity } from '../models/related-entity';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +26,7 @@ export class BookService {
     private readonly http: HttpClient,
     private readonly bookMapper: BookMapper,
     private readonly productPreviewMapper: ProductPreviewMapper,
+    private readonly relatedEntityMapper: RelatedEntityMapper,
   ) { }
 
   public getById(id: number) {
@@ -41,8 +45,11 @@ export class BookService {
 
   public getQuantity(params?: HttpParams): Observable<number> {
     return this.http.head(`${PRODUCT_URL}${this.type}`, { observe: 'response', params })
-      .pipe(map(response => {
-        return parseInt(<string>response.headers.get('dataCount'));
-      }));
+      .pipe(map(response => parseInt(<string>response.headers.get('dataCount'))));
+  }
+
+  public getRelatedEntity(entityName: string): Observable<RelatedEntity[]> {
+    return this.http.get<RelatedEntityDto[]>(`${PRODUCT_URL}${this.type}/${entityName}`)
+      .pipe(map(items => items.map(item => this.relatedEntityMapper.fromDto(item))));
   }
 }

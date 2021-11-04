@@ -15,6 +15,7 @@ import { PlentyFilterComponent } from './filters/plenty-filter/plenty-filter.com
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {ReactiveFormsModule} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
 
 
 @NgModule({
@@ -32,13 +33,14 @@ import {ReactiveFormsModule} from '@angular/forms';
     RangeFilterComponent,
     PlentyFilterComponent,
   ],
-  imports: [
-    CommonModule,
-    CoreModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-  ],
+    imports: [
+        CommonModule,
+        CoreModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        MatInputModule,
+    ],
 })
 export class SharedModule { }
