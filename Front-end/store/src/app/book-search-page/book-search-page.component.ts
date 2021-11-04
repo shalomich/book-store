@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 
-import {BehaviorSubject, combineLatest, Observable, Subject} from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 
 import { map, switchMap } from 'rxjs/operators';
 
@@ -45,6 +45,8 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
     private readonly bookService: BookService,
     private readonly productParamsBuilderService: ProductParamsBuilderService,
   ) {
+    this.applyFilters = this.applyFilters.bind(this);
+
     this.books$ = this.paginationOptions$.asObservable().pipe(
       switchMap(pagination => {
         this.productParamsBuilderService.setPaging(pagination);
