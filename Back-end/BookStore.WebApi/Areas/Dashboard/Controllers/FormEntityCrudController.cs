@@ -53,25 +53,10 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
             HttpContext.Response.Headers.Add(metadata);
         }
 
-        private TFormEntity MapFromForm(TForm entityForm)
-        {
-            TFormEntity formEntity;
-            try
-            {
-                formEntity = Mapper.Map<TFormEntity>(entityForm);
-            }
-            catch (Exception exception)
-            {
-                throw new BadRequestException(exception.InnerException.Message);
-            }
-
-            return formEntity;
-        }
-
         [HttpPost] 
         public async Task<IActionResult> Create(TForm entityForm) 
         {
-            var formEntity = MapFromForm(entityForm);
+            var formEntity = Mapper.Map<TFormEntity>(entityForm);
 
             var createdEntity = await Mediator.Send(new CreateCommand(formEntity));
 
@@ -81,7 +66,9 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, TForm entityForm)
         {
-            var formEntity = MapFromForm(entityForm);
+            var formEntity = (TFormEntity) await Mediator.Send(new GetByIdQuery(id, QueryBuilder));
+            
+            formEntity = Mapper.Map(entityForm, formEntity);
 
             await Mediator.Send(new UpdateCommand(id, formEntity));
 
