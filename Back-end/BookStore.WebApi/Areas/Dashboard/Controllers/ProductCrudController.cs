@@ -14,6 +14,7 @@ using BookStore.Application.Services.DbQueryBuilders;
 using BookStore.Application.DbQueryConfigs.IncludeRequirements;
 using BookStore.Application.Queries;
 using BookStore.WebApi.Areas.Dashboard.ViewModels.Forms;
+using BookStore.Domain.Entities;
 
 namespace BookStore.WebApi.Areas.Dashboard.Controllers
 {
@@ -38,15 +39,13 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
                 .ToArray();
         }
 
-        public override async Task<ActionResult<TForm>> Read(int id)
+        protected override async Task<TProduct> ReadById(int id)
         {
             QueryBuilder.AddIncludeRequirements(new ProductAlbumIncludeRequirement<TProduct>());
 
             IncludeRelatedEntities(QueryBuilder);
 
-            var product = (Product)await Mediator.Send(new GetByIdQuery(id, QueryBuilder));
-            
-            return Ok(Mapper.Map<TForm>(product));
+            return (TProduct) await Mediator.Send(new GetByIdQuery(id, QueryBuilder));
         }
 
         protected abstract void IncludeRelatedEntities(DbFormEntityQueryBuilder<TProduct> queryBuilder);

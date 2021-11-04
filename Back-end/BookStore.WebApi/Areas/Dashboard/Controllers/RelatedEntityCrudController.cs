@@ -37,10 +37,9 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
                 .ToArray();
         }
 
-        public override async Task<ActionResult<RelatedEntityForm>> Read(int id)
+        protected override async Task<T> ReadById(int id)
         {
-            var relatedEntity = (RelatedEntity)await Mediator.Send(new GetByIdQuery(id, QueryBuilder));
-            return Ok(Mapper.Map<RelatedEntityForm>(relatedEntity));
+            return (T) await Mediator.Send(new GetByIdQuery(id, QueryBuilder));
         }
 
         [HttpGet("name-existed")]
