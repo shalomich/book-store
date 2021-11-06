@@ -2,7 +2,7 @@
   <mat-label>Сортировка</mat-label>
   <mat-select multiple>
     <ng-container *ngFor="let item of propertyNamesWithText" >
-      <mat-option [value]="item[1]" (onSelectionChange)="onOptionChanged($event)">
+      <mat-option [value]="{propertyName: item[1], isAscending: true}" (onSelectionChange)="onOptionChanged($event)">
         {{item[0]}}
       </mat-option>
       <button mat-button (click)="onOrderButtonClick(item[1])">
