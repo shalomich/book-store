@@ -33,7 +33,7 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
 
   public readonly ageLimits$: Observable<RelatedEntity[]>;
 
-  public readonly propertyNamesWithText: Array<[string,string]> = [["По имени", "name"], ["По цене", "cost"]]
+  public readonly propertyNamesWithText: Array<[string,string]> = [["По имени", "name"], ["По цене", "cost"], ["По дате добавления", "addingDate"]]
 
   public constructor(
     private readonly bookService: BookService,
