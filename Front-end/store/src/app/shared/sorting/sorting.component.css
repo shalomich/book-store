@@ -1,0 +1,31 @@
+.mat-pseudo-checkbox {
+  border: none !important;
+}
+
+.mat-option-multiple:before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 12px;
+  width: 16px; height: 16px;
+  border: 1px solid #aaa;
+  background: #f8f8f8;
+  border-radius: 3px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.3);
+  z-index: 1;
+}
+
+.mat-selected:before {
+  content: attr(data-number) !important;
+  font-size: 14px;
+  color: purple;
+}
+.mat-pseudo-checkbox-checked:after {
+  transform: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  border-left: none !important;
+}
+
+
+

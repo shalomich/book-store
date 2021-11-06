@@ -3,11 +3,13 @@ import {MatSelectChange} from "@angular/material/select";
 import {SortingOptions} from "../../core/interfaces/sorting-options";
 import {BehaviorSubject} from "rxjs";
 import {MatOptionSelectionChange} from "@angular/material/core";
+import { ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'sorting',
   templateUrl: './sorting.component.html',
-  styleUrls: ['./sorting.component.css']
+  styleUrls: ['./sorting.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SortingComponent {
 
