@@ -4,18 +4,13 @@ import { MatSelectChange } from '@angular/material/select';
 
 import { Observable, Subject } from 'rxjs';
 
-import { Comparison } from '../../../core/utils/comparison';
-
 import { RelatedEntity } from '../../../core/models/related-entity';
-import { FilterOptions } from '../../../core/interfaces/filter-options';
 
 @Component({
   selector: 'app-plenty-filter',
   templateUrl: './plenty-filter.component.html',
 })
 export class PlentyFilterComponent implements OnInit {
-
-  private readonly comparison = Comparison.Equal;
 
   @Input()
   public propertyName = '';
@@ -24,19 +19,21 @@ export class PlentyFilterComponent implements OnInit {
   public relatedEntities$: Observable<RelatedEntity[]> = new Observable<[]>() ;
 
   @Input()
-  public filterOptions$ = new Subject<FilterOptions>();
+  public filterOptions: Map<string, string> = new Map<string, string>();
 
-  public constructor() {}
+  public constructor() {
+  }
 
   public onSelectChanged(event: MatSelectChange) {
     const values = event.value as number[];
 
-    this.filterOptions$.next({
-      propertyName: this.propertyName,
-      value: values.toString(),
-      comparison: this.comparison,
-    });
+    if (!values.length) {
+      this.filterOptions.delete(this.propertyName);
+    } else {
+      this.filterOptions.set(this.propertyName, values.toString());
+    }
   }
+
 
   public ngOnInit(): void {
     if (!this.propertyName || !this.relatedEntities$) {

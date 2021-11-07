@@ -1,10 +1,10 @@
-import {Component, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 
 import { map, switchMap } from 'rxjs/operators';
 
-import { PaginationControlsComponent, PaginationInstance } from 'ngx-pagination';
+import { PaginationInstance } from 'ngx-pagination';
 
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
@@ -14,7 +14,7 @@ import { PaginationOptions } from '../core/interfaces/pagination-options';
 import { ProductParamsBuilderService } from '../core/services/product-params-builder.service';
 import { ProductPreview } from '../core/models/product-preview';
 import { PAGE_NUMBER, PAGE_SIZE } from '../core/utils/values';
-import { FilterOptions } from '../core/interfaces/filter-options';
+import {RelatedEntity} from '../core/models/related-entity';
 
 @AutoUnsubscribe()
 @Component({
@@ -39,13 +39,25 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
     pageNumber: PAGE_NUMBER,
   });
 
-  public readonly filterOptions$: Subject<FilterOptions> = new Subject<FilterOptions>();
+  public readonly filterOptions: Map<string, string> = new Map<string, string>();
+
+  public readonly genres$: Observable<RelatedEntity[]>;
+  public readonly authors$: Observable<RelatedEntity[]>;
+  public readonly bookTypes$: Observable<RelatedEntity[]>;
+  public readonly publishers$: Observable<RelatedEntity[]>;
+  public readonly coverArts$: Observable<RelatedEntity[]>;
+  public readonly ageLimits$: Observable<RelatedEntity[]>;
 
   public constructor(
-    private readonly bookService: BookService,
+    public readonly bookService: BookService,
     private readonly productParamsBuilderService: ProductParamsBuilderService,
   ) {
-    this.applyFilters = this.applyFilters.bind(this);
+    this.genres$ = this.bookService.getRelatedEntity('genre');
+    this.bookTypes$ = this.bookService.getRelatedEntity('type');
+    this.ageLimits$ = this.bookService.getRelatedEntity('age-limit');
+    this.coverArts$ = this.bookService.getRelatedEntity('cover-art');
+    this.authors$ = this.bookService.getRelatedEntity('author');
+    this.publishers$ = this.bookService.getRelatedEntity('publisher');
 
     this.books$ = this.paginationOptions$.asObservable().pipe(
       switchMap(pagination => {
@@ -62,7 +74,6 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
         this.productParamsBuilderService.setPaging(options);
         return this.bookService.getQuantity(this.productParamsBuilderService.params);
       }),
-
     )
       .subscribe(quantity => {
       this.config.totalItems = quantity;
@@ -80,12 +91,7 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
   }
 
   public applyFilters() {
-    this.books$ = this.filterOptions$.asObservable()
-      .pipe(
-        switchMap(filter => {
-          this.productParamsBuilderService.addFilter(filter);
-          return this.bookService.get(this.productParamsBuilderService.params);
-        }),
-      );
+    this.productParamsBuilderService.setFilter(this.filterOptions);
+    this.books$ = this.bookService.get(this.productParamsBuilderService.params);
   }
 }
