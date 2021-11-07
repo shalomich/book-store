@@ -1,5 +1,14 @@
-<div>
-  <app-book-filter [onApply]="applyFilters"></app-book-filter>
+<div class="page-block">
+  <div class="filter-block">
+    <app-range-filter class="filter-elem" propertyName="cost" [filterOptions]="filterOptions"></app-range-filter>
+    <app-plenty-filter class="filter-elem" propertyName="genreIds" [relatedEntities$]="genres$" [filterOptions]="filterOptions"></app-plenty-filter>
+    <app-plenty-filter class="filter-elem" propertyName="authorId" [relatedEntities$]="authors$" [filterOptions]="filterOptions"></app-plenty-filter>
+    <app-plenty-filter class="filter-elem" propertyName="publisherId" [relatedEntities$]="publishers$" [filterOptions]="filterOptions"></app-plenty-filter>
+    <app-plenty-filter class="filter-elem" propertyName="typeId" [relatedEntities$]="bookTypes$" [filterOptions]="filterOptions"></app-plenty-filter>
+    <app-plenty-filter class="filter-elem" propertyName="ageLimitId" [relatedEntities$]="ageLimits$" [filterOptions]="filterOptions"></app-plenty-filter>
+    <app-plenty-filter class="filter-elem" propertyName="coverArtId" [relatedEntities$]="coverArts$" [filterOptions]="filterOptions"></app-plenty-filter>
+    <button (click)="applyFilters()">Применить</button>
+  </div>
   <div class="books-list">
     <app-product-list-item *ngFor="let book of (books$ | async)! | paginate: config"
                            [item]="book">

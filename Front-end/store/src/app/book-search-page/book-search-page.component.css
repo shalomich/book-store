@@ -23,3 +23,16 @@
   padding: 0;
   font-size: 1.2em;
 }
+
+.page-block {
+  display: flex;
+}
+
+.filter-block {
+  display: inline;
+  margin: 1em;
+}
+
+.filter-elem {
+  display: block;
+}

@@ -38,6 +38,7 @@ export class BookService {
   }
 
   public get(params?: HttpParams): Observable<ProductPreview[]> {
+    console.log(params);
     return this.http.get<ProductPreviewDto[]>(`${PRODUCT_URL}${this.type}`, { params }).pipe(
       map(books => books.map(book => this.productPreviewMapper.fromDto(book))),
     );

@@ -1,16 +1,11 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 import { FormControl } from '@angular/forms';
 
-import { combineLatest, Subject } from 'rxjs';
-
-import { startWith } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
-import { Comparison } from '../../../core/utils/comparison';
-
-import { FilterOptions } from '../../../core/interfaces/filter-options';
 
 @AutoUnsubscribe()
 @Component({
@@ -19,13 +14,9 @@ import { FilterOptions } from '../../../core/interfaces/filter-options';
 })
 export class RangeFilterComponent implements OnInit, OnDestroy {
 
-  public readonly lowBoundComparison = Comparison.EqualOrMore;
-
-  public readonly highBoundComparison = Comparison.EqualOrLess;
-
   @Input() propertyName = '';
 
-  @Input() filterOptions$ = new Subject<FilterOptions>();
+  @Input() filterOptions = new Map<string, string>();
 
   public readonly lowerBound: FormControl = new FormControl();
 
@@ -37,17 +28,11 @@ export class RangeFilterComponent implements OnInit, OnDestroy {
       this.upperBound.valueChanges,
     ])
       .subscribe(data => {
-        this.filterOptions$.next({
-          propertyName: this.propertyName,
-          value: data[0].toString(),
-          comparison: this.lowBoundComparison,
-        });
-
-        this.filterOptions$.next({
-          propertyName: this.propertyName,
-          value: data[1].toString(),
-          comparison: this.highBoundComparison,
-        });
+        if (data[0] === null || data[1] === null) {
+          this.filterOptions.delete(this.propertyName);
+        } else {
+          this.filterOptions.set(this.propertyName, `${data[0]}...${data[1]}`);
+        }
       });
 
   }

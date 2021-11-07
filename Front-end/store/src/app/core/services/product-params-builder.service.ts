@@ -2,15 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 
 import { PaginationOptions } from '../interfaces/pagination-options';
-import { Comparison } from '../utils/comparison';
-import { FilterOptions } from '../interfaces/filter-options';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductParamsBuilderService {
-
-  private readonly filterProperties: Array<[string, Comparison]> = new Array<[string, Comparison]>();
 
   private _params = new HttpParams();
 
@@ -25,32 +21,15 @@ export class ProductParamsBuilderService {
     return this;
   }
 
-  public addFilter(filerParams: FilterOptions) {
-    const { propertyName, value, comparison } = filerParams;
+  public setFilter(filerParams: Map<string, string>) {
+    console.log(filerParams);
+    const options = Array.from(filerParams, ([name, value]) => ({ name, value }));
 
-    const filterDataPredicate = (filterData: [string, Comparison]): boolean => {
-      const [filteredPropertyName, filteredComparison] = filterData;
-      return filteredPropertyName === propertyName && filteredComparison === comparison;
-    };
-
-    if (!this.filterProperties.find(filterDataPredicate)) {
-      this.filterProperties.push([propertyName, comparison]);
-    }
-
-    const filterNumber = this.filterProperties.findIndex(filterDataPredicate);
-
-    const propertyNameParamName = `filters[${filterNumber}].propertyName`;
-    const valueParamName = `filters[${filterNumber}].comparedValue`;
-    const comparisonParamName = `filters[${filterNumber}].comparison`;
-
-    if (value) {
-      this._params = this._params.set(propertyNameParamName, propertyName);
-      this._params = this._params.set(valueParamName, value);
-      this._params = this._params.set(comparisonParamName, comparison);
-    } else {
-      this._params = this._params.delete(propertyNameParamName);
-      this._params = this._params.delete(valueParamName);
-      this._params = this._params.delete(comparisonParamName);
-    }
+    options.forEach((option, index) => {
+      const propertyNameParamName = `filters[${index}].propertyName`;
+      const valueParamName = `filters[${index}].comparedValue`;
+      this._params = this._params.set(propertyNameParamName, option.name);
+      this._params = this._params.set(valueParamName, option.value);
+    });
   }
 }
