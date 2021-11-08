@@ -16,6 +16,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
+import {FilterGroupComponent} from "./filters/filter-group/filter-group.component";
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import {MatInputModule} from '@angular/material/input';
     ProductListItemComponent,
     RangeFilterComponent,
     PlentyFilterComponent,
+    FilterGroupComponent
   ],
   exports: [
     ProductImagesComponent,
@@ -32,6 +34,7 @@ import {MatInputModule} from '@angular/material/input';
     ProductListItemComponent,
     RangeFilterComponent,
     PlentyFilterComponent,
+    FilterGroupComponent
   ],
     imports: [
         CommonModule,

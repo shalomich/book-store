@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 
 import { PaginationOptions } from '../interfaces/pagination-options';
+import { FilterOptions } from '../interfaces/filter-options';
+import {BehaviorSubject} from "rxjs";
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +11,25 @@ import { PaginationOptions } from '../interfaces/pagination-options';
 export class ProductParamsBuilderService {
 
   private _params = new HttpParams();
+
+  public filterOptions$: BehaviorSubject<FilterOptions> = new BehaviorSubject<FilterOptions>(
+  {
+    values: {}
+  });
+
+  public onParamsChanged: ((params: HttpParams) => void) = params => {};
+
+  constructor() {
+    this.filterOptions$.asObservable()
+      .subscribe( options =>
+      {
+          this.onParamsChanged(this.buildParams());
+      });
+  }
+
+  private buildParams(): HttpParams {
+    return this.buildFilters(this._params);
+  }
 
   public get params() {
     return this._params;
@@ -21,15 +42,16 @@ export class ProductParamsBuilderService {
     return this;
   }
 
-  public setFilter(filerParams: Map<string, string>) {
-    console.log(filerParams);
-    const options = Array.from(filerParams, ([name, value]) => ({ name, value }));
+  public buildFilters(params: HttpParams): HttpParams {
 
-    options.forEach((option, index) => {
-      const propertyNameParamName = `filters[${index}].propertyName`;
-      const valueParamName = `filters[${index}].comparedValue`;
-      this._params = this._params.set(propertyNameParamName, option.name);
-      this._params = this._params.set(valueParamName, option.value);
-    });
+    const filterValues = this.filterOptions$.value.values;
+
+    Object.entries(filterValues).map(([propertyName, value], index) =>
+    {
+      params = params.set(`filters[${index}].propertyName`, propertyName);
+      params = params.set(`filters[${index}].comparedValue`, value);
+    })
+
+    return params;
   }
 }

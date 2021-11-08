@@ -16,8 +16,7 @@ namespace BookStore.Application.DbQueryConfigs.DataTransformersConfigs
             CreateSorting(nameof(Product.Cost), book => book.Cost);
             CreateSorting(nameof(Product.AddingDate), book => book.AddingDate);
 
-            CreateRangeFilter("cost", book => book.Cost);
-            CreateRangeFilter("quantity", book => book.Quantity);
+            CreateRangeFilter(nameof(Product.Cost), book => book.Cost);
             
             CreateSearch(nameof(Product.Name), entity => entity.Name);
         }

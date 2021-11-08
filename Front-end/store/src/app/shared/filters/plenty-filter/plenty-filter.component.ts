@@ -5,33 +5,37 @@ import { MatSelectChange } from '@angular/material/select';
 import { Observable, Subject } from 'rxjs';
 
 import { RelatedEntity } from '../../../core/models/related-entity';
+import { FilterOptions } from '../../../core/interfaces/filter-options';
+import {FilterComponent} from "../filter-component";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-plenty-filter',
   templateUrl: './plenty-filter.component.html',
+  providers: [ {provide: FilterComponent, useExisting: PlentyFilterComponent }]
 })
-export class PlentyFilterComponent implements OnInit {
+export class PlentyFilterComponent extends FilterComponent implements OnInit {
+
+  public readonly idsControl: FormControl = new FormControl();
 
   @Input()
-  public propertyName = '';
+  public propertyName: string = '';
 
   @Input()
-  public relatedEntities$: Observable<RelatedEntity[]> = new Observable<[]>() ;
+  public relatedEntities$: Observable<RelatedEntity[]> = new Observable<[]>();
 
-  @Input()
-  public filterOptions: Map<string, string> = new Map<string, string>();
+  public getValue(): string | null {
 
-  public constructor() {
+    const ids = this.idsControl.value as number[];
+
+    if (ids)
+      return ids.toString();
+
+    return null;
   }
 
-  public onSelectChanged(event: MatSelectChange) {
-    const values = event.value as number[];
-
-    if (!values.length) {
-      this.filterOptions.delete(this.propertyName);
-    } else {
-      this.filterOptions.set(this.propertyName, values.toString());
-    }
+  public reset(): void {
+    this.idsControl.reset();
   }
 
 
