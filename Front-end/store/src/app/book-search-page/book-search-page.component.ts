@@ -39,8 +39,6 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
     pageNumber: PAGE_NUMBER,
   });
 
-  public readonly filterOptions: Map<string, string> = new Map<string, string>();
-
   public readonly genres$: Observable<RelatedEntity[]>;
   public readonly authors$: Observable<RelatedEntity[]>;
   public readonly bookTypes$: Observable<RelatedEntity[]>;
@@ -50,7 +48,7 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
 
   public constructor(
     public readonly bookService: BookService,
-    private readonly productParamsBuilderService: ProductParamsBuilderService,
+    public readonly productParamsBuilderService: ProductParamsBuilderService,
   ) {
     this.genres$ = this.bookService.getRelatedEntity('genre');
     this.bookTypes$ = this.bookService.getRelatedEntity('type');
@@ -66,6 +64,8 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
         return this.bookService.get(this.productParamsBuilderService.params);
       }),
     );
+
+    this.genres$ = bookService.getRelatedEntity('genre');
   }
 
   public ngOnInit(): void {
@@ -78,6 +78,10 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
       .subscribe(quantity => {
       this.config.totalItems = quantity;
     });
+
+    this.productParamsBuilderService.onParamsChanged = params => {
+      this.books$ = this.bookService.get(params);
+    }
   }
 
   public ngOnDestroy() {
@@ -88,10 +92,5 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
       pageSize: PAGE_SIZE,
       pageNumber: number,
     });
-  }
-
-  public applyFilters() {
-    this.productParamsBuilderService.setFilter(this.filterOptions);
-    this.books$ = this.bookService.get(this.productParamsBuilderService.params);
   }
 }

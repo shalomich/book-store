@@ -7,34 +7,36 @@ import { combineLatest } from 'rxjs';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
 
+import { FilterOptions } from '../../../core/interfaces/filter-options';
+import {FilterComponent} from "../filter-component";
+
 @AutoUnsubscribe()
 @Component({
   selector: 'app-range-filter',
   templateUrl: './range-filter.component.html',
+  providers: [ {provide: FilterComponent, useExisting: RangeFilterComponent }]
 })
-export class RangeFilterComponent implements OnInit, OnDestroy {
+export class RangeFilterComponent extends FilterComponent implements OnInit, OnDestroy {
 
-  @Input() propertyName = '';
+  @Input() propertyName: string = '';
 
-  @Input() filterOptions = new Map<string, string>();
+  public readonly lowerBoundControl: FormControl = new FormControl();
 
-  public readonly lowerBound: FormControl = new FormControl();
+  public readonly upperBoundControl: FormControl = new FormControl();
 
-  public readonly upperBound: FormControl = new FormControl();
+  public getValue(): string | null {
+    const lowerBoundValue = this.lowerBoundControl.value as number;
+    const highBoundValue = this.upperBoundControl.value as number;
 
-  public constructor() {
-    combineLatest([
-      this.lowerBound.valueChanges,
-      this.upperBound.valueChanges,
-    ])
-      .subscribe(data => {
-        if (data[0] === null || data[1] === null) {
-          this.filterOptions.delete(this.propertyName);
-        } else {
-          this.filterOptions.set(this.propertyName, `${data[0]}...${data[1]}`);
-        }
-      });
+    if (!lowerBoundValue && !highBoundValue)
+      return null;
 
+    return `${lowerBoundValue ?? ''}...${highBoundValue ?? ''}`;
+  }
+
+  public reset(): void {
+    this.lowerBoundControl.reset();
+    this.upperBoundControl.reset();
   }
 
   public ngOnInit(): void {
