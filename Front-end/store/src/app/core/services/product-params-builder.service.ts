@@ -38,10 +38,11 @@ export class ProductParamsBuilderService {
     this.filterOptions$.asObservable()
       .subscribe( options =>
       {
+        this.resetPaging();
+
         const params = this.buildParams();
         this.changePageCount(params)
           .subscribe(pageCount => this.pageCount$.next(pageCount));
-        this.onParamsChanged(params);
       });
 
     this.paginationOptions$.asObservable()
@@ -53,11 +54,22 @@ export class ProductParamsBuilderService {
     this.searchOptions$.asObservable()
       .subscribe( options =>
       {
+        this.resetPaging();
+
         const params = this.buildParams();
         this.changePageCount(params)
           .subscribe(pageCount => this.pageCount$.next(pageCount));
-        this.onParamsChanged(params);
       });
+  }
+
+  private resetPaging(): void {
+    const pageSize = this.paginationOptions$.value.pageSize;
+
+    this.paginationOptions$.next(
+      {
+        pageSize: pageSize,
+        pageNumber: 1
+      })
   }
 
   private buildParams(): HttpParams {

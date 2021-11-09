@@ -19,6 +19,8 @@ import {MatInputModule} from '@angular/material/input';
 import {FilterGroupComponent} from "./filters/filter-group/filter-group.component";
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatIconModule} from '@angular/material/icon';
+import {PaginationPanelComponent} from "./pagination-panel/pagination-panel.component";
+import {NgxPaginationModule} from "ngx-pagination";
 
 
 @NgModule({
@@ -28,7 +30,8 @@ import {MatIconModule} from '@angular/material/icon';
     ProductListItemComponent,
     RangeFilterComponent,
     PlentyFilterComponent,
-    FilterGroupComponent
+    FilterGroupComponent,
+    PaginationPanelComponent
   ],
   exports: [
     ProductImagesComponent,
@@ -36,7 +39,8 @@ import {MatIconModule} from '@angular/material/icon';
     ProductListItemComponent,
     RangeFilterComponent,
     PlentyFilterComponent,
-    FilterGroupComponent
+    FilterGroupComponent,
+    PaginationPanelComponent
   ],
   imports: [
     CommonModule,
@@ -48,6 +52,8 @@ import {MatIconModule} from '@angular/material/icon';
     MatInputModule,
     MatExpansionModule,
     MatIconModule,
-  ],
+    MatInputModule,
+    NgxPaginationModule
+  ]
 })
 export class SharedModule { }

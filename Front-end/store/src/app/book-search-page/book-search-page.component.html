@@ -9,21 +9,16 @@
     </filter-group>
 
   <div class="books-list">
-    <app-product-list-item *ngFor="let book of (books$ | async)! | paginate: config"
+    <app-product-list-item *ngFor="let book of (books$ | async)! | paginate: panel.config"
                            [item]="book">
     </app-product-list-item>
   </div>
 </div>
-
 <div class="pagination-block">
-  <pagination-controls class="custom-pagination" id="paginationPanel"
-                       [maxSize]="7"
-                       nextLabel=""
-                       previousLabel=""
-                       [autoHide]="true"
-                       [responsive]="true"
-                       (pageChange)="onPageChanged($event)">
-  </pagination-controls>
+  <pagination-panel [pageCount$]="productParamsBuilderService.pageCount$"
+                    [paginationOptions$]="productParamsBuilderService.paginationOptions$"
+                    #panel>
+  </pagination-panel>
 </div>
 
 
