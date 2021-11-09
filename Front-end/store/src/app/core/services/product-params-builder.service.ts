@@ -1,48 +1,84 @@
-import { Injectable } from '@angular/core';
+import {Injectable, Input} from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 
 import { PaginationOptions } from '../interfaces/pagination-options';
 import { FilterOptions } from '../interfaces/filter-options';
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
+import {PAGE_SIZE} from "../utils/values";
+import {SearchOptions} from "../interfaces/search-options";
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductParamsBuilderService {
 
-  private _params = new HttpParams();
+  public paginationOptions$: BehaviorSubject<PaginationOptions> = new BehaviorSubject<PaginationOptions>({
+    pageNumber: 1,
+    pageSize: PAGE_SIZE
+  });
+
+  public pageCount$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   public filterOptions$: BehaviorSubject<FilterOptions> = new BehaviorSubject<FilterOptions>(
   {
     values: {}
   });
 
-  public onParamsChanged: ((params: HttpParams) => void) = params => {};
+  public searchOptions$: BehaviorSubject<SearchOptions> = new BehaviorSubject<SearchOptions>(
+    {
+      propertyName: '',
+      value: '',
+      searchDepth: 0
+    });
+
+  public onParamsChanged: (params: HttpParams) => void = params => {};
+  public changePageCount: (params: HttpParams) => Observable<number> = params => new Observable<number>();
 
   constructor() {
     this.filterOptions$.asObservable()
       .subscribe( options =>
       {
-          this.onParamsChanged(this.buildParams());
+        const params = this.buildParams();
+        this.changePageCount(params)
+          .subscribe(pageCount => this.pageCount$.next(pageCount));
+        this.onParamsChanged(params);
+      });
+
+    this.paginationOptions$.asObservable()
+      .subscribe( options =>
+      {
+        this.onParamsChanged(this.buildParams());
+      });
+
+    this.searchOptions$.asObservable()
+      .subscribe( options =>
+      {
+        const params = this.buildParams();
+        this.changePageCount(params)
+          .subscribe(pageCount => this.pageCount$.next(pageCount));
+        this.onParamsChanged(params);
       });
   }
 
   private buildParams(): HttpParams {
-    return this.buildFilters(this._params);
+    let params = new HttpParams();
+
+    params = this.buildFilters(params);
+    params = this.buildSearch(params);
+
+    return this.buildPaging(params);
   }
 
-  public get params() {
-    return this._params;
+  private buildPaging(params: HttpParams): HttpParams {
+    const {pageNumber, pageSize} = this.paginationOptions$.value
+
+    params = params.set('pageSize', pageSize);
+    params = params.set('pageNumber', pageNumber);
+
+    return params;
   }
 
-  public setPaging(paginationOptions: PaginationOptions): ProductParamsBuilderService {
-    this._params = this._params.set('pageSize', paginationOptions.pageSize);
-    this._params = this._params.set('pageNumber', paginationOptions.pageNumber);
-
-    return this;
-  }
-
-  public buildFilters(params: HttpParams): HttpParams {
+  private buildFilters(params: HttpParams): HttpParams {
 
     const filterValues = this.filterOptions$.value.values;
 
@@ -52,6 +88,10 @@ export class ProductParamsBuilderService {
       params = params.set(`filters[${index}].comparedValue`, value);
     })
 
+    return params;
+  }
+
+  private buildSearch(params: HttpParams): HttpParams {
     return params;
   }
 }
