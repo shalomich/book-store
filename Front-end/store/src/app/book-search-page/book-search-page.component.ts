@@ -4,8 +4,6 @@ import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 
 import { map, switchMap } from 'rxjs/operators';
 
-import { PaginationInstance } from 'ngx-pagination';
-
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
 import { BookService } from '../core/services/book.service';
@@ -25,19 +23,7 @@ import { RelatedEntity } from '../core/models/related-entity';
 })
 export class BookSearchPageComponent implements OnInit, OnDestroy {
 
-  public books$: Observable<ProductPreview[]>;
-
-  public config: PaginationInstance = {
-    id: 'paginationPanel',
-    itemsPerPage: PAGE_SIZE,
-    currentPage: PAGE_NUMBER,
-    totalItems: 0,
-  };
-
-  public readonly paginationOptions$: BehaviorSubject<PaginationOptions> = new BehaviorSubject<PaginationOptions>({
-    pageSize: PAGE_SIZE,
-    pageNumber: PAGE_NUMBER,
-  });
+  public books$: Observable<ProductPreview[]> = new Observable<ProductPreview[]>();
 
   public readonly genres$: Observable<RelatedEntity[]>;
 
@@ -61,41 +47,25 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
     this.coverArts$ = this.bookService.getRelatedEntity('cover-art');
     this.authors$ = this.bookService.getRelatedEntity('author');
     this.publishers$ = this.bookService.getRelatedEntity('publisher');
-
-    this.books$ = this.paginationOptions$.asObservable().pipe(
-      switchMap(pagination => {
-        this.productParamsBuilderService.setPaging(pagination);
-        this.config.currentPage = pagination.pageNumber;
-        return this.bookService.get(this.productParamsBuilderService.params);
-      }),
-    );
-
-    this.genres$ = bookService.getRelatedEntity('genre');
   }
 
   public ngOnInit(): void {
-    this.paginationOptions$.asObservable().pipe(
-      switchMap(options => {
-        this.productParamsBuilderService.setPaging(options);
-        return this.bookService.getQuantity(this.productParamsBuilderService.params);
-      }),
-    )
-      .subscribe(quantity => {
-      this.config.totalItems = quantity;
-    });
+
+    this.productParamsBuilderService.changePageCount = params => {
+      return this.bookService.getQuantity(params);
+    }
 
     this.productParamsBuilderService.onParamsChanged = params => {
       this.books$ = this.bookService.get(params);
-    };
+    }
+
+    this.productParamsBuilderService.searchOptions$.next({
+      propertyName: 'non-existent property name',
+      value: 'useless value',
+      searchDepth: 0
+    });
   }
 
   public ngOnDestroy() {
-  }
-
-  public onPageChanged(number: number): void {
-    this.paginationOptions$.next({
-      pageSize: PAGE_SIZE,
-      pageNumber: number,
-    });
   }
 }

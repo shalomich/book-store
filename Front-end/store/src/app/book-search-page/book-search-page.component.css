@@ -18,13 +18,6 @@
   margin-bottom: 0 !important;
 }
 
-.custom-pagination {
-  border: 0.1em gray solid;
-  border-radius: 0.4em;
-  padding: 0;
-  font-size: 1.2em;
-}
-
 .page-block {
   display: flex;
 }
