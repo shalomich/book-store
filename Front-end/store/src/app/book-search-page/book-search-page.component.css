@@ -1,5 +1,5 @@
 .books-list {
-  display: flex;
+  display: block;
   margin-left: 3vw;
   margin-top: 3em;
 }
@@ -29,4 +29,8 @@
 
 .filter-elem {
   display: block;
+}
+
+.pagination-panel {
+  display: flex;
 }
