@@ -2,25 +2,25 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 import { FormControl } from '@angular/forms';
 
-import { combineLatest } from 'rxjs';
-
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
-
-import { FilterOptions } from '../../../core/interfaces/filter-options';
-import {FilterComponent} from "../filter-component";
+import { FilterComponent } from '../filter-component';
 
 @AutoUnsubscribe()
 @Component({
   selector: 'app-range-filter',
   templateUrl: './range-filter.component.html',
-  providers: [ {provide: FilterComponent, useExisting: RangeFilterComponent }]
+  styleUrls: ['./range-filter.component.css'],
+  providers: [{ provide: FilterComponent, useExisting: RangeFilterComponent }],
 })
 export class RangeFilterComponent extends FilterComponent implements OnInit, OnDestroy {
 
-  @Input() propertyName: string = '';
-
   public readonly lowerBoundControl: FormControl = new FormControl();
+
+  @Input()
+  public label = '';
+
+  @Input() propertyName = '';
 
   public readonly upperBoundControl: FormControl = new FormControl();
 
@@ -28,8 +28,9 @@ export class RangeFilterComponent extends FilterComponent implements OnInit, OnD
     const lowerBoundValue = this.lowerBoundControl.value as number;
     const highBoundValue = this.upperBoundControl.value as number;
 
-    if (!lowerBoundValue && !highBoundValue)
+    if (!lowerBoundValue && !highBoundValue) {
       return null;
+    }
 
     return `${lowerBoundValue ?? ''}...${highBoundValue ?? ''}`;
   }

@@ -1,6 +1,15 @@
 <ng-container>
-  <ng-content></ng-content>
-  <button (click)="applyFilters()">Применить</button>
-  <button (click)="resetFilters()">Сбросить</button>
+  <div class="filters-block">
+    <mat-expansion-panel class="filters-panel">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Фильтры &nbsp; <mat-icon>filter_list</mat-icon></mat-panel-title>
+      </mat-expansion-panel-header>
+      <ng-content></ng-content>
+      <mat-action-row>
+        <button class="apply-button" mat-stroked-button color="primary" (click)="applyFilters()">Применить</button>
+        <button mat-stroked-button color="warn" (click)="resetFilters()">Сбросить</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </div>
 </ng-container>
 

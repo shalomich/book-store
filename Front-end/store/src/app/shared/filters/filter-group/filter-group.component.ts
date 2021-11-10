@@ -1,18 +1,17 @@
-import {Component, ContentChildren, EventEmitter, Input, OnInit, Output, QueryList} from '@angular/core';
+import { Component, ContentChildren, Input, QueryList, ViewEncapsulation } from '@angular/core';
 
-import { MatSelectChange } from '@angular/material/select';
+import { BehaviorSubject } from 'rxjs';
 
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import * as objectHash from 'object-hash';
 
-import { RelatedEntity } from '../../../core/models/related-entity';
 import { FilterOptions } from '../../../core/interfaces/filter-options';
-import {FilterComponent} from "../filter-component";
-import {filter} from "rxjs/operators";
-import * as objectHash from 'object-hash'
+import { FilterComponent } from '../filter-component';
 
 @Component({
   selector: 'filter-group',
   templateUrl: './filter-group.component.html',
+  styleUrls: ['./filter-group.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class FilterGroupComponent {
 
@@ -26,21 +25,23 @@ export class FilterGroupComponent {
 
     const filterValues: any = {};
 
-    for (let filterComponent of this.filterComponents) {
+    for (const filterComponent of this.filterComponents) {
       const filterValue = filterComponent.getValue();
-      if (filterValue)
+      if (filterValue) {
         filterValues[filterComponent.propertyName] = filterValue;
+      }
     }
 
     const newStateHash = objectHash(filterValues);
 
-    if (newStateHash === this.currentStateHash)
+    if (newStateHash === this.currentStateHash) {
       return;
+    }
 
     this.currentStateHash = newStateHash;
 
     this.filterOptions.next({
-      values: filterValues as object
+      values: filterValues as object,
     });
   }
 
@@ -50,16 +51,18 @@ export class FilterGroupComponent {
 
     const newStateHash = objectHash(filterValues);
 
-    if (newStateHash === this.currentStateHash)
+    if (newStateHash === this.currentStateHash) {
       return;
+    }
 
-    for (let filterComponent of this.filterComponents)
+    for (const filterComponent of this.filterComponents) {
       filterComponent.reset();
+    }
 
     this.currentStateHash = newStateHash;
 
     this.filterOptions.next({
-      values: filterValues
+      values: filterValues,
     });
   }
 

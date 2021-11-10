@@ -1,0 +1,8 @@
+.range-start {
+  margin-right: 0.4em;
+}
+
+.range-start, .range-end {
+  width: 10em;
+  font-size: 0.8em;
+}
