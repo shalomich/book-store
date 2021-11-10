@@ -38,11 +38,14 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         protected abstract void IncludeRelatedEntities();
 
         [HttpGet]
-        public async Task<ActionResult<ProductCard[]>> GetCards([FromQuery] QueryTransformArgs transformArgs, [FromQuery] PaggingArgs paggingArgs)
+        public async Task<ActionResult<ProductCard[]>> GetCards([FromQuery] FilterArgs[] filters, [FromQuery] SortingArgs[] sortings, 
+            [FromQuery] SearchArgs search, [FromQuery] PaggingArgs pagging)
         {
             ProductQueryBuilder
-                .AddDataTransformation(transformArgs)
-                .AddPagging(paggingArgs)
+                .AddFilters(filters)
+                .AddSortings(sortings)
+                .AddSearch(search)
+                .AddPagging(pagging)
                 .AddIncludeRequirements(new ProductAlbumIncludeRequirement<T>());
 
             var products = await Mediator.Send(new GetQuery(ProductQueryBuilder));
@@ -67,9 +70,11 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpHead]
-        public async Task GetPaggingMetadata([FromQuery] QueryTransformArgs transformArgs, [FromQuery] PaggingArgs paggingArgs)
+        public async Task GetPaggingMetadata([FromQuery] FilterArgs[] filterArgs, [FromQuery] SearchArgs searchArgs, [FromQuery] PaggingArgs paggingArgs)
         {
-            ProductQueryBuilder.AddDataTransformation(transformArgs);
+            ProductQueryBuilder
+                .AddFilters(filterArgs)
+                .AddSearch(searchArgs);
 
             var metadata = await Mediator.Send(new GetMetadataQuery(paggingArgs, ProductQueryBuilder));
             
