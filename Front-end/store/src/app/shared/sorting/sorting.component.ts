@@ -4,6 +4,7 @@ import {SortingOptions} from "../../core/interfaces/sorting-options";
 import {BehaviorSubject} from "rxjs";
 import {_MatOptionBase, MatOptionSelectionChange} from "@angular/material/core";
 import { ViewEncapsulation } from '@angular/core';
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'sorting',
@@ -15,10 +16,12 @@ export class SortingComponent {
 
   private readonly numberAttribute = 'data-number';
 
+  private checkedOptions: Array<_MatOptionBase> = [];
+
+  public readonly sortingSelectControl: FormControl = new FormControl();
+
   @Input() propertyNamesWithText: Array<[string, string]> = [];
   @Input() sortingOptions$: BehaviorSubject<Array<SortingOptions>> = new BehaviorSubject<Array<SortingOptions>>([]);
-
-  private checkedOptions: Array<_MatOptionBase> = [];
 
   public onOptionChanged(event: MatOptionSelectionChange) {
     const option = event.source;
@@ -67,5 +70,11 @@ export class SortingComponent {
     const option = this.checkedOptions.find(option => this.getSortingOptions(option).propertyName == propertyName);
 
     return option === undefined ? true : this.getSortingOptions(option).isAscending;
+  }
+
+  public resetSortings() {
+    this.checkedOptions = [];
+    this.sortingOptions$.next([]);
+    this.sortingSelectControl.reset();
   }
 }

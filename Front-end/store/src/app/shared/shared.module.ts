@@ -57,7 +57,7 @@ import {NgxPaginationModule} from "ngx-pagination";
     MatIconModule,
     MatInputModule,
     NgxPaginationModule,
-    MatOptionModule
+    MatOptionModule,
   ]
 })
 export class SharedModule { }
