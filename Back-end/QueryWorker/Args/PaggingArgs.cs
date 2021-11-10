@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace QueryWorker.Args
 {
-    public record PaggingArgs : DataTransformerArgs
+    public record PaggingArgs
     {
 
         [Range(1, int.MaxValue)]

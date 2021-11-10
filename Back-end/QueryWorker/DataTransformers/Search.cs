@@ -11,9 +11,27 @@ namespace QueryWorker.DataTransformers
     {
         private const string LeftBorder = "(";
         private const string RightBorder = ")";
+
+        public const int MinSearchDepth = 2;
+        public const int MaxSearchDepth = 5;
+
+        private int? _searchDepth;
         private Expression<Func<T, string>> PropertySelector { init; get; }
         public string ComparedValue { init; get; }
-        public int SearchDepth { init; get; }
+        public int? SearchDepth 
+        {
+            init
+            {
+                if (value < MinSearchDepth || value > MaxSearchDepth)
+                    throw new ArgumentOutOfRangeException();
+                
+                _searchDepth = value;
+            }
+            get
+            {
+                return _searchDepth;
+            }
+        }
 
         public Search(Expression<Func<T, string>> propertySelector)
         {
@@ -41,9 +59,9 @@ namespace QueryWorker.DataTransformers
                 if (word != ComparedValue)
                     buildedQuery = buildedQuery.Union(ContainsFilter(word, query));
 
-                if (SearchDepth > 0)
+                if (SearchDepth.HasValue)
                 {
-                    substrings.AddRange(word.SubstringsByLength(SearchDepth)
+                    substrings.AddRange(word.SubstringsByLength(SearchDepth.Value)
                         .Where(substring => substring != word));
                 }        
             }

@@ -13,6 +13,7 @@ using BookStore.Application.DbQueryConfigs.IncludeRequirements;
 using BookStore.WebApi.Areas.Store.ViewModels;
 using BookStore.Domain.Entities;
 using BookStore.Application.Dto;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
 {
@@ -60,19 +61,23 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpGet("author")]
-        public async Task<IEnumerable<RelatedEntityDto>> GetAuthors([FromRoute] PaggingArgs paggingArgs, 
+        public async Task<IEnumerable<RelatedEntityDto>> GetAuthors([FromQuery][Required] SearchArgs search, [FromQuery] PaggingArgs pagging, 
             [FromServices] DbFormEntityQueryBuilder<Author> relatedEntityQueryBuilder)
         {
-            relatedEntityQueryBuilder.AddPagging(paggingArgs);
+            relatedEntityQueryBuilder
+                .AddSearch(search)
+                .AddPagging(pagging);
 
             return await GetRelatedEntities(relatedEntityQueryBuilder);
         }
 
         [HttpGet("publisher")]
-        public async Task<IEnumerable<RelatedEntityDto>> GetPublishers([FromRoute] PaggingArgs paggingArgs, 
+        public async Task<IEnumerable<RelatedEntityDto>> GetPublishers([FromQuery][Required] SearchArgs search, [FromQuery] PaggingArgs pagging,
             [FromServices] DbFormEntityQueryBuilder<Publisher> relatedEntityQueryBuilder)
         {
-            relatedEntityQueryBuilder.AddPagging(paggingArgs);
+            relatedEntityQueryBuilder
+                .AddSearch(search)
+                .AddPagging(pagging);
 
             return await GetRelatedEntities(relatedEntityQueryBuilder);
         }

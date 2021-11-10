@@ -22,8 +22,8 @@ namespace BookStore.Application.DbQueryConfigs.DataTransformersConfigs
             CreatePlentyFilter(nameof(Book.Genres), book => book.GenresBooks
                 .Select(genre => genre.Genre.Id));
 
-            CreateSearch(nameof(Book.AuthorId), entity => entity.Author.Name);
-            CreateSearch(nameof(Book.PublisherId), entity => entity.Publisher.Name);
+            CreateSearch(nameof(Book.Author), entity => entity.Author.Name);
+            CreateSearch(nameof(Book.Publisher), entity => entity.Publisher.Name);
         }
     }
 }

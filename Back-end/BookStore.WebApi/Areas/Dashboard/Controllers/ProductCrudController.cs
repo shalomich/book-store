@@ -25,10 +25,9 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
         {
         }
 
-        public override async Task<ActionResult<TForm[]>> Read([FromQuery] QueryTransformArgs transformArgs, [FromQuery] PaggingArgs paggingArgs)
+        public override async Task<ActionResult<TForm[]>> Read([FromQuery] PaggingArgs paggingArgs)
         {
             QueryBuilder
-                .AddDataTransformation(transformArgs)
                 .AddPagging(paggingArgs)
                 .AddIncludeRequirements(new ProductAlbumIncludeRequirement<TProduct>());
 

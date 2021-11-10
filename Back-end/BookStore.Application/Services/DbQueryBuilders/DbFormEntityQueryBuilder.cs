@@ -20,26 +20,37 @@ namespace BookStore.Application.Services.DbQueryBuilders
         {
             BuildFacade = transformerFacade;
         }
-
         public DbFormEntityQueryBuilder<T> AddSpecification(ISpecification<T> specification)
         {
             AddBuildItem(new SpecificationBuildItem<T>(specification));
 
             return this;
         }
-        public DbFormEntityQueryBuilder<T> AddDataTransformation(QueryTransformArgs args)
+
+        public DbFormEntityQueryBuilder<T> AddSortings(IEnumerable<SortingArgs> args)
         {
-            if (args == null || args.IsQueryEmpty)
-                return this;
+            if (args != null)
+            {
+                foreach (var sortingArgs in args)
+                    AddBuildItem(CreateDataTransformerBuildItem(() => BuildFacade.BuildSorting(sortingArgs)));
+            }
 
-            foreach (var filterArgs in args.Filters.EmptyIfNull())
-                AddBuildItem(CreateDataTransformerBuildItem(() => BuildFacade.BuildFilter(filterArgs)));
+            return this;
+        }
+        public DbFormEntityQueryBuilder<T> AddFilters(IEnumerable<FilterArgs> args)
+        {
+            if (args != null)
+            {
+                foreach (var filterArgs in args)
+                    AddBuildItem(CreateDataTransformerBuildItem(() => BuildFacade.BuildFilter(filterArgs)));
+            }
 
-            foreach (var sortingArgs in args.Sortings.EmptyIfNull())
-                AddBuildItem(CreateDataTransformerBuildItem(() => BuildFacade.BuildSorting(sortingArgs)));
+            return this;
+        }
 
-            foreach (var searchArgs in args.Searches.EmptyIfNull())
-                AddBuildItem(CreateDataTransformerBuildItem(() => BuildFacade.BuildSearch(searchArgs)));
+        public DbFormEntityQueryBuilder<T> AddSearch(SearchArgs args)
+        {
+            AddBuildItem(CreateDataTransformerBuildItem(() => BuildFacade.BuildSearch(args)));
 
             return this;
         }

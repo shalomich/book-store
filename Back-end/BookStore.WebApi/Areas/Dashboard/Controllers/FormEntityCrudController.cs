@@ -38,7 +38,7 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
         protected Type FormEntityType => typeof(TFormEntity);
 
         [HttpGet]
-        public abstract Task<ActionResult<TForm[]>> Read([FromQuery] QueryTransformArgs args, [FromQuery] PaggingArgs paggingArgs);
+        public abstract Task<ActionResult<TForm[]>> Read([FromQuery] PaggingArgs paggingArgs);
 
         protected abstract Task<TFormEntity> ReadById(int id);
 
@@ -52,10 +52,8 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
 
 
         [HttpHead]
-        public async Task GetPaggingMetadata([FromQuery] QueryTransformArgs transformArgs, [FromQuery] PaggingArgs paggingArgs)
+        public async Task GetPaggingMetadata([FromQuery] PaggingArgs paggingArgs)
         {
-            QueryBuilder.AddDataTransformation(transformArgs);
-
             var metadata = await Mediator.Send(new GetMetadataQuery(paggingArgs, QueryBuilder));
 
             HttpContext.Response.Headers.Add(metadata);
