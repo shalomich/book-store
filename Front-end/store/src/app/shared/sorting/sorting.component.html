@@ -1,6 +1,7 @@
 <mat-form-field appearance="fill">
   <mat-label>Сортировка</mat-label>
-  <mat-select multiple>
+  <mat-select multiple
+    [formControl]="sortingSelectControl">
     <ng-container *ngFor="let item of propertyNamesWithText" >
       <mat-option [value]="{propertyName: item[1], isAscending: true}" (onSelectionChange)="onOptionChanged($event)">
         {{item[0]}}
@@ -11,3 +12,4 @@
     </ng-container>
   </mat-select>
 </mat-form-field>
+<button (click)="resetSortings()">Сбросить</button>
