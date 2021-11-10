@@ -1,25 +1,27 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 
-import { MatSelectChange } from '@angular/material/select';
+import {Observable} from 'rxjs';
 
-import { Observable, Subject } from 'rxjs';
+import {FormControl} from '@angular/forms';
 
-import { RelatedEntity } from '../../../core/models/related-entity';
-import { FilterOptions } from '../../../core/interfaces/filter-options';
-import {FilterComponent} from "../filter-component";
-import {FormControl} from "@angular/forms";
+import {RelatedEntity} from '../../../core/models/related-entity';
+import {FilterComponent} from '../filter-component';
 
 @Component({
   selector: 'app-plenty-filter',
   templateUrl: './plenty-filter.component.html',
-  providers: [ {provide: FilterComponent, useExisting: PlentyFilterComponent }]
+  styleUrls: ['./plenty-filter.component.css'],
+  providers: [{ provide: FilterComponent, useExisting: PlentyFilterComponent }],
+  encapsulation: ViewEncapsulation.None,
 })
 export class PlentyFilterComponent extends FilterComponent implements OnInit {
-
   public readonly idsControl: FormControl = new FormControl();
 
   @Input()
-  public propertyName: string = '';
+  public label = '';
+
+  @Input()
+  public propertyName = '';
 
   @Input()
   public relatedEntities$: Observable<RelatedEntity[]> = new Observable<[]>();
@@ -28,8 +30,9 @@ export class PlentyFilterComponent extends FilterComponent implements OnInit {
 
     const ids = this.idsControl.value as number[];
 
-    if (ids)
+    if (ids) {
       return ids.toString();
+    }
 
     return null;
   }

@@ -1,12 +1,13 @@
 .books-list {
   display: flex;
-  width: fit-content;
-  margin-right: auto;
-  margin-left: auto;
+  margin-left: 3vw;
   margin-top: 3em;
 }
 
 .pagination-block {
+  position: fixed;
+  width: 100%;
+  bottom: 5vh;
   display: flex;
   justify-content: center;
 }

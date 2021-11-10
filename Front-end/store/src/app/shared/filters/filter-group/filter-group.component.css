@@ -1,0 +1,37 @@
+.mat-expansion-panel-body {
+  overflow: auto;
+  max-height: 30vh;
+}
+
+.mat-expansion-panel {
+  box-shadow: none !important;
+  border: 0.1em gray solid;
+}
+
+.filters-panel {
+  height: min-content;
+}
+
+.filters-block {
+  margin-left: 1vw;
+  margin-top: 6vh;
+}
+
+.mat-expansion-panel-header {
+  border-bottom: 0.1em gray solid;
+  margin-bottom: 0;
+}
+
+.mat-expanded {
+  margin-bottom: 1em;
+}
+
+.mat-action-row {
+  justify-content: center !important;
+  padding-left: 0 !important;
+}
+
+.apply-button {
+  color: #2199e8 !important;
+  margin-right: 1em !important;
+}

@@ -1,8 +1,10 @@
-<mat-form-field class="example-full-width" appearance="fill">
-  <mat-label>От</mat-label>
+<mat-form-field class="range-start" appearance="outline">
+  <mat-label>{{label}} (От)</mat-label>
   <input [formControl]="lowerBoundControl" type="number" min="1" matInput>
 </mat-form-field>
-<mat-form-field class="example-full-width" appearance="fill">
-  <mat-label>До</mat-label>
+<mat-form-field class="range-end" appearance="outline">
+  <mat-label>{{label}} (До)</mat-label>
   <input [formControl]="upperBoundControl" type="number" min="1" matInput>
 </mat-form-field>
+
+

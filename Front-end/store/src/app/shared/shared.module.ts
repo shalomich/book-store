@@ -17,6 +17,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {FilterGroupComponent} from "./filters/filter-group/filter-group.component";
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatIconModule} from '@angular/material/icon';
 
 
 @NgModule({
@@ -36,14 +38,16 @@ import {FilterGroupComponent} from "./filters/filter-group/filter-group.componen
     PlentyFilterComponent,
     FilterGroupComponent
   ],
-    imports: [
-        CommonModule,
-        CoreModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        ReactiveFormsModule,
-        MatInputModule,
-    ],
+  imports: [
+    CommonModule,
+    CoreModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatExpansionModule,
+    MatIconModule,
+  ],
 })
 export class SharedModule { }

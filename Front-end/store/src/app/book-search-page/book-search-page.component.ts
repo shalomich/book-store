@@ -14,7 +14,7 @@ import { PaginationOptions } from '../core/interfaces/pagination-options';
 import { ProductParamsBuilderService } from '../core/services/product-params-builder.service';
 import { ProductPreview } from '../core/models/product-preview';
 import { PAGE_NUMBER, PAGE_SIZE } from '../core/utils/values';
-import {RelatedEntity} from '../core/models/related-entity';
+import { RelatedEntity } from '../core/models/related-entity';
 
 @AutoUnsubscribe()
 @Component({
@@ -40,10 +40,15 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
   });
 
   public readonly genres$: Observable<RelatedEntity[]>;
+
   public readonly authors$: Observable<RelatedEntity[]>;
+
   public readonly bookTypes$: Observable<RelatedEntity[]>;
+
   public readonly publishers$: Observable<RelatedEntity[]>;
+
   public readonly coverArts$: Observable<RelatedEntity[]>;
+
   public readonly ageLimits$: Observable<RelatedEntity[]>;
 
   public constructor(
@@ -81,7 +86,7 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
 
     this.productParamsBuilderService.onParamsChanged = params => {
       this.books$ = this.bookService.get(params);
-    }
+    };
   }
 
   public ngOnDestroy() {

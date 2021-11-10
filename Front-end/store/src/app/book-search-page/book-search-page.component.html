@@ -1,21 +1,19 @@
 <div class="page-block">
-  <filter-group [filterOptions]="productParamsBuilderService.filterOptions$">
-    <app-range-filter class="filter-elem" propertyName="cost"></app-range-filter>
-    <app-range-filter class="filter-elem" propertyName="releaseYear"></app-range-filter>
-    <app-plenty-filter class="filter-elem" propertyName="genres" [relatedEntities$]="genres$"></app-plenty-filter>
-    <app-plenty-filter class="filter-elem" propertyName="type" [relatedEntities$]="bookTypes$"></app-plenty-filter>
-    <app-plenty-filter class="filter-elem" propertyName="ageLimit" [relatedEntities$]="ageLimits$"></app-plenty-filter>
-    <app-plenty-filter class="filter-elem" propertyName="coverArt" [relatedEntities$]="coverArts$"></app-plenty-filter>
-  </filter-group>
-  </div>
-<div>
+    <filter-group [filterOptions]="productParamsBuilderService.filterOptions$">
+        <app-range-filter label="Цена" class="filter-elem" propertyName="cost"></app-range-filter>
+        <app-range-filter label="Год издания" class="filter-elem" propertyName="releaseYear"></app-range-filter>
+        <app-plenty-filter label="Жанры" class="filter-elem" propertyName="genres" [relatedEntities$]="genres$"></app-plenty-filter>
+        <app-plenty-filter label="Тип книги" class="filter-elem" propertyName="type" [relatedEntities$]="bookTypes$"></app-plenty-filter>
+        <app-plenty-filter label="Возрастное ограничение" class="filter-elem" propertyName="ageLimit" [relatedEntities$]="ageLimits$"></app-plenty-filter>
+        <app-plenty-filter label="Тип обложки" class="filter-elem" propertyName="coverArt" [relatedEntities$]="coverArts$"></app-plenty-filter>
+    </filter-group>
+
   <div class="books-list">
     <app-product-list-item *ngFor="let book of (books$ | async)! | paginate: config"
                            [item]="book">
     </app-product-list-item>
   </div>
 </div>
-
 
 <div class="pagination-block">
   <pagination-controls class="custom-pagination" id="paginationPanel"
@@ -27,4 +25,5 @@
                        (pageChange)="onPageChanged($event)">
   </pagination-controls>
 </div>
+
 

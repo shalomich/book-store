@@ -16,6 +16,8 @@ import { ProductCardPageModule } from './product-card-page/product-card-page.mod
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { BookSearchPageComponent } from './book-search-page/book-search-page.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatIconModule} from '@angular/material/icon';
 
 
 @NgModule({
@@ -30,6 +32,8 @@ import { BookSearchPageComponent } from './book-search-page/book-search-page.com
     SharedModule,
     HttpClientModule,
     NgxPaginationModule,
+    MatExpansionModule,
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
