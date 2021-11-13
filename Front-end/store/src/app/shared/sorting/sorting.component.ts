@@ -1,16 +1,18 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import {MatSelectChange} from "@angular/material/select";
-import {SortingOptions} from "../../core/interfaces/sorting-options";
-import {BehaviorSubject} from "rxjs";
-import {_MatOptionBase, MatOptionSelectionChange} from "@angular/material/core";
+import { MatSelectChange } from '@angular/material/select';
+
+import { BehaviorSubject } from 'rxjs';
+import { _MatOptionBase, MatOptionSelectionChange } from '@angular/material/core';
 import { ViewEncapsulation } from '@angular/core';
-import {FormControl} from "@angular/forms";
+import { FormControl } from '@angular/forms';
+
+import { SortingOptions } from '../../core/interfaces/sorting-options';
 
 @Component({
   selector: 'sorting',
   templateUrl: './sorting.component.html',
   styleUrls: ['./sorting.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class SortingComponent {
 
@@ -21,15 +23,17 @@ export class SortingComponent {
   public readonly sortingSelectControl: FormControl = new FormControl();
 
   @Input() propertyNamesWithText: Array<[string, string]> = [];
+
   @Input() sortingOptions$: BehaviorSubject<Array<SortingOptions>> = new BehaviorSubject<Array<SortingOptions>>([]);
 
   public onOptionChanged(event: MatOptionSelectionChange) {
     const option = event.source;
 
-    if (option.selected)
+    if (option.selected) {
       this.addSorting(option);
-    else
+    } else {
       this.removeSorting(option);
+    }
 
     this.sortingOptions$.next(this.checkedOptions.map(option => option.value as SortingOptions));
   }
@@ -45,10 +49,10 @@ export class SortingComponent {
     const optionIndex = this.checkedOptions.indexOf(uncheckedOption);
     this.checkedOptions.splice(optionIndex, 1);
 
-    for (let i = optionIndex; i < this.checkedOptions.length; i++){
-      const checkedOption = this.checkedOptions[i]
+    for (let i = optionIndex; i < this.checkedOptions.length; i++) {
+      const checkedOption = this.checkedOptions[i];
       let number = parseInt(checkedOption._getHostElement().getAttribute(this.numberAttribute)!);
-      checkedOption._getHostElement().setAttribute(this.numberAttribute, (--number).toString())
+      checkedOption._getHostElement().setAttribute(this.numberAttribute, (--number).toString());
     }
   }
 
@@ -57,19 +61,19 @@ export class SortingComponent {
   }
 
   public onOrderButtonClick(propertyName: string) {
-    const option = this.checkedOptions.find(option => this.getSortingOptions(option).propertyName == propertyName)!;
+    const res = this.checkedOptions.find(option => this.getSortingOptions(option).propertyName === propertyName);
 
-    if (option) {
-      const sortingOptions = this.getSortingOptions(option);
+    if (res) {
+      const sortingOptions = this.getSortingOptions(res);
       sortingOptions.isAscending = !sortingOptions.isAscending;
       this.sortingOptions$.next(this.checkedOptions.map(option => option.value as SortingOptions));
     }
   }
 
-  public getOrder(propertyName: string) {
-    const option = this.checkedOptions.find(option => this.getSortingOptions(option).propertyName == propertyName);
+  public getOrder(propertyName: string): boolean {
+    const res = this.checkedOptions.find(option => this.getSortingOptions(option).propertyName === propertyName);
 
-    return option === undefined ? true : this.getSortingOptions(option).isAscending;
+    return res === undefined ? true : this.getSortingOptions(res).isAscending;
   }
 
   public resetSortings() {
