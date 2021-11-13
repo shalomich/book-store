@@ -5,11 +5,11 @@
                 [formControl]="sortingSelectControl">
       <ng-container *ngFor="let item of propertyNamesWithText">
         <div class="custom-option">
-          <mat-option class="option-text" [value]="{propertyName: item[1], isAscending: true}" (onSelectionChange)="onOptionChanged($event)">
+          <mat-option class="option-text" [value]="{propertyName: item[1]}" (onSelectionChange)="onSortingChanged($event)">
             {{item[0]}}
           </mat-option>
-          <button class="order-button" mat-button (click)="onOrderButtonClick(item[1])">
-            <mat-icon>{{getOrder(item[1]) ? 'arrow_upward' : 'arrow_downward'}}</mat-icon>
+          <button class="order-button" [disabled]="!isSortingChecked(item[1])" mat-button (click)="changeDirection(item[1])">
+            <mat-icon>{{isAscending(item[1]) ? 'arrow_upward' : 'arrow_downward'}}</mat-icon>
           </button>
         </div>
       </ng-container>
