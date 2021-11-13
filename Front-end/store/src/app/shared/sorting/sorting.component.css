@@ -19,7 +19,12 @@
   content: attr(data-number) !important;
   font-size: 14px;
   color: purple;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 .mat-pseudo-checkbox-checked:after {
   transform: none !important;
   width: 0 !important;
