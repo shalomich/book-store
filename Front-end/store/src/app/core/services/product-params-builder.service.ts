@@ -120,7 +120,9 @@ export class ProductParamsBuilderService {
       const {propertyName, isAscending} = this.sortingOptions$.value[i];
 
       params = params.set(`sortings[${i}].propertyName`, propertyName);
-      params = params.set(`sortings[${i}].isAscending`, isAscending);
+
+      if (isAscending !== undefined)
+        params = params.set(`sortings[${i}].isAscending`, isAscending);
     }
 
     return params;

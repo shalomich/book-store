@@ -26,7 +26,7 @@ export class SortingComponent {
 
   @Input() sortingOptions$: BehaviorSubject<Array<SortingOptions>> = new BehaviorSubject<Array<SortingOptions>>([]);
 
-  public onOptionChanged(event: MatOptionSelectionChange) {
+  public onSortingChanged(event: MatOptionSelectionChange) {
     const option = event.source;
 
     if (option.selected) {
@@ -39,6 +39,8 @@ export class SortingComponent {
   }
 
   private addSorting(option: _MatOptionBase) {
+    (option.value as SortingOptions).isAscending = true;
+
     this.checkedOptions.push(option);
     option._getHostElement().setAttribute(this.numberAttribute, this.checkedOptions.length.toString());
   }
@@ -56,24 +58,28 @@ export class SortingComponent {
     }
   }
 
-  private getSortingOptions(option: _MatOptionBase) {
-    return option.value as SortingOptions;
+  private getSortingOptions(propertyName: string): SortingOptions | undefined {
+    return this.checkedOptions
+      .map(option => option.value as SortingOptions)
+      .find(sortingOptions => sortingOptions.propertyName == propertyName);
   }
 
-  public onOrderButtonClick(propertyName: string) {
-    const res = this.checkedOptions.find(option => this.getSortingOptions(option).propertyName === propertyName);
+  public changeDirection(propertyName: string) {
+    const sortingOptions = this.getSortingOptions(propertyName)!;
 
-    if (res) {
-      const sortingOptions = this.getSortingOptions(res);
-      sortingOptions.isAscending = !sortingOptions.isAscending;
-      this.sortingOptions$.next(this.checkedOptions.map(option => option.value as SortingOptions));
-    }
+    sortingOptions.isAscending = !sortingOptions.isAscending;
+
+    this.sortingOptions$.next(this.checkedOptions.map(option => option.value as SortingOptions));
   }
 
-  public getOrder(propertyName: string): boolean {
-    const res = this.checkedOptions.find(option => this.getSortingOptions(option).propertyName === propertyName);
+  public isSortingChecked(propertyName: string): boolean {
+    return this.getSortingOptions(propertyName) !== undefined;
+  }
 
-    return res === undefined ? true : this.getSortingOptions(res).isAscending;
+  public isAscending(propertyName: string): boolean {
+    const sortingOptions = this.getSortingOptions(propertyName);
+
+    return sortingOptions === undefined ? true : sortingOptions.isAscending!;
   }
 
   public resetSortings() {

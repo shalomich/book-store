@@ -1,4 +1,4 @@
 export interface SortingOptions {
   propertyName: string,
-  isAscending: boolean
+  isAscending: boolean | undefined
 }
