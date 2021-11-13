@@ -33,7 +33,7 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
 
   public readonly ageLimits$: Observable<RelatedEntity[]>;
 
-  public readonly propertyNamesWithText: Array<[string,string]> = [["По имени", "name"], ["По цене", "cost"], ["По дате добавления", "addingDate"]]
+  public readonly propertyNamesWithText: Array<[string, string]> = [['По имени', 'name'], ['По цене', 'cost'], ['По дате добавления', 'addingDate']];
 
   public constructor(
     private readonly bookService: BookService,
@@ -47,18 +47,16 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    this.productParamsBuilderService.changePageCount = params => {
-      return this.bookService.getQuantity(params);
-    }
+    this.productParamsBuilderService.changePageCount = params => this.bookService.getQuantity(params);
 
     this.productParamsBuilderService.onParamsChanged = params => {
       this.books$ = this.bookService.get(params);
-    }
+    };
 
     this.productParamsBuilderService.searchOptions$.next({
       propertyName: 'non-existent property name',
       value: 'useless value',
-      searchDepth: 0
+      searchDepth: 0,
     });
   }
 

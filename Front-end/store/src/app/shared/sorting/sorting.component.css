@@ -27,5 +27,32 @@
   border-left: none !important;
 }
 
+.sorting-block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+}
 
+.mat-form-field-wrapper {
+  padding: 0 !important;
+}
+
+.reset-button {
+  color: #2199e8 !important;
+  height: 3.7em;
+  text-align: center;
+}
+
+.custom-option {
+  display: flex;
+  width: min-content !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.option-text {
+  min-width: 20em;
+  max-width: 20em;
+}
 

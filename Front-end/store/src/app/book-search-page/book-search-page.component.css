@@ -1,13 +1,17 @@
 .books-list {
   display: block;
-  margin-left: 3vw;
   margin-top: 3em;
 }
 
+.list-block {
+  margin-top: 3em;
+  margin-left: 3vw;
+  min-height: 45em;
+}
+
 .pagination-block {
-  position: fixed;
   width: 100%;
-  bottom: 5vh;
+  margin-bottom: 5em;
   display: flex;
   justify-content: center;
 }

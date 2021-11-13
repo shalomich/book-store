@@ -1,15 +1,20 @@
-<mat-form-field appearance="fill">
-  <mat-label>Сортировка</mat-label>
-  <mat-select multiple
-    [formControl]="sortingSelectControl">
-    <ng-container *ngFor="let item of propertyNamesWithText" >
-      <mat-option [value]="{propertyName: item[1], isAscending: true}" (onSelectionChange)="onOptionChanged($event)">
-        {{item[0]}}
-      </mat-option>
-      <button mat-button (click)="onOrderButtonClick(item[1])">
-        <mat-icon>{{getOrder(item[1]) ? 'arrow_upward' : 'arrow_downward'}}</mat-icon>
-      </button>
-    </ng-container>
-  </mat-select>
-</mat-form-field>
-<button (click)="resetSortings()">Сбросить</button>
+<div class="sorting-block">
+  <mat-form-field class="sorting-select" appearance="outline">
+    <mat-label>Сортировка</mat-label>
+    <mat-select multiple
+                [formControl]="sortingSelectControl">
+      <ng-container *ngFor="let item of propertyNamesWithText">
+        <div class="custom-option">
+          <mat-option class="option-text" [value]="{propertyName: item[1], isAscending: true}" (onSelectionChange)="onOptionChanged($event)">
+            {{item[0]}}
+          </mat-option>
+          <button class="order-button" mat-button (click)="onOrderButtonClick(item[1])">
+            <mat-icon>{{getOrder(item[1]) ? 'arrow_upward' : 'arrow_downward'}}</mat-icon>
+          </button>
+        </div>
+      </ng-container>
+    </mat-select>
+  </mat-form-field>
+  <button class="reset-button" mat-stroked-button (click)="resetSortings()"><mat-icon>refresh</mat-icon></button>
+</div>
+
