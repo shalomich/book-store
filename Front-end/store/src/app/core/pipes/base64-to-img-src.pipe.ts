@@ -7,8 +7,7 @@ import { Base64Image } from '../interfaces/base64-image';
 })
 export class Base64ToImgSrcPipe implements PipeTransform {
 
-  transform(image: Base64Image): unknown {
+  public transform(image: Base64Image): unknown {
     return `data:${image.format};base64,${image.data}`;
   }
-
 }

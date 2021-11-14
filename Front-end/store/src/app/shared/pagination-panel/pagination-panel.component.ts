@@ -33,6 +33,8 @@ export class PaginationPanelComponent implements OnInit {
       return;
     }
 
+    this.config.currentPage = number;
+
     this.paginationOptions$.next({
       pageSize: PAGE_SIZE,
       pageNumber: number,
