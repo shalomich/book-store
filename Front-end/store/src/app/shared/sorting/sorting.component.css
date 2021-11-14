@@ -1,8 +1,8 @@
-.mat-pseudo-checkbox {
+.custom-option .mat-pseudo-checkbox {
   border: none !important;
 }
 
-.mat-option-multiple:before {
+.custom-option .mat-option-multiple:before {
   content: '';
   position: absolute;
   left: 15px;
@@ -15,7 +15,7 @@
   z-index: 1;
 }
 
-.mat-selected:before {
+.custom-option .mat-selected:before {
   content: attr(data-number) !important;
   font-size: 14px;
   color: purple;
@@ -25,7 +25,7 @@
   align-items: center;
 }
 
-.mat-pseudo-checkbox-checked:after {
+.custom-option .mat-pseudo-checkbox-checked:after {
   transform: none !important;
   width: 0 !important;
   height: 0 !important;

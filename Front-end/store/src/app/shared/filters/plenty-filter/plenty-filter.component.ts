@@ -12,7 +12,6 @@ import {FilterComponent} from '../filter-component';
   templateUrl: './plenty-filter.component.html',
   styleUrls: ['./plenty-filter.component.css'],
   providers: [{ provide: FilterComponent, useExisting: PlentyFilterComponent }],
-  encapsulation: ViewEncapsulation.None,
 })
 export class PlentyFilterComponent extends FilterComponent implements OnInit {
   public readonly idsControl: FormControl = new FormControl();
