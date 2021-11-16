@@ -1,3 +1,8 @@
+<app-search-field>
+  <app-search-hint target="name" uri="https://localhost:44327/store/product/book">Произведения</app-search-hint>
+  <app-search-hint target="author" uri="https://localhost:44327/store/product/book/author">Авторы</app-search-hint>
+  <app-search-hint target="publisher" uri="https://localhost:44327/store/product/book/publisher">Издатели</app-search-hint>
+</app-search-field>
 <div *ngIf="(book$ | async) as book" class="book-card">
   <app-product-images [titleImage]="book.titleImage" [notTitleImages]="book.notTitleImages"></app-product-images>
   <div class="info-block">
