@@ -27,15 +27,15 @@ import { AddToCartComponent } from './product-card/add-to-cart/add-to-cart.compo
 import { SortingComponent } from './sorting/sorting.component';
 import { ProductListItemComponent } from './product-list-item/product-list-item.component';
 import { RangeFilterComponent } from './filters/range-filter/range-filter.component';
-import { PlentyFilterComponent } from './filters/plenty-filter/plenty-filter.component';
 
-
-import { FilterGroupComponent } from './filters/filter-group/filter-group.component';
-
-
-import { PaginationPanelComponent } from './pagination-panel/pagination-panel.component';
 import { StatusFilterComponent } from './filters/status-filter/status-filter.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
+
+import {FilterGroupComponent} from "./filters/filter-group/filter-group.component";
+import {PaginationPanelComponent} from "./pagination-panel/pagination-panel.component";
+import { SearchFieldComponent } from './search-field/search-field.component';
+import {PlentyFilterComponent} from "./filters/plenty-filter/plenty-filter.component";
+import { SearchHintComponent } from './search-field/search-hint/search-hint.component';
 
 
 @NgModule({
@@ -49,32 +49,36 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     PaginationPanelComponent,
     SortingComponent,
     StatusFilterComponent,
+    SearchFieldComponent,
+    SearchHintComponent
   ],
-    exports: [
-        ProductImagesComponent,
-        AddToCartComponent,
-        ProductListItemComponent,
-        RangeFilterComponent,
-        PlentyFilterComponent,
-        FilterGroupComponent,
-        PaginationPanelComponent,
-        SortingComponent,
-        StatusFilterComponent,
-    ],
-    imports: [
-        CommonModule,
-        CoreModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        MatExpansionModule,
-        MatIconModule,
-        MatInputModule,
-        NgxPaginationModule,
-        MatOptionModule,
-        MatCheckboxModule,
-    ],
+  exports: [
+    ProductImagesComponent,
+    AddToCartComponent,
+    ProductListItemComponent,
+    RangeFilterComponent,
+    PlentyFilterComponent,
+    FilterGroupComponent,
+    StatusFilterComponent,
+    PaginationPanelComponent,
+    SortingComponent,
+    SearchFieldComponent,
+    SearchHintComponent
+  ],
+  imports: [
+    CommonModule,
+    CoreModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatExpansionModule,
+    MatIconModule,
+    MatInputModule,
+    NgxPaginationModule,
+    MatOptionModule,
+    MatCheckboxModule,
+]
 })
 export class SharedModule { }

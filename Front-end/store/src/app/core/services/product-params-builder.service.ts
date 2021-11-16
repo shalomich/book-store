@@ -129,6 +129,12 @@ export class ProductParamsBuilderService {
   }
 
   private buildSearch(params: HttpParams): HttpParams {
+    const {propertyName, value, searchDepth} = this.searchOptions$.value;
+
+    params = params.set('search.propertyName', propertyName);
+    params = params.set(`search.comparedValue`, value);
+    params = params.set(`search.searchDepth`, searchDepth);
+
     return params;
   }
 }

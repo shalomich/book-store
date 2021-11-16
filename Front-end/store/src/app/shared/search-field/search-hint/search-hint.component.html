@@ -1,0 +1,7 @@
+<h3>
+  <ng-content></ng-content>
+</h3>
+<ul>
+  <li *ngFor="let entity of entities$ | async"
+      (click)="chooseHint(entity.name)">{{entity.name}}</li>
+</ul>
