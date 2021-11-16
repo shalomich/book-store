@@ -13,6 +13,7 @@ import { ProductParamsBuilderService } from '../core/services/product-params-bui
 import { ProductPreview } from '../core/models/product-preview';
 import { PAGE_NUMBER, PAGE_SIZE } from '../core/utils/values';
 import { RelatedEntity } from '../core/models/related-entity';
+import {ActivatedRoute} from "@angular/router";
 
 @AutoUnsubscribe()
 @Component({
@@ -37,6 +38,7 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
 
   public constructor(
     private readonly bookService: BookService,
+    private route: ActivatedRoute,
     public readonly productParamsBuilderService: ProductParamsBuilderService,
   ) {
     this.genres$ = this.bookService.getRelatedEntity('genre');
@@ -53,10 +55,12 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
       this.books$ = this.bookService.get(params);
     };
 
-    this.productParamsBuilderService.searchOptions$.next({
-      propertyName: 'non-existent property name',
-      value: 'useless value',
-      searchDepth: 0,
+    this.route.queryParams.subscribe(params => {
+      this.productParamsBuilderService.searchOptions$.next({
+        propertyName: params.target,
+        value: params.searchValue,
+        searchDepth: 3,
+      });
     });
   }
 
