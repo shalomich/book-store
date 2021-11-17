@@ -8,6 +8,8 @@ import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {Entity} from "../../../core/models/entity";
 import {HttpClient} from "@angular/common/http";
 import {EntityDto} from "../../../core/DTOs/entity-dto";
+import {EntityRestService} from "../../../core/services/entity-rest.service";
+import {SEARCH_DEPTH} from "../../../core/utils/values";
 
 @Component({
   selector: 'app-search-hint',
@@ -17,21 +19,26 @@ import {EntityDto} from "../../../core/DTOs/entity-dto";
 })
 export class SearchHintComponent implements OnInit {
 
+  private readonly productName: string = 'book';
+
   public entities$: Subject<EntityDto[]> = new Subject();
 
   @Input() target: string | undefined;
-  @Input() uri: string | undefined;
+
+  @Input() relatedEntityName?: string;
 
   @ContentChild(Text) targetText!: Text;
 
   constructor(
     public readonly searchField: SearchFieldComponent,
     private readonly paramsBuilder: ProductParamsBuilderService,
-    private readonly http: HttpClient) { }
+    private readonly entityRestService: EntityRestService) { }
 
   ngOnInit(): void {
     this.paramsBuilder.onParamsChanged = params =>
-      this.http.get<EntityDto[]>(this.uri!, { params }).subscribe(this.entities$);
+      this.entityRestService
+        .get(this.productName!, this.relatedEntityName, params)
+        .subscribe(this.entities$);
 
     this.searchField.input
       .subscribe(input => this.uploadHints(input));
@@ -42,15 +49,11 @@ export class SearchHintComponent implements OnInit {
       this.paramsBuilder.searchOptions$.next({
         propertyName: 'name',
         value: input,
-        searchDepth: 3
+        searchDepth: SEARCH_DEPTH
       })
     }
     else {
       this.entities$.next([]);
     }
-  }
-
-  public chooseHint(searchValue: string) {
-    this.searchField.redirectToSearchPage(this.target!, `(${searchValue})`);
   }
 }

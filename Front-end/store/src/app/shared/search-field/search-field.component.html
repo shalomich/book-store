@@ -1,6 +1,8 @@
 <input (change)="onInputChanged($event)"/>
-<button (click)="redirectToSearchPage('name', input.value)">Поиск</button>
+<button (click)="redirectToSearchPage()">Поиск</button>
 <div>
-  <ng-content></ng-content>
+  <app-search-hint target="name">Произведения</app-search-hint>
+  <app-search-hint target="authorName" relatedEntityName="author">Авторы</app-search-hint>
+  <app-search-hint target="publisherName" relatedEntityName="publisher">Издатели</app-search-hint>
 </div>
 
