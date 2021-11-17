@@ -36,6 +36,7 @@ import {PaginationPanelComponent} from "./pagination-panel/pagination-panel.comp
 import { SearchFieldComponent } from './search-field/search-field.component';
 import {PlentyFilterComponent} from "./filters/plenty-filter/plenty-filter.component";
 import { SearchHintComponent } from './search-field/search-hint/search-hint.component';
+import {RouterModule} from "@angular/router";
 
 
 @NgModule({
@@ -79,6 +80,7 @@ import { SearchHintComponent } from './search-field/search-hint/search-hint.comp
     NgxPaginationModule,
     MatOptionModule,
     MatCheckboxModule,
+    RouterModule
 ]
 })
 export class SharedModule { }

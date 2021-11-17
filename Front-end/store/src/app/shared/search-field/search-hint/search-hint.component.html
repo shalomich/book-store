@@ -2,6 +2,9 @@
   <ng-content></ng-content>
 </h3>
 <ul>
-  <li *ngFor="let entity of entities$ | async"
-      (click)="chooseHint(entity.name)">{{entity.name}}</li>
+  <li *ngFor="let entity of entities$ | async">
+    <a [href]="searchField.buildSearchUrl(target!, entity.name)">
+      {{entity.name}}
+    </a>
+  </li>
 </ul>

@@ -11,7 +11,7 @@ import { Book } from '../core/models/book';
 import { PaginationOptions } from '../core/interfaces/pagination-options';
 import { ProductParamsBuilderService } from '../core/services/product-params-builder.service';
 import { ProductPreview } from '../core/models/product-preview';
-import { PAGE_NUMBER, PAGE_SIZE } from '../core/utils/values';
+import {PAGE_NUMBER, PAGE_SIZE, SEARCH_DEPTH} from '../core/utils/values';
 import { RelatedEntity } from '../core/models/related-entity';
 import {ActivatedRoute} from "@angular/router";
 
@@ -59,7 +59,7 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
       this.productParamsBuilderService.searchOptions$.next({
         propertyName: params.target,
         value: params.searchValue,
-        searchDepth: 3,
+        searchDepth: SEARCH_DEPTH,
       });
     });
   }

@@ -13,7 +13,8 @@ import {newArray} from "@angular/compiler/src/util";
 })
 export class SearchFieldComponent implements OnInit {
 
-  private readonly url :string = '/book-store/catalog/book';
+  private readonly searchUrlTemplate: string = '/book-store/catalog/book';
+  private readonly defaultTarget: string = 'name';
 
   public input: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
@@ -23,13 +24,22 @@ export class SearchFieldComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  public buildSearchUrl(target: string, searchValue: string): string {
+    if (!target || !searchValue)
+      return this.searchUrlTemplate;
+
+    return this.router
+      .createUrlTree([this.searchUrlTemplate], {queryParams: {target, searchValue}})
+      .toString();
+  }
+
   public onInputChanged(event: Event) {
     const newInput = ((event.target as any).value) as string;
 
     this.input.next(newInput);
   }
 
-  public redirectToSearchPage(target: string, searchValue: string) {
-    this.router.navigate([this.url], {queryParams: {target, searchValue}});
+  public redirectToSearchPage(){
+    window.location.href = this.buildSearchUrl(this.defaultTarget, this.input.value);
   }
 }
