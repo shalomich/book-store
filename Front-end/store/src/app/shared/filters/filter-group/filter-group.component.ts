@@ -31,7 +31,6 @@ export class FilterGroupComponent {
         filterValues[filterComponent.propertyName] = filterValue;
       }
     }
-
     const newStateHash = objectHash(filterValues);
 
     if (newStateHash === this.currentStateHash) {
