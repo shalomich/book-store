@@ -36,5 +36,15 @@ namespace BookStore.WebApi.Areas.Store.Controllers
                 .Select(book => Mapper.Map<ProductCard>(book))
                 .ToArray();
         }
+
+        [HttpGet("gone-on-sale")]
+        public async Task<ActionResult<ProductCard[]>> GetGoneOnSale([FromQuery] PaggingArgs pagging)
+        {
+            Builder.AddPagging(pagging);
+
+            return (await Mediator.Send(new GetGoneOnSaleQuery(Builder)))
+                .Select(book => Mapper.Map<ProductCard>(book))
+                .ToArray();
+        }
     }
 }
