@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using BookStore.Persistance;
 using BookStore.Application.Extensions;
 using BookStore.Application.Services.DbQueryBuilders.DbQueryBuildItems;
+using Abp.Specifications;
 
 namespace BookStore.Application.Services.DbQueryBuilders
 {
@@ -20,6 +21,12 @@ namespace BookStore.Application.Services.DbQueryBuilders
             BuildFacade = transformerFacade;
         }
 
+        public DbFormEntityQueryBuilder<T> AddSpecification(ISpecification<T> specification)
+        {
+            AddBuildItem(new SpecificationBuildItem<T>(specification));
+
+            return this;
+        }
         public DbFormEntityQueryBuilder<T> AddDataTransformation(QueryTransformArgs args)
         {
             if (args == null || args.IsQueryEmpty)
