@@ -46,5 +46,15 @@ namespace BookStore.WebApi.Areas.Store.Controllers
                 .Select(book => Mapper.Map<ProductCard>(book))
                 .ToArray();
         }
+
+        [HttpGet("for-children")]
+        public async Task<ActionResult<ProductCard[]>> GetForChildren([FromQuery] PaggingArgs pagging)
+        {
+            Builder.AddPagging(pagging);
+
+            return (await Mediator.Send(new GetForChildrenQuery(Builder)))
+                .Select(book => Mapper.Map<ProductCard>(book))
+                .ToArray();
+        }
     }
 }
