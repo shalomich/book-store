@@ -1,2 +1,5 @@
-<mat-label>{{label}}</mat-label>
-<mat-checkbox [formControl]="statusControl"></mat-checkbox>
+<div class="status-filter">
+  <mat-checkbox color="primary" class="checkbox" [formControl]="statusControl"></mat-checkbox>
+  <mat-label class="label">{{label}}</mat-label>
+</div>
+

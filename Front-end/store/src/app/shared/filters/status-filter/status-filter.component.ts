@@ -1,12 +1,15 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FilterComponent} from "../filter-component";
-import {FormControl} from "@angular/forms";
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+
+import { FormControl } from '@angular/forms';
+
+import { FilterComponent } from '../filter-component';
 
 @Component({
   selector: 'app-status-filter',
   templateUrl: './status-filter.component.html',
   styleUrls: ['./status-filter.component.css'],
-  providers: [{ provide: FilterComponent, useExisting: StatusFilterComponent }]
+  providers: [{ provide: FilterComponent, useExisting: StatusFilterComponent }],
+  encapsulation: ViewEncapsulation.None,
 })
 export class StatusFilterComponent extends FilterComponent implements OnInit {
 
@@ -16,8 +19,9 @@ export class StatusFilterComponent extends FilterComponent implements OnInit {
     super();
   }
 
-  @Input() propertyName: string = '';
-  @Input() label: string = '';
+  @Input() propertyName = '';
+
+  @Input() label = '';
 
   getValue(): string | null {
     const isCheckedStatus = this.statusControl.value as boolean;
