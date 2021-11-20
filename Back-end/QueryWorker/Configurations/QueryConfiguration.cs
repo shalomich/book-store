@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using QueryWorker.Extensions;
 using QueryWorker.DataTransformers.Filters.ExpressionCreator;
+using Abp.Specifications;
 
 namespace QueryWorker.Configurations
 {
@@ -36,6 +37,12 @@ namespace QueryWorker.Configurations
         {
             _filters.Add(key: propertyName.ToLowFirstLetter(),
                 value: new Filter<T>(new PlentyForCollectionExpressionCreator<T>(propertySelector)));
+        }
+
+        protected void CreateSpecificationFilter(string propertyName, ISpecification<T> specification)
+        {
+            _filters.Add(key: propertyName.ToLowFirstLetter(),
+                value: new Filter<T>(new SpecificationExpressionCreator<T>(specification)));
         }
 
         protected void CreatePlentyFilter(string propertyName, Expression<Func<T, int>> propertySelector)

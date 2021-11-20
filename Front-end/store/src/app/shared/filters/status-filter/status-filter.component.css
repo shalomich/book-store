@@ -1,0 +1,15 @@
+.status-filter {
+  font-size: 0.8em;
+  margin-top: 0.4em;
+  display: flex;
+  align-content: center;
+  height: min-content;
+}
+
+.mat-checkbox {
+  margin-right: 0.4em;
+}
+
+.label{
+  margin-top: 0.1em;
+}

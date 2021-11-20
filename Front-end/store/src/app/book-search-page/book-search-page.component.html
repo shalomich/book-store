@@ -6,6 +6,7 @@
         <app-plenty-filter label="Тип книги" class="filter-elem" propertyName="type" [relatedEntities$]="bookTypes$"></app-plenty-filter>
         <app-plenty-filter label="Возрастное ограничение" class="filter-elem" propertyName="ageLimit" [relatedEntities$]="ageLimits$"></app-plenty-filter>
         <app-plenty-filter label="Тип обложки" class="filter-elem" propertyName="coverArt" [relatedEntities$]="coverArts$"></app-plenty-filter>
+        <app-status-filter label="В наличии" class="filter-elem" propertyName="quantity"></app-status-filter>
     </filter-group>
   <div class="list-block">
     <sorting [propertyNamesWithText]="propertyNamesWithText" [sortingOptions$]="productParamsBuilderService.sortingOptions$"></sorting>

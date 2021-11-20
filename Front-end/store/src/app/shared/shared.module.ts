@@ -34,6 +34,8 @@ import { FilterGroupComponent } from './filters/filter-group/filter-group.compon
 
 
 import { PaginationPanelComponent } from './pagination-panel/pagination-panel.component';
+import { StatusFilterComponent } from './filters/status-filter/status-filter.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 
 @NgModule({
@@ -46,30 +48,33 @@ import { PaginationPanelComponent } from './pagination-panel/pagination-panel.co
     FilterGroupComponent,
     PaginationPanelComponent,
     SortingComponent,
+    StatusFilterComponent,
   ],
-  exports: [
-    ProductImagesComponent,
-    AddToCartComponent,
-    ProductListItemComponent,
-    RangeFilterComponent,
-    PlentyFilterComponent,
-    FilterGroupComponent,
-    PaginationPanelComponent,
-    SortingComponent,
-  ],
-  imports: [
-    CommonModule,
-    CoreModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatExpansionModule,
-    MatIconModule,
-    MatInputModule,
-    NgxPaginationModule,
-    MatOptionModule,
-  ],
+    exports: [
+        ProductImagesComponent,
+        AddToCartComponent,
+        ProductListItemComponent,
+        RangeFilterComponent,
+        PlentyFilterComponent,
+        FilterGroupComponent,
+        PaginationPanelComponent,
+        SortingComponent,
+        StatusFilterComponent,
+    ],
+    imports: [
+        CommonModule,
+        CoreModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatExpansionModule,
+        MatIconModule,
+        MatInputModule,
+        NgxPaginationModule,
+        MatOptionModule,
+        MatCheckboxModule,
+    ],
 })
 export class SharedModule { }

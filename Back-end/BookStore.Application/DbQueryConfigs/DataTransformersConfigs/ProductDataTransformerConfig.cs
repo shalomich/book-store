@@ -1,4 +1,5 @@
-﻿using BookStore.Domain.Entities;
+﻿using BookStore.Application.DbQueryConfigs.Specifications;
+using BookStore.Domain.Entities;
 using BookStore.Domain.Entities.Products;
 using QueryWorker.Configurations;
 using System;
@@ -17,6 +18,7 @@ namespace BookStore.Application.DbQueryConfigs.DataTransformersConfigs
             CreateSorting(nameof(Product.AddingDate), book => book.AddingDate);
 
             CreateRangeFilter(nameof(Product.Cost), book => book.Cost);
+            CreateSpecificationFilter(nameof(Product.Quantity), new AvailableInStockSpecification<T>());
             
             CreateSearch(nameof(Product.Name), entity => entity.Name);
         }
