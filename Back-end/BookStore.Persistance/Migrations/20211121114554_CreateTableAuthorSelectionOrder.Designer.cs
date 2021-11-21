@@ -4,14 +4,16 @@ using BookStore.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace App.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20211121114554_CreateTableAuthorSelectionOrder")]
+    partial class CreateTableAuthorSelectionOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -405,30 +407,6 @@ namespace App.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("BookStore.Domain.Entities.Products.ProductCloseout", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ReplenishmentDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId")
-                        .IsUnique();
-
-                    b.ToTable("ProductCloseout");
-                });
-
             modelBuilder.Entity("BookStore.Domain.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -779,17 +757,6 @@ namespace App.Migrations
                     b.Navigation("Album");
                 });
 
-            modelBuilder.Entity("BookStore.Domain.Entities.Products.ProductCloseout", b =>
-                {
-                    b.HasOne("BookStore.Domain.Entities.Products.Product", "Product")
-                        .WithOne("ProductCloseout")
-                        .HasForeignKey("BookStore.Domain.Entities.Products.ProductCloseout", "ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("BookStore.Domain.Entities.Role", null)
@@ -909,8 +876,6 @@ namespace App.Migrations
                     b.Navigation("Album");
 
                     b.Navigation("BasketProducts");
-
-                    b.Navigation("ProductCloseout");
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.User", b =>

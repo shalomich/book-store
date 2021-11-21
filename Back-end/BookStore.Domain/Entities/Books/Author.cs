@@ -26,6 +26,8 @@ namespace BookStore.Domain.Entities.Books
             }
         }
 
+        public AuthorSelectionOrder SelectionOrder { set; get; }
+
         private string[] FIO => Name.Split(' ');
 
         public string Surname => FIO[0];
