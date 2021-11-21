@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Application.Queries.Selections
 {
-    public record GetNoveltyQuery(DbFormEntityQueryBuilder<Book> Builder) : IRequest<IEnumerable<Book>>;
+    public record GetNoveltyQuery(DbFormEntityQueryBuilder<Book> Builder) : ISelectionQuery;
     internal class GetNoveltyHandler : IRequestHandler<GetNoveltyQuery, IEnumerable<Book>>
     {
         public async Task<IEnumerable<Book>> Handle(GetNoveltyQuery request, CancellationToken cancellationToken)
