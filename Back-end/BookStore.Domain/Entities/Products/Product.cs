@@ -64,5 +64,8 @@ namespace BookStore.Domain.Entities.Products
         public Album Album { set; get; }
 
         public ISet<BasketProduct> BasketProducts { set; get; }
+
+        public ProductCloseout ProductCloseout { set; get; }
+       
     }
 }
