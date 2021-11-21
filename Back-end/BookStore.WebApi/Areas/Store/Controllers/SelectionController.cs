@@ -51,6 +51,11 @@ namespace BookStore.WebApi.Areas.Store.Controllers
             return GetSelection(new GetBackOnSaleQuery(Builder), pagging);
         }
 
+        [HttpGet("random-author")]
+        public Task<IEnumerable<ProductCard>> GetByRandomAuthor([FromQuery] PaggingArgs pagging)
+        {
+            return GetSelection(new GetByRandomAuthorQuery(Builder), pagging);
+        }
         private async Task<IEnumerable<ProductCard>> GetSelection(ISelectionQuery selectionQuery, PaggingArgs pagging)
         {
             Builder.AddPagging(pagging);
