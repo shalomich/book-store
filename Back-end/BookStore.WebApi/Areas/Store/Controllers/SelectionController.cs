@@ -56,5 +56,15 @@ namespace BookStore.WebApi.Areas.Store.Controllers
                 .Select(book => Mapper.Map<ProductCard>(book))
                 .ToArray();
         }
+
+        [HttpGet("back-on-sale")]
+        public async Task<ActionResult<ProductCard[]>> GetBackOnSale([FromQuery] PaggingArgs pagging)
+        {
+            Builder.AddPagging(pagging);
+
+            return (await Mediator.Send(new GetBackOnSaleQuery(Builder)))
+                .Select(book => Mapper.Map<ProductCard>(book))
+                .ToArray();
+        }
     }
 }
