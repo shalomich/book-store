@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Application.Queries.Selections
 {
-    public record GetGoneOnSaleQuery(DbFormEntityQueryBuilder<Book> Builder) : IRequest<IEnumerable<Book>>;
+    public record GetGoneOnSaleQuery(DbFormEntityQueryBuilder<Book> Builder) : ISelectionQuery;
     internal class GetGoneOnSaleHandler : IRequestHandler<GetGoneOnSaleQuery, IEnumerable<Book>>
     {
         public async Task<IEnumerable<Book>> Handle(GetGoneOnSaleQuery request, CancellationToken cancellationToken)

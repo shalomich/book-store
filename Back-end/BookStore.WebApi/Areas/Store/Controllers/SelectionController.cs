@@ -28,41 +28,36 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpGet("novelty")]
-        public async Task<ActionResult<ProductCard[]>> GetNovelty([FromQuery] PaggingArgs pagging) 
+        public Task<IEnumerable<ProductCard>> GetNovelty([FromQuery] PaggingArgs pagging) 
         {
-            Builder.AddPagging(pagging);
-
-            return (await Mediator.Send(new GetNoveltyQuery(Builder)))
-                .Select(book => Mapper.Map<ProductCard>(book))
-                .ToArray();
+            return GetSelection(new GetNoveltyQuery(Builder), pagging);
         }
 
         [HttpGet("gone-on-sale")]
-        public async Task<ActionResult<ProductCard[]>> GetGoneOnSale([FromQuery] PaggingArgs pagging)
+        public Task<IEnumerable<ProductCard>> GetGoneOnSale([FromQuery] PaggingArgs pagging)
         {
-            Builder.AddPagging(pagging);
-
-            return (await Mediator.Send(new GetGoneOnSaleQuery(Builder)))
-                .Select(book => Mapper.Map<ProductCard>(book))
-                .ToArray();
+            return GetSelection(new GetGoneOnSaleQuery(Builder), pagging);
         }
 
         [HttpGet("for-children")]
-        public async Task<ActionResult<ProductCard[]>> GetForChildren([FromQuery] PaggingArgs pagging)
+        public Task<IEnumerable<ProductCard>> GetForChildren([FromQuery] PaggingArgs pagging)
         {
-            Builder.AddPagging(pagging);
-
-            return (await Mediator.Send(new GetForChildrenQuery(Builder)))
-                .Select(book => Mapper.Map<ProductCard>(book))
-                .ToArray();
+            return GetSelection(new GetForChildrenQuery(Builder), pagging);
         }
 
         [HttpGet("back-on-sale")]
-        public async Task<ActionResult<ProductCard[]>> GetBackOnSale([FromQuery] PaggingArgs pagging)
+        public Task<IEnumerable<ProductCard>> GetBackOnSale([FromQuery] PaggingArgs pagging)
+        {
+            return GetSelection(new GetBackOnSaleQuery(Builder), pagging);
+        }
+
+        private async Task<IEnumerable<ProductCard>> GetSelection(ISelectionQuery selectionQuery, PaggingArgs pagging)
         {
             Builder.AddPagging(pagging);
 
-            return (await Mediator.Send(new GetBackOnSaleQuery(Builder)))
+            var selection = await Mediator.Send(selectionQuery);
+
+            return selection
                 .Select(book => Mapper.Map<ProductCard>(book))
                 .ToArray();
         }
