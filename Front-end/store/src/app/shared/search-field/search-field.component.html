@@ -1,8 +1,17 @@
-<input (change)="onInputChanged($event)"/>
-<button (click)="redirectToSearchPage()">Поиск</button>
-<div>
-  <app-search-hint target="name">Произведения</app-search-hint>
-  <app-search-hint target="authorName" relatedEntityName="author">Авторы</app-search-hint>
-  <app-search-hint target="publisherName" relatedEntityName="publisher">Издатели</app-search-hint>
+<div class="search">
+  <div class="search-field">
+    <div class="search-field">
+      <input [formControl]="input"/>
+    </div>
+    <button mat-stroked-button (click)="redirectToSearchPage()"><mat-icon>search</mat-icon></button>
+  </div>
+  <div>
+    <div class="search-result">
+      <app-search-hint [searchField]="input" target="name">Произведения</app-search-hint>
+      <app-search-hint [searchField]="input" target="authorName" relatedEntityName="author">Авторы</app-search-hint>
+      <app-search-hint [searchField]="input" target="publisherName" relatedEntityName="publisher">Издатели</app-search-hint>
+    </div>
+  </div>
 </div>
+
 

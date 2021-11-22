@@ -1,0 +1,31 @@
+.search {
+  display: inline;
+  justify-content: center;
+}
+
+.search-field {
+  display: flex;
+}
+
+.search-field input {
+  height: 2em;
+}
+
+.search-field button {
+  color: #2199e8 !important;
+}
+
+
+.search-result {
+  position: absolute;
+  display: block;
+  background-color: white;
+  width: 30em;
+  border: 0.1em solid gray;
+  border-radius: 0.4em;
+  padding: 0.4em;
+}
+
+.hidden {
+  display: none;
+}

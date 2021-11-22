@@ -1,45 +1,41 @@
-import { Component, OnInit } from '@angular/core';
-import {BookService} from "../../core/services/book.service";
-import {ProductParamsBuilderService} from "../../core/services/product-params-builder.service";
-import {Router} from "@angular/router";
-import {PRODUCT_URL} from "../../core/utils/values";
-import {BehaviorSubject} from "rxjs";
-import {newArray} from "@angular/compiler/src/util";
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+
+import {Router} from '@angular/router';
+import {FormControl} from '@angular/forms';
+
 
 @Component({
   selector: 'app-search-field',
   templateUrl: './search-field.component.html',
-  styleUrls: ['./search-field.component.css']
+  styleUrls: ['./search-field.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class SearchFieldComponent implements OnInit {
 
   private readonly searchUrlTemplate: string = '/book-store/catalog/book';
+
   private readonly defaultTarget: string = 'name';
 
-  public input: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  public input: FormControl = new FormControl();
 
   constructor(
-    private readonly router: Router) { }
+    private readonly router: Router,
+  ) { }
 
   ngOnInit(): void {
   }
 
   public buildSearchUrl(target: string, searchValue: string): string {
-    if (!target || !searchValue)
+    if (!target || !searchValue) {
       return this.searchUrlTemplate;
+    }
 
     return this.router
-      .createUrlTree([this.searchUrlTemplate], {queryParams: {target, searchValue}})
+      .createUrlTree([this.searchUrlTemplate], { queryParams: { target, searchValue } })
       .toString();
   }
 
-  public onInputChanged(event: Event) {
-    const newInput = ((event.target as any).value) as string;
-
-    this.input.next(newInput);
-  }
-
-  public redirectToSearchPage(){
+  public redirectToSearchPage() {
     window.location.href = this.buildSearchUrl(this.defaultTarget, this.input.value);
   }
 }
