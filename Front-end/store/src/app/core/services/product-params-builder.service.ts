@@ -7,8 +7,8 @@ import { PaginationOptions } from '../interfaces/pagination-options';
 
 import { FilterOptions } from '../interfaces/filter-options';
 import { SearchOptions } from '../interfaces/search-options';
-import {SortingOptions} from "../interfaces/sorting-options";
-import {PAGE_SIZE} from "../utils/values";
+import { SortingOptions } from '../interfaces/sorting-options';
+import { PAGE_SIZE } from '../utils/values';
 
 @Injectable({
   providedIn: 'root',
@@ -117,19 +117,20 @@ export class ProductParamsBuilderService {
   private buildSorting(params: HttpParams): HttpParams {
 
     for (let i = 0; i < this.sortingOptions$.value.length; i++) {
-      const {propertyName, isAscending} = this.sortingOptions$.value[i];
+      const { propertyName, isAscending } = this.sortingOptions$.value[i];
 
       params = params.set(`sortings[${i}].propertyName`, propertyName);
 
-      if (isAscending !== undefined)
+      if (isAscending !== undefined) {
         params = params.set(`sortings[${i}].isAscending`, isAscending);
+      }
     }
 
     return params;
   }
 
   private buildSearch(params: HttpParams): HttpParams {
-    const {propertyName, value, searchDepth} = this.searchOptions$.value;
+    const { propertyName, value, searchDepth } = this.searchOptions$.value;
 
     params = params.set('search.propertyName', propertyName);
     params = params.set(`search.comparedValue`, value);

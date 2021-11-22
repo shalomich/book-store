@@ -12,7 +12,7 @@ namespace QueryWorker.DataTransformers
         private const string LeftBorder = "(";
         private const string RightBorder = ")";
 
-        public const int MinSearchDepth = 2;
+        public const int MinSearchDepth = 1;
         public const int MaxSearchDepth = 5;
 
         private int? _searchDepth;

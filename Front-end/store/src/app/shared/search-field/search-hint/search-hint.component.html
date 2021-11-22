@@ -3,7 +3,7 @@
 </h3>
 <ul>
   <li *ngFor="let entity of entities$ | async">
-    <a [href]="searchField.buildSearchUrl(target!, entity.name)">
+    <a [href]="searchInput.buildSearchUrl(target!, entity.name)">
       {{entity.name}}
     </a>
   </li>
