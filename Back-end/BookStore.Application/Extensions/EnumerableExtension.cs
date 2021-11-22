@@ -11,5 +11,10 @@ namespace BookStore.Application.Extensions
         {
             return source ?? Enumerable.Empty<T>();
         }
+
+        public static IQueryable<T> Shuffle<T>(this IQueryable<T> source)
+        {
+            return source.OrderBy(item => Guid.NewGuid());
+        } 
     }
 }
