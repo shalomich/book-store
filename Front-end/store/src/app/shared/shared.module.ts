@@ -37,6 +37,7 @@ import { SearchFieldComponent } from './search-field/search-field.component';
 import {PlentyFilterComponent} from "./filters/plenty-filter/plenty-filter.component";
 import { SearchHintComponent } from './search-field/search-hint/search-hint.component';
 import {RouterModule} from "@angular/router";
+import { HeaderComponent } from './header/header.component';
 
 
 @NgModule({
@@ -51,7 +52,8 @@ import {RouterModule} from "@angular/router";
     SortingComponent,
     StatusFilterComponent,
     SearchFieldComponent,
-    SearchHintComponent
+    SearchHintComponent,
+    HeaderComponent
   ],
   exports: [
     ProductImagesComponent,
