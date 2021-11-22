@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using BookStore.Application.Extensions;
 
 namespace BookStore.Application.Queries.Selections
 {
@@ -36,6 +37,7 @@ namespace BookStore.Application.Queries.Selections
             return await request.Builder
                 .AddSpecification(new ByAuthorIdSpecification(selectedAuthorOrder.AuthorId))
                 .Build()
+                .Shuffle()
                 .ToListAsync();
         }
     }
