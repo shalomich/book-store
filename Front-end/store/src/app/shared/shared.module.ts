@@ -38,6 +38,7 @@ import {PlentyFilterComponent} from "./filters/plenty-filter/plenty-filter.compo
 import { SearchHintComponent } from './search-field/search-hint/search-hint.component';
 import {RouterModule} from "@angular/router";
 import { HeaderComponent } from './header/header.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({

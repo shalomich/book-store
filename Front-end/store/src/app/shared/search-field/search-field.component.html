@@ -5,11 +5,17 @@
     </div>
     <button mat-stroked-button (click)="redirectToSearchPage()"><mat-icon>search</mat-icon></button>
   </div>
-  <div>
+  <div class="{{input.value ? 'result-block' : 'result-block hidden'}}">
     <div class="search-result">
-      <app-search-hint [searchField]="input" target="name">Произведения</app-search-hint>
-      <app-search-hint [searchField]="input" target="authorName" relatedEntityName="author">Авторы</app-search-hint>
-      <app-search-hint [searchField]="input" target="publisherName" relatedEntityName="publisher">Издатели</app-search-hint>
+      <div class="result-data">
+        <div>
+          <app-search-hint [searchField]="input" target="name">Произведения</app-search-hint>
+        </div>
+        <div>
+          <app-search-hint [searchField]="input" target="authorName" relatedEntityName="author">Авторы</app-search-hint>
+          <app-search-hint [searchField]="input" target="publisherName" relatedEntityName="publisher">Издатели</app-search-hint>
+        </div>
+      </div>
     </div>
   </div>
 </div>

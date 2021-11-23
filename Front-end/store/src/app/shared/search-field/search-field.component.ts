@@ -1,7 +1,7 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
-import {Router} from '@angular/router';
-import {FormControl} from '@angular/forms';
+import { Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
 
 
 @Component({

@@ -1,10 +1,15 @@
-<h3>
+<h3 class="title">
   <ng-content></ng-content>
 </h3>
-<ul>
-  <li *ngFor="let entity of entities$ | async">
+
+<ul class="list" *ngIf="entities$ | async; else emptyResult">
+  <li class="list-item" *ngFor="let entity of entities$ | async">
     <a [href]="searchInput.buildSearchUrl(target!, entity.name)">
       {{entity.name}}
     </a>
   </li>
 </ul>
+
+<ng-template class="empty-content" #emptyResult>Ничего не найдено.</ng-template>
+
+
