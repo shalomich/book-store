@@ -1,0 +1,6 @@
+<ng-container *ngIf="(selection$ | async)?.length != 0">
+  <h3>{{selectionHeader}}</h3>
+  <app-product-list-item *ngFor="let book of (selection$ | async)"
+                         [item]="book">
+  </app-product-list-item>
+</ng-container>
