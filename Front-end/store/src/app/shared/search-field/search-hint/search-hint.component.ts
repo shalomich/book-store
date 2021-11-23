@@ -1,24 +1,17 @@
-import { Component, ContentChild, ContentChildren, Input, OnInit } from '@angular/core';
+import { Component, ContentChild, Input, OnInit, ViewEncapsulation } from '@angular/core';
 
-import { map } from 'rxjs/operators';
+import {Observable, Subject} from 'rxjs';
 
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-
-import { HttpClient } from '@angular/common/http';
-
-import { Form, FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
 import { SearchFieldComponent } from '../search-field.component';
 import { ProductParamsBuilderService } from '../../../core/services/product-params-builder.service';
-import { BookService } from '../../../core/services/book.service';
-import { RelatedEntityDto } from '../../../core/DTOs/related-entity-dto';
-
-import { Entity } from '../../../core/models/entity';
 
 
 import { EntityDto } from '../../../core/DTOs/entity-dto';
 import { EntityRestService } from '../../../core/services/entity-rest.service';
 import { SEARCH_DEPTH } from '../../../core/utils/values';
+import {last, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-search-hint',
@@ -30,7 +23,9 @@ export class SearchHintComponent implements OnInit {
 
   private readonly productName: string = 'book';
 
-  public entities$: Subject<EntityDto[]> = new Subject();
+  public entities$: Observable<EntityDto[] | null> = new Observable<EntityDto[] | null>();
+
+  public loading = false;
 
   @Input() target: string | undefined;
 
@@ -46,26 +41,32 @@ export class SearchHintComponent implements OnInit {
     private readonly entityRestService: EntityRestService,
   ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.paramsBuilder.onParamsChanged = params => {
-      this.entityRestService
+      this.entities$ = this.entityRestService
         .get(this.productName, this.relatedEntityName, params)
-        .subscribe(data => this.entities$.next(data));
+        .pipe(
+          last(),
+          map(data => data.length ? data : null),
+        );
     };
 
     this.searchField.valueChanges
-      .subscribe(input => this.uploadHints(input));
+      .subscribe(input => {
+        this.uploadHints(input);
+      });
   }
 
   private uploadHints(input: string) {
     if (input) {
+      this.loading = true;
       this.paramsBuilder.searchOptions$.next({
         propertyName: 'name',
         value: input,
         searchDepth: SEARCH_DEPTH,
       });
     } else {
-      this.entities$.next([]);
+      this.entities$ = new Observable();
     }
   }
 }
