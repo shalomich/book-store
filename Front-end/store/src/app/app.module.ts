@@ -18,10 +18,11 @@ import { SharedModule } from './shared/shared.module';
 import { BookSearchPageComponent } from './book-search-page/book-search-page.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatIconModule} from '@angular/material/icon';
+import { SelectionComponent } from './selection/selection.component';
 
 
 @NgModule({
-  declarations: [AppComponent, BookSearchPageComponent],
+  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
