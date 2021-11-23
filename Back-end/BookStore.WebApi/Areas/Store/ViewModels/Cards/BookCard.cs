@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.WebApi.Areas.Store.ViewModels.Cards
 {
-    public record BookCard : FullProductCard
+    public record BookCard : ProductCard
     {
         public string Isbn { init; get; }
         public int ReleaseYear { init; get; }

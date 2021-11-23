@@ -28,42 +28,42 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpGet("novelty")]
-        public Task<IEnumerable<ProductCard>> GetNovelty([FromQuery] PaggingArgs pagging) 
+        public Task<IEnumerable<ProductPreview>> GetNovelty([FromQuery] PaggingArgs pagging) 
         {
             return GetSelection(new GetNoveltyQuery(Builder), pagging);
         }
 
         [HttpGet("gone-on-sale")]
-        public Task<IEnumerable<ProductCard>> GetGoneOnSale([FromQuery] PaggingArgs pagging)
+        public Task<IEnumerable<ProductPreview>> GetGoneOnSale([FromQuery] PaggingArgs pagging)
         {
             return GetSelection(new GetGoneOnSaleQuery(Builder), pagging);
         }
 
         [HttpGet("for-children")]
-        public Task<IEnumerable<ProductCard>> GetForChildren([FromQuery] PaggingArgs pagging)
+        public Task<IEnumerable<ProductPreview>> GetForChildren([FromQuery] PaggingArgs pagging)
         {
             return GetSelection(new GetForChildrenQuery(Builder), pagging);
         }
 
         [HttpGet("back-on-sale")]
-        public Task<IEnumerable<ProductCard>> GetBackOnSale([FromQuery] PaggingArgs pagging)
+        public Task<IEnumerable<ProductPreview>> GetBackOnSale([FromQuery] PaggingArgs pagging)
         {
             return GetSelection(new GetBackOnSaleQuery(Builder), pagging);
         }
 
         [HttpGet("random-author")]
-        public Task<IEnumerable<ProductCard>> GetByRandomAuthor([FromQuery] PaggingArgs pagging)
+        public Task<IEnumerable<ProductPreview>> GetByRandomAuthor([FromQuery] PaggingArgs pagging)
         {
             return GetSelection(new GetByRandomAuthorQuery(Builder), pagging);
         }
-        private async Task<IEnumerable<ProductCard>> GetSelection(ISelectionQuery selectionQuery, PaggingArgs pagging)
+        private async Task<IEnumerable<ProductPreview>> GetSelection(ISelectionQuery selectionQuery, PaggingArgs pagging)
         {
             Builder.AddPagging(pagging);
 
             var selection = await Mediator.Send(selectionQuery);
 
             return selection
-                .Select(book => Mapper.Map<ProductCard>(book))
+                .Select(book => Mapper.Map<ProductPreview>(book))
                 .ToArray();
         }
     }

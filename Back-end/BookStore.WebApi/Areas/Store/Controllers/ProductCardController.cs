@@ -38,7 +38,7 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         protected abstract void IncludeRelatedEntities();
 
         [HttpGet]
-        public async Task<ActionResult<ProductCard[]>> GetCards([FromQuery] FilterArgs[] filters, [FromQuery] SortingArgs[] sortings, 
+        public async Task<ActionResult<ProductPreview[]>> GetPreviews([FromQuery] FilterArgs[] filters, [FromQuery] SortingArgs[] sortings, 
             [FromQuery] SearchArgs search, [FromQuery] PaggingArgs pagging)
         {
             ProductQueryBuilder
@@ -47,16 +47,22 @@ namespace BookStore.WebApi.Areas.Store.Controllers
                 .AddSearch(search)
                 .AddPagging(pagging)
                 .AddIncludeRequirements(new ProductAlbumIncludeRequirement<T>());
+            IncludeRelatedEntities();
 
             var products = await Mediator.Send(new GetQuery(ProductQueryBuilder));
 
-            return products
-                .Select(product => Mapper.Map<ProductCard>(product))
+            var productType = typeof(T);
+            var productPreviewType = Mapper.GetDestinationType(productType, typeof(ProductPreview));
+
+            var previews = products
+                .Select(product => (ProductPreview) Mapper.Map(product, productType, productPreviewType))
                 .ToArray();
+
+            return previews;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<T>> GetCardById(int id)
+        public async Task<ActionResult<ProductCard>> GetCardById(int id)
         {
             var productType = typeof(T);
             var productCardType = Mapper.GetDestinationType(productType, typeof(ProductCard));
@@ -64,9 +70,9 @@ namespace BookStore.WebApi.Areas.Store.Controllers
             ProductQueryBuilder.AddIncludeRequirements(new ProductAlbumIncludeRequirement<T>());
             IncludeRelatedEntities();
 
-            var entity = await Mediator.Send(new GetByIdQuery(id, ProductQueryBuilder));
+            var product = await Mediator.Send(new GetByIdQuery(id, ProductQueryBuilder));
 
-            return Ok(Mapper.Map(entity, productType, productCardType));
+            return (ProductCard) Mapper.Map(product, productType, productCardType);
         }
 
         [HttpHead]
