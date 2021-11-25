@@ -1,5 +1,5 @@
 <div class="item-block">
-  <div class="item">
+  <div routerLink="//book-store/catalog/book/{{item.id}}" class="item">
     <div class="image-block">
       <img class="title-image" *ngIf="item.titleImage" alt="Title Image" src="{{item.titleImage | base64ToImgSrc}}">
     </div>
