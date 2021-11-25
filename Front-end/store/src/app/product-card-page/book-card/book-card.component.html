@@ -1,4 +1,3 @@
-<app-search-field></app-search-field>
 <div *ngIf="(book$ | async) as book" class="book-card">
   <app-product-images [titleImage]="book.titleImage" [notTitleImages]="book.notTitleImages"></app-product-images>
   <div class="info-block">

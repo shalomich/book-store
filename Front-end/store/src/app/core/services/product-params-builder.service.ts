@@ -30,13 +30,7 @@ export class ProductParamsBuilderService {
 
   public sortingOptions$: BehaviorSubject<Array<SortingOptions>> = new BehaviorSubject<Array<SortingOptions>>([]);
 
-  public searchOptions$: BehaviorSubject<SearchOptions> = new BehaviorSubject<SearchOptions>(
-    {
-      propertyName: '',
-      value: '',
-      searchDepth: 0,
-    },
-  );
+  public searchOptions$: BehaviorSubject<SearchOptions> = new BehaviorSubject<SearchOptions>({} as SearchOptions);
 
   public onParamsChanged: (params: HttpParams) => void = params => {};
 
@@ -130,11 +124,14 @@ export class ProductParamsBuilderService {
   }
 
   private buildSearch(params: HttpParams): HttpParams {
+    console.log(params);
     const { propertyName, value, searchDepth } = this.searchOptions$.value;
 
-    params = params.set('search.propertyName', propertyName);
-    params = params.set(`search.comparedValue`, value);
-    params = params.set(`search.searchDepth`, searchDepth);
+    if (propertyName && value && searchDepth) {
+      params = params.set('search.propertyName', propertyName);
+      params = params.set(`search.comparedValue`, value);
+      params = params.set(`search.searchDepth`, searchDepth);
+    }
 
     return params;
   }

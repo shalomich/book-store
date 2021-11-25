@@ -3,9 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { BookCardComponent } from './product-card-page/book-card/book-card.component';
 import { BookSearchPageComponent } from './book-search-page/book-search-page.component';
+import { MainPageComponent } from './main-page/main-page.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'book-store/catalog/book', pathMatch: 'full' },
+  { path: '', redirectTo: 'book-store', pathMatch: 'full' },
+  { path: 'book-store', component: MainPageComponent },
   { path: 'book-store/catalog/book', component: BookSearchPageComponent },
   { path: 'book-store/catalog/book/:id', component: BookCardComponent },
 ];

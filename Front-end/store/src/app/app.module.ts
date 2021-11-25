@@ -19,10 +19,11 @@ import { BookSearchPageComponent } from './book-search-page/book-search-page.com
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatIconModule} from '@angular/material/icon';
 import { SelectionComponent } from './selection/selection.component';
+import { MainPageComponent } from './main-page/main-page.component';
 
 
 @NgModule({
-  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent],
+  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent, MainPageComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

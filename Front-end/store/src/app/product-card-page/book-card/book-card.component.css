@@ -1,6 +1,6 @@
 .book-card {
   display: flex;
-  margin: 10em auto 0 auto;
+  margin: 5em auto 0 auto;
   width: fit-content;
   border: 0.2em gray solid;
   border-radius: 1em;

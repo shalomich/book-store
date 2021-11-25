@@ -1,8 +1,10 @@
 import { Component, ContentChild, Input, OnInit, ViewEncapsulation } from '@angular/core';
 
-import {Observable, Subject} from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { FormControl } from '@angular/forms';
+
+import { last, map } from 'rxjs/operators';
 
 import { SearchFieldComponent } from '../search-field.component';
 import { ProductParamsBuilderService } from '../../../core/services/product-params-builder.service';
@@ -11,7 +13,6 @@ import { ProductParamsBuilderService } from '../../../core/services/product-para
 import { EntityDto } from '../../../core/DTOs/entity-dto';
 import { EntityRestService } from '../../../core/services/entity-rest.service';
 import { SEARCH_DEPTH } from '../../../core/utils/values';
-import {last, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-search-hint',
