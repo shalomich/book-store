@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 namespace QueryWorker.DataTransformers
 {
 
-    internal sealed record Sorting<T> : IDataTransformer<T> where T : class
+    public sealed record Sorting<T> : IDataTransformer<T> where T : class
     {
         private Expression<Func<T, object>> PropertySelector { init; get; }
         public bool IsAscending { init; get; } = true;
