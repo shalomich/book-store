@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace BookStore.Application.DbQueryConfigs.Specifications
 {
-    internal class ByAuthorIdSpecification : Specification<Book>
+    internal class ByAuthorSpecification : Specification<Book>
     {
         private int AuthorId { get; }
 
-        public ByAuthorIdSpecification(int authorId)
+        public ByAuthorSpecification(int authorId)
         {
             AuthorId = authorId;
         }

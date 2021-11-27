@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using BookStore.Application.Queries.Selections;
+using BookStore.Application.DbQueryConfigs.SelectionConfigs;
+using BookStore.Application.Queries;
 using BookStore.Application.Services.DbQueryBuilders;
 using BookStore.Domain.Entities.Books;
 using BookStore.WebApi.Areas.Store.ViewModels.Cards;
@@ -18,48 +19,45 @@ namespace BookStore.WebApi.Areas.Store.Controllers
     {
         private IMediator Mediator { get; }
         private IMapper Mapper { get; }
-        private DbFormEntityQueryBuilder<Book> Builder { get; }
-
-        public SelectionController(IMediator mediator, IMapper mapper, DbFormEntityQueryBuilder<Book> builder)
+        public SelectionController(IMediator mediator, IMapper mapper)
         {
             Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            Builder = builder ?? throw new ArgumentNullException(nameof(builder));
         }
 
         [HttpGet("novelty")]
-        public Task<IEnumerable<ProductPreview>> GetNovelty([FromQuery] PaggingArgs pagging) 
+        public Task<IEnumerable<ProductPreview>> GetNovelty([FromQuery] PaggingArgs pagging, [FromQuery] SortingArgs[] sortings, [FromQuery] FilterArgs[] filters) 
         {
-            return GetSelection(new GetNoveltyQuery(Builder), pagging);
+            return GetSelection(new GetSelectionQuery(new NoveltyConfig(), pagging, filters, sortings));
         }
 
         [HttpGet("gone-on-sale")]
-        public Task<IEnumerable<ProductPreview>> GetGoneOnSale([FromQuery] PaggingArgs pagging)
+        public Task<IEnumerable<ProductPreview>> GetGoneOnSale([FromQuery] PaggingArgs pagging, [FromQuery] SortingArgs[] sortings, [FromQuery] FilterArgs[] filters)
         {
-            return GetSelection(new GetGoneOnSaleQuery(Builder), pagging);
+            return GetSelection(new GetSelectionQuery(new GoneOnSaleConfig(), pagging, filters, sortings));
         }
 
         [HttpGet("for-children")]
-        public Task<IEnumerable<ProductPreview>> GetForChildren([FromQuery] PaggingArgs pagging)
+        public Task<IEnumerable<ProductPreview>> GetForChildren([FromQuery] PaggingArgs pagging, [FromQuery] SortingArgs[] sortings, [FromQuery] FilterArgs[] filters)
         {
-            return GetSelection(new GetForChildrenQuery(Builder), pagging);
+            return GetSelection(new GetSelectionQuery(new ForChildrenConfig(), pagging, filters, sortings));
         }
 
         [HttpGet("back-on-sale")]
-        public Task<IEnumerable<ProductPreview>> GetBackOnSale([FromQuery] PaggingArgs pagging)
+        public Task<IEnumerable<ProductPreview>> GetBackOnSale([FromQuery] PaggingArgs pagging, [FromQuery] SortingArgs[] sortings, [FromQuery] FilterArgs[] filters)
         {
-            return GetSelection(new GetBackOnSaleQuery(Builder), pagging);
+            return GetSelection(new GetSelectionQuery(new BackOnSaleConfig(), pagging, filters, sortings));
         }
 
         [HttpGet("random-author")]
-        public Task<IEnumerable<ProductPreview>> GetByRandomAuthor([FromQuery] PaggingArgs pagging)
+        public async Task<IEnumerable<ProductPreview>> GetByRandomAuthor([FromQuery] PaggingArgs pagging, [FromQuery] SortingArgs[] sortings, [FromQuery] FilterArgs[] filters)
         {
-            return GetSelection(new GetByRandomAuthorQuery(Builder), pagging);
-        }
-        private async Task<IEnumerable<ProductPreview>> GetSelection(ISelectionQuery selectionQuery, PaggingArgs pagging)
-        {
-            Builder.AddPagging(pagging);
+            int authorId = (await Mediator.Send(new GetSelectionAuthorQuery())).Id;
 
+            return await GetSelection(new GetSelectionQuery(new ByAuthorConfig(authorId), pagging, filters, sortings));
+        }
+        private async Task<IEnumerable<ProductPreview>> GetSelection(GetSelectionQuery selectionQuery)
+        {
             var selection = await Mediator.Send(selectionQuery);
 
             return selection
