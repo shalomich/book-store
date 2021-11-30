@@ -33,6 +33,10 @@ export class StatusFilterComponent extends FilterComponent implements OnInit {
     this.statusControl.reset();
   }
 
+  disable(): void {
+    this.statusControl.disable();
+  }
+
   public ngOnInit(): void {
     if (!this.propertyName) {
       throw 'Attribute property name is empty';

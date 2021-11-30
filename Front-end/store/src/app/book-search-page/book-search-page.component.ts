@@ -26,14 +26,6 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
 
   public books$: Observable<ProductPreview[]> = new Observable<ProductPreview[]>();
 
-  public readonly genres$: Observable<RelatedEntity[]>;
-
-  public readonly bookTypes$: Observable<RelatedEntity[]>;
-
-  public readonly coverArts$: Observable<RelatedEntity[]>;
-
-  public readonly ageLimits$: Observable<RelatedEntity[]>;
-
   public readonly propertyNamesWithText: Array<[string, string]> = [['По имени', 'name'], ['По цене', 'cost'], ['По дате добавления', 'addingDate']];
 
   public constructor(
@@ -41,10 +33,6 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public readonly productParamsBuilderService: ProductParamsBuilderService,
   ) {
-    this.genres$ = this.bookService.getRelatedEntity('genre');
-    this.bookTypes$ = this.bookService.getRelatedEntity('type');
-    this.ageLimits$ = this.bookService.getRelatedEntity('age-limit');
-    this.coverArts$ = this.bookService.getRelatedEntity('cover-art');
   }
 
   public ngOnInit(): void {
