@@ -1,4 +1,4 @@
-import { Component, ContentChildren, Input, QueryList, ViewEncapsulation } from '@angular/core';
+import {AfterContentInit, Component, ContentChildren, Input, QueryList, ViewEncapsulation} from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs';
 
@@ -13,16 +13,16 @@ import { FilterComponent } from '../filter-component';
   styleUrls: ['./filter-group.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class FilterGroupComponent {
+export class FilterGroupComponent implements AfterContentInit{
 
-  @ContentChildren(FilterComponent) filterComponents: QueryList<FilterComponent> = new QueryList<FilterComponent>();
+  @ContentChildren(FilterComponent) public filterComponents: QueryList<FilterComponent> = new QueryList<FilterComponent>();
 
   @Input() filterOptions!: BehaviorSubject<FilterOptions>;
+  @Input() disabledFilters: Array<string> = [];
 
   private currentStateHash: string = objectHash({});
 
   public applyFilters(): void {
-
     const filterValues: any = {};
 
     for (const filterComponent of this.filterComponents) {
@@ -44,6 +44,12 @@ export class FilterGroupComponent {
     });
   }
 
+  private disableFilters(): void {
+    const disabledFiltersComponents = this.filterComponents
+      .filter(filterComponent => this.disabledFilters.includes(filterComponent.propertyName));
+    disabledFiltersComponents.forEach(filterComponent => filterComponent.disable());
+  }
+
   public resetFilters(): void {
 
     const filterValues = {};
@@ -63,6 +69,10 @@ export class FilterGroupComponent {
     this.filterOptions.next({
       values: filterValues,
     });
+  }
+
+  ngAfterContentInit(): void {
+    this.disableFilters();
   }
 
 }

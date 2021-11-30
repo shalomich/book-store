@@ -48,13 +48,13 @@ namespace BookStore.WebApi.Areas.Store.Controllers
             return await GetRelatedEntities(relatedEntityQueryBuilder);
         }
 
-        [HttpGet("age-limit")]
+        [HttpGet("ageLimit")]
         public async Task<IEnumerable<RelatedEntityDto>> GetAgeLimits([FromServices] DbFormEntityQueryBuilder<AgeLimit> relatedEntityQueryBuilder)
         {
             return await GetRelatedEntities(relatedEntityQueryBuilder);
         }
 
-        [HttpGet("cover-art")]
+        [HttpGet("coverArt")]
         public async Task<IEnumerable<RelatedEntityDto>> GetCoverArts([FromServices] DbFormEntityQueryBuilder<CoverArt> relatedEntityQueryBuilder)
         {
             return await GetRelatedEntities(relatedEntityQueryBuilder);

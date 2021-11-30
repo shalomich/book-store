@@ -35,6 +35,11 @@ export class RangeFilterComponent extends FilterComponent implements OnInit, OnD
     return `${lowerBoundValue ?? ''}...${highBoundValue ?? ''}`;
   }
 
+  disable(): void {
+    this.lowerBoundControl.disable();
+    this.upperBoundControl.disable();
+  }
+
   public reset(): void {
     this.lowerBoundControl.reset();
     this.upperBoundControl.reset();
@@ -48,4 +53,5 @@ export class RangeFilterComponent extends FilterComponent implements OnInit, OnD
 
   public ngOnDestroy() {
   }
+
 }

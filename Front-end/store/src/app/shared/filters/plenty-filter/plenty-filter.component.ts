@@ -6,6 +6,7 @@ import {FormControl} from '@angular/forms';
 
 import {RelatedEntity} from '../../../core/models/related-entity';
 import {FilterComponent} from '../filter-component';
+import {BookService} from "../../../core/services/book.service";
 
 @Component({
   selector: 'app-plenty-filter',
@@ -14,7 +15,10 @@ import {FilterComponent} from '../filter-component';
   providers: [{ provide: FilterComponent, useExisting: PlentyFilterComponent }],
 })
 export class PlentyFilterComponent extends FilterComponent implements OnInit {
+
   public readonly idsControl: FormControl = new FormControl();
+
+  public relatedEntities$: Observable<RelatedEntity[]> = new Observable<[]>();
 
   @Input()
   public label = '';
@@ -22,8 +26,9 @@ export class PlentyFilterComponent extends FilterComponent implements OnInit {
   @Input()
   public propertyName = '';
 
-  @Input()
-  public relatedEntities$: Observable<RelatedEntity[]> = new Observable<[]>();
+  public constructor(private readonly bookService: BookService) {
+    super();
+  }
 
   public getValue(): string | null {
 
@@ -36,6 +41,10 @@ export class PlentyFilterComponent extends FilterComponent implements OnInit {
     return null;
   }
 
+  public disable(): void {
+    this.idsControl.disable();
+  }
+
   public reset(): void {
     this.idsControl.reset();
   }
@@ -45,5 +54,7 @@ export class PlentyFilterComponent extends FilterComponent implements OnInit {
     if (!this.propertyName || !this.relatedEntities$) {
       throw 'Attribute property name is empty';
     }
+
+    this.relatedEntities$ = this.bookService.getRelatedEntity(this.propertyName);
   }
 }
