@@ -7,17 +7,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BookStore.Application.DbQueryConfigs.Orders;
 
-namespace BookStore.Application.DbQueryConfigs.SelectionConfigs
+namespace BookStore.Application.DbQueryConfigs.SelectionFactories
 {
-    public class GoneOnSaleConfig : ISelectionConfig
+    internal class GoneOnSaleFactory : ISelectionFactory
     {
-        public Sorting<Book> CreateSorting()
+        public IOrder<Book> CreateOrder()
         {
-            return new Sorting<Book>(book => book.AddingDate) { IsAscending = false };
+            return new GoneOnSaleOrder();
         }
 
-        public Specification<Book> CreateSpecification()
+        public ISpecification<Book> CreateSpecification()
         {
             return new GoneOnSaleSpecification();
         }

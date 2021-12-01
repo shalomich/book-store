@@ -20,12 +20,6 @@ namespace BookStore.Application.Services.DbQueryBuilders
         {
             BuildFacade = transformerFacade;
         }
-        public DbFormEntityQueryBuilder<T> AddSpecification(ISpecification<T> specification)
-        {
-            AddBuildItem(new SpecificationBuildItem<T>(specification));
-
-            return this;
-        }
 
         public DbFormEntityQueryBuilder<T> AddSortings(IEnumerable<SortingArgs> args)
         {

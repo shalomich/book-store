@@ -6,21 +6,15 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.Application.DbQueryConfigs.Specifications
 {
-    internal class ByAuthorSpecification : Specification<Book>
+    internal class CurrentDayAuthorSpecification : Specification<Book>
     {
-        private int AuthorId { get; }
-
-        public ByAuthorSpecification(int authorId)
-        {
-            AuthorId = authorId;
-        }
-
         public override Expression<Func<Book, bool>> ToExpression()
         {
-            return book => book.AuthorId == AuthorId;
+            return book => book.Author.SelectionOrder.SelectionDate.Date == DateTime.Now.Date;
         }
     }
 }

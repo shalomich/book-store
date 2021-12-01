@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BookStore.Application.Dto;
 
-namespace BookStore.WebApi.Areas.Store.Profiles
+namespace BookStore.Application.Profiles
 {
     public class BasketToDtoProfile : Profile
     {

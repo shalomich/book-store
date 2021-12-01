@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Application.Services.DbQueryBuilders.DbQueryBuildItems
 {
-    public class IncludeBuildItem<T> : IQueryBuildItem<T> where T : IEntity
+    internal class IncludeBuildItem<T> : IQueryBuildItem<T> where T : IEntity
     {
         private IIncludeRequirement<T> Requirement { get; }
 

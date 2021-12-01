@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Application.Services.DbQueryBuilders.DbQueryBuildItems
 {
-    public class DataTransformerBuildItem<T> : IQueryBuildItem<T> where T : class, IFormEntity
+    internal class DataTransformerBuildItem<T> : IQueryBuildItem<T> where T : class, IFormEntity
     {
         private IDataTransformer<T> _dataTransformer;
 
