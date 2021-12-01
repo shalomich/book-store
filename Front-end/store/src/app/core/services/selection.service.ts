@@ -14,6 +14,7 @@ import { ProductPreviewMapper } from '../mappers/product-preview.mapper';
 import { RelatedEntityDto } from '../DTOs/related-entity-dto';
 import { RelatedEntityMapper } from '../mappers/related-entity.mapper';
 import { RelatedEntity } from '../models/related-entity';
+import {Selection} from "../enums/selection";
 
 @Injectable({
   providedIn: 'root',
@@ -25,9 +26,14 @@ export class SelectionService {
     private readonly productPreviewMapper: ProductPreviewMapper
   ) { }
 
-  public get(selectionName: string, params?: HttpParams): Observable<ProductPreview[]> {
-    return this.http.get<ProductPreviewDto[]>(`${SELECTION_URL}${selectionName}`, { params }).pipe(
+  public get(selection: Selection, params?: HttpParams): Observable<ProductPreview[]> {
+    return this.http.get<ProductPreviewDto[]>(`${SELECTION_URL}${selection}`, { params }).pipe(
       map(product => product.map(product => this.productPreviewMapper.fromDto(product))),
     );
+  }
+
+  public getQuantity(selection: Selection, params?: HttpParams): Observable<number> {
+    return this.http.head(`${SELECTION_URL}${selection}`, { observe: 'response', params })
+      .pipe(map(response => parseInt(<string>response.headers.get('dataCount'))));
   }
 }

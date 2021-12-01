@@ -6,6 +6,7 @@ import { SelectionService } from '../core/services/selection.service';
 import { ProductParamsBuilderService } from '../core/services/product-params-builder.service';
 import { ProductPreview } from '../core/models/product-preview';
 import { SELECTION_SIZE } from '../core/utils/values';
+import {Selection} from "../core/enums/selection";
 
 @Component({
   selector: 'app-selection',
@@ -16,20 +17,21 @@ import { SELECTION_SIZE } from '../core/utils/values';
 export class SelectionComponent implements OnInit {
 
   public selection$: Observable<ProductPreview[]> = new Observable<ProductPreview[]>();
+  public selectionLink: string | undefined;
 
-  @Input() selectionName: string | undefined;
+  @Input() selectionName!: Selection;
 
   @Input() selectionHeader: string | undefined;
 
   constructor(
     private readonly selectionService: SelectionService,
     private readonly paramsBuilder: ProductParamsBuilderService,
-  ) { }
+  ) {
+
+  }
 
   ngOnInit(): void {
-    if (!this.selectionName) {
-      throw 'Attributes can not be undefined';
-    }
+    this.selectionLink = `book-store/catalog/selection/${this.selectionName}`;
 
     this.paramsBuilder.onParamsChanged = params => this.selection$ = this.selectionService.get(this.selectionName!, params);
 

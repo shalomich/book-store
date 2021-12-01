@@ -20,7 +20,7 @@ export class ProductParamsBuilderService {
     pageSize: PAGE_SIZE,
   });
 
-  public pageCount$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  public pageCount$: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
 
   public filterOptions$: BehaviorSubject<FilterOptions> = new BehaviorSubject<FilterOptions>(
     {
@@ -39,7 +39,14 @@ export class ProductParamsBuilderService {
   constructor() {
     this.paginationOptions$.asObservable()
       .subscribe(options => {
-        this.onParamsChanged(this.buildParams());
+        const params = this.buildParams();
+
+        if (!this.pageCount$.value) {
+          this.changePageCount(params)
+            .subscribe(pageCount => this.pageCount$.next(pageCount));
+        }
+
+        this.onParamsChanged(params);
       });
 
     this.filterOptions$.asObservable()
@@ -124,7 +131,6 @@ export class ProductParamsBuilderService {
   }
 
   private buildSearch(params: HttpParams): HttpParams {
-    console.log(params);
     const { propertyName, value, searchDepth } = this.searchOptions$.value;
 
     if (propertyName && value && searchDepth) {

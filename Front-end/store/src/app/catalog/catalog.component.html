@@ -1,0 +1,27 @@
+<div class="page-block">
+  <filter-group [filterOptions]="paramsBuilder.filterOptions$" [disabledFilters]="disableFilters">
+    <app-range-filter label="Цена" class="filter-elem" propertyName="cost"></app-range-filter>
+    <app-range-filter label="Год издания" class="filter-elem" propertyName="releaseYear"></app-range-filter>
+    <app-plenty-filter label="Жанры" class="filter-elem" propertyName="genre"></app-plenty-filter>
+    <app-plenty-filter label="Тип книги" class="filter-elem" propertyName="type"></app-plenty-filter>
+    <app-plenty-filter label="Возрастное ограничение" class="filter-elem" propertyName="ageLimit"></app-plenty-filter>
+    <app-plenty-filter label="Тип обложки" class="filter-elem" propertyName="coverArt"></app-plenty-filter>
+    <app-status-filter label="В наличии" class="filter-elem" propertyName="quantity"></app-status-filter>
+  </filter-group>
+  <div class="list-block">
+    <sorting [propertyNamesWithText]="propertyNamesWithText" [sortingOptions$]="paramsBuilder.sortingOptions$"></sorting>
+    <div class="books-list">
+      <app-product-list-item *ngFor="let book of (books$ | async)! | paginate: panel.config"
+                             [item]="book">
+      </app-product-list-item>
+    </div>
+  </div>
+  <div class="pagination-block">
+    <pagination-panel class="pagination-panel" [pageCount$]="paramsBuilder.pageCount$"
+                      [paginationOptions$]="paramsBuilder.paginationOptions$"
+                      #panel>
+    </pagination-panel>
+  </div>
+</div>
+
+
