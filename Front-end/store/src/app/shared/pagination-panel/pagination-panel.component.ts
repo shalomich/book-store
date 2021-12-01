@@ -18,7 +18,7 @@ export class PaginationPanelComponent implements OnInit {
     pageSize: PAGE_SIZE,
   });
 
-  @Input() pageCount$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  @Input() pageCount$: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
 
   public config: PaginationInstance = {
     id: 'paginationPanel',

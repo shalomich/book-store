@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ProductParamsBuilderService} from '../core/services/product-params-builder.service';
+import {Selection} from "../core/enums/selection";
 
 @Component({
   selector: 'app-main-page',
@@ -8,6 +9,7 @@ import {ProductParamsBuilderService} from '../core/services/product-params-build
 })
 export class MainPageComponent implements OnInit {
 
+  public selectionEnum = Selection
   constructor() { }
 
   ngOnInit(): void {

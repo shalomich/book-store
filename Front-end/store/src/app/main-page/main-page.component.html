@@ -1,5 +1,5 @@
-<app-selection selectionName="gone-on-sale" selectionHeader="Уже в продаже"></app-selection>
-<app-selection selectionName="novelty" selectionHeader="Новинки"></app-selection>
-<app-selection selectionName="back-on-sale" selectionHeader="Снова в продаже"></app-selection>
-<app-selection selectionName="for-children" selectionHeader="Для детей"></app-selection>
-<app-selection selectionName="random-author" selectionHeader="Автор этого дня"></app-selection>
+<app-selection [selectionName]="selectionEnum.Novelty" selectionHeader="Уже в продаже"></app-selection>
+<app-selection [selectionName]="selectionEnum.GoneOnSale" selectionHeader="Новинки"></app-selection>
+<app-selection [selectionName]="selectionEnum.BackOnSale" selectionHeader="Снова в продаже"></app-selection>
+<app-selection [selectionName]="selectionEnum.ForChildren" selectionHeader="Для детей"></app-selection>
+<app-selection [selectionName]="selectionEnum.CurrentDayAuthor" selectionHeader="Автор этого дня"></app-selection>

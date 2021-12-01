@@ -20,10 +20,12 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatIconModule} from '@angular/material/icon';
 import { SelectionComponent } from './selection/selection.component';
 import { MainPageComponent } from './main-page/main-page.component';
+import { SelectionPageComponent } from './selection-page/selection-page.component';
+import { CatalogComponent } from './catalog/catalog.component';
 
 
 @NgModule({
-  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent, MainPageComponent],
+  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent, MainPageComponent, SelectionPageComponent, CatalogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
