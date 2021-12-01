@@ -7,17 +7,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BookStore.Application.DbQueryConfigs.Orders;
 
-namespace BookStore.Application.DbQueryConfigs.SelectionConfigs
+namespace BookStore.Application.DbQueryConfigs.SelectionFactories
 {
-    public class ForChildrenConfig : ISelectionConfig
+    public class ForChildrenFactory : ISelectionFactory
     {
-        public Sorting<Book> CreateSorting()
+        public IOrder<Book> CreateOrder()
         {
-            return new Sorting<Book>(book => Guid.NewGuid());
+            return new ForChildrenOrder();
         }
 
-        public Specification<Book> CreateSpecification()
+        public ISpecification<Book> CreateSpecification()
         {
             return new ForChildrenSpecification();
         }

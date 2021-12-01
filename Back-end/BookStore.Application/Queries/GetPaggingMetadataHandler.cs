@@ -15,7 +15,7 @@ namespace BookStore.Application.Queries
 {
     public record GetMetadataQuery(PaggingArgs Args, IDbQueryBuilder<IFormEntity> QueryBuilder) : IRequest<PaggingMetadata>;
 
-    public class GetPaggingMetadataHandler : IRequestHandler<GetMetadataQuery, PaggingMetadata>
+    internal class GetPaggingMetadataHandler : IRequestHandler<GetMetadataQuery, PaggingMetadata>
     {        
         private PaggingMetadataCollector<IFormEntity> Collector { get; }
 
