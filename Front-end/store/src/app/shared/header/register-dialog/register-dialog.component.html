@@ -1,0 +1,27 @@
+<div class="register-modal">
+  <div class="register-title">
+    <span>Регистрация</span>
+  </div>
+  <mat-form-field class="register-modal-field" appearance="outline">
+    <mat-label>Email</mat-label>
+    <input [formControl]="email" matInput>
+  </mat-form-field>
+  <mat-form-field class="register-modal-field" appearance="outline">
+    <mat-label>Пароль</mat-label>
+    <input [formControl]="password" matInput>
+  </mat-form-field>
+  <mat-form-field class="register-modal-field" appearance="outline">
+    <mat-label>Повторите пароль</mat-label>
+    <input [formControl]="repeatPassword" matInput>
+  </mat-form-field>
+  <mat-error *ngIf="this.repeatPassword.hasError('passwordMatchError')">
+    {{repeatPassword.errors?.passwordMatchError}}
+  </mat-error>
+  <div class="register-button">
+    <button (click)="register()" mat-stroked-button color="primary">Регистрация</button>
+  </div>
+  <div class="register-link">
+    <span>Уже есть аккаунт? <a (click)="openLoginDialog($event)" href="">Войдите</a></span>
+  </div>
+</div>
+

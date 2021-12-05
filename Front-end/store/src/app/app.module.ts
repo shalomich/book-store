@@ -9,6 +9,10 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { NgxPaginationModule } from 'ngx-pagination';
 
+import { MatExpansionModule } from '@angular/material/expansion';
+
+import { MatIconModule } from '@angular/material/icon';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -16,8 +20,6 @@ import { ProductCardPageModule } from './product-card-page/product-card-page.mod
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { BookSearchPageComponent } from './book-search-page/book-search-page.component';
-import {MatExpansionModule} from '@angular/material/expansion';
-import {MatIconModule} from '@angular/material/icon';
 
 
 @NgModule({

@@ -19,6 +19,12 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { NgxPaginationModule } from 'ngx-pagination';
 
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
+import { RouterModule } from '@angular/router';
+
+import { MatDialogModule } from '@angular/material/dialog';
+
 import { CoreModule } from '../core/core.module';
 
 import { ProductImagesComponent } from './product-card/product-images/product-images.component';
@@ -29,16 +35,17 @@ import { ProductListItemComponent } from './product-list-item/product-list-item.
 import { RangeFilterComponent } from './filters/range-filter/range-filter.component';
 
 import { StatusFilterComponent } from './filters/status-filter/status-filter.component';
-import {MatCheckboxModule} from "@angular/material/checkbox";
 
-import {FilterGroupComponent} from "./filters/filter-group/filter-group.component";
-import {PaginationPanelComponent} from "./pagination-panel/pagination-panel.component";
+import { FilterGroupComponent } from './filters/filter-group/filter-group.component';
+import { PaginationPanelComponent } from './pagination-panel/pagination-panel.component';
 import { SearchFieldComponent } from './search-field/search-field.component';
-import {PlentyFilterComponent} from "./filters/plenty-filter/plenty-filter.component";
+import { PlentyFilterComponent } from './filters/plenty-filter/plenty-filter.component';
 import { SearchHintComponent } from './search-field/search-hint/search-hint.component';
-import {RouterModule} from "@angular/router";
+
+
 import { HeaderComponent } from './header/header.component';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {LoginDialogComponent} from './header/login-dialog/login-dialog.component';
+import { RegisterDialogComponent } from './header/register-dialog/register-dialog.component';
 
 
 @NgModule({
@@ -54,7 +61,9 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     StatusFilterComponent,
     SearchFieldComponent,
     SearchHintComponent,
-    HeaderComponent
+    HeaderComponent,
+    LoginDialogComponent,
+    RegisterDialogComponent,
   ],
   exports: [
     ProductImagesComponent,
@@ -67,7 +76,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     PaginationPanelComponent,
     SortingComponent,
     SearchFieldComponent,
-    SearchHintComponent
+    SearchHintComponent,
+    HeaderComponent,
   ],
   imports: [
     CommonModule,
@@ -79,11 +89,11 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatInputModule,
     MatExpansionModule,
     MatIconModule,
-    MatInputModule,
     NgxPaginationModule,
     MatOptionModule,
     MatCheckboxModule,
-    RouterModule
-]
+    MatDialogModule,
+    RouterModule,
+  ],
 })
 export class SharedModule { }
