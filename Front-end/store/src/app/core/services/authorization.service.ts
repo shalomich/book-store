@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {LOGIN_URL, REGISTER_URL} from '../utils/values';
-import {Observable} from 'rxjs';
-import {AuthorizationDataProvider} from "./authorization-data.provider";
+import { HttpClient } from '@angular/common/http';
+
+import { Observable } from 'rxjs';
+
+import { LOGIN_URL, REGISTER_URL } from '../utils/values';
+
+import { AuthorizationDataProvider } from './authorization-data.provider';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthorizationService {
 

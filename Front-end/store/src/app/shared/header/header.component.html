@@ -1,6 +1,9 @@
 <div class="header">
   <app-search-field></app-search-field>
-  <button (click)="openLoginDialog()">Войти</button>
-  <button (click)="openRegisterDialog()">Зарегистрироваться</button>
+  <div *ngIf="checkAuthorization(); else loginButton">Профиль</div>
 </div>
+
+<ng-template #loginButton>
+  <button class="login-button" mat-stroked-button (click)="openLoginDialog()">Войти</button>
+</ng-template>
 

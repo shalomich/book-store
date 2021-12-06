@@ -1,7 +1,7 @@
-import {Injectable} from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthorizationDataProvider {
   public token: string | undefined;
@@ -15,14 +15,15 @@ export class AuthorizationDataProvider {
   }
 
   public isAuthorized(): boolean {
-    return this.token != undefined;
+    return this.token !== undefined;
   }
 
   private parseToken(): any {
-    if (!this.token)
+    if (!this.token) {
       throw 'Token is not defined';
+    }
 
-    const [,payload,] = this.token.split('.');
+    const [, payload] = this.token.split('.');
 
     return JSON.parse(atob(payload));
   }

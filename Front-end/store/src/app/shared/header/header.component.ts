@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import {RegisterDialogComponent} from './register-dialog/register-dialog.component';
+import {AuthorizationDataProvider} from '../../core/services/authorization-data.provider';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,7 @@ import {RegisterDialogComponent} from './register-dialog/register-dialog.compone
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog, private readonly authorizationDataProvider: AuthorizationDataProvider) { }
 
   ngOnInit(): void {
   }
@@ -22,11 +23,7 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  public openRegisterDialog(): void {
-    this.dialog.open(RegisterDialogComponent, {
-      width: 'min-content',
-    });
+  public checkAuthorization(): boolean {
+    return this.authorizationDataProvider.isAuthorized();
   }
-
-
 }
