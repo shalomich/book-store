@@ -24,15 +24,15 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<AuthorizedData>> LoginAsync(AuthForm authForm)
+        public Task<string> Login(AuthForm authForm)
         {
-            return await _mediator.Send(new LoginCommand(authForm));
+            return _mediator.Send(new LoginCommand(authForm));
         }
 
         [HttpPost("registration")]
-        public async Task<ActionResult<AuthorizedData>> RegistrationAsync(AuthForm authForm)
+        public Task<string> Registration(AuthForm authForm)
         {
-            return await _mediator.Send(new RegistrationCommand(authForm));
+            return _mediator.Send(new RegistrationCommand(authForm));
         }
     }
 }

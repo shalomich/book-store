@@ -14,8 +14,8 @@ using BookStore.Application.Exceptions;
 
 namespace BookStore.Application.Commands.Account
 {
-	public record LoginCommand(AuthForm AuthForm) : IRequest<AuthorizedData>;
-	internal class LoginHandler : IRequestHandler<LoginCommand, AuthorizedData>
+	public record LoginCommand(AuthForm AuthForm) : IRequest<string>;
+	internal class LoginHandler : IRequestHandler<LoginCommand, string>
 	{
 		private const string NotExistEmailMessage = "This email does not exist";
 		private const string WrongPasswordMessage = "Wrong password";
@@ -31,7 +31,7 @@ namespace BookStore.Application.Commands.Account
             _jwtGenerator = jwtGenerator ?? throw new ArgumentNullException(nameof(jwtGenerator));
         }
 
-        public async Task<AuthorizedData> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(LoginCommand request, CancellationToken cancellationToken)
 		{
 			var (email, password) = request.AuthForm;
 
@@ -42,14 +42,12 @@ namespace BookStore.Application.Commands.Account
 
 			var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
 
-			if (result.Succeeded)
-			{
-				string role = (await _userManager.GetRolesAsync(user)).First();
-				string token = _jwtGenerator.CreateToken(user, role);
-				return new AuthorizedData(token, role);
-			}
-			else throw new BadRequestException(WrongPasswordMessage);
+			if (!result.Succeeded)
+                throw new BadRequestException(WrongPasswordMessage);
 
-		}
+			string role = (await _userManager.GetRolesAsync(user)).First();
+            
+            return _jwtGenerator.CreateToken(user, role);
+        }
 	}
 }

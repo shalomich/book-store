@@ -15,8 +15,8 @@ using BookStore.Application.Exceptions;
 
 namespace BookStore.Application.Commands.Account
 {
-	public record RegistrationCommand(AuthForm AuthForm) : IRequest<AuthorizedData>;
-	public class RegistrationHandler : IRequestHandler<RegistrationCommand, AuthorizedData>
+	public record RegistrationCommand(AuthForm AuthForm) : IRequest<string>;
+	public class RegistrationHandler : IRequestHandler<RegistrationCommand, string>
 	{ 
 		private const string DefaultUserRole = "customer";
 		private const string EmailTakenMessage = "This email is already taken";
@@ -30,7 +30,7 @@ namespace BookStore.Application.Commands.Account
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
 
-        public async Task<AuthorizedData> Handle(RegistrationCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(RegistrationCommand request, CancellationToken cancellationToken)
 		{
 			var (email, password) = request.AuthForm;
 
@@ -40,21 +40,16 @@ namespace BookStore.Application.Commands.Account
 			var user = new User { Email = email, UserName = email };
 
 			var result = await _userManager.CreateAsync(user, password);
-			
-			if (result.Succeeded)
-			{
-				await _userManager.AddToRoleAsync(user, DefaultUserRole);
 
-				string token = _jwtGenerator.CreateToken(user, DefaultUserRole);
-
-				return new AuthorizedData(token, DefaultUserRole);
-			}
-			else
-			{
-				var passwordErrorMessage = result.Errors.First().Description;
-				throw new BadRequestException(passwordErrorMessage);
+            if (!result.Succeeded)
+            {
+                var passwordErrorMessage = result.Errors.First().Description;
+                throw new BadRequestException(passwordErrorMessage);
 			}
 
-		}
+            await _userManager.AddToRoleAsync(user, DefaultUserRole);
+
+			return _jwtGenerator.CreateToken(user, DefaultUserRole);
+        }
 	}
 }

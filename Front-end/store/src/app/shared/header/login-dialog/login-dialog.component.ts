@@ -1,8 +1,9 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {RegisterDialogComponent} from '../register-dialog/register-dialog.component';
-import {UserService} from '../../../core/services/user.service';
+import {AuthorizationService} from '../../../core/services/authorization.service';
 import {FormControl} from '@angular/forms';
+import {AuthorizationDataProvider} from "../../../core/services/authorization-data.provider";
 
 @Component({
   selector: 'app-login-dialog',
@@ -16,7 +17,9 @@ export class LoginDialogComponent implements OnInit {
 
   public password: FormControl = new FormControl();
 
-  constructor(private dialog: MatDialog, private readonly userService: UserService) { }
+  constructor(private dialog: MatDialog,
+              private readonly authService: AuthorizationService,
+              private readonly authProvider: AuthorizationDataProvider) { }
 
   ngOnInit(): void {
   }
@@ -27,14 +30,10 @@ export class LoginDialogComponent implements OnInit {
     const dialogRef = this.dialog.open(RegisterDialogComponent, {
       width: 'min-content',
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
   }
 
   public login() {
-    this.userService.loginUser(this.email.value, this.password.value);
+    this.authService.login(this.email.value, this.password.value);
     this.dialog.closeAll();
   }
 }

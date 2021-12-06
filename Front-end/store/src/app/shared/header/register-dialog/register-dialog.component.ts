@@ -4,8 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
 
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
-import { UserService } from '../../../core/services/user.service';
+import { AuthorizationService } from '../../../core/services/authorization.service';
 import {RegisterValidator} from '../../../core/validators/register-validator';
+import {AuthorizationDataProvider} from "../../../core/services/authorization-data.provider";
 
 @Component({
   selector: 'app-register-dialog',
@@ -20,7 +21,8 @@ export class RegisterDialogComponent implements OnInit {
 
   public repeatPassword: FormControl = new FormControl();
 
-  constructor(private dialog: MatDialog, private readonly userService: UserService) {
+  constructor(private dialog: MatDialog,
+              private readonly authService: AuthorizationService) {
     this.repeatPassword.setValidators(RegisterValidator.matchPassword(this.password));
   }
 
@@ -33,14 +35,10 @@ export class RegisterDialogComponent implements OnInit {
     const dialogRef = this.dialog.open(LoginDialogComponent, {
       width: 'min-content',
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
   }
 
   public register(): void {
-    this.userService.registerUser(this.email.value, this.password.value);
+    this.authService.register(this.email.value, this.password.value);
     this.dialog.closeAll();
   }
 }
