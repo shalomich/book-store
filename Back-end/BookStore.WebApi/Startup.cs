@@ -23,6 +23,9 @@ using BookStore.Application.Services.DbQueryBuilders;
 using System.Reflection;
 using BookStore.WebApi.Attributes.GenericController;
 using BookStore.WebApi.Middlewares;
+using BookStore.Application.Providers;
+using BookStore.WebApi.Providers;
+using Microsoft.AspNetCore.Identity;
 
 namespace BookStore.WebApi
 {
@@ -50,23 +53,30 @@ namespace BookStore.WebApi
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
                 .ConfigureApplicationPartManager(options => options.FeatureProviders.Add(new GenericControllerFeatureProvider())); ;
 
-            services.AddScoped<JwtGenerator>();
+            services.AddScoped<IJwtProvider, ConfigJwtProvider>();
+            services.AddScoped<JwtConverter>();
 
             services.AddDataTransformerBuildFacade(applicationAssembly);
             services.AddScoped(typeof(DbEntityQueryBuilder<>));
             services.AddScoped(typeof(DbFormEntityQueryBuilder<>));
 
-            services.AddIdentity<User, Role>()
-                .AddEntityFrameworkStores<ApplicationContext>();
+            var jwtSettings = _configuration.GetSection("JWT").Get<JwtSettings>();
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.TokenKey));
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["TokenKey"]));
+            services.Configure<DataProtectionTokenProviderOptions>(options => 
+                options.TokenLifespan = TimeSpan.FromMinutes(15));
+
+            services.AddIdentity<User, Role>()
+                .AddEntityFrameworkStores<ApplicationContext>()
+                .AddTokenProvider(jwtSettings.AppTokenProvider, typeof(DataProtectorTokenProvider<User>));
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
                 opt =>
                 {
                     opt.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = key,
+                        IssuerSigningKey = securityKey,
                         ValidateAudience = false,
                         ValidateIssuer = false,
                     };

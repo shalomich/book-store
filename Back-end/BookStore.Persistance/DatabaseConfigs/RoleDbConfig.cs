@@ -1,4 +1,5 @@
 ﻿using BookStore.Domain.Entities;
+using BookStore.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -12,10 +13,18 @@ namespace BookStore.Persistance.DatabaseConfigs
     {
         public void Configure(EntityTypeBuilder<Role> builder)
         {
-            builder.HasData(
-                new Role { Id = 1, Name = "admin", NormalizedName = "ADMIN"},
-                new Role { Id = 2, Name = "customer", NormalizedName = "CUSTOMER"}
-            );
+            int idCounter = 0;
+
+            var roles = Enum.GetValues<UserRole>()
+                .Select(role => new Role
+                {
+                    Id = ++idCounter,
+                    Name = role.ToString(),
+                    NormalizedName = role.ToString().ToUpper()
+                })
+                .ToArray();
+            
+            builder.HasData(roles);
         }
     }
 }
