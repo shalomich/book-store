@@ -1,6 +1,7 @@
 export const PRODUCT_URL = 'https://localhost:44327/store/product/';
 export const LOGIN_URL = 'https://localhost:44327/store/account/login';
 export const REGISTER_URL = 'https://localhost:44327/store/account/registration';
+export const REFRESH_URL = 'https://localhost:44327/store/account/refresh';
 
 export const PAGE_SIZE = 5;
 export const PAGE_NUMBER = 1;

@@ -1,6 +1,8 @@
 <div class="header">
   <app-search-field></app-search-field>
-  <div *ngIf="checkAuthorization(); else loginButton">Профиль</div>
+  <div *ngIf="authorizationDataProvider.token | async; else loginButton">
+    <button mat-stroked-button class="login-button" (click)="logout()">Выйти из аккаунта</button>
+  </div>
 </div>
 
 <ng-template #loginButton>
