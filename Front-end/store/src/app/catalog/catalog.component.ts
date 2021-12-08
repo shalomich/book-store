@@ -1,13 +1,14 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
-import {ProductPreview} from "../core/models/product-preview";
-import {ProductParamsBuilderService} from "../core/services/product-params-builder.service";
-import {HttpParams} from "@angular/common/http";
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { ProductPreview } from '../core/models/product-preview';
+import { ProductParamsBuilderService } from '../core/services/product-params-builder.service';
 
 @Component({
   selector: 'app-catalog',
   templateUrl: './catalog.component.html',
-  styleUrls: ['./catalog.component.css']
+  styleUrls: ['./catalog.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class CatalogComponent implements OnInit {
 
@@ -17,7 +18,7 @@ export class CatalogComponent implements OnInit {
 
   @Input() paramsBuilder!: ProductParamsBuilderService;
 
-  @Input() disableFilters: Array<string> = []
+  @Input() disableFilters: Array<string> = [];
 
   constructor() { }
 
