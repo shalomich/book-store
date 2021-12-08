@@ -1,10 +1,12 @@
 <ng-container *ngIf="(selection$ | async)?.length != 0">
-  <h3>
-    <a [href]="selectionLink">
-      {{selectionHeader}}
-    </a>
-  </h3>
-  <app-product-list-item *ngFor="let book of (selection$ | async)"
-                         [item]="book">
-  </app-product-list-item>
+  <div class="selection-block">
+    <h3>
+      <a class="selection-link" [href]="selectionLink">
+        {{selectionHeader}}
+      </a>
+    </h3>
+    <app-product-list-item *ngFor="let book of (selection$ | async)"
+                           [item]="book">
+    </app-product-list-item>
+  </div>
 </ng-container>

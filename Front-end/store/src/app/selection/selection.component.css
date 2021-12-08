@@ -1,0 +1,13 @@
+.selection-block {
+  margin: 2em 2em 0 2em;
+  padding: 0 2em;
+}
+
+.selection-link {
+  text-decoration: none;
+  color: #2199e8 !important;
+}
+
+.selection-link:hover {
+  text-decoration: underline;
+}
