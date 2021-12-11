@@ -37,7 +37,7 @@ export class ProductParamsBuilderService {
   public changePageCount: (params: HttpParams) => Observable<number> = params => new Observable<number>();
 
   constructor() {
-    this.paginationOptions$.asObservable()
+    this.paginationOptions$
       .subscribe(options => {
         const params = this.buildParams();
 
