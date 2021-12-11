@@ -23,7 +23,8 @@ namespace BookStore.Persistance.DatabaseConfigs
                 new Genre{Id = 4, Name = "Наука"},
                 new Genre{Id = 5, Name = "Боевик"},
                 new Genre{Id = 6, Name = "Детектив"},
-                new Genre{Id = 7, Name = "Фэнтези"}
+                new Genre{Id = 7, Name = "Фэнтези"},
+                new Genre{Id = 8, Name = "Сказка"},
             });
         }
     }
