@@ -17,7 +17,6 @@ namespace BookStore.Persistance
         public DbSet<AgeLimit> AgeLimits { set; get; }
         public DbSet<CoverArt> CoverArts { set; get; }
         public DbSet<Genre> Genres { set; get; }
-        public DbSet<Basket> Baskets { set; get; }
         public DbSet<BasketProduct> BasketProducts { set; get; }
 
         public ApplicationContext(DbContextOptions options) : base(options)
@@ -32,11 +31,6 @@ namespace BookStore.Persistance
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
 
             modelBuilder.Entity<Product>().ToTable("Products");
-
-            modelBuilder.Entity<User>()
-                .HasOne(user => user.Basket)
-                .WithOne(basket => basket.User)
-                .HasForeignKey<Basket>(basket => basket.UserId);
         }
     }
 }

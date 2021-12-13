@@ -10,7 +10,10 @@ namespace BookStore.Domain.Entities.Products
         public string Name { set; get; }
 
         public const int MinCost = 100;
+
         public const int MinQuantity = 0;
+        public const int MaxQuantity = int.MaxValue;
+
         public const int MaxDescriptionLength = 1000;
 
         private int _cost;
