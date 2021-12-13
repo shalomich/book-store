@@ -13,7 +13,7 @@ namespace BookStore.Persistance.DatabaseConfigs
         public void Configure(EntityTypeBuilder<BasketProduct> builder)
         {
             builder
-               .HasIndex(basketProduct => new { basketProduct.BasketId, basketProduct.ProductId })
+               .HasIndex(basketProduct => new { basketProduct.UserId, basketProduct.ProductId })
                .IsUnique();
         }
     }

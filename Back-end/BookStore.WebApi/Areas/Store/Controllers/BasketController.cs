@@ -14,96 +14,103 @@ using BookStore.Application.DbQueryConfigs.IncludeRequirements;
 using BookStore.Application.Commands;
 using BookStore.Application.Queries;
 using BookStore.Application.Dto;
+using BookStore.WebApi.Extensions;
+using Microsoft.AspNetCore.Authorization;
+using BookStore.Application.DbQueryConfigs.Specifications;
+using BookStore.Application.Exceptions;
+using BookStore.WebApi.Areas.Store.ViewModels.Basket;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
 {
-    public class BasketController : UserController
+    [Route("[area]/[controller]/product")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    public class BasketController : StoreController
     {
+        private IMediator Mediator { get; }
         private IMapper Mapper { get; }
         private DbEntityQueryBuilder<BasketProduct> BasketProductQueryBuilder { get; }
-        private DbEntityQueryBuilder<Basket> BasketQueryBuilder { get; }
-        public BasketController(IMediator mediator, IMapper mapper, DbEntityQueryBuilder<User> userQueryBuilder, 
-            DbEntityQueryBuilder<BasketProduct> basketProductQueryBuilder, 
-            DbEntityQueryBuilder<Basket> basketQueryBuilder) : 
-            base(mediator, userQueryBuilder)
+
+        public BasketController(IMediator mediator, IMapper mapper, DbEntityQueryBuilder<BasketProduct> basketProductQueryBuilder)
         {
-            Mapper = mapper;
-            BasketProductQueryBuilder = basketProductQueryBuilder;
-            BasketQueryBuilder = basketQueryBuilder;
-        }
-
-        private async Task<Basket> GetUserBasket()
-        {
-            UserQueryBuilder.AddIncludeRequirements(new UserBasketIncludeRequirement());
-            var user = await GetAuthorizedUser(UserQueryBuilder);
-
-            var basket = user.Basket;
-
-            if (basket == null)
-                basket = (Basket)await Mediator.Send(new CreateCommand(user.CreateBasket()));
-            
-            return basket; 
+            Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            BasketProductQueryBuilder = basketProductQueryBuilder ?? throw new ArgumentNullException(nameof(basketProductQueryBuilder));
         }
 
         [HttpGet]
-        public async Task<ActionResult<BasketDto>> Get()
+        public async Task<ActionResult<IEnumerable<BasketProductView>>> GetBasketProducts()
         {
-            BasketQueryBuilder.AddIncludeRequirements(new BasketProductIncludeRequirement());
+            BasketProductQueryBuilder
+                .AddSpecification(new BasketProductByUserIdSpecification(User.GetUserId()))
+                .AddIncludeRequirements(new BasketProductIncludeRequirement());
 
-            var basket = await GetUserBasket();
+            var basketProducts = await Mediator.Send(new GetQuery(BasketProductQueryBuilder));
 
-            return Mapper.Map<BasketDto>(basket);
+            return basketProducts
+                .Select(basketProduct => Mapper.Map<BasketProductView>(basketProduct))
+                .ToArray();
         }
 
-        [HttpDelete]
-        public async Task<ActionResult<BasketDto>> Delete()
+        [HttpPost]
+        public async Task<ActionResult<BasketProductView>> AddBasketProduct([FromBody] BasketProductAddView addedBasketProduct, [FromServices] DbEntityQueryBuilder<Product> productQueryBuilder)
         {
-            var basket = await GetUserBasket();
+            var product = (Product) await Mediator.Send(new GetByIdQuery(addedBasketProduct.ProductId.Value, productQueryBuilder));
 
-            await Mediator.Send(new DeleteCommand(basket));
+            var basketProduct = new BasketProduct { ProductId = product.Id, UserId = User.GetUserId()};
+
+            await Mediator.Send(new CreateCommand(basketProduct));
 
             return NoContent();
         }
 
-        [HttpGet("product/{id}")]
-        public async Task<ActionResult<BasketProductDto>> GetBasketProduct(int id)
-        {
-            var basketProduct = (BasketProduct)await Mediator.Send(new GetByIdQuery(id, BasketProductQueryBuilder));
-
-            return Mapper.Map<BasketProductDto>(basketProduct);
-        }
-
-        [HttpPost("product")]
-        public async Task<ActionResult<BasketProductDto>> AddBasketProduct([FromBody] int productId, [FromServices] DbEntityQueryBuilder<Product> productQueryBuilder)
-        {
-            var product = (Product) await Mediator.Send(new GetByIdQuery(productId, productQueryBuilder));
-
-            var basket = await GetUserBasket();
-
-            var basketProduct = new BasketProduct { Basket = basket, Product = product };
-
-            basketProduct = (BasketProduct) await Mediator.Send(new CreateCommand(basketProduct));
-
-            return CreatedAtAction(nameof(GetBasketProduct), new { id = basketProduct.Id }, 
-                Mapper.Map<BasketProductDto>(basketProduct));
-        }
-
-        [HttpPut("product/{id}")]
-        public async Task<ActionResult<BasketProductDto>> ChangeBasketProductQuantity(int id, [FromBody][Range(1,int.MaxValue)] int quantity)
+        private async Task<BasketProduct> GetBasketProductById(int id)
         {
             var basketProduct = (BasketProduct) await Mediator.Send(new GetByIdQuery(id, BasketProductQueryBuilder));
 
-            basketProduct.Quantity = quantity;
+            if (basketProduct.UserId != User.GetUserId())
+                throw new BadRequestException("This basket product does not belong to authorized user");
 
+            return basketProduct;
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<BasketProductView>> ChangeBasketProductQuantity([FromBody] BasketProductUpdateView updateBasketProduct, [FromServices] DbEntityQueryBuilder<Product> productQueryBuilder)
+        {
+            var (id, quantity) = updateBasketProduct;
+
+            var basketProduct = await GetBasketProductById(id);
+
+            var product = (Product)await Mediator.Send(new GetByIdQuery(basketProduct.ProductId, productQueryBuilder));
+
+            if (product.Quantity < quantity)
+                throw new BadRequestException("Product quantity less than chosen");
+
+            basketProduct.Quantity = quantity;
+            
             await Mediator.Send(new UpdateCommand(id, basketProduct));
 
             return NoContent();
         }
 
-        [HttpDelete("product/{id}")]
-        public async Task<ActionResult<BasketProductDto>> DeleteBasketProduct(int id)
+        [HttpDelete]
+        public async Task<ActionResult<BasketProductView>> DeleteAllBasketProducts()
         {
-            var basketProduct = (BasketProduct)await Mediator.Send(new GetByIdQuery(id, BasketProductQueryBuilder));
+            BasketProductQueryBuilder
+                .AddSpecification(new BasketProductByUserIdSpecification(User.GetUserId()));
+
+            var basketProducts = await Mediator.Send(new GetQuery(BasketProductQueryBuilder));
+
+            foreach (var basketProduct in basketProducts)
+                await Mediator.Send(new DeleteCommand(basketProduct));
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<BasketProductView>> DeleteBasketProduct(int id)
+        {
+            var basketProduct = await GetBasketProductById(id);
+            
             await Mediator.Send(new DeleteCommand(basketProduct));
 
             return NoContent();
