@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 
 namespace BookStore.Application.DbQueryConfigs.IncludeRequirements
 {
-    public class BasketProductIncludeRequirement : IIncludeRequirement<Basket>
+    public class BasketProductIncludeRequirement : IIncludeRequirement<BasketProduct>
     {
-        public void Include(ref IQueryable<Basket> entities)
+        public void Include(ref IQueryable<BasketProduct> entities)
         {
             entities = entities
-                .Include(basket => basket.BasketProducts)
-                .ThenInclude(basketProduct => basketProduct.Product);
+                .Include(basketProduct => basketProduct.Product)
+                .ThenInclude(product => product.Album)
+                .ThenInclude(album => album.Images);
         }
     }
 }

@@ -8,11 +8,6 @@ namespace BookStore.Domain.Entities
 {
     public class User : IdentityUser<int>, IEntity
     {
-        public Basket Basket { set; get; }
-
-        public Basket CreateBasket()
-        {
-            return new Basket { User = this };
-        }
+        public ISet<BasketProduct> BasketProducts { get; set; }
     }
 }

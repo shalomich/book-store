@@ -4,6 +4,7 @@ using BookStore.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20211212103542_DeleteTableBasket")]
+    partial class DeleteTableBasket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -465,23 +467,16 @@ namespace App.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "dbe9ac35-ff3d-4d9e-b9c2-8d667d2d4cd2",
-                            Name = "Customer",
-                            NormalizedName = "CUSTOMER"
+                            ConcurrencyStamp = "d55c1c3f-d22a-490e-b633-96a7cdae1d24",
+                            Name = "admin",
+                            NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "38a8df2c-9e13-43dc-a18e-ccd243aedc9b",
-                            Name = "Seller",
-                            NormalizedName = "SELLER"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ConcurrencyStamp = "1ca2ee72-549f-4419-b2cb-5278ca6203d9",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
+                            ConcurrencyStamp = "75917b8a-f2b6-465a-a767-aff1aaf9a0c1",
+                            Name = "customer",
+                            NormalizedName = "CUSTOMER"
                         });
                 });
 

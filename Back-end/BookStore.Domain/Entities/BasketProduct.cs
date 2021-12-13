@@ -13,8 +13,8 @@ namespace BookStore.Domain.Entities
 
         private int _quantity;
         public int Id { set; get; }
-        public Basket Basket { set; get; }
-        public int BasketId { set; get; }
+        public User User { set; get; }
+        public int UserId { set; get; }
         public Product Product { set; get; }
         public int ProductId { set; get; }
         public int Quantity
@@ -34,14 +34,14 @@ namespace BookStore.Domain.Entities
         public override bool Equals(object obj)
         {
             return obj is BasketProduct basketProduct
-                && BasketId == basketProduct.BasketId
+                && UserId == basketProduct.UserId
                 && ProductId == basketProduct.ProductId;
                    
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(BasketId, ProductId);
+            return HashCode.Combine(UserId, ProductId);
         }
     }
 }
