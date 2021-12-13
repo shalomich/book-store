@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthorizationService } from '../core/services/authorization.service';
+import { AuthorizationDataProvider } from '../core/services/authorization-data.provider';
 
 @Component({
   selector: 'app-login-page',

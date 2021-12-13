@@ -22,3 +22,5 @@ export const MIN_COST = 100;
 export const MIN_QUANTITY = 1;
 export const MIN_RELEASE_YEAR = 2000;
 
+export const ADMIN = 'admin';
+

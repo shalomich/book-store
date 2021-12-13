@@ -6,6 +6,7 @@ import { ProductPageComponent } from './product-page/product-page.component';
 import { RelatedEntityPageComponent } from './related-entity-page/related-entity-page.component';
 import { BookFormComponent } from './forms/book-form/book-form.component';
 import { RelatedEntityFormComponent } from './forms/related-entity-form/related-entity-form.component';
+import { AuthGuard } from './core/guards/auth.guard';
 
 const productFormsRoutes: Routes = [
   { path: 'dashboard/form/book', component: BookFormComponent, pathMatch: 'full' },
@@ -27,5 +28,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes.concat(productFormsRoutes), { onSameUrlNavigation: 'reload' })],
   exports: [RouterModule],
+  providers: [AuthGuard],
 })
 export class AppRoutingModule { }

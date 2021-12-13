@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { EntityType } from '../core/interfaces/entity-type';
 import { ProductTypeConfigurationService } from '../core/services/product-type-configuration.service';
+import { AuthGuard } from '../core/guards/auth.guard';
 
 /** Main page's component. */
 @Component({
