@@ -1,4 +1,7 @@
 export const API_FORM_ENTITY_URI = 'https://localhost:44327/dashboard/form-entity/';
+export const LOGIN_URL = 'https://localhost:44327/store/account/login';
+export const REGISTER_URL = 'https://localhost:44327/store/account/registration';
+export const REFRESH_URL = 'https://localhost:44327/store/account/refresh';
 
 export const MIN_IMAGE_HEIGHT = 800;
 export const MIN_IMAGE_WIDTH = 600;

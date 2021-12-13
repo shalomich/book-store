@@ -1,0 +1,37 @@
+.login-button, .login-title, .register-link {
+  display: flex;
+  justify-content: center;
+}
+
+.login-title {
+  margin-bottom: 1em;
+  font-size: 1.4em;
+}
+
+.register-link {
+  margin-bottom: 1em;
+  margin-top: 1em;
+  font-size: 1em;
+}
+
+.login-button button {
+  color: #2199e8 !important;
+}
+
+.login-modal-field {
+  width: 20em;
+  margin-bottom: 2em;
+}
+
+/* Border */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #2199e8 !important;
+}
+/* Font color */
+input.mat-input-element {
+  color: #2199e8 !important;
+}
+
+.mat-form-field.mat-focused .mat-form-field-label {
+  color: #2199e8 !important;
+}
