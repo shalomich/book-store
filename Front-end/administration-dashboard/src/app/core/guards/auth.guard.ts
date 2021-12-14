@@ -4,9 +4,10 @@ import { Observable, of } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+import { catchError, map } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+
 import { REFRESH_URL } from '../utils/values';
-import {catchError, map} from 'rxjs/operators';
-import {MatDialog} from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root',
@@ -30,10 +31,15 @@ export class AuthGuard implements CanActivate {
       return true;
     }
     const isRefreshSuccess = this.tryRefreshingTokens(token);
-    if (!isRefreshSuccess) {
-      this.router.navigate(['/book-store/catalog/book']);
-    }
-    return isRefreshSuccess;
+
+    return isRefreshSuccess.pipe(
+      map(result => {
+        if (!result) {
+          this.router.navigate(['/dashboard/login']);
+        }
+        return result;
+      }),
+    );
   }
 
   private tryRefreshingTokens(token: string | null): Observable<boolean> {

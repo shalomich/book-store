@@ -7,19 +7,21 @@ import { RelatedEntityPageComponent } from './related-entity-page/related-entity
 import { BookFormComponent } from './forms/book-form/book-form.component';
 import { RelatedEntityFormComponent } from './forms/related-entity-form/related-entity-form.component';
 import { AuthGuard } from './core/guards/auth.guard';
+import { LoginPageComponent } from './login-page/login-page.component';
 
 const productFormsRoutes: Routes = [
-  { path: 'dashboard/form/book', component: BookFormComponent, pathMatch: 'full' },
-  { path: 'dashboard/form/book/:id', component: BookFormComponent, pathMatch: 'full' },
-  { path: 'dashboard/form/:relatedEntity', component: RelatedEntityFormComponent },
-  { path: 'dashboard/form/:relatedEntity/:id', component: RelatedEntityFormComponent },
+  { path: 'dashboard/form/book', component: BookFormComponent, pathMatch: 'full', canActivate: [AuthGuard] },
+  { path: 'dashboard/form/book/:id', component: BookFormComponent, pathMatch: 'full', canActivate: [AuthGuard] },
+  { path: 'dashboard/form/:relatedEntity', component: RelatedEntityFormComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/form/:relatedEntity/:id', component: RelatedEntityFormComponent, canActivate: [AuthGuard] },
 ];
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard/product', pathMatch: 'full' },
-  { path: 'dashboard/product', component: ProductTypePageComponent },
-  { path: 'dashboard/product/:product', component: ProductPageComponent },
-  { path: 'dashboard/product/:product/:relatedEntity', component: RelatedEntityPageComponent },
+  { path: 'dashboard/login', component: LoginPageComponent },
+  { path: 'dashboard/product', component: ProductTypePageComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/product/:product', component: ProductPageComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/product/:product/:relatedEntity', component: RelatedEntityPageComponent, canActivate: [AuthGuard] },
 ];
 
 /**

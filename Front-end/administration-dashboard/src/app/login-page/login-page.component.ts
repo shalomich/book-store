@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { AuthorizationService } from '../core/services/authorization.service';
 import { AuthorizationDataProvider } from '../core/services/authorization-data.provider';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -15,16 +15,17 @@ export class LoginPageComponent implements OnInit {
 
   public password: FormControl = new FormControl();
 
-  constructor(private dialog: MatDialog,
+  constructor(
     private readonly authService: AuthorizationService,
-    private readonly authProvider: AuthorizationDataProvider) { }
+    private readonly authProvider: AuthorizationDataProvider,
+    private readonly router: Router,
+  ) { }
 
   ngOnInit(): void {
   }
 
   public login() {
     this.authService.login(this.email.value, this.password.value);
-    this.dialog.closeAll();
+    this.router.navigate(['/dashboard/product']);
   }
-
 }
