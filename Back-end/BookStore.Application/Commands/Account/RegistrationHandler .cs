@@ -12,25 +12,29 @@ using System.Threading.Tasks;
 using BookStore.Application.ViewModels.Account;
 using BookStore.Application.Services;
 using BookStore.Application.Exceptions;
+using BookStore.Domain.Enums;
+using BookStore.Application.Dto;
+using BookStore.Application.Providers;
 
 namespace BookStore.Application.Commands.Account
 {
-	public record RegistrationCommand(AuthForm AuthForm) : IRequest<AuthorizedData>;
-	public class RegistrationHandler : IRequestHandler<RegistrationCommand, AuthorizedData>
+	public record RegistrationCommand(AuthForm AuthForm) : IRequest<TokensDto>;
+	internal class RegistrationHandler : AccountHandler, IRequestHandler<RegistrationCommand, TokensDto>
 	{ 
-		private const string DefaultUserRole = "customer";
+		private const UserRole DefaultRole = UserRole.Customer;
 		private const string EmailTakenMessage = "This email is already taken";
 
-		private JwtGenerator _jwtGenerator;
+		private JwtConverter _jwtConverter;
 		private readonly UserManager<User> _userManager;
-		
-        public RegistrationHandler(JwtGenerator jwtGenerator, UserManager<User> userManager)
+
+        public RegistrationHandler(JwtConverter jwtConverter, UserManager<User> userManager, IJwtProvider jwtProvider) 
+			: base(jwtConverter, userManager, jwtProvider)
         {
-            _jwtGenerator = jwtGenerator ?? throw new ArgumentNullException(nameof(jwtGenerator));
+            _jwtConverter = jwtConverter ?? throw new ArgumentNullException(nameof(jwtConverter));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
 
-        public async Task<AuthorizedData> Handle(RegistrationCommand request, CancellationToken cancellationToken)
+        public async Task<TokensDto> Handle(RegistrationCommand request, CancellationToken cancellationToken)
 		{
 			var (email, password) = request.AuthForm;
 
@@ -40,21 +44,16 @@ namespace BookStore.Application.Commands.Account
 			var user = new User { Email = email, UserName = email };
 
 			var result = await _userManager.CreateAsync(user, password);
-			
-			if (result.Succeeded)
-			{
-				await _userManager.AddToRoleAsync(user, DefaultUserRole);
 
-				string token = _jwtGenerator.CreateToken(user, DefaultUserRole);
-
-				return new AuthorizedData(token, DefaultUserRole);
-			}
-			else
-			{
-				var passwordErrorMessage = result.Errors.First().Description;
-				throw new BadRequestException(passwordErrorMessage);
+            if (!result.Succeeded)
+            {
+                var passwordErrorMessage = result.Errors.First().Description;
+                throw new BadRequestException(passwordErrorMessage);
 			}
 
-		}
+            await _userManager.AddToRoleAsync(user, DefaultRole.ToString());
+
+			return await GenerateTokens(user, DefaultRole);
+        }
 	}
 }

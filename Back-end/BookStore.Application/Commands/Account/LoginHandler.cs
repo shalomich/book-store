@@ -11,27 +11,31 @@ using System.Threading.Tasks;
 using BookStore.Application.ViewModels.Account;
 using BookStore.Application.Services;
 using BookStore.Application.Exceptions;
+using BookStore.Application.Dto;
+using BookStore.Domain.Enums;
+using BookStore.Application.Providers;
 
 namespace BookStore.Application.Commands.Account
 {
-	public record LoginCommand(AuthForm AuthForm) : IRequest<AuthorizedData>;
-	internal class LoginHandler : IRequestHandler<LoginCommand, AuthorizedData>
+	public record LoginCommand(AuthForm AuthForm) : IRequest<TokensDto>;
+	internal class LoginHandler : AccountHandler, IRequestHandler<LoginCommand, TokensDto>
 	{
 		private const string NotExistEmailMessage = "This email does not exist";
 		private const string WrongPasswordMessage = "Wrong password";
 
 		private readonly UserManager<User> _userManager;
 		private readonly SignInManager<User> _signInManager;
-		private JwtGenerator _jwtGenerator;
+		private JwtConverter _jwtConverter;
 
-        public LoginHandler(UserManager<User> userManager, SignInManager<User> signInManager, JwtGenerator jwtGenerator)
+        public LoginHandler(UserManager<User> userManager, SignInManager<User> signInManager, JwtConverter jwtConverter, IJwtProvider jwtProvider)
+			:base(jwtConverter, userManager, jwtProvider)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
-            _jwtGenerator = jwtGenerator ?? throw new ArgumentNullException(nameof(jwtGenerator));
+            _jwtConverter = jwtConverter ?? throw new ArgumentNullException(nameof(jwtConverter));
         }
 
-        public async Task<AuthorizedData> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<TokensDto> Handle(LoginCommand request, CancellationToken cancellationToken)
 		{
 			var (email, password) = request.AuthForm;
 
@@ -42,14 +46,14 @@ namespace BookStore.Application.Commands.Account
 
 			var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
 
-			if (result.Succeeded)
-			{
-				string role = (await _userManager.GetRolesAsync(user)).First();
-				string token = _jwtGenerator.CreateToken(user, role);
-				return new AuthorizedData(token, role);
-			}
-			else throw new BadRequestException(WrongPasswordMessage);
+			if (!result.Succeeded)
+                throw new BadRequestException(WrongPasswordMessage);
 
-		}
+			var role = Enum.Parse<UserRole>((await _userManager
+				.GetRolesAsync(user))
+				.Single());
+
+			return await GenerateTokens(user, role);
+        }
 	}
 }

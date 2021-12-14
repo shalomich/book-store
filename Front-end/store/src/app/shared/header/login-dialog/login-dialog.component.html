@@ -1,0 +1,19 @@
+<div class="login-modal">
+  <div class="login-title">
+    <span>Вход</span>
+  </div>
+  <mat-form-field class="login-modal-field" appearance="outline">
+    <mat-label>Email</mat-label>
+    <input [formControl]="email" matInput>
+  </mat-form-field>
+  <mat-form-field class="login-modal-field" appearance="outline">
+    <mat-label>Пароль</mat-label>
+    <input [formControl]="password" matInput>
+  </mat-form-field>
+  <div class="login-button">
+    <button (click)="login()"  mat-stroked-button color="primary">Войти</button>
+  </div>
+  <div class="register-link">
+    <span>Нет аккаунта? <a (click)="openRegisterDialog($event)" href="">Зарегистрируйтесь</a></span>
+  </div>
+</div>

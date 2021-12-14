@@ -4,6 +4,7 @@ using BookStore.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20211207051013_ChangeUserRoles")]
+    partial class ChangeUserRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,8 +143,8 @@ namespace App.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("SelectionDate")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -285,11 +287,6 @@ namespace App.Migrations
                         {
                             Id = 7,
                             Name = "Фэнтези"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "Сказка"
                         });
                 });
 
@@ -484,7 +481,6 @@ namespace App.Migrations
                         new
                         {
                             Id = 1,
-
                             ConcurrencyStamp = "dbe9ac35-ff3d-4d9e-b9c2-8d667d2d4cd2",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"

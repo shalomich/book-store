@@ -24,8 +24,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { RouterModule } from '@angular/router';
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { CoreModule } from '../core/core.module';
+
+import { ProductParamsBuilderService } from '../core/services/product-params-builder.service';
 
 import { ProductImagesComponent } from './product-card/product-images/product-images.component';
 import { AddToCartComponent } from './product-card/add-to-cart/add-to-cart.component';
@@ -44,7 +47,8 @@ import { SearchHintComponent } from './search-field/search-hint/search-hint.comp
 
 
 import { HeaderComponent } from './header/header.component';
-import {ProductParamsBuilderService} from '../core/services/product-params-builder.service';
+import { LoginDialogComponent } from './header/login-dialog/login-dialog.component';
+import { RegisterDialogComponent } from './header/register-dialog/register-dialog.component';
 
 
 @NgModule({
@@ -61,6 +65,8 @@ import {ProductParamsBuilderService} from '../core/services/product-params-build
     SearchFieldComponent,
     SearchHintComponent,
     HeaderComponent,
+    LoginDialogComponent,
+    RegisterDialogComponent,
   ],
   exports: [
     ProductImagesComponent,
@@ -86,11 +92,12 @@ import {ProductParamsBuilderService} from '../core/services/product-params-build
     MatInputModule,
     MatExpansionModule,
     MatIconModule,
-    MatInputModule,
     NgxPaginationModule,
     MatOptionModule,
     MatCheckboxModule,
+    MatDialogModule,
     RouterModule,
   ],
 })
+
 export class SharedModule { }

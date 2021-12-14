@@ -1,5 +1,6 @@
 ﻿
 using BookStore.Application.Commands.Account;
+using BookStore.Application.Dto;
 using BookStore.Application.ViewModels.Account;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -24,15 +25,21 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<AuthorizedData>> LoginAsync(AuthForm authForm)
+        public Task<TokensDto> Login(AuthForm authForm)
         {
-            return await _mediator.Send(new LoginCommand(authForm));
+            return _mediator.Send(new LoginCommand(authForm));
         }
 
         [HttpPost("registration")]
-        public async Task<ActionResult<AuthorizedData>> RegistrationAsync(AuthForm authForm)
+        public Task<TokensDto> Registration(AuthForm authForm)
         {
-            return await _mediator.Send(new RegistrationCommand(authForm));
+            return _mediator.Send(new RegistrationCommand(authForm));
+        }
+
+        [HttpPost("refresh")]
+        public Task<TokensDto> RefreshToken(TokensDto tokensDto)
+        {
+            return _mediator.Send(new RefreshTokenCommand(tokensDto));
         }
     }
 }
