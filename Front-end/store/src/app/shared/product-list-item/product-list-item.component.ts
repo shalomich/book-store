@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { ProductPreview } from '../../core/models/product-preview';
+import {BasketService} from '../../core/services/basket.service';
 
 @Component({
   selector: 'app-product-list-item',
@@ -12,7 +13,7 @@ export class ProductListItemComponent implements OnInit {
   @Input()
   public item: ProductPreview = {} as ProductPreview;
 
-  public constructor() { }
+  public constructor(public readonly basketService: BasketService) { }
 
   public ngOnInit(): void {
   }

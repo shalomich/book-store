@@ -1,1 +1,9 @@
-<p>basket-page works!</p>
+<button (click)="basketService.removeAll()">Очистить корзину</button>
+<div *ngIf="(basketService.basketProducts | async)?.length; else emptyBasket">
+  <app-basket-element *ngFor="let product of basketService.basketProducts | async" [product]="product"></app-basket-element>
+</div>
+<app-basket-info-block></app-basket-info-block>
+
+<ng-template #emptyBasket>
+  <div>Ваша корзина пуста.</div>
+</ng-template>

@@ -28,12 +28,12 @@ import { CatalogComponent } from './catalog/catalog.component';
 import { BasketPageComponent } from './basket-page/basket-page.component';
 import { BasketElementComponent } from './basket-page/basket-element/basket-element.component';
 import { BasketInfoBlockComponent } from './basket-page/basket-info-block/basket-info-block.component';
-import { BasketCardComponent } from './basket-page/basket-card/basket-card.component';
+
 import { ProductOptionsStorage } from './core/services/product-options.storage';
 
 
 @NgModule({
-  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent, MainPageComponent, SelectionPageComponent, CatalogComponent, BasketPageComponent, BasketElementComponent, BasketInfoBlockComponent, BasketCardComponent],
+  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent, MainPageComponent, SelectionPageComponent, CatalogComponent, BasketPageComponent, BasketElementComponent, BasketInfoBlockComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

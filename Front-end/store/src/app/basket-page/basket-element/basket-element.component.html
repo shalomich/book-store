@@ -1,1 +1,10 @@
-<p>basket-element works!</p>
+<div>
+  <img alt="Title image" src="{{product.titleImage | base64ToImgSrc}}">
+  <span>{{product.name}}</span>
+  <div>
+    <button (click)="basketService.decrease(product)">-</button>
+    <input type="number" readonly>
+    <button (click)="basketService.increase(product)">+</button>
+  </div>
+  <button (click)="basketService.remove(product)">Удалить товар из корзины</button>
+</div>
