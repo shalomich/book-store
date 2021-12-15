@@ -15,7 +15,9 @@ export class BasketService {
 
   private _basketProducts: BehaviorSubject<BasketProduct[]> = new BehaviorSubject<BasketProduct[]>([]);
 
-  constructor(private readonly http: HttpClient, private readonly authorizationDataProvider: AuthorizationDataProvider) {
+  constructor(private readonly http: HttpClient, private readonly authorizationDataProvider: AuthorizationDataProvider) { }
+
+  public getBasket(): void {
     this.http.get<BasketProduct[]>(BASKET_URL).subscribe(data => this._basketProducts.next(data));
   }
 
@@ -28,7 +30,7 @@ export class BasketService {
       Authorization: `Bearer ${this.authorizationDataProvider.token.value}`,
     };
 
-    this.http.post(BASKET_URL, { productId }, { headers });
+    this.http.post(BASKET_URL, { productId }, { headers }).subscribe();
   }
 
   public removeAll(): void {
@@ -36,7 +38,7 @@ export class BasketService {
       Authorization: `Bearer ${this.authorizationDataProvider.token.value}`,
     };
 
-    this.http.delete(BASKET_URL, { headers });
+    this.http.delete(BASKET_URL, { headers }).subscribe();
   }
 
   public remove(product: BasketProduct): void {
@@ -46,7 +48,7 @@ export class BasketService {
 
     const { id } = product;
 
-    this.http.delete(`${BASKET_URL}/${id}`, { headers });
+    this.http.delete(`${BASKET_URL}/${id}`, { headers }).subscribe();
   }
 
   public saveBasket(): void {
@@ -56,7 +58,7 @@ export class BasketService {
 
     this._basketProducts.value.forEach(product => {
       const body = { id: product.id, quantity: product.quantity };
-      this.http.put(BASKET_URL, body, { headers });
+      this.http.put(BASKET_URL, body, { headers }).subscribe();
     });
   }
 

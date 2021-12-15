@@ -10,7 +10,7 @@ import {BasketService} from '../../core/services/basket.service';
 export class BasketElementComponent implements OnInit {
 
   @Input()
-  public readonly product: BasketProduct = {} as BasketProduct;
+  public product: BasketProduct = {} as BasketProduct;
 
   constructor(public readonly basketService: BasketService) { }
 

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { ProductPreview } from '../../core/models/product-preview';
-import {BasketService} from '../../core/services/basket.service';
+import { BasketService } from '../../core/services/basket.service';
 
 @Component({
   selector: 'app-product-list-item',
@@ -17,5 +17,4 @@ export class ProductListItemComponent implements OnInit {
 
   public ngOnInit(): void {
   }
-
 }

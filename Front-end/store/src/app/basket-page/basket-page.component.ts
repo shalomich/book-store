@@ -8,7 +8,9 @@ import {BasketService} from '../core/services/basket.service';
 })
 export class BasketPageComponent implements OnInit {
 
-  constructor(public readonly basketService: BasketService) { }
+  constructor(public readonly basketService: BasketService) {
+    this.basketService.getBasket();
+  }
 
   ngOnInit(): void {
   }

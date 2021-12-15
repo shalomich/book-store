@@ -9,6 +9,7 @@
     <app-search-field></app-search-field>
   </div>
   <div *ngIf="authorizationDataProvider.token | async; else loginButton">
+    <button routerLink="/book-store/basket">Корзина</button>
     <button mat-stroked-button class="login-button" (click)="logout()">Выйти из аккаунта</button>
   </div>
 </div>
