@@ -28,6 +28,7 @@ import { CatalogComponent } from './catalog/catalog.component';
 import { BasketPageComponent } from './basket-page/basket-page.component';
 import { BasketElementComponent } from './basket-page/basket-element/basket-element.component';
 import { BasketInfoBlockComponent } from './basket-page/basket-info-block/basket-info-block.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { ProductOptionsStorage } from './core/services/product-options.storage';
 
@@ -46,6 +47,8 @@ import { ProductOptionsStorage } from './core/services/product-options.storage';
     NgxPaginationModule,
     MatExpansionModule,
     MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [ProductOptionsStorage],
   bootstrap: [AppComponent],

@@ -1,10 +1,10 @@
-<div>
-  <img alt="Title image" src="{{product.titleImage | base64ToImgSrc}}">
+<div class="basket-element-block">
+<!--  <img alt="Title image" src="{{product.titleImage | base64ToImgSrc}}">-->
   <span>{{product.name}}</span>
   <div>
-    <button (click)="basketService.decrease(product)">-</button>
-    <input type="number" readonly>
-    <button (click)="basketService.increase(product)">+</button>
+    <button [disabled]="quantity.value <= 1" (click)="decrease()">-</button>
+    <input min="1" [formControl]="quantity" type="button" readonly>
+    <button (click)="increase()">+</button>
   </div>
   <button (click)="basketService.remove(product)">Удалить товар из корзины</button>
 </div>

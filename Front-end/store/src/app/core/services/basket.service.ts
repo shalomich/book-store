@@ -18,7 +18,11 @@ export class BasketService {
   constructor(private readonly http: HttpClient, private readonly authorizationDataProvider: AuthorizationDataProvider) { }
 
   public getBasket(): void {
-    this.http.get<BasketProduct[]>(BASKET_URL).subscribe(data => this._basketProducts.next(data));
+    const headers = {
+      Authorization: `Bearer ${this.authorizationDataProvider.token.value}`,
+    };
+
+    this.http.get<BasketProduct[]>(BASKET_URL, { headers }).subscribe(data => this._basketProducts.next(data));
   }
 
   public get basketProducts(): Observable<BasketProduct[]> {
@@ -38,15 +42,18 @@ export class BasketService {
       Authorization: `Bearer ${this.authorizationDataProvider.token.value}`,
     };
 
+    this._basketProducts.next([]);
     this.http.delete(BASKET_URL, { headers }).subscribe();
   }
 
-  public remove(product: BasketProduct): void {
+  public remove(inputProduct: BasketProduct): void {
     const headers = {
       Authorization: `Bearer ${this.authorizationDataProvider.token.value}`,
     };
 
-    const { id } = product;
+    const { id } = inputProduct;
+
+    this._basketProducts.next(this._basketProducts.value.filter(product => product.id !== id));
 
     this.http.delete(`${BASKET_URL}/${id}`, { headers }).subscribe();
   }
