@@ -24,7 +24,6 @@ using System.Reflection;
 using BookStore.WebApi.Attributes.GenericController;
 using BookStore.WebApi.Middlewares;
 using BookStore.Application.Providers;
-using BookStore.WebApi.Providers;
 using Microsoft.AspNetCore.Identity;
 
 namespace BookStore.WebApi
@@ -53,23 +52,24 @@ namespace BookStore.WebApi
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
                 .ConfigureApplicationPartManager(options => options.FeatureProviders.Add(new GenericControllerFeatureProvider())); ;
 
-            services.AddScoped<IJwtProvider, ConfigJwtProvider>();
-            services.AddScoped<JwtConverter>();
+            services.AddScoped<JwtParser>();
+            services.AddScoped<TokensFactory>();
+            services.AddScoped<RefreshTokenRepository>();
 
             services.AddDataTransformerBuildFacade(applicationAssembly);
             services.AddScoped(typeof(DbEntityQueryBuilder<>));
             services.AddScoped(typeof(DbFormEntityQueryBuilder<>));
 
-            var jwtSettings = _configuration.GetSection("JWT").Get<JwtSettings>();
+            var jwtSettings = _configuration.GetSection("JwtSettings").Get<JwtSettings>();
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.TokenKey));
 
             services.Configure<DataProtectionTokenProviderOptions>(options => 
                 options.TokenLifespan = TimeSpan.FromMinutes(15));
 
-            services.AddIdentity<User, Role>()
+            services.AddIdentity<User, IdentityRole<int>>()
                 .AddEntityFrameworkStores<ApplicationContext>()
-                .AddTokenProvider(jwtSettings.AppTokenProvider, typeof(DataProtectorTokenProvider<User>));
-
+                .AddTokenProvider(_configuration["AppTokenProvider"], typeof(DataProtectorTokenProvider<User>));
+            
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
                 opt =>
                 {

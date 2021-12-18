@@ -12,54 +12,31 @@ using BookStore.Application.ViewModels.Account;
 using BookStore.Application.Services;
 using BookStore.Application.Exceptions;
 using BookStore.Application.Dto;
-using BookStore.Application.Providers;
 
 namespace BookStore.Application.Commands.Account
 {
-	public record RefreshTokenCommand(TokensDto Tokens) : IRequest<TokensDto>;
-	internal class RefreshTokenHandler : AccountHandler, IRequestHandler<RefreshTokenCommand, TokensDto>
+	public record RefreshTokenCommand(User User, string RefreshToken) : IRequest<TokensDto>;
+	internal class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, TokensDto>
 	{
-		private const string NotExistEmailMessage = "This email does not exist";
 		private const string WrongRefreshTokenMessage = "Wrong refresh token";
 
-		private readonly UserManager<User> _userManager;
-		private readonly JwtConverter _jwtConverter;
-		private readonly IJwtProvider _jwtProvider;
+		private RefreshTokenRepository RefreshTokenRepository { get; }
+        private TokensFactory TokensFactory { get; }
 
-        public RefreshTokenHandler(UserManager<User> userManager, JwtConverter jwtConverter, IJwtProvider jwtProvider)
-			:base(jwtConverter, userManager, jwtProvider)
+        public RefreshTokenHandler(RefreshTokenRepository refreshTokenRepository, TokensFactory tokensFactory)
         {
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-            _jwtConverter = jwtConverter ?? throw new ArgumentNullException(nameof(jwtConverter));
-            _jwtProvider = jwtProvider ?? throw new ArgumentNullException(nameof(jwtProvider));
+            RefreshTokenRepository = refreshTokenRepository ?? throw new ArgumentNullException(nameof(refreshTokenRepository));
+            TokensFactory = tokensFactory ?? throw new ArgumentNullException(nameof(tokensFactory));
         }
 
         public async Task<TokensDto> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
 		{
-			var (accessToken, refreshToken) = request.Tokens;
+			var (user, refreshToken) = request;
 
-			AuthorizedDataDto authorizedData;
-
-			try
-			{
-				authorizedData = _jwtConverter.FromToken(accessToken);
-			}
-			catch (Exception exception)
-			{
-				throw new BadRequestException(null, exception);
-			}
-
-			var user = await _userManager.FindByEmailAsync(authorizedData.Email);
-			if (user == null)
-				throw new BadRequestException(NotExistEmailMessage);
-
-			string appTokenProvider = _jwtProvider.GenerateSettings().AppTokenProvider; 
-			var userRefreshToken = await _userManager.GetAuthenticationTokenAsync(user, appTokenProvider, nameof(TokensDto.RefreshToken));
-
-			if (userRefreshToken != refreshToken)
+			if (await RefreshTokenRepository.IsValid(refreshToken, user) == false)
 				throw new BadRequestException(WrongRefreshTokenMessage);
 
-			return await GenerateTokens(user, authorizedData.Role);
+			return await TokensFactory.GenerateTokens(user);
 		}
 	}
 }
