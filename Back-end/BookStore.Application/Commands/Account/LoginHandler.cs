@@ -13,47 +13,32 @@ using BookStore.Application.Services;
 using BookStore.Application.Exceptions;
 using BookStore.Application.Dto;
 using BookStore.Domain.Enums;
-using BookStore.Application.Providers;
 
 namespace BookStore.Application.Commands.Account
 {
-	public record LoginCommand(AuthForm AuthForm) : IRequest<TokensDto>;
-	internal class LoginHandler : AccountHandler, IRequestHandler<LoginCommand, TokensDto>
+	public record LoginCommand(User User, string Password) : IRequest<TokensDto>;
+	internal class LoginHandler : IRequestHandler<LoginCommand, TokensDto>
 	{
-		private const string NotExistEmailMessage = "This email does not exist";
 		private const string WrongPasswordMessage = "Wrong password";
+		private SignInManager<User> SignInManager { get; }
+		private TokensFactory TokensFactory { get; }
 
-		private readonly UserManager<User> _userManager;
-		private readonly SignInManager<User> _signInManager;
-		private JwtConverter _jwtConverter;
-
-        public LoginHandler(UserManager<User> userManager, SignInManager<User> signInManager, JwtConverter jwtConverter, IJwtProvider jwtProvider)
-			:base(jwtConverter, userManager, jwtProvider)
+        public LoginHandler(SignInManager<User> signInManager, TokensFactory tokensFactory)
         {
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-            _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
-            _jwtConverter = jwtConverter ?? throw new ArgumentNullException(nameof(jwtConverter));
+            SignInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
+            TokensFactory = tokensFactory ?? throw new ArgumentNullException(nameof(tokensFactory));
         }
 
         public async Task<TokensDto> Handle(LoginCommand request, CancellationToken cancellationToken)
 		{
-			var (email, password) = request.AuthForm;
+			var (user, password) = request;
 
-			var user = await _userManager.FindByEmailAsync(email);
-			if (user == null)
-				throw new BadRequestException(NotExistEmailMessage);
-
-
-			var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
+			var result = await SignInManager.CheckPasswordSignInAsync(user, password, false);
 
 			if (!result.Succeeded)
                 throw new BadRequestException(WrongPasswordMessage);
 
-			var role = Enum.Parse<UserRole>((await _userManager
-				.GetRolesAsync(user))
-				.Single());
-
-			return await GenerateTokens(user, role);
+			return await TokensFactory.GenerateTokens(user);
         }
 	}
 }

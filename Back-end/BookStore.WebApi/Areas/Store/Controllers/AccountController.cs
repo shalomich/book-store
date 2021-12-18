@@ -26,27 +26,33 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpPost("login")]
-        public Task<TokensDto> Login(AuthForm authForm)
+        public async Task<TokensDto> Login(AuthForm authForm)
         {
-            return _mediator.Send(new LoginCommand(authForm));
+            var user = await _mediator.Send(new FindUserByEmailQuery(authForm.Email));
+
+            return await _mediator.Send(new LoginCommand(user, authForm.Password));
         }
 
         [HttpPost("registration")]
         public Task<TokensDto> Registration(AuthForm authForm)
         {
-            return _mediator.Send(new RegistrationCommand(authForm));
+            return _mediator.Send(new RegistrationCommand(authForm.Email, authForm.Password));
         }
 
         [HttpPost("logout")]
-        public Task<Unit> Logout(TokensDto tokens)
+        public async Task<Unit> Logout(TokensDto tokens)
         {
-            return _mediator.Send(new LogoutCommand(tokens));
+            var user = await _mediator.Send(new FindUserByAcessTokenQuery(tokens.AccessToken));
+
+            return await _mediator.Send(new LogoutCommand(user, tokens.RefreshToken));
         }
 
         [HttpPost("refresh")]
-        public Task<TokensDto> RefreshToken(TokensDto tokens)
+        public async Task<TokensDto> RefreshToken(TokensDto tokens)
         {
-            return _mediator.Send(new RefreshTokenCommand(tokens));
+            var user = await _mediator.Send(new FindUserByAcessTokenQuery(tokens.AccessToken));
+
+            return await _mediator.Send(new RefreshTokenCommand(user, tokens.RefreshToken));
         }
 
         [HttpGet("email-existence/{email}")]

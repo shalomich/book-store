@@ -18,42 +18,33 @@ using BookStore.Application.Providers;
 
 namespace BookStore.Application.Commands.Account
 {
-	public record RegistrationCommand(AuthForm AuthForm) : IRequest<TokensDto>;
-	internal class RegistrationHandler : AccountHandler, IRequestHandler<RegistrationCommand, TokensDto>
+	public record RegistrationCommand(string Email, string Password) : IRequest<TokensDto>;
+	internal class RegistrationHandler : IRequestHandler<RegistrationCommand, TokensDto>
 	{ 
-		private const UserRole DefaultRole = UserRole.Customer;
-		private const string EmailTakenMessage = "This email is already taken";
+		private UserManager<User> UserManager { get; }
+		private TokensFactory TokensFactory { get; }
 
-		private JwtConverter _jwtConverter;
-		private readonly UserManager<User> _userManager;
-
-        public RegistrationHandler(JwtConverter jwtConverter, UserManager<User> userManager, IJwtProvider jwtProvider) 
-			: base(jwtConverter, userManager, jwtProvider)
+        public RegistrationHandler(UserManager<User> userManager, TokensFactory tokensFactory)
         {
-            _jwtConverter = jwtConverter ?? throw new ArgumentNullException(nameof(jwtConverter));
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            TokensFactory = tokensFactory ?? throw new ArgumentNullException(nameof(tokensFactory));
         }
 
         public async Task<TokensDto> Handle(RegistrationCommand request, CancellationToken cancellationToken)
 		{
-			var (email, password) = request.AuthForm;
-
-			if (_userManager.Users.Any(user => user.Email == email))
-				throw new BadRequestException(EmailTakenMessage);
+			var (email, password) = request;
 
 			var user = new User { Email = email, UserName = email };
 
-			var result = await _userManager.CreateAsync(user, password);
+			var result = await UserManager.CreateAsync(user, password);
 
             if (!result.Succeeded)
             {
-                var passwordErrorMessage = result.Errors.First().Description;
-                throw new BadRequestException(passwordErrorMessage);
+                var errorMessage = result.Errors.First().Description;
+                throw new BadRequestException(errorMessage);
 			}
 
-            await _userManager.AddToRoleAsync(user, DefaultRole.ToString());
-
-			return await GenerateTokens(user, DefaultRole);
+			return await TokensFactory.GenerateTokens(user);
         }
 	}
 }

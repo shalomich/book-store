@@ -2,13 +2,14 @@
 using BookStore.Domain.Entities;
 using BookStore.Domain.Entities.Books;
 using BookStore.Domain.Entities.Products;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace BookStore.Persistance
 {
-    public class ApplicationContext : IdentityDbContext<User,Role,int>
+    public class ApplicationContext : IdentityDbContext<User, IdentityRole<int>,int>
     {
         public DbSet<Book> Books { set; get; }
         public DbSet<Author> Authors { set; get; }
