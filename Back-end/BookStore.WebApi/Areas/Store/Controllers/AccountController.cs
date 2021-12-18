@@ -36,10 +36,16 @@ namespace BookStore.WebApi.Areas.Store.Controllers
             return _mediator.Send(new RegistrationCommand(authForm));
         }
 
-        [HttpPost("refresh")]
-        public Task<TokensDto> RefreshToken(TokensDto tokensDto)
+        [HttpPost("logout")]
+        public Task<Unit> Logout(TokensDto tokens)
         {
-            return _mediator.Send(new RefreshTokenCommand(tokensDto));
+            return _mediator.Send(new LogoutCommand(tokens));
+        }
+
+        [HttpPost("refresh")]
+        public Task<TokensDto> RefreshToken(TokensDto tokens)
+        {
+            return _mediator.Send(new RefreshTokenCommand(tokens));
         }
     }
 }

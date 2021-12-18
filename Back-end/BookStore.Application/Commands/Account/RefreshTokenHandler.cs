@@ -38,7 +38,16 @@ namespace BookStore.Application.Commands.Account
 		{
 			var (accessToken, refreshToken) = request.Tokens;
 
-			var authorizedData = _jwtConverter.FromToken(accessToken);
+			AuthorizedDataDto authorizedData;
+
+			try
+			{
+				authorizedData = _jwtConverter.FromToken(accessToken);
+			}
+			catch (Exception exception)
+			{
+				throw new BadRequestException(null, exception);
+			}
 
 			var user = await _userManager.FindByEmailAsync(authorizedData.Email);
 			if (user == null)
