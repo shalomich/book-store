@@ -1,6 +1,7 @@
 ﻿
 using BookStore.Application.Commands.Account;
 using BookStore.Application.Dto;
+using BookStore.Application.Queries;
 using BookStore.Application.ViewModels.Account;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -46,6 +47,21 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         public Task<TokensDto> RefreshToken(TokensDto tokens)
         {
             return _mediator.Send(new RefreshTokenCommand(tokens));
+        }
+
+        [HttpGet("email-existence/{email}")]
+        public async Task<bool> CheckEmailExistence(string email)
+        {
+            try
+            {
+                await _mediator.Send(new FindUserByEmailQuery(email));
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
