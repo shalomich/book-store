@@ -9,5 +9,6 @@ namespace BookStore.Domain.Entities
     public class User : IdentityUser<int>, IEntity
     {
         public ISet<BasketProduct> BasketProducts { get; set; }
+        public IEnumerable<Order> Orders { get; set; }
     }
 }
