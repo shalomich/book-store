@@ -7,9 +7,11 @@ namespace BookStore.WebApi.Extensions
     {
         public static int GetUserId(this ClaimsPrincipal principal)
         {
-            return int.Parse(principal
-                .FindFirst(nameof(User.Id))
+            int userId = int.Parse(principal
+                .FindFirst(nameof(userId))
                 .Value);
+
+            return userId;
         }
     }
 }
