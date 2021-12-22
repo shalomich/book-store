@@ -31,6 +31,11 @@ namespace BookStore.Domain.Entities
             }
         }
 
+        public BasketProduct()
+        {
+            Quantity = MinQuantity;
+        }
+
         public override bool Equals(object obj)
         {
             return obj is BasketProduct basketProduct

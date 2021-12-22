@@ -58,6 +58,8 @@ namespace BookStore.WebApi.Areas.Store.Controllers
 
             var basketProduct = new BasketProduct { ProductId = product.Id, UserId = User.GetUserId()};
 
+            await Mediator.Send(new CheckBasketProductQuantityQuery(basketProduct));
+
             await Mediator.Send(new CreateCommand(basketProduct));
 
             return NoContent();
@@ -80,12 +82,9 @@ namespace BookStore.WebApi.Areas.Store.Controllers
 
             var basketProduct = await GetBasketProductById(id);
 
-            var product = (Product)await Mediator.Send(new GetByIdQuery(basketProduct.ProductId, productQueryBuilder));
-
-            if (product.Quantity < quantity)
-                throw new BadRequestException("Product quantity less than chosen");
-
             basketProduct.Quantity = quantity;
+
+            await Mediator.Send(new CheckBasketProductQuantityQuery(basketProduct));
             
             await Mediator.Send(new UpdateCommand(id, basketProduct));
 

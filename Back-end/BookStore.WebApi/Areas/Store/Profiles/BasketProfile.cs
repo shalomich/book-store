@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
+using BookStore.Application.Dto;
 using BookStore.Domain.Entities;
 using BookStore.WebApi.Areas.Store.ViewModels.Basket;
 
 namespace BookStore.WebApi.Areas.Store.Profiles;
-public class BasketToViewProfile : Profile
+public class BasketProfile : Profile
 {
-    public BasketToViewProfile()
+    public BasketProfile()
     {
         CreateMap<BasketProduct, BasketProductView>()
             .ForMember(dto => dto.Name, mapper
@@ -18,7 +19,7 @@ public class BasketToViewProfile : Profile
                 => mapper.MapFrom(basketProduct => basketProduct.Product.Album.TitleImage))
             .IncludeAllDerived();
 
-        CreateMap<OrderForm, Order>()
+        CreateMap<OrderForm, OrderMakingDto>()
             .ForMember(order => order.UserName, mapper =>
                 mapper.MapFrom(form => $"{form.LastName} {form.FirstName}"));
     }
