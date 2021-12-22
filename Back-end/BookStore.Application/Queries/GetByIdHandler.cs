@@ -1,4 +1,5 @@
-﻿using BookStore.Application.Exceptions;
+﻿using BookStore.Application.DbQueryConfigs.Specifications;
+using BookStore.Application.Exceptions;
 using BookStore.Application.Services.DbQueryBuilders;
 using BookStore.Domain.Entities;
 using MediatR;
@@ -20,7 +21,7 @@ namespace BookStore.Application.Queries
             var (id, queryBuilder) = request;
 
             var entity = await queryBuilder.Build()
-                .SingleOrDefaultAsync(entity => entity.Id == id);
+                .SingleOrDefaultAsync(new EntityByIdSpecification(id));
 
             if (entity == null)
                 throw new NotFoundException(WrongIdMessage);

@@ -35,5 +35,10 @@ namespace BookStore.Application.Services.DbQueryBuilders
 
             return entities;
         }
+
+        public void Reset()
+        {
+            BuildItems.Clear();
+        }
     }
 }

@@ -13,6 +13,8 @@ using BookStore.Application.DbQueryConfigs.IncludeRequirements;
 using BookStore.Application.Queries;
 using System.Linq;
 using BookStore.Application.Commands;
+using BookStore.Application.Dto;
+using BookStore.Application.Notifications.OrderPlaced;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
 {
@@ -32,24 +34,17 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         [HttpPost]
         public async Task PlaceOrder(OrderForm orderForm, [FromServices] DbEntityQueryBuilder<BasketProduct> basketProductQueryBuilder)
         {
-            var order = Mapper.Map<Order>(orderForm);
-
             int userId = User.GetUserId();
-            order.UserId = userId;
 
-            basketProductQueryBuilder
-                .AddSpecification(new BasketProductByUserIdSpecification(userId))
-                .AddIncludeRequirements(new BasketProductIncludeRequirement());
+            await Mediator.Send(new CheckBasketProductQuantiesQuery(userId));
+
+            var orderMakingDto = Mapper.Map<OrderMakingDto>(orderForm);
+
+            Order order = await Mediator.Send(new MakeOrderCommand(userId, orderMakingDto));
             
-            var basketProducts = await Mediator.Send(new GetQuery(basketProductQueryBuilder));
-
-            var orderProducts = basketProducts
-                .Select(basketProduct => Mapper.Map<OrderProduct>(basketProduct))
-                .ToHashSet();
-
-            order.Products = orderProducts;
-
             await Mediator.Send(new CreateCommand(order));
+
+            await Mediator.Publish(new OrderPlacedNotification(order));
         }
     }
 }
