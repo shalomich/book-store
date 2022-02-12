@@ -11,18 +11,18 @@ namespace BookStore.Application.Services.DbQueryBuilders
     public abstract class DbQueryBuilder<T> : IDbQueryBuilder<T> where T : class, IEntity
     {
         private ApplicationContext Context { get; }
-        private Queue<IQueryBuildItem<T>> BuildItems { get; }
+        private List<IQueryBuildItem<T>> BuildItems { get; }
 
         public DbQueryBuilder(ApplicationContext context)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
-            BuildItems = new Queue<IQueryBuildItem<T>>();
+            BuildItems = new List<IQueryBuildItem<T>>();
         }
 
         protected void AddBuildItem(IQueryBuildItem<T> buildItem) 
         {
             if (buildItem != null)
-                BuildItems.Enqueue(buildItem);
+                BuildItems.Add(buildItem);
         }
             
 
@@ -30,7 +30,7 @@ namespace BookStore.Application.Services.DbQueryBuilders
         {
             var entities = Context.Set<T>().AsQueryable();
 
-            while (BuildItems.TryDequeue(out IQueryBuildItem<T> buildItem))
+            foreach (var buildItem in BuildItems)
                 buildItem.AddQuery(ref entities);
 
             return entities;

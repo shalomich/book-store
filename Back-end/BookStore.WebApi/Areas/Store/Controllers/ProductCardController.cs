@@ -38,13 +38,17 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         protected abstract void IncludeRelatedEntities();
 
         [HttpGet]
-        public async Task<ActionResult<ProductPreview[]>> GetPreviews([FromQuery] FilterArgs[] filters, [FromQuery] SortingArgs[] sortings, 
+        public async Task<ActionResult<ProductPreviewSet>> GetPreviews([FromQuery] FilterArgs[] filters, [FromQuery] SortingArgs[] sortings, 
             [FromQuery] SearchArgs search, [FromQuery] PaggingArgs pagging)
         {
             ProductQueryBuilder
                 .AddFilters(filters)
+                .AddSearch(search);
+
+            int totalCount = await Mediator.Send(new CalculateCountQuery(ProductQueryBuilder));
+
+            ProductQueryBuilder
                 .AddSortings(sortings)
-                .AddSearch(search)
                 .AddPagging(pagging)
                 .AddIncludeRequirements(new ProductAlbumIncludeRequirement<T>());
             IncludeRelatedEntities();
@@ -58,7 +62,7 @@ namespace BookStore.WebApi.Areas.Store.Controllers
                 .Select(product => (ProductPreview) Mapper.Map(product, productType, productPreviewType))
                 .ToArray();
 
-            return previews;
+            return new ProductPreviewSet(previews,totalCount);
         }
 
         [HttpGet("{id}")]
