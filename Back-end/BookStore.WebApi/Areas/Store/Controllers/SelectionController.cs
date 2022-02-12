@@ -31,19 +31,24 @@ namespace BookStore.WebApi.Areas.Store.Controllers
 
 
         [HttpGet("{selection}")]
-        public async Task<IEnumerable<ProductPreview>> GetSelection(Selection selection, 
+        public async Task<ProductPreviewSet> GetSelection(Selection selection, 
             [FromQuery] FilterArgs[] filters, [FromQuery] SortingArgs[] sortings, [FromQuery] PaggingArgs pagging)
         {
             await Mediator.Send(new ChooseSelectionQuery(selection, Builder));
 
-            Builder
-                .AddFilters(filters)
-                .AddSortings(sortings)
+            Builder.AddFilters(filters);
+
+            int totalCount = await Mediator.Send(new CalculateCountQuery(Builder));
+
+            Builder.AddSortings(sortings)
                 .AddPagging(pagging);
 
+            
             var books = await Mediator.Send(new GetQuery(Builder));
 
-            return books.Select(book => Mapper.Map<BookPreview>(book));
+            var bookPreviews = books.Select(book => Mapper.Map<BookPreview>(book));
+
+            return new ProductPreviewSet(bookPreviews, totalCount);
         }
 
         [HttpHead("{selection}")]
