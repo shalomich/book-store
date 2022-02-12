@@ -50,20 +50,5 @@ namespace BookStore.WebApi.Areas.Store.Controllers
 
             return new ProductPreviewSet(bookPreviews, totalCount);
         }
-
-        [HttpHead("{selection}")]
-        public async Task GetSelectionMetadata([FromRoute] Selection selection,
-            [FromQuery] FilterArgs[] filters, [FromQuery] SortingArgs[] sortings, [FromQuery] PaggingArgs pagging)
-        {
-            await Mediator.Send(new ChooseSelectionQuery(selection, Builder));
-
-            Builder
-                .AddFilters(filters)
-                .AddSortings(sortings);
-                
-            var metadata = await Mediator.Send(new GetMetadataQuery(pagging, Builder));
-
-            HttpContext.Response.Headers.Add(metadata);
-        }
     }
 }
