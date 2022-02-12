@@ -79,18 +79,6 @@ namespace BookStore.WebApi.Areas.Store.Controllers
             return (ProductCard) Mapper.Map(product, productType, productCardType);
         }
 
-        [HttpHead]
-        public async Task GetPaggingMetadata([FromQuery] FilterArgs[] filterArgs, [FromQuery] SearchArgs searchArgs, [FromQuery] PaggingArgs paggingArgs)
-        {
-            ProductQueryBuilder
-                .AddFilters(filterArgs)
-                .AddSearch(searchArgs);
-
-            var metadata = await Mediator.Send(new GetMetadataQuery(paggingArgs, ProductQueryBuilder));
-            
-            HttpContext.Response.Headers.Add(metadata);
-        }
-
         protected async Task<IEnumerable<RelatedEntityDto>> GetRelatedEntities<TRelatedEntity>(IDbQueryBuilder<TRelatedEntity> relatedEntityqueryBuilder) where TRelatedEntity : RelatedEntity
         {
             var relatedEntities = await Mediator.Send(new GetQuery(relatedEntityqueryBuilder));
