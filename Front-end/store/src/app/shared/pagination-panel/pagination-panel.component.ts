@@ -18,7 +18,7 @@ export class PaginationPanelComponent implements OnInit {
     pageSize: PAGE_SIZE,
   });
 
-  @Input() pageCount$: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
+  @Input() totalCount: number = 0;
 
   public config: PaginationInstance = {
     id: 'paginationPanel',
@@ -46,12 +46,6 @@ export class PaginationPanelComponent implements OnInit {
 
     this.config.currentPage = pageNumber;
     this.config.itemsPerPage = pageSize;
-
-    this.pageCount$
-      .asObservable()
-      .subscribe(pageCount => {
-        this.config.totalItems = pageCount;
-        this.config.currentPage = 1;
-      });
+    this.config.totalItems = this.totalCount / pageSize;
   }
 }

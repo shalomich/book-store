@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 
 import { ProductPreview } from '../core/models/product-preview';
 import { ProductParamsBuilderService } from '../core/services/product-params-builder.service';
+import {ProductPreviewSet} from "../core/models/product-preview-set";
 
 @Component({
   selector: 'app-catalog',
@@ -14,7 +15,7 @@ export class CatalogComponent implements OnInit {
 
   public readonly propertyNamesWithText: Array<[string, string]> = [['По имени', 'name'], ['По цене', 'cost'], ['По дате добавления', 'addingDate']];
 
-  @Input() public books$: Observable<ProductPreview[]> = new Observable<ProductPreview[]>();
+  @Input() public bookSet$: Observable<ProductPreviewSet> = new Observable<ProductPreviewSet>();
 
   @Input() paramsBuilder!: ProductParamsBuilderService;
 

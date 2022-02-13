@@ -14,6 +14,9 @@ import { ProductPreviewMapper } from '../mappers/product-preview.mapper';
 import { RelatedEntityDto } from '../DTOs/related-entity-dto';
 import { RelatedEntityMapper } from '../mappers/related-entity.mapper';
 import { RelatedEntity } from '../models/related-entity';
+import {ProductPreviewSetMapper} from "../mappers/product-preview-set.mapper";
+import {ProductPreviewSet} from "../models/product-preview-set";
+import {ProductPreviewSetDto} from "../DTOs/product-preview-set-dto";
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +28,7 @@ export class BookService {
   public constructor(
     private readonly http: HttpClient,
     private readonly bookMapper: BookMapper,
-    private readonly productPreviewMapper: ProductPreviewMapper,
+    private readonly productPreviewSetMapper: ProductPreviewSetMapper,
     private readonly relatedEntityMapper: RelatedEntityMapper,
   ) { }
 
@@ -37,17 +40,12 @@ export class BookService {
     );
   }
 
-  public get(params?: HttpParams): Observable<ProductPreview[]> {
-    return this.http.get<ProductPreviewDto[]>(`${PRODUCT_URL}${this.type}`, { params }).pipe(
-      map(books => books.map(book => this.productPreviewMapper.fromDto(book))),
+  public get(params?: HttpParams): Observable<ProductPreviewSet> {
+    return this.http.get<ProductPreviewSetDto>(`${PRODUCT_URL}${this.type}`, { params }).pipe(
+      map(setDto => this.productPreviewSetMapper.fromDto(setDto)),
     );
   }
-
-  public getQuantity(params?: HttpParams): Observable<number> {
-    return this.http.head(`${PRODUCT_URL}${this.type}`, { observe: 'response', params })
-      .pipe(map(response => parseInt(<string>response.headers.get('dataCount'))));
-  }
-
+  
   public getRelatedEntity(entityName: string): Observable<RelatedEntity[]> {
     return this.http.get<RelatedEntityDto[]>(`${PRODUCT_URL}${this.type}/${entityName}`)
       .pipe(map(items => items.map(item => this.relatedEntityMapper.fromDto(item))));

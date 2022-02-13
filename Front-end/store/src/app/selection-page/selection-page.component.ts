@@ -6,6 +6,7 @@ import {Observable} from "rxjs";
 import {ProductPreview} from "../core/models/product-preview";
 import {PAGE_SIZE, SELECTION_SIZE} from "../core/utils/values";
 import {Selection} from "../core/enums/selection";
+import {ProductPreviewSet} from "../core/models/product-preview-set";
 
 @Component({
   selector: 'app-selection-page',
@@ -16,7 +17,7 @@ export class SelectionPageComponent implements OnInit {
 
   public readonly selectionName: Selection;
 
-  public books$: Observable<ProductPreview[]> = new Observable<ProductPreview[]>();
+  public bookSet$: Observable<ProductPreviewSet> = new Observable<ProductPreviewSet>();
 
   public readonly disabledFilters: Array<string> = [];
 
@@ -29,7 +30,7 @@ export class SelectionPageComponent implements OnInit {
   }
 
   getDisabledFilters(selectionName: Selection): Array<string> {
-    const selection = selectionName ;
+    const selection = selectionName;
     switch (selection){
       case Selection.Novelty:
         return ['releaseYear'];
@@ -40,10 +41,8 @@ export class SelectionPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.paramsBuilder.changePageCount = params => this.selectionService.getQuantity(this.selectionName, params);
-
     this.paramsBuilder.onParamsChanged = params => {
-      this.books$ = this.selectionService.get(this.selectionName,params);
+      this.bookSet$ = this.selectionService.get(this.selectionName,params);
     };
 
     this.paramsBuilder.paginationOptions$.next({

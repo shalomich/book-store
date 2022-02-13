@@ -7,6 +7,7 @@ import { ProductParamsBuilderService } from '../core/services/product-params-bui
 import { ProductPreview } from '../core/models/product-preview';
 import { SELECTION_SIZE } from '../core/utils/values';
 import { Selection } from '../core/enums/selection';
+import {ProductPreviewSet} from "../core/models/product-preview-set";
 
 @Component({
   selector: 'app-selection',
@@ -16,7 +17,7 @@ import { Selection } from '../core/enums/selection';
 })
 export class SelectionComponent implements OnInit {
 
-  public selection$: Observable<ProductPreview[]> = new Observable<ProductPreview[]>();
+  public bookSet$: Observable<ProductPreviewSet> = new Observable<ProductPreviewSet>();
 
   public selectionLink: string | undefined;
 
@@ -34,7 +35,7 @@ export class SelectionComponent implements OnInit {
   ngOnInit(): void {
     this.selectionLink = `book-store/catalog/selection/${this.selectionName}`;
 
-    this.paramsBuilder.onParamsChanged = params => this.selection$ = this.selectionService.get(this.selectionName!, params);
+    this.paramsBuilder.onParamsChanged = params => this.bookSet$ = this.selectionService.get(this.selectionName!, params);
 
     this.paramsBuilder.paginationOptions$.next({
       pageSize: SELECTION_SIZE,

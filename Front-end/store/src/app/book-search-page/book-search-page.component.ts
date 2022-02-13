@@ -14,6 +14,7 @@ import { ProductPreview } from '../core/models/product-preview';
 import {PAGE_NUMBER, PAGE_SIZE, SEARCH_DEPTH} from '../core/utils/values';
 import { RelatedEntity } from '../core/models/related-entity';
 import {ActivatedRoute} from "@angular/router";
+import {ProductPreviewSet} from "../core/models/product-preview-set";
 
 @AutoUnsubscribe()
 @Component({
@@ -24,7 +25,7 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class BookSearchPageComponent implements OnInit, OnDestroy {
 
-  public books$: Observable<ProductPreview[]> = new Observable<ProductPreview[]>();
+  public bookSet$: Observable<ProductPreviewSet> = new Observable<ProductPreviewSet>();
 
   public constructor(
     private readonly bookService: BookService,
@@ -35,10 +36,8 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    this.productParamsBuilderService.changePageCount = params => this.bookService.getQuantity(params);
-
     this.productParamsBuilderService.onParamsChanged = params => {
-      this.books$ = this.bookService.get(params);
+      this.bookSet$ = this.bookService.get(params);
     };
 
     this.route.queryParams.subscribe(params => {
