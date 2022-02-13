@@ -20,8 +20,6 @@ export class ProductParamsBuilderService {
     pageSize: PAGE_SIZE,
   });
 
-  public pageCount$: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
-
   public filterOptions$: BehaviorSubject<FilterOptions> = new BehaviorSubject<FilterOptions>(
     {
       values: {},
@@ -34,17 +32,10 @@ export class ProductParamsBuilderService {
 
   public onParamsChanged: (params: HttpParams) => void = params => {};
 
-  public changePageCount: (params: HttpParams) => Observable<number> = params => new Observable<number>();
-
   constructor() {
     this.paginationOptions$
       .subscribe(options => {
         const params = this.buildParams();
-
-        if (!this.pageCount$.value) {
-          this.changePageCount(params)
-            .subscribe(pageCount => this.pageCount$.next(pageCount));
-        }
 
         this.onParamsChanged(params);
       });
@@ -52,11 +43,7 @@ export class ProductParamsBuilderService {
     this.filterOptions$.asObservable()
       .subscribe(options => {
         this.resetPaging();
-
-        const params = this.buildParams();
-        this.changePageCount(params)
-          .subscribe(pageCount => this.pageCount$.next(pageCount));
-      });
+    });
 
     this.sortingOptions$.asObservable()
       .subscribe(options => {
@@ -65,11 +52,7 @@ export class ProductParamsBuilderService {
 
     this.searchOptions$.asObservable()
       .subscribe(options => {
-        this.resetPaging();
-
-        const params = this.buildParams();
-        this.changePageCount(params)
-          .subscribe(pageCount => this.pageCount$.next(pageCount));
+        this.resetPaging()
       });
   }
 
