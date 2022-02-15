@@ -42,7 +42,7 @@ export class SelectionPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.paramsBuilder.onParamsChanged = params => {
-      this.bookSet$ = this.selectionService.get(this.selectionName,params);
+      this.bookSet$ = this.selectionService.get(this.selectionName, params);
     };
 
     this.paramsBuilder.paginationOptions$.next({

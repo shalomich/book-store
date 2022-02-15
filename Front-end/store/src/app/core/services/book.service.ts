@@ -14,9 +14,9 @@ import { ProductPreviewMapper } from '../mappers/product-preview.mapper';
 import { RelatedEntityDto } from '../DTOs/related-entity-dto';
 import { RelatedEntityMapper } from '../mappers/related-entity.mapper';
 import { RelatedEntity } from '../models/related-entity';
-import {ProductPreviewSetMapper} from "../mappers/product-preview-set.mapper";
-import {ProductPreviewSet} from "../models/product-preview-set";
-import {ProductPreviewSetDto} from "../DTOs/product-preview-set-dto";
+import { ProductPreviewSetMapper } from '../mappers/product-preview-set.mapper';
+import { ProductPreviewSet } from '../models/product-preview-set';
+import { ProductPreviewSetDto } from '../DTOs/product-preview-set-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -45,7 +45,7 @@ export class BookService {
       map(setDto => this.productPreviewSetMapper.fromDto(setDto)),
     );
   }
-  
+
   public getRelatedEntity(entityName: string): Observable<RelatedEntity[]> {
     return this.http.get<RelatedEntityDto[]>(`${PRODUCT_URL}${this.type}/${entityName}`)
       .pipe(map(items => items.map(item => this.relatedEntityMapper.fromDto(item))));

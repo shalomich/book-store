@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PaginationInstance } from 'ngx-pagination';
 
-import { BehaviorSubject, config } from 'rxjs';
+import {BehaviorSubject, config, Observable} from 'rxjs';
 
 import { PAGE_NUMBER, PAGE_SIZE } from '../../core/utils/values';
 import { PaginationOptions } from '../../core/interfaces/pagination-options';
@@ -17,8 +17,6 @@ export class PaginationPanelComponent implements OnInit {
     pageNumber: 1,
     pageSize: PAGE_SIZE,
   });
-
-  @Input() totalCount: number = 0;
 
   public config: PaginationInstance = {
     id: 'paginationPanel',
@@ -46,6 +44,6 @@ export class PaginationPanelComponent implements OnInit {
 
     this.config.currentPage = pageNumber;
     this.config.itemsPerPage = pageSize;
-    this.config.totalItems = this.totalCount / pageSize;
+    this.config.totalItems = 10;
   }
 }
