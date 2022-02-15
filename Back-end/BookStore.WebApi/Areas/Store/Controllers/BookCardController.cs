@@ -14,6 +14,7 @@ using BookStore.WebApi.Areas.Store.ViewModels;
 using BookStore.Domain.Entities;
 using BookStore.Application.Dto;
 using System.ComponentModel.DataAnnotations;
+using BookStore.Application.Queries;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
 {
@@ -82,5 +83,11 @@ namespace BookStore.WebApi.Areas.Store.Controllers
             return await GetRelatedEntities(relatedEntityQueryBuilder);
         }
         
+        [HttpGet("hint")]
+        public Task<SearchHintsDto> GetSearchHints([FromQuery][Required] SearchArgs search, 
+            [FromQuery] PaggingArgs pagging)
+        {
+            return Mediator.Send(new GetSearchHintsQuery(search, pagging));
+        }
     }
 }
