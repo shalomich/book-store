@@ -26,6 +26,8 @@ export class ProductParamsBuilderService {
     },
   );
 
+  public params: HttpParams = new HttpParams();
+
   public sortingOptions$: BehaviorSubject<Array<SortingOptions>> = new BehaviorSubject<Array<SortingOptions>>([]);
 
   public searchOptions$: BehaviorSubject<SearchOptions> = new BehaviorSubject<SearchOptions>({} as SearchOptions);
@@ -35,9 +37,9 @@ export class ProductParamsBuilderService {
   constructor() {
     this.paginationOptions$
       .subscribe(options => {
-        const params = this.buildParams();
+        this.params = this.buildParams();
 
-        this.onParamsChanged(params);
+        this.onParamsChanged(this.params);
       });
 
     this.filterOptions$.asObservable()

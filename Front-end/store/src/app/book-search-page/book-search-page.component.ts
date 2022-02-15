@@ -6,15 +6,16 @@ import { map, switchMap } from 'rxjs/operators';
 
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+import { ActivatedRoute } from '@angular/router';
+
 import { BookService } from '../core/services/book.service';
 import { Book } from '../core/models/book';
 import { PaginationOptions } from '../core/interfaces/pagination-options';
 import { ProductParamsBuilderService } from '../core/services/product-params-builder.service';
 import { ProductPreview } from '../core/models/product-preview';
-import {PAGE_NUMBER, PAGE_SIZE, SEARCH_DEPTH} from '../core/utils/values';
+import { PAGE_NUMBER, PAGE_SIZE, SEARCH_DEPTH } from '../core/utils/values';
 import { RelatedEntity } from '../core/models/related-entity';
-import {ActivatedRoute} from "@angular/router";
-import {ProductPreviewSet} from "../core/models/product-preview-set";
+import { ProductPreviewSet } from '../core/models/product-preview-set';
 
 @AutoUnsubscribe()
 @Component({
@@ -32,14 +33,13 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public readonly productParamsBuilderService: ProductParamsBuilderService,
   ) {
+    this.bookSet$ = this.productParamsBuilderService.paginationOptions$.asObservable()
+      .pipe(
+        switchMap(_ => this.bookService.get(this.productParamsBuilderService.params)),
+      );
   }
 
   public ngOnInit(): void {
-
-    this.productParamsBuilderService.onParamsChanged = params => {
-      this.bookSet$ = this.bookService.get(params);
-    };
-
     this.route.queryParams.subscribe(params => {
       this.productParamsBuilderService.searchOptions$.next({
         propertyName: params.target,
