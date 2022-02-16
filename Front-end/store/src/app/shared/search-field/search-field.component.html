@@ -9,11 +9,11 @@
     <div class="search-result">
       <div class="result-data">
         <div>
-          <app-search-hint [searchField]="input" target="name">Произведения</app-search-hint>
+          <app-search-hint [hints]="(searchHints$ | async)?.books!" [searchField]="input" target="name">Произведения</app-search-hint>
         </div>
         <div>
-          <app-search-hint [searchField]="input" target="authorName" relatedEntityName="author">Авторы</app-search-hint>
-          <app-search-hint [searchField]="input" target="publisherName" relatedEntityName="publisher">Издатели</app-search-hint>
+          <app-search-hint [hints]="(searchHints$ | async)?.authors!" [searchField]="input" target="authorName">Авторы</app-search-hint>
+          <app-search-hint [hints]="(searchHints$ | async)?.publishers!" [searchField]="input" target="publisherName">Издатели</app-search-hint>
         </div>
       </div>
     </div>
