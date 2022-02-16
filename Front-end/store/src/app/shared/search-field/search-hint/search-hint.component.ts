@@ -24,13 +24,11 @@ export class SearchHintComponent implements OnInit {
 
   private readonly productName: string = 'book';
 
-  public entities$: Observable<EntityDto[] | null> = new Observable<EntityDto[] | null>();
-
   public loading = false;
 
-  @Input() target: string | undefined;
+  @Input() hints: string [] = []
 
-  @Input() relatedEntityName?: string;
+  @Input() target: string | undefined;
 
   @Input() searchField: FormControl = new FormControl();
 
@@ -43,31 +41,6 @@ export class SearchHintComponent implements OnInit {
   ) { }
 
   public ngOnInit(): void {
-    this.paramsBuilder.onParamsChanged = params => {
-      this.entities$ = this.entityRestService
-        .get(this.productName, this.relatedEntityName, params)
-        .pipe(
-          last(),
-          map(data => data.length ? data : null),
-        );
-    };
 
-    this.searchField.valueChanges
-      .subscribe(input => {
-        this.uploadHints(input);
-      });
-  }
-
-  private uploadHints(input: string) {
-    if (input) {
-      this.loading = true;
-      this.paramsBuilder.searchOptions$.next({
-        propertyName: 'name',
-        value: input,
-        searchDepth: SEARCH_DEPTH,
-      });
-    } else {
-      this.entities$ = new Observable();
-    }
   }
 }
