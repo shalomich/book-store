@@ -10,7 +10,7 @@
   </filter-group>
   <div class="list-block">
     <sorting [propertyNamesWithText]="propertyNamesWithText" [sortingOptions$]="paramsBuilder.sortingOptions$"></sorting>
-    <div class="books-list">
+    <div *ngIf="books.length !== 0; else emptyResult" class="books-list">
       <app-product-list-item *ngFor="let book of books | paginate: config"
                              [item]="book">
       </app-product-list-item>
@@ -26,7 +26,11 @@
                        [responsive]="true"
                        (pageChange)="onPageChanged($event)">
   </pagination-controls>
-
 </div>
+
+<ng-template #emptyResult>
+  <div class="empty-result-block">Ничего не найдено.</div>
+</ng-template>
+
 
 

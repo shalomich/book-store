@@ -7,6 +7,7 @@
   margin-top: 3em;
   margin-left: 3vw;
   min-height: 45em;
+  width: 100%;
 }
 
 .pagination-block {
@@ -44,4 +45,9 @@
 
 .pagination-panel {
   display: flex;
+}
+
+.empty-result-block {
+  width: fit-content;
+  margin: 5em auto;
 }
