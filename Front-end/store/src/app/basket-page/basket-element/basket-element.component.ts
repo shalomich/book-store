@@ -1,14 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 
-import { FormControl } from '@angular/forms';
+import {FormControl} from '@angular/forms';
 
-import { BasketProduct } from '../../core/interfaces/basket-product';
-import { BasketService } from '../../core/services/basket.service';
+import {BasketProduct} from '../../core/interfaces/basket-product';
+import {BasketService} from '../../core/services/basket.service';
 
 @Component({
   selector: 'app-basket-element',
   templateUrl: './basket-element.component.html',
   styleUrls: ['./basket-element.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class BasketElementComponent implements OnInit {
 

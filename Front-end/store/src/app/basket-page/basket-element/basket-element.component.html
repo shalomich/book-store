@@ -1,10 +1,16 @@
 <div class="basket-element-block">
 <!--  <img alt="Title image" src="{{product.titleImage | base64ToImgSrc}}">-->
-  <span>{{product.name}}</span>
-  <div>
-    <button [disabled]="quantity.value <= 1" (click)="decrease()">-</button>
-    <input min="1" [formControl]="quantity" type="button" readonly>
-    <button (click)="increase()">+</button>
+  <div class="name-block">
+    <span>{{product.name}}</span>
   </div>
-  <button (click)="basketService.remove(product)">Удалить товар из корзины</button>
+  <div class="amount-block">
+    <button mat-stroked-button [disabled]="quantity.value <= 1" (click)="decrease()">-</button>
+    <input matInput min="1" [formControl]="quantity" type="number" readonly>
+    <button mat-stroked-button (click)="increase()">+</button>
+  </div>
+  <div class="remove-button-block">
+    <button mat-stroked-button (click)="basketService.remove(product)">
+      <mat-icon>remove_shopping_cart</mat-icon>
+    </button>
+  </div>
 </div>

@@ -31,7 +31,11 @@
   margin-left: 20em;
 }
 
-.cart-button {
+.basket-button {
   color: #2199e8 !important;
+}
+
+.authorized-block {
+  display: flex;
 }
 
