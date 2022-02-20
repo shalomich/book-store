@@ -1,5 +1,13 @@
 <div class="header">
-  <app-search-field></app-search-field>
+  <div routerLink="/book-store" class="logo">
+    ComicStore
+  </div>
+  <div class="catalog-button">
+    <button mat-stroked-button routerLink="/book-store/catalog/book">Каталог</button>
+  </div>
+  <div class="search-field">
+    <app-search-field></app-search-field>
+  </div>
   <div *ngIf="authorizationDataProvider.token | async; else loginButton">
     <button mat-stroked-button class="login-button" (click)="logout()">Выйти из аккаунта</button>
   </div>
