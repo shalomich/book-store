@@ -3,7 +3,7 @@
     <div class="search-field">
       <input [formControl]="input"/>
     </div>
-    <button mat-stroked-button (click)="redirectToSearchPage()"><mat-icon>search</mat-icon></button>
+    <button [disabled]="!input.value" mat-stroked-button (click)="redirectToSearchPage()"><mat-icon>search</mat-icon></button>
   </div>
   <div class="{{input.value ? 'result-block' : 'result-block hidden'}}">
     <div class="search-result">
