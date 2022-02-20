@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Observable } from 'rxjs';
 
-import { ProductParamsBuilderService } from '../core/services/product-params-builder.service';
+import { ProductOptionsStorage } from '../core/services/product-options.storage';
 import { SelectionService } from '../core/services/selection.service';
 import { ProductPreview } from '../core/models/product-preview';
 import { PAGE_SIZE, SELECTION_SIZE } from '../core/utils/values';
@@ -18,28 +18,17 @@ import {switchMap} from 'rxjs/operators';
 })
 export class SelectionPageComponent implements OnInit {
 
-  public readonly selectionName: Selection;
-
   public bookSet$: Observable<ProductPreviewSet> = new Observable<ProductPreviewSet>();
 
-  public readonly disabledFilters: Array<string> = [];
+  public disabledFilters: Array<string> = [];
 
   constructor(private route: ActivatedRoute,
-    public paramsBuilder: ProductParamsBuilderService,
+    public optionsStorage: ProductOptionsStorage,
     private selectionService: SelectionService) {
-    this.selectionName = route.snapshot.params.selectionName as Selection;
-
-    this.bookSet$ = this.paramsBuilder.paginationOptions$.asObservable()
-      .pipe(
-        switchMap(_ => this.selectionService.get(this.selectionName, this.paramsBuilder.params)),
-      );
-
-    this.disabledFilters = this.getDisabledFilters(this.selectionName);
   }
 
   public getDisabledFilters(selectionName: Selection): Array<string> {
-    const selection = selectionName;
-    switch (selection) {
+    switch (selectionName) {
       case Selection.Novelty:
         return ['releaseYear'];
       case Selection.ForChildren:
@@ -49,9 +38,17 @@ export class SelectionPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.paramsBuilder.paginationOptions$.next({
-      pageSize: PAGE_SIZE,
+    const selectionName = this.route.snapshot.params.selectionName as Selection;
+
+    this.disabledFilters = this.getDisabledFilters(selectionName);
+
+    this.optionsStorage.optionGroup$.subscribe(optionGroup => {
+      this.bookSet$ = this.selectionService.get(selectionName, optionGroup);
+    });
+
+    this.optionsStorage.setPaginationOptions({
       pageNumber: 1,
+      pageSize: SELECTION_SIZE
     });
   }
 

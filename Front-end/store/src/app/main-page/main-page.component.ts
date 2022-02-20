@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ProductParamsBuilderService} from '../core/services/product-params-builder.service';
+import {ProductOptionsStorage} from '../core/services/product-options.storage';
 import {Selection} from "../core/enums/selection";
 
 @Component({

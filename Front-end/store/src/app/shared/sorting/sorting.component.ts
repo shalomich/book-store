@@ -24,7 +24,7 @@ export class SortingComponent {
 
   @Input() propertyNamesWithText: Array<[string, string]> = [];
 
-  @Input() sortingOptions$: BehaviorSubject<Array<SortingOptions>> = new BehaviorSubject<Array<SortingOptions>>([]);
+  @Input() setSortingsCallback: (sortingOptions: SortingOptions[]) => void = sortingOptions => {};
 
   public onSortingChanged(event: MatOptionSelectionChange) {
     const option = event.source;
@@ -35,7 +35,7 @@ export class SortingComponent {
       this.removeSorting(option);
     }
 
-    this.sortingOptions$.next(this.checkedOptions.map(option => option.value as SortingOptions));
+    this.setSortingsCallback(this.checkedOptions.map(option => option.value as SortingOptions));
   }
 
   private addSorting(option: _MatOptionBase) {
@@ -69,7 +69,7 @@ export class SortingComponent {
 
     sortingOptions.isAscending = !sortingOptions.isAscending;
 
-    this.sortingOptions$.next(this.checkedOptions.map(option => option.value as SortingOptions));
+    this.setSortingsCallback(this.checkedOptions.map(option => option.value as SortingOptions));
   }
 
   public isSortingChecked(propertyName: string): boolean {
@@ -84,7 +84,7 @@ export class SortingComponent {
 
   public resetSortings() {
     this.checkedOptions = [];
-    this.sortingOptions$.next([]);
+    this.setSortingsCallback([]);
     this.sortingSelectControl.reset();
   }
 }

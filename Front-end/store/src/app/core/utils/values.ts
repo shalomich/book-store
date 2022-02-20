@@ -8,7 +8,14 @@ export const PAGE_SIZE = 3;
 export const PAGE_NUMBER = 1;
 
 export const SEARCH_DEPTH = 1;
-export const RELATED_ENTITY_HINT_SIZE = 5;
-export const ENTITY_HINT_SIZE = 10;
+export const HINT_SIZE = 5;
 
 export const SELECTION_SIZE = 5;
+
+export const SEARCH_TARGET_GROUP = {
+  Book: "name",
+  Author: "authorName",
+  Publisher: "publisherName"
+}
+
+export const SEARCH_TARGETS: string[] = [SEARCH_TARGET_GROUP.Book, SEARCH_TARGET_GROUP.Author, SEARCH_TARGET_GROUP.Publisher];

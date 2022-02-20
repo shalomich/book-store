@@ -17,7 +17,7 @@ export class FilterGroupComponent implements AfterContentInit{
 
   @ContentChildren(FilterComponent) public filterComponents: QueryList<FilterComponent> = new QueryList<FilterComponent>();
 
-  @Input() filterOptions!: BehaviorSubject<FilterOptions>;
+  @Input() setFiltersCallback: (filtersOptions: FilterOptions) => void = filtersOptions => {};
   @Input() disabledFilters: Array<string> = [];
 
   private currentStateHash: string = objectHash({});
@@ -39,7 +39,7 @@ export class FilterGroupComponent implements AfterContentInit{
 
     this.currentStateHash = newStateHash;
 
-    this.filterOptions.next({
+    this.setFiltersCallback({
       values: filterValues as object,
     });
   }
@@ -66,7 +66,7 @@ export class FilterGroupComponent implements AfterContentInit{
 
     this.currentStateHash = newStateHash;
 
-    this.filterOptions.next({
+    this.setFiltersCallback({
       values: filterValues,
     });
   }

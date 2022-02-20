@@ -7,7 +7,7 @@ import { FormControl } from '@angular/forms';
 import { last, map } from 'rxjs/operators';
 
 import { SearchFieldComponent } from '../search-field.component';
-import { ProductParamsBuilderService } from '../../../core/services/product-params-builder.service';
+import { ProductOptionsStorage } from '../../../core/services/product-options.storage';
 
 
 import { EntityDto } from '../../../core/DTOs/entity-dto';
@@ -18,7 +18,7 @@ import { SEARCH_DEPTH } from '../../../core/utils/values';
   selector: 'app-search-hint',
   templateUrl: './search-hint.component.html',
   styleUrls: ['./search-hint.component.css'],
-  providers: [ProductParamsBuilderService],
+  providers: [ProductOptionsStorage],
 })
 export class SearchHintComponent implements OnInit {
 
@@ -36,8 +36,6 @@ export class SearchHintComponent implements OnInit {
 
   constructor(
     public readonly searchInput: SearchFieldComponent,
-    private readonly paramsBuilder: ProductParamsBuilderService,
-    private readonly entityRestService: EntityRestService,
   ) { }
 
   public ngOnInit(): void {

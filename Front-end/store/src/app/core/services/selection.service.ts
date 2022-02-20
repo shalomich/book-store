@@ -18,6 +18,11 @@ import {Selection} from "../enums/selection";
 import {ProductPreviewSetMapper} from "../mappers/product-preview-set.mapper";
 import {ProductPreviewSetDto} from "../DTOs/product-preview-set-dto";
 import {ProductPreviewSet} from "../models/product-preview-set";
+import {ProductParamsBuilder} from "./product-params.builder";
+import {PaginationOptions} from "../interfaces/pagination-options";
+import {SortingOptions} from "../interfaces/sorting-options";
+import {FilterOptions} from "../interfaces/filter-options";
+import {OptionGroup} from "../interfaces/option-group";
 
 @Injectable({
   providedIn: 'root',
@@ -26,12 +31,27 @@ export class SelectionService {
 
   public constructor(
     private readonly http: HttpClient,
-    private readonly productPreviewSetMapper: ProductPreviewSetMapper
+    private readonly productPreviewSetMapper: ProductPreviewSetMapper,
+    private readonly paramsBuilder: ProductParamsBuilder
   ) { }
 
-  public get(selection: Selection, params?: HttpParams): Observable<ProductPreviewSet> {
+  public get(selection: Selection, optionGroup: OptionGroup): Observable<ProductPreviewSet> {
+
+    const {pagingOptions, filterOptions, sortingOptions} = optionGroup;
+
+    this.paramsBuilder.addPaging(pagingOptions);
+
+    if (filterOptions)
+      this.paramsBuilder.addFiltration(filterOptions);
+
+    if (sortingOptions)
+      this.paramsBuilder.addSortings(sortingOptions);
+
+    const params = this.paramsBuilder.build();
+
     return this.http.get<ProductPreviewSetDto>(`${SELECTION_URL}${selection}`, { params }).pipe(
       map(setDto => this.productPreviewSetMapper.fromDto(setDto)),
     );
   }
+
 }
