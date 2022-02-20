@@ -16,6 +16,10 @@
   color: #2199e8 !important;
 }
 
+.search-field button:disabled {
+  color: gray !important;
+}
+
 .result-block {
   display: flex;
   justify-content: center;
