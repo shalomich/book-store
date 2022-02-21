@@ -104,6 +104,6 @@ namespace BookStore.Domain.Entities.Books
                 return _pageQuantity;
             } 
         }
-      
+        public ISet<BookTag> BookTags { set; get; }
     }
 }
