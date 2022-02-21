@@ -18,6 +18,8 @@ namespace BookStore.Persistance
         public DbSet<AgeLimit> AgeLimits { set; get; }
         public DbSet<CoverArt> CoverArts { set; get; }
         public DbSet<Genre> Genres { set; get; }
+        public DbSet<Tag> Tags { set; get; }
+
         public DbSet<BasketProduct> BasketProducts { set; get; }
 
         public ApplicationContext(DbContextOptions options) : base(options)
