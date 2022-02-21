@@ -15,13 +15,20 @@ namespace BookStore.WebApi.Areas.Dashboard.Profiles
         public FormToBookProfile()
         {
             CreateMap<BookForm, Book>()
-                .ForMember(book => book.GenresBooks,
-                    mapper => mapper.MapFrom(form => form.GenreIds
-                    .Select(id => new GenreBook { GenreId = id })))
+              .ForMember(book => book.GenresBooks,
+                mapper => mapper.MapFrom(form => form.GenreIds
+                  .Select(id => new GenreBook { GenreId = id })))
+              .ForMember(book => book.BookTags,
+                mapper => mapper.MapFrom(form => form.TagIds
+                  .Select(id => new BookTag { TagId = id })))
             .ReverseMap()
-                .ForMember(form => form.GenreIds,
-                    mapper => mapper.MapFrom(book => book.GenresBooks
-                        .Select(genre => genre.GenreId)));
+              .ForMember(form => form.GenreIds,
+                mapper => mapper.MapFrom(book => book.GenresBooks
+                  .Select(genre => genre.GenreId)))
+              .ForMember(form => form.TagIds,
+                mapper => mapper.MapFrom(book => book.BookTags
+                  .Select(bookTag => bookTag.TagId)));
+              
 
             CreateMap<RelatedEntityForm, Author>()
               .ReverseMap();
@@ -40,7 +47,10 @@ namespace BookStore.WebApi.Areas.Dashboard.Profiles
               .ReverseMap();
 
             CreateMap<RelatedEntityForm, AgeLimit>()
-              .ReverseMap();   
+              .ReverseMap();
+
+            CreateMap<RelatedEntityForm, Tag>()
+              .ReverseMap();
         }
     }
 }

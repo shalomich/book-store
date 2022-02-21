@@ -25,7 +25,8 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
         {
             queryBuilder.AddIncludeRequirements(new IIncludeRequirement<Book>[]
             {
-                new BookGenresIncludeRequirement()
+                new BookGenresIncludeRequirement(),
+                new BookTagsIncludeRequirement()
             });
         }
 

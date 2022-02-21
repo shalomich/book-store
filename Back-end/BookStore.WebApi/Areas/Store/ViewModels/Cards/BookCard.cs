@@ -18,6 +18,7 @@ namespace BookStore.WebApi.Areas.Store.ViewModels.Cards
         public string CoverArt { init; get; } 
         public string BookFormat { init; get; }    
         public int? PageQuantity { init; get; }
+        public string[] Tags { init; get; }
      
     }
 }

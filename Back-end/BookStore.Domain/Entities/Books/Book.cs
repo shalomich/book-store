@@ -69,6 +69,10 @@ namespace BookStore.Domain.Entities.Books
             ?.Select(genreBook => genreBook.Genre.Name)
             .ToHashSet();
 
+        public ISet<string> Tags => BookTags
+            ?.Select(bookTag => bookTag.Tag.Name)
+            .ToHashSet();
+
         public string OriginalName { set; get; }
 
         public AgeLimit AgeLimit { set; get; }

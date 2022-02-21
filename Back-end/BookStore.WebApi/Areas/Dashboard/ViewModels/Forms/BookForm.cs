@@ -39,6 +39,7 @@ namespace BookStore.WebApi.Areas.Dashboard.ViewModels.Forms
 
         [Range(1,int.MaxValue)]
         public int? PageQuantity { init; get; }
+        public ISet<int> TagIds { init; get; }
 
     }
 }
