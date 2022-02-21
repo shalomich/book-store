@@ -43,7 +43,9 @@ namespace BookStore.WebApi.Areas.Store.Profiles
                 .ForMember(card => card.CoverArt, mapper =>
                     mapper.MapFrom(book => book.CoverArt.Name))
                 .ForMember(card => card.Genres, mapper =>
-                    mapper.MapFrom(book => book.Genres.ToArray()));
+                    mapper.MapFrom(book => book.Genres.ToArray()))
+                .ForMember(card => card.Tags, mapper =>
+                    mapper.MapFrom(book => book.Tags.ToArray()));
         }
     }
 }

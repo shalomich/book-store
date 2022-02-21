@@ -32,7 +32,8 @@ namespace BookStore.WebApi.Areas.Store.Controllers
                 new BookGenresIncludeRequirement(),
                 new BookAuthorIncludeRequirement(),
                 new BookPublisherIncludeRequirement(),
-                new BookDefinitionIncludeRequirement()
+                new BookDefinitionIncludeRequirement(),
+                new BookTagsIncludeRequirement()
             }); 
         }
 

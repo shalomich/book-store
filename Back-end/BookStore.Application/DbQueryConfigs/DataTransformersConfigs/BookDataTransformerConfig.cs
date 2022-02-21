@@ -20,7 +20,9 @@ namespace BookStore.Application.DbQueryConfigs.DataTransformersConfigs
             CreatePlentyFilter(nameof(Book.AgeLimit), book => book.AgeLimitId.Value);
             CreatePlentyFilter(nameof(Book.CoverArt), book => book.CoverArtId.Value);
             CreatePlentyFilter("genre", book => book.GenresBooks
-                .Select(genre => genre.Genre.Id));
+                .Select(genre => genre.GenreId));
+            CreatePlentyFilter("tag", book => book.BookTags
+                .Select(bookTag => bookTag.TagId));
 
             CreateSearch("authorName", entity => entity.Author.Name);
             CreateSearch("publisherName", entity => entity.Publisher.Name);
