@@ -41,30 +41,24 @@ export class ProductOptionsStorage {
   }
 
   public setFilterOptions(filterOptions: FilterOptions) {
-    this.resetPaging();
     this.optionGroupSubject$.next({
       ...this.optionGroupSubject$.value,
       filterOptions,
+      pagingOptions: {
+        pageNumber: 1,
+        pageSize: this.optionGroupSubject$.value.pagingOptions.pageSize
+      }
     });
   }
 
   public setSortingOptions(sortingOptions: SortingOptions[]) {
-    this.resetPaging();
     this.optionGroupSubject$.next({
       ...this.optionGroupSubject$.value,
       sortingOptions,
-    });
-  }
-
-  private resetPaging(): void {
-    const pagingOptions = {
-      pageNumber: 1,
-      pageSize: this.optionGroupSubject$.value.pagingOptions.pageSize,
-    };
-
-    this.optionGroupSubject$.next({
-      ...this.optionGroupSubject$.value,
-      pagingOptions,
+      pagingOptions: {
+        pageNumber: 1,
+        pageSize: this.optionGroupSubject$.value.pagingOptions.pageSize
+      }
     });
   }
 }
