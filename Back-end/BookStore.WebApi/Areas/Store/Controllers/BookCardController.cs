@@ -83,7 +83,18 @@ namespace BookStore.WebApi.Areas.Store.Controllers
 
             return await GetRelatedEntities(relatedEntityQueryBuilder);
         }
-        
+
+        [HttpGet("tag")]
+        public async Task<IEnumerable<RelatedEntityDto>> GetTags([FromQuery][Required] SearchArgs search, [FromQuery] PaggingArgs pagging,
+            [FromServices] DbFormEntityQueryBuilder<Tag> relatedEntityQueryBuilder)
+        {
+            relatedEntityQueryBuilder
+                .AddSearch(search)
+                .AddPagging(pagging);
+
+            return await GetRelatedEntities(relatedEntityQueryBuilder);
+        }
+
         [HttpGet("hint")]
         public Task<SearchHintsDto> GetSearchHints([FromQuery][Required] SearchArgs search, 
             [FromQuery] PaggingArgs pagging)
