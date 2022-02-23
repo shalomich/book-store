@@ -17,9 +17,11 @@ import { RelatedEntity } from '../models/related-entity';
 import { ProductPreviewSetMapper } from '../mappers/product-preview-set.mapper';
 import { ProductPreviewSet } from '../models/product-preview-set';
 import { ProductPreviewSetDto } from '../DTOs/product-preview-set-dto';
-import {OptionGroup} from "../interfaces/option-group";
-import {ProductParamsBuilder} from "./product-params.builder";
-import {SearchOptions} from "../interfaces/search-options";
+import { OptionGroup } from '../interfaces/option-group';
+
+import { SearchOptions } from '../interfaces/search-options';
+
+import { ProductParamsBuilder } from './product-params.builder';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +35,7 @@ export class BookService {
     private readonly bookMapper: BookMapper,
     private readonly productPreviewSetMapper: ProductPreviewSetMapper,
     private readonly relatedEntityMapper: RelatedEntityMapper,
-    private readonly paramsBuilder: ProductParamsBuilder
+    private readonly paramsBuilder: ProductParamsBuilder,
   ) { }
 
   public getById(id: number) {
@@ -46,18 +48,21 @@ export class BookService {
 
   public get(optionGroup: OptionGroup, searchOptions?: SearchOptions): Observable<ProductPreviewSet> {
 
-    const {pagingOptions, filterOptions, sortingOptions} = optionGroup;
+    const { pagingOptions, filterOptions, sortingOptions } = optionGroup;
 
     this.paramsBuilder.addPaging(pagingOptions);
 
-    if (filterOptions)
+    if (filterOptions) {
       this.paramsBuilder.addFiltration(filterOptions);
+    }
 
-    if (sortingOptions)
+    if (sortingOptions) {
       this.paramsBuilder.addSortings(sortingOptions);
+    }
 
-    if (searchOptions)
+    if (searchOptions) {
       this.paramsBuilder.addSearch(searchOptions);
+    }
 
     const params = this.paramsBuilder.build();
 
