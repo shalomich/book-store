@@ -7,6 +7,7 @@ import { ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { SortingOptions } from '../../core/interfaces/sorting-options';
+import { ProductOptionsStorage } from '../../core/services/product-options.storage';
 
 @Component({
   selector: 'sorting',
@@ -24,15 +25,18 @@ export class SortingComponent {
 
   @Input() propertyNamesWithText: Array<[string, string]> = [];
 
-  @Input() setSortingsCallback: (sortingOptions: SortingOptions[]) => void = sortingOptions => {};
+  @Input() setSortingsCallback: (sortingOptions: SortingOptions[]) => void = () => {};
+
+  public constructor() {
+  }
 
   public onSortingChanged(event: MatOptionSelectionChange) {
-    const option = event.source;
+    const selectedOption = event.source;
 
-    if (option.selected) {
-      this.addSorting(option);
+    if (selectedOption.selected) {
+      this.addSorting(selectedOption);
     } else {
-      this.removeSorting(option);
+      this.removeSorting(selectedOption);
     }
 
     this.setSortingsCallback(this.checkedOptions.map(option => option.value as SortingOptions));

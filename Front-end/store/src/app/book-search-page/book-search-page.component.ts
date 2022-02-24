@@ -1,23 +1,19 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 
-import { BehaviorSubject, combineLatest, merge, Observable, Subject } from 'rxjs';
+import {combineLatest, Observable} from 'rxjs';
 
-import { map, switchMap } from 'rxjs/operators';
+import {switchMap} from 'rxjs/operators';
 
-import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import {AutoUnsubscribe} from 'ngx-auto-unsubscribe';
 
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 
-import { BookService } from '../core/services/book.service';
-import { Book } from '../core/models/book';
-import { PaginationOptions } from '../core/interfaces/pagination-options';
-import { ProductOptionsStorage } from '../core/services/product-options.storage';
-import { ProductPreview } from '../core/models/product-preview';
-import { PAGE_NUMBER, PAGE_SIZE, SEARCH_DEPTH, SEARCH_TARGETS } from '../core/utils/values';
-import { RelatedEntity } from '../core/models/related-entity';
-import { ProductPreviewSet } from '../core/models/product-preview-set';
-import { SearchOptions } from '../core/interfaces/search-options';
-import { OptionGroup } from '../core/interfaces/option-group';
+import {BookService} from '../core/services/book.service';
+import {ProductOptionsStorage} from '../core/services/product-options.storage';
+import {PAGE_SIZE, SEARCH_DEPTH, SEARCH_TARGETS} from '../core/utils/values';
+import {ProductPreviewSet} from '../core/models/product-preview-set';
+import {SearchOptions} from '../core/interfaces/search-options';
+import {OptionGroup} from '../core/interfaces/option-group';
 
 @AutoUnsubscribe()
 @Component({
@@ -57,9 +53,7 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
   }
 
   private findBookSet(searchValue: string, target: string, optionGroup: OptionGroup): Observable<ProductPreviewSet> {
-    const searchTargets = SEARCH_TARGETS;
-
-    if (searchValue && searchTargets.includes(target)) {
+    if (searchValue && SEARCH_TARGETS.includes(target)) {
       const searchOptions: SearchOptions = {
         searchDepth: SEARCH_DEPTH,
         value: searchValue,

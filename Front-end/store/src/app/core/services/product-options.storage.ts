@@ -17,17 +17,17 @@ import { OptionGroup } from '../interfaces/option-group';
   providedIn: 'root',
 })
 export class ProductOptionsStorage {
+  public constructor() {
+  }
 
-  private optionGroup: OptionGroup = {
+  private optionGroupSubject$: BehaviorSubject<OptionGroup> = new BehaviorSubject<OptionGroup>({
     pagingOptions: {
       pageNumber: 1,
       pageSize: 1,
     },
     sortingOptions: [],
-    filterOptions: undefined,
-  };
-
-  private optionGroupSubject$: BehaviorSubject<OptionGroup> = new BehaviorSubject<OptionGroup>(this.optionGroup);
+    filterOptions: null,
+  });
 
   public get optionGroup$() {
     return this.optionGroupSubject$.asObservable();
@@ -41,7 +41,6 @@ export class ProductOptionsStorage {
   }
 
   public setFilterOptions(filterOptions: FilterOptions) {
-    this.optionGroup.filterOptions = filterOptions;
     this.resetPaging();
     this.optionGroupSubject$.next({
       ...this.optionGroupSubject$.value,
@@ -50,7 +49,6 @@ export class ProductOptionsStorage {
   }
 
   public setSortingOptions(sortingOptions: SortingOptions[]) {
-    this.optionGroup.sortingOptions = sortingOptions;
     this.resetPaging();
     this.optionGroupSubject$.next({
       ...this.optionGroupSubject$.value,
@@ -59,9 +57,14 @@ export class ProductOptionsStorage {
   }
 
   private resetPaging(): void {
-    this.optionGroup.pagingOptions = {
+    const pagingOptions = {
       pageNumber: 1,
-      pageSize: this.optionGroup.pagingOptions.pageSize,
+      pageSize: this.optionGroupSubject$.value.pagingOptions.pageSize,
     };
+
+    this.optionGroupSubject$.next({
+      ...this.optionGroupSubject$.value,
+      pagingOptions,
+    });
   }
 }

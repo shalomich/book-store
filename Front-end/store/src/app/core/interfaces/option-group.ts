@@ -6,5 +6,5 @@ import {PaginationOptions} from "./pagination-options";
 export interface OptionGroup {
   pagingOptions: PaginationOptions,
   sortingOptions?: SortingOptions[],
-  filterOptions?: FilterOptions
+  filterOptions?: FilterOptions | null,
 }

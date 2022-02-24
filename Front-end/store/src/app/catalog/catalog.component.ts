@@ -10,6 +10,8 @@ import { ProductOptionsStorage } from '../core/services/product-options.storage'
 import { ProductPreviewSet } from '../core/models/product-preview-set';
 import { PaginationOptions } from '../core/interfaces/pagination-options';
 import { PAGE_SIZE } from '../core/utils/values';
+import { SortingOptions } from '../core/interfaces/sorting-options';
+import { FilterOptions } from '../core/interfaces/filter-options';
 
 
 @Component({
@@ -24,24 +26,31 @@ export class CatalogComponent implements OnInit {
 
   @Input() bookSet$: Observable<ProductPreviewSet> = new Observable<ProductPreviewSet>();
 
-  @Input() optionsStorage!: ProductOptionsStorage;
+  @Input() optionsStorage: ProductOptionsStorage = new ProductOptionsStorage();
 
   @Input() disableFilters: Array<string> = [];
 
   public books: ProductPreview[] = [];
 
-  constructor() {
+  public constructor() {
   }
 
   public config: PaginationInstance = {
     id: 'paginationPanel',
     currentPage: 1,
     itemsPerPage: PAGE_SIZE,
-    totalItems: 0
+    totalItems: 0,
+  };
+
+  public onSortChanged = (sortingOptions: SortingOptions[]): void => {
+    this.optionsStorage.setSortingOptions(sortingOptions);
+  };
+
+  public onFilterChanged = (filterOptions: FilterOptions): void => {
+    this.optionsStorage.setFilterOptions(filterOptions);
   };
 
   public onPageChanged(number: number): void {
-
     if (number === this.config.currentPage) {
       return;
     }
@@ -59,7 +68,7 @@ export class CatalogComponent implements OnInit {
       this.books = data.previews;
       this.config = {
         ...this.config,
-        totalItems: data.totalCount
+        totalItems: data.totalCount,
       };
     });
   }
