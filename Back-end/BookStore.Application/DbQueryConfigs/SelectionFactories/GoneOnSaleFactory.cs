@@ -9,9 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using BookStore.Application.DbQueryConfigs.Orders;
 
-namespace BookStore.Application.DbQueryConfigs.SelectionFactories
+namespace BookStore.Application.DbQueryConfigs.CategoryFactories
 {
-    internal class GoneOnSaleFactory : ISelectionFactory
+    internal class GoneOnSaleFactory : ICategoryFactory
     {
         public IOrder<Book> CreateOrder()
         {
