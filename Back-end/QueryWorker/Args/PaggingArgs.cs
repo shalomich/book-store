@@ -12,10 +12,12 @@ namespace QueryWorker.Args
     {
 
         [Range(1, int.MaxValue)]
-        public int PageSize { init; get; } = int.MaxValue;
+        [Required]
+        public int PageSize { init; get; }
 
         [Range(1, int.MaxValue)]
-        public int PageNumber { init; get; } = 1;
+        [Required]
+        public int PageNumber { init; get; }
         
     }
 }

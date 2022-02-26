@@ -16,6 +16,7 @@ namespace QueryWorker.Extensions
         {
             services.AddSingleton(new ConfigurationFinder(currentAssembly));
             services.AddScoped(typeof(DataTransformerBuildFacade<>));
+            services.AddScoped(typeof(SelectionConfigurator<>));
 
             services.AddScoped(typeof(PaggingMetadataCollector<>));
 
