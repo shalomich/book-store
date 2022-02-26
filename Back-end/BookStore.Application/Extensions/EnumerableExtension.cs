@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QueryWorker.DataTransformers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,10 +12,5 @@ namespace BookStore.Application.Extensions
         {
             return source ?? Enumerable.Empty<T>();
         }
-
-        public static IQueryable<T> Shuffle<T>(this IQueryable<T> source)
-        {
-            return source.OrderBy(item => Guid.NewGuid());
-        } 
     }
 }

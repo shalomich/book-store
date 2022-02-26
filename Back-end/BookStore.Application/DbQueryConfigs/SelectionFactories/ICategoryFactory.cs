@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using BookStore.Application.DbQueryConfigs.Orders;
 
-namespace BookStore.Application.DbQueryConfigs.SelectionFactories
+namespace BookStore.Application.DbQueryConfigs.CategoryFactories
 {
-    internal interface ISelectionFactory
+    internal interface ICategoryFactory
     {
         ISpecification<Book> CreateSpecification();
         IOrder<Book> CreateOrder();

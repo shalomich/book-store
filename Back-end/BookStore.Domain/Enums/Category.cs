@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Domain.Enums
 {
-    public enum Selection
+    public enum Category
     {
         Novelty,
         GoneOnSale,

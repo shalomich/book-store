@@ -15,32 +15,45 @@ using BookStore.Domain.Entities;
 using BookStore.Application.Dto;
 using System.ComponentModel.DataAnnotations;
 using BookStore.Application.Queries;
+using BookStore.WebApi.Attributes;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
 {
     [Route("[area]/product/book")]
-    public class BookCardController : ProductCardController<Book>
+    public class BookCardController : StoreController
     {
-        public BookCardController(IMediator mediator, IMapper mapper, DbFormEntityQueryBuilder<Book> productQueryBuilder) : base(mediator, mapper, productQueryBuilder)
+        private IMediator Mediator { get; }
+        private IMapper Mapper { get; }
+        public BookCardController(IMediator mediator, IMapper mapper)
         {
+            Mediator = mediator;
+            Mapper = mapper;
         }
 
-        protected override void IncludeRelatedEntities()
+        [HttpGet]
+        [TypeFilter(typeof(OptionalAuthorizeFilter))]
+        public async Task<ActionResult<PreviewSetDto>> Search([FromQuery] SearchParameters searchParameters)
         {
-            ProductQueryBuilder.AddIncludeRequirements(new IIncludeRequirement<Book>[]
-            {
-                new BookGenresIncludeRequirement(),
-                new BookAuthorIncludeRequirement(),
-                new BookPublisherIncludeRequirement(),
-                new BookDefinitionIncludeRequirement(),
-                new BookTagsIncludeRequirement()
-            }); 
+            return await Mediator.Send(new SearchQuery(searchParameters));
+        }
+
+        [HttpGet("{id}")]
+        [TypeFilter(typeof(OptionalAuthorizeFilter))]
+        public async Task<ActionResult<CardDto>> GetCardById(int id)
+        {
+            return await Mediator.Send(new GetCardByIdQuery(id));
+        }
+
+        protected async Task<IEnumerable<RelatedEntityDto>> GetRelatedEntities<TRelatedEntity>(IDbQueryBuilder<TRelatedEntity> relatedEntityqueryBuilder) where TRelatedEntity : RelatedEntity
+        {
+            var relatedEntities = await Mediator.Send(new GetQuery(relatedEntityqueryBuilder));
+
+            return relatedEntities.Select(relatedEntity => Mapper.Map<RelatedEntityDto>(relatedEntity));
         }
 
         [HttpGet("genre")]
         public async Task<IEnumerable<RelatedEntityDto>> GetGenres([FromServices] DbFormEntityQueryBuilder<Genre> relatedEntityQueryBuilder)
         {
-  
             return await GetRelatedEntities(relatedEntityQueryBuilder);
         }
 

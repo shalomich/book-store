@@ -10,9 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using BookStore.Application.DbQueryConfigs.Orders;
 
-namespace BookStore.Application.DbQueryConfigs.SelectionFactories
+namespace BookStore.Application.DbQueryConfigs.CategoryFactories
 {
-    internal class BackOnSaleFactory : ISelectionFactory
+    internal class BackOnSaleFactory : ICategoryFactory
     {
         public IOrder<Book> CreateOrder()
         {
