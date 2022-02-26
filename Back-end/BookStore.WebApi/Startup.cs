@@ -55,6 +55,7 @@ namespace BookStore.WebApi
             services.AddScoped<JwtParser>();
             services.AddScoped<TokensFactory>();
             services.AddScoped<RefreshTokenRepository>();
+            services.AddScoped<LoggedUserAccessor>();
 
             services.AddDataTransformerBuildFacade(applicationAssembly);
             services.AddScoped(typeof(DbEntityQueryBuilder<>));
