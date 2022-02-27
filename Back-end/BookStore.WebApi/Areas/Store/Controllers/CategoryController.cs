@@ -6,6 +6,7 @@ using BookStore.Domain.Enums;
 using BookStore.Application.Dto;
 using BookStore.WebApi.Attributes;
 using BookStore.Application.Services.CatalogSelections;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
 {
@@ -21,12 +22,22 @@ namespace BookStore.WebApi.Areas.Store.Controllers
 
         [HttpGet("{category}")]
         [TypeFilter(typeof(OptionalAuthorizeFilter))]
-        public async Task<PreviewSetDto> FindBooksByCategory(Category category, 
+        public async Task<PreviewSetDto> FindBooksByCategory(Category category,
             [FromQuery] OptionParameters optionParameters, [FromServices] CategorySelection categorySelection)
         {
             categorySelection.ChoosenCategory = category;
 
             return await Mediator.Send(new GetCatalogSelectionQuery(categorySelection, optionParameters));
+        }
+
+        [HttpGet("specialForYou")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<PreviewSetDto> FindSpecialForYou([FromQuery] int tagCount,
+            [FromQuery] OptionParameters optionParameters, [FromServices] SpecialForYouCategorySelection specialForYouSelection)
+        {
+            specialForYouSelection.TagCount = tagCount;
+
+            return await Mediator.Send(new GetCatalogSelectionQuery(specialForYouSelection, optionParameters));
         }
     }
 }

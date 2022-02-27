@@ -60,6 +60,7 @@ namespace BookStore.WebApi
 
             services.AddScoped<SearchSelection>();
             services.AddScoped<CategorySelection>();
+            services.AddScoped<SpecialForYouCategorySelection>();
 
             services.AddDataTransformerBuildFacade(applicationAssembly);
             services.AddScoped(typeof(DbEntityQueryBuilder<>));
