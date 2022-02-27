@@ -58,12 +58,6 @@ namespace BookStore.Application.Queries
             categoryBooks = SelectionConfigurator.AddPagging(categoryBooks, pagging);
             categoryBooks = SelectionConfigurator.AddSorting(categoryBooks, sortings);
 
-            categoryBooks
-              .Include(book => book.Author)
-              .Include(book => book.Publisher)
-              .Include(book => book.Album)
-                .ThenInclude(album => album.Images);
-
             var previews = await categoryBooks
                 .ProjectTo<PreviewDto>(Mapper.ConfigurationProvider)
                 .ToArrayAsync();

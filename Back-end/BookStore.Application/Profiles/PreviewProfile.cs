@@ -15,7 +15,8 @@ namespace BookStore.Application.Profiles
         {
             CreateMap<Book, PreviewDto>()
               .ForMember(card => card.TitleImage, mapper =>
-                mapper.MapFrom(product => product.Album.TitleImage))
+                mapper.MapFrom(product => product.Album.Images
+                  .Single(image => image.Name == product.Album.TitleImageName)))
               .ForMember(card => card.PublisherName, mapper =>
                 mapper.MapFrom(book => book.Publisher.Name))
               .ForMember(card => card.AuthorName, mapper =>
