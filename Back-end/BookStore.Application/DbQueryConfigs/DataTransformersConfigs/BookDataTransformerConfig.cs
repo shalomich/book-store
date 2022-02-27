@@ -21,7 +21,7 @@ namespace BookStore.Application.DbQueryConfigs.DataTransformersConfigs
             CreatePlentyFilter(nameof(Book.CoverArt), book => book.CoverArtId.Value);
             CreatePlentyFilter("genre", book => book.GenresBooks
                 .Select(genre => genre.GenreId));
-            CreatePlentyFilter("tag", book => book.BookTags
+            CreatePlentyFilter("tag", book => book.ProductTags
                 .Select(bookTag => bookTag.TagId));
 
             CreateSearch("authorName", entity => entity.Author.Name);

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BookStore.WebApi.Areas.Dashboard.ViewModels.Forms;
+using BookStore.Domain.Entities.Products;
 
 namespace BookStore.WebApi.Areas.Dashboard.Profiles
 {
@@ -18,15 +19,15 @@ namespace BookStore.WebApi.Areas.Dashboard.Profiles
               .ForMember(book => book.GenresBooks,
                 mapper => mapper.MapFrom(form => form.GenreIds
                   .Select(id => new GenreBook { GenreId = id })))
-              .ForMember(book => book.BookTags,
+              .ForMember(book => book.ProductTags,
                 mapper => mapper.MapFrom(form => form.TagIds
-                  .Select(id => new BookTag { TagId = id })))
+                  .Select(id => new ProductTag { TagId = id })))
             .ReverseMap()
               .ForMember(form => form.GenreIds,
                 mapper => mapper.MapFrom(book => book.GenresBooks
                   .Select(genre => genre.GenreId)))
               .ForMember(form => form.TagIds,
-                mapper => mapper.MapFrom(book => book.BookTags
+                mapper => mapper.MapFrom(book => book.ProductTags
                   .Select(bookTag => bookTag.TagId)));
               
 

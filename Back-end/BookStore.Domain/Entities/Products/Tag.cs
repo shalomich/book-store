@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookStore.Domain.Entities.Books
+namespace BookStore.Domain.Entities.Products
 {
     public class Tag : RelatedEntity
     {
-        public ISet<BookTag> BookTag { set; get; }
+        public ISet<ProductTag> ProductTags { set; get; }
     }
 }

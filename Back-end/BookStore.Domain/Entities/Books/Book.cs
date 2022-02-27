@@ -69,7 +69,7 @@ namespace BookStore.Domain.Entities.Books
             ?.Select(genreBook => genreBook.Genre.Name)
             .ToHashSet();
 
-        public ISet<string> Tags => BookTags
+        public ISet<string> Tags => ProductTags
             ?.Select(bookTag => bookTag.Tag.Name)
             .ToHashSet();
 
@@ -96,18 +96,18 @@ namespace BookStore.Domain.Entities.Books
             }
         }
 
-        public int? PageQuantity { 
-            set 
+        public int? PageQuantity
+        {
+            set
             {
                 if (value <= 0)
                     throw new ArgumentOutOfRangeException();
                 _pageQuantity = value;
             }
-            get 
+            get
             {
                 return _pageQuantity;
-            } 
+            }
         }
-        public ISet<BookTag> BookTags { set; get; }
     }
 }
