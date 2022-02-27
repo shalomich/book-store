@@ -17,6 +17,7 @@ using System.ComponentModel.DataAnnotations;
 using BookStore.Application.Queries;
 using BookStore.WebApi.Attributes;
 using BookStore.Application.Services.CatalogSelections;
+using BookStore.Domain.Entities.Products;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
 {
