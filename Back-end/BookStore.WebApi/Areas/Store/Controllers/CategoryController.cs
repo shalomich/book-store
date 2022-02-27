@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BookStore.Domain.Enums;
 using BookStore.Application.Dto;
 using BookStore.WebApi.Attributes;
+using BookStore.Application.Services.CatalogSelections;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
 {
@@ -21,9 +22,11 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         [HttpGet("{category}")]
         [TypeFilter(typeof(OptionalAuthorizeFilter))]
         public async Task<PreviewSetDto> FindBooksByCategory(Category category, 
-            [FromQuery] OptionParameters optionParameters)
+            [FromQuery] OptionParameters optionParameters, [FromServices] CategorySelection categorySelection)
         {
-            return await Mediator.Send(new FindBooksByCategoryQuery(category, optionParameters)); 
+            categorySelection.ChoosenCategory = category;
+
+            return await Mediator.Send(new GetCatalogSelectionQuery(categorySelection, optionParameters));
         }
     }
 }

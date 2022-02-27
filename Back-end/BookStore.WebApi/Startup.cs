@@ -25,6 +25,7 @@ using BookStore.WebApi.Attributes.GenericController;
 using BookStore.WebApi.Middlewares;
 using BookStore.Application.Providers;
 using Microsoft.AspNetCore.Identity;
+using BookStore.Application.Services.CatalogSelections;
 
 namespace BookStore.WebApi
 {
@@ -56,6 +57,9 @@ namespace BookStore.WebApi
             services.AddScoped<TokensFactory>();
             services.AddScoped<RefreshTokenRepository>();
             services.AddScoped<LoggedUserAccessor>();
+
+            services.AddScoped<SearchSelection>();
+            services.AddScoped<CategorySelection>();
 
             services.AddDataTransformerBuildFacade(applicationAssembly);
             services.AddScoped(typeof(DbEntityQueryBuilder<>));
