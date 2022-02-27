@@ -16,6 +16,7 @@ using BookStore.Application.Dto;
 using System.ComponentModel.DataAnnotations;
 using BookStore.Application.Queries;
 using BookStore.WebApi.Attributes;
+using BookStore.Application.Services.CatalogSelections;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
 {
@@ -32,9 +33,12 @@ namespace BookStore.WebApi.Areas.Store.Controllers
 
         [HttpGet]
         [TypeFilter(typeof(OptionalAuthorizeFilter))]
-        public async Task<ActionResult<PreviewSetDto>> Search([FromQuery] SearchParameters searchParameters)
+        public async Task<ActionResult<PreviewSetDto>> Search([FromQuery] SearchParameters searchParameters,
+            [FromServices] SearchSelection searchSelection)
         {
-            return await Mediator.Send(new SearchQuery(searchParameters));
+            searchSelection.SearchArgs = searchParameters.Search;
+
+            return await Mediator.Send(new GetCatalogSelectionQuery(searchSelection, searchParameters));
         }
 
         [HttpGet("{id}")]
