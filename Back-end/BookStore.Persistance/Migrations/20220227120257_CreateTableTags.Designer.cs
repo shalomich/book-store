@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220221165026_CreateTableTag")]
-    partial class CreateTableTag
+    [Migration("20220227120257_CreateTableTags")]
+    partial class CreateTableTags
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -133,29 +133,6 @@ namespace App.Migrations
                         .IsUnique();
 
                     b.ToTable("AuthorSelectionOrder");
-                });
-
-            modelBuilder.Entity("BookStore.Domain.Entities.Books.BookTag", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TagId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("BookTag");
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.BookType", b =>
@@ -342,22 +319,6 @@ namespace App.Migrations
                     b.ToTable("Publishers");
                 });
 
-            modelBuilder.Entity("BookStore.Domain.Entities.Books.Tag", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Tags");
-                });
-
             modelBuilder.Entity("BookStore.Domain.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -387,7 +348,7 @@ namespace App.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.OrderProduct", b =>
@@ -535,6 +496,45 @@ namespace App.Migrations
                         .IsUnique();
 
                     b.ToTable("ProductCloseout");
+                });
+
+            modelBuilder.Entity("BookStore.Domain.Entities.Products.ProductTag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("ProductTag");
+                });
+
+            modelBuilder.Entity("BookStore.Domain.Entities.Products.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.User", b =>
@@ -823,25 +823,6 @@ namespace App.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("BookStore.Domain.Entities.Books.BookTag", b =>
-                {
-                    b.HasOne("BookStore.Domain.Entities.Books.Book", "Book")
-                        .WithMany("BookTag")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BookStore.Domain.Entities.Books.Tag", "Tag")
-                        .WithMany("BookTag")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("Tag");
-                });
-
             modelBuilder.Entity("BookStore.Domain.Entities.Books.GenreBook", b =>
                 {
                     b.HasOne("BookStore.Domain.Entities.Books.Book", "Book")
@@ -926,6 +907,25 @@ namespace App.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("BookStore.Domain.Entities.Products.ProductTag", b =>
+                {
+                    b.HasOne("BookStore.Domain.Entities.Products.Product", "Product")
+                        .WithMany("ProductTags")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookStore.Domain.Entities.Products.Tag", "Tag")
+                        .WithMany("ProductTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -1032,11 +1032,6 @@ namespace App.Migrations
                     b.Navigation("Books");
                 });
 
-            modelBuilder.Entity("BookStore.Domain.Entities.Books.Tag", b =>
-                {
-                    b.Navigation("BookTag");
-                });
-
             modelBuilder.Entity("BookStore.Domain.Entities.Order", b =>
                 {
                     b.Navigation("Products");
@@ -1056,6 +1051,13 @@ namespace App.Migrations
                     b.Navigation("OrderProducts");
 
                     b.Navigation("ProductCloseout");
+
+                    b.Navigation("ProductTags");
+                });
+
+            modelBuilder.Entity("BookStore.Domain.Entities.Products.Tag", b =>
+                {
+                    b.Navigation("ProductTags");
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.User", b =>
@@ -1067,8 +1069,6 @@ namespace App.Migrations
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.Book", b =>
                 {
-                    b.Navigation("BookTag");
-
                     b.Navigation("GenresBooks");
                 });
 #pragma warning restore 612, 618

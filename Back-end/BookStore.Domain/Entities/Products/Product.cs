@@ -1,4 +1,5 @@
-﻿using BookStore.Domain.Entities.Products;
+﻿using BookStore.Domain.Entities.Books;
+using BookStore.Domain.Entities.Products;
 using System;
 using System.Collections.Generic;
 
@@ -68,8 +69,7 @@ namespace BookStore.Domain.Entities.Products
 
         public ISet<BasketProduct> BasketProducts { set; get; }
         public ISet<Order> OrderProducts { set; get; }
-
         public ProductCloseout ProductCloseout { set; get; }
-       
+        public ISet<ProductTag> ProductTags { set; get; }
     }
 }

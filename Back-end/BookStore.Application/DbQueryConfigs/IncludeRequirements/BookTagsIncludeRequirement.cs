@@ -13,7 +13,7 @@ namespace BookStore.Application.DbQueryConfigs.IncludeRequirements
         public void Include(ref IQueryable<Book> entities)
         {
             entities = entities
-                .Include(book => book.BookTags)
+                .Include(book => book.ProductTags)
                 .ThenInclude(bookTag => bookTag.Tag);
         }
     }
