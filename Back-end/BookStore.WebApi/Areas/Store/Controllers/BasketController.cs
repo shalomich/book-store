@@ -38,17 +38,9 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BasketProductView>>> GetBasketProducts()
+        public async Task<IEnumerable<BasketProductDto>> GetBasketProducts()
         {
-            BasketProductQueryBuilder
-                .AddSpecification(new BasketProductByUserIdSpecification(User.GetUserId()))
-                .AddIncludeRequirements(new BasketProductIncludeRequirement());
-
-            var basketProducts = await Mediator.Send(new GetQuery(BasketProductQueryBuilder));
-
-            return basketProducts
-                .Select(basketProduct => Mapper.Map<BasketProductView>(basketProduct))
-                .ToArray();
+            return await Mediator.Send(new GetBasketProductsQuery());
         }
 
         [HttpPost]

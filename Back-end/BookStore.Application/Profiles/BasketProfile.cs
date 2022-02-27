@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace BookStore.Application.Profiles
 {
-    internal class OrderProfile : Profile
+    internal class BasketProfile : Profile
     {
-        public OrderProfile()
+        public BasketProfile()
         {
             CreateMap<BasketProduct, BasketProductDto>()
             .ForMember(dto => dto.Name, mapper
@@ -21,8 +21,8 @@ namespace BookStore.Application.Profiles
             .ForMember(dto => dto.Quantity, mapper
                 => mapper.MapFrom(basketProduct => basketProduct.Quantity))
             .ForMember(dto => dto.TitleImage, mapper
-                => mapper.MapFrom(basketProduct => basketProduct.Product.Album.TitleImage))
-            .IncludeAllDerived();
+                => mapper.MapFrom(basketProduct => basketProduct.Product.Album.Images
+                  .Single(image => image.Name == basketProduct.Product.Album.TitleImageName)));
 
             CreateMap<BasketProduct, OrderProduct>()
                 .ForMember(orderProduct => orderProduct.Name, mapper =>
@@ -31,8 +31,6 @@ namespace BookStore.Application.Profiles
                     mapper.MapFrom(basketProduct => basketProduct.Product.Cost))
                 .ForMember(orderProduct => orderProduct.Id, mapper =>
                     mapper.Ignore());
-
-            ;
         }
     }
 }
