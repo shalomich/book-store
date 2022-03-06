@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BookStore.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookStore.WebApi.Areas.Store.ViewModels.Basket
 {
@@ -17,5 +18,14 @@ namespace BookStore.WebApi.Areas.Store.ViewModels.Basket
         [Required]
         [Phone]
         public string PhoneNumber { get; set; }
+
+        [Required]
+        public string Address { get; set; }
+
+        [Required]
+        public OrderReceiptMethod? OrderReceiptMethod { get; set; }
+
+        [Required]
+        public PaymentMethod? PaymentMethod { get; set; }
     }
 }
