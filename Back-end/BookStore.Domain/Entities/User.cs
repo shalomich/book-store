@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using BookStore.Domain.Entities.Products;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace BookStore.Domain.Entities
         public string Address { get; set; }
         public ISet<BasketProduct> BasketProducts { get; set; }
         public IEnumerable<Order> Orders { get; set; }
+        public ISet<Mark> Marks { get; set; }
     }
 }
