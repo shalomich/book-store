@@ -31,6 +31,12 @@ namespace BookStore.WebApi.Areas.Store.Controllers
             Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
+        [HttpGet("info")]
+        public async Task<OrderUserInfo> GetOrderUserInfo()
+        {
+            return await Mediator.Send(new GetOrderUserInfoQuery());
+        }
+
         [HttpPost]
         public async Task PlaceOrder(OrderForm orderForm, [FromServices] DbEntityQueryBuilder<BasketProduct> basketProductQueryBuilder)
         {

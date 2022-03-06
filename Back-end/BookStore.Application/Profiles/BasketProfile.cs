@@ -31,6 +31,8 @@ namespace BookStore.Application.Profiles
                     mapper.MapFrom(basketProduct => basketProduct.Product.Cost))
                 .ForMember(orderProduct => orderProduct.Id, mapper =>
                     mapper.Ignore());
+
+            CreateMap<User, OrderUserInfo>();
         }
     }
 }
