@@ -21,6 +21,7 @@ namespace BookStore.Persistance
         public DbSet<Tag> Tags { set; get; }
         public DbSet<BasketProduct> BasketProducts { set; get; }
         public DbSet<Order> Orders { set; get; }
+        public DbSet<Mark> Marks { set; get; }
 
 
         public ApplicationContext(DbContextOptions options) : base(options)
@@ -35,6 +36,7 @@ namespace BookStore.Persistance
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
 
             modelBuilder.Entity<Product>().ToTable("Products");
+            modelBuilder.Entity<Mark>().ToTable("Marks");
         }
     }
 }
