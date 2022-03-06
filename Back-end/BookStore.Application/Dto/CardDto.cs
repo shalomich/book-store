@@ -15,6 +15,7 @@ namespace BookStore.Application.Dto
         public int Quantity { init; get; }
         public string Description { init; get; }
         public bool? IsInBasket { set; get; }
+        public bool? IsMarked { set; get; }
         public ISet<ImageDto> NotTitleImages { init; get; }
         public string Isbn { init; get; }
         public int ReleaseYear { init; get; }

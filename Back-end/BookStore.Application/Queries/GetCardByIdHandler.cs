@@ -4,6 +4,7 @@ using BookStore.Application.Dto;
 using BookStore.Application.Exceptions;
 using BookStore.Application.Services;
 using BookStore.Domain.Entities.Books;
+using BookStore.Domain.Entities.Products;
 using BookStore.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -75,9 +76,13 @@ namespace BookStore.Application.Queries
             {
                 int currentUserId = LoggedUserAccessor.GetCurrentUserId();
 
-                card.IsInBasket = Context.BasketProducts
-                  .Any(basketProduct => basketProduct.UserId == currentUserId
+                card.IsInBasket = await Context.BasketProducts
+                  .AnyAsync(basketProduct => basketProduct.UserId == currentUserId
                     && basketProduct.ProductId == bookById.Id);
+
+                card.IsMarked = await Context.Set<Mark>()
+                   .AnyAsync(mark => mark.UserId == currentUserId
+                    && mark.ProductId == bookById.Id);
             }
 
             return card;
