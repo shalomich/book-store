@@ -4,6 +4,7 @@ using BookStore.Application.Dto;
 using BookStore.Application.Queries;
 using BookStore.Application.Services.DbQueryBuilders;
 using BookStore.Domain.Entities;
+using BookStore.Domain.Entities.Products;
 using BookStore.WebApi.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -49,6 +50,22 @@ namespace BookStore.WebApi.Areas.Store.Controllers
             user = Mapper.Map(userDto, user);
 
             await Mediator.Send(new UpdateCommand(User.GetUserId(), user));
+
+            return NoContent();
+        }
+
+        [HttpPost("mark")]
+        public async Task<NoContentResult> CreateMark([FromBody] int bookId)
+        {
+            await Mediator.Send(new CreateMarkCommand(bookId));
+
+            return NoContent();
+        }
+
+        [HttpDelete("mark")]
+        public async Task<NoContentResult> RemoveMark([FromBody] int bookId)
+        {
+            await Mediator.Send(new RemoveMarkCommand(bookId));
 
             return NoContent();
         }
