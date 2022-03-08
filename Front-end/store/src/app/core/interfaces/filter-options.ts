@@ -1,4 +1,3 @@
-
 export interface FilterOptions {
-  readonly values: object
+  readonly values: object;
 }

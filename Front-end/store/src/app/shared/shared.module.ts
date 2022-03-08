@@ -28,7 +28,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { CoreModule } from '../core/core.module';
 
-import { ProductParamsBuilderService } from '../core/services/product-params-builder.service';
+import { ProductOptionsStorage } from '../core/services/product-options.storage';
 
 import { ProductImagesComponent } from './product-card/product-images/product-images.component';
 import { AddToCartComponent } from './product-card/add-to-cart/add-to-cart.component';

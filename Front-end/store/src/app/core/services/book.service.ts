@@ -17,6 +17,11 @@ import { RelatedEntity } from '../models/related-entity';
 import { ProductPreviewSetMapper } from '../mappers/product-preview-set.mapper';
 import { ProductPreviewSet } from '../models/product-preview-set';
 import { ProductPreviewSetDto } from '../DTOs/product-preview-set-dto';
+import { OptionGroup } from '../interfaces/option-group';
+
+import { SearchOptions } from '../interfaces/search-options';
+
+import { ProductParamsBuilder } from './product-params.builder';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +35,7 @@ export class BookService {
     private readonly bookMapper: BookMapper,
     private readonly productPreviewSetMapper: ProductPreviewSetMapper,
     private readonly relatedEntityMapper: RelatedEntityMapper,
+    private readonly paramsBuilder: ProductParamsBuilder,
   ) { }
 
   public getById(id: number) {
@@ -40,7 +46,26 @@ export class BookService {
     );
   }
 
-  public get(params?: HttpParams): Observable<ProductPreviewSet> {
+  public get(optionGroup: OptionGroup, searchOptions?: SearchOptions): Observable<ProductPreviewSet> {
+
+    const { pagingOptions, filterOptions, sortingOptions } = optionGroup;
+
+    this.paramsBuilder.addPaging(pagingOptions);
+
+    if (filterOptions) {
+      this.paramsBuilder.addFiltration(filterOptions);
+    }
+
+    if (sortingOptions) {
+      this.paramsBuilder.addSortings(sortingOptions);
+    }
+
+    if (searchOptions) {
+      this.paramsBuilder.addSearch(searchOptions);
+    }
+
+    const params = this.paramsBuilder.build();
+
     return this.http.get<ProductPreviewSetDto>(`${PRODUCT_URL}${this.type}`, { params }).pipe(
       map(setDto => this.productPreviewSetMapper.fromDto(setDto)),
     );

@@ -7,6 +7,7 @@ import { ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { SortingOptions } from '../../core/interfaces/sorting-options';
+import { ProductOptionsStorage } from '../../core/services/product-options.storage';
 
 @Component({
   selector: 'sorting',
@@ -24,18 +25,21 @@ export class SortingComponent {
 
   @Input() propertyNamesWithText: Array<[string, string]> = [];
 
-  @Input() sortingOptions$: BehaviorSubject<Array<SortingOptions>> = new BehaviorSubject<Array<SortingOptions>>([]);
+  @Input() setSortingsCallback: (sortingOptions: SortingOptions[]) => void = () => {};
+
+  public constructor() {
+  }
 
   public onSortingChanged(event: MatOptionSelectionChange) {
-    const option = event.source;
+    const selectedOption = event.source;
 
-    if (option.selected) {
-      this.addSorting(option);
+    if (selectedOption.selected) {
+      this.addSorting(selectedOption);
     } else {
-      this.removeSorting(option);
+      this.removeSorting(selectedOption);
     }
 
-    this.sortingOptions$.next(this.checkedOptions.map(option => option.value as SortingOptions));
+    this.setSortingsCallback(this.checkedOptions.map(option => option.value as SortingOptions));
   }
 
   private addSorting(option: _MatOptionBase) {
@@ -69,7 +73,7 @@ export class SortingComponent {
 
     sortingOptions.isAscending = !sortingOptions.isAscending;
 
-    this.sortingOptions$.next(this.checkedOptions.map(option => option.value as SortingOptions));
+    this.setSortingsCallback(this.checkedOptions.map(option => option.value as SortingOptions));
   }
 
   public isSortingChecked(propertyName: string): boolean {
@@ -84,7 +88,7 @@ export class SortingComponent {
 
   public resetSortings() {
     this.checkedOptions = [];
-    this.sortingOptions$.next([]);
+    this.setSortingsCallback([]);
     this.sortingSelectControl.reset();
   }
 }

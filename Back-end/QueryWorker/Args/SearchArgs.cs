@@ -10,10 +10,8 @@ namespace QueryWorker.Args
 {
     public record SearchArgs
     {
-        [Required]
         public string PropertyName { init; get; }
 
-        [Required]
         public string ComparedValue { init; get; }
 
         [Range(Search<object>.MinSearchDepth, Search<object>.MaxSearchDepth)]

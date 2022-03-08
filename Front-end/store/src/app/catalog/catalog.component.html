@@ -1,5 +1,5 @@
 <div class="page-block">
-  <filter-group [filterOptions]="paramsBuilder.filterOptions$" [disabledFilters]="disableFilters">
+  <filter-group [setFiltersCallback]="onFilterChanged" [disabledFilters]="disableFilters">
     <app-range-filter label="Цена" class="filter-elem" propertyName="cost"></app-range-filter>
     <app-range-filter label="Год издания" class="filter-elem" propertyName="releaseYear"></app-range-filter>
     <app-plenty-filter label="Жанры" class="filter-elem" propertyName="genre"></app-plenty-filter>
@@ -9,11 +9,9 @@
     <app-status-filter label="В наличии" class="filter-elem" propertyName="quantity"></app-status-filter>
   </filter-group>
   <div class="list-block">
-    <sorting [propertyNamesWithText]="propertyNamesWithText" [sortingOptions$]="paramsBuilder.sortingOptions$"></sorting>
+    <sorting [propertyNamesWithText]="propertyNamesWithText" [setSortingsCallback]="onSortChanged"></sorting>
     <div *ngIf="books.length !== 0; else emptyResult" class="books-list">
-      <app-product-list-item *ngFor="let book of books | paginate: config"
-                             [item]="book">
-      </app-product-list-item>
+      <app-product-list-item *ngFor="let book of books | paginate: config" [item]="book"></app-product-list-item>
     </div>
   </div>
 </div>

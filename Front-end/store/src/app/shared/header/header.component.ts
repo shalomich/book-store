@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.authorizationDataProvider.token.asObservable().subscribe(data => console.log(data));
+    this.authorizationDataProvider.token.asObservable().subscribe();
   }
 
   public openLoginDialog(): void {

@@ -24,10 +24,18 @@ import { SelectionComponent } from './selection/selection.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { SelectionPageComponent } from './selection-page/selection-page.component';
 import { CatalogComponent } from './catalog/catalog.component';
+import {ProductOptionsStorage} from './core/services/product-options.storage';
 
 
 @NgModule({
-  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent, MainPageComponent, SelectionPageComponent, CatalogComponent],
+  declarations: [
+    AppComponent,
+    BookSearchPageComponent,
+    SelectionComponent,
+    MainPageComponent,
+    SelectionPageComponent,
+    CatalogComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -41,7 +49,7 @@ import { CatalogComponent } from './catalog/catalog.component';
     MatExpansionModule,
     MatIconModule,
   ],
-  providers: [],
+  providers: [ProductOptionsStorage],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

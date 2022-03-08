@@ -3,11 +3,13 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import {SearchService} from "../../core/services/search.service";
-import {SEARCH_DEPTH} from "../../core/utils/values";
+import {HINT_SIZE, SEARCH_DEPTH, SEARCH_TARGET_GROUP} from "../../core/utils/values";
 import {Observable} from "rxjs";
-import {ProductParamsBuilderService} from "../../core/services/product-params-builder.service";
+import {ProductOptionsStorage} from "../../core/services/product-options.storage";
 import {SearchHintsDto} from "../../core/DTOs/search-hints-dto";
 import {switchMap} from "rxjs/operators";
+import {SearchOptions} from "../../core/interfaces/search-options";
+import {PaginationOptions} from "../../core/interfaces/pagination-options";
 
 
 @Component({
@@ -17,6 +19,19 @@ import {switchMap} from "rxjs/operators";
   encapsulation: ViewEncapsulation.None,
 })
 export class SearchFieldComponent implements OnInit {
+
+  private readonly searchOptions: SearchOptions = {
+    propertyName: 'name',
+    value: '',
+    searchDepth: SEARCH_DEPTH,
+  }
+
+  public readonly searchTargetGroup = SEARCH_TARGET_GROUP;
+
+  private readonly paginationOptions: PaginationOptions = {
+    pageNumber: 1,
+    pageSize: HINT_SIZE
+  }
 
   private readonly searchUrlTemplate: string = '/book-store/catalog/book';
 
@@ -29,28 +44,23 @@ export class SearchFieldComponent implements OnInit {
   constructor(
     private readonly router: Router,
     private readonly searchService: SearchService,
-    private readonly paramsBuilder: ProductParamsBuilderService
   ) { }
 
   ngOnInit(): void {
     this.input.valueChanges.subscribe(searchValue => {
         this.uploadHints(searchValue);
     });
-
-    this.paramsBuilder.onParamsChanged = params => {
-      this.searchHints$ = this.searchService.getHints(params)
-    }
   }
 
   private uploadHints(searchValue: string) {
-    if (searchValue) {
-      this.paramsBuilder.searchOptions$.next({
-        propertyName: 'name',
-        value: searchValue,
-        searchDepth: SEARCH_DEPTH,
-      });
-    }
+    if (!searchValue)
+      return;
+
+    this.searchOptions.value = searchValue;
+
+    this.searchHints$ = this.searchService.getHints(this.searchOptions, this.paginationOptions);
   }
+
   public buildSearchUrl(target: string, searchValue: string): string {
     if (!target || !searchValue) {
       return this.searchUrlTemplate;
