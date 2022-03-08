@@ -44,10 +44,18 @@ export class CatalogComponent implements OnInit {
 
   public onSortChanged = (sortingOptions: SortingOptions[]): void => {
     this.optionsStorage.setSortingOptions(sortingOptions);
+    this.config = {
+      ...this.config,
+      currentPage: 1,
+    };
   };
 
   public onFilterChanged = (filterOptions: FilterOptions): void => {
     this.optionsStorage.setFilterOptions(filterOptions);
+    this.config = {
+      ...this.config,
+      currentPage: 1,
+    };
   };
 
   public onPageChanged(number: number): void {

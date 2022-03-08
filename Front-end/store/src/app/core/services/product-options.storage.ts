@@ -46,8 +46,8 @@ export class ProductOptionsStorage {
       filterOptions,
       pagingOptions: {
         pageNumber: 1,
-        pageSize: this.optionGroupSubject$.value.pagingOptions.pageSize
-      }
+        pageSize: this.optionGroupSubject$.value.pagingOptions.pageSize,
+      },
     });
   }
 
@@ -57,8 +57,8 @@ export class ProductOptionsStorage {
       sortingOptions,
       pagingOptions: {
         pageNumber: 1,
-        pageSize: this.optionGroupSubject$.value.pagingOptions.pageSize
-      }
+        pageSize: this.optionGroupSubject$.value.pagingOptions.pageSize,
+      },
     });
   }
 }
