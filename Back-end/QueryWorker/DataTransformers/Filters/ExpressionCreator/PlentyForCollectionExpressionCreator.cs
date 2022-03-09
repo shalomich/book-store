@@ -19,14 +19,22 @@ namespace QueryWorker.DataTransformers.Filters.ExpressionCreator
 
         public Expression<Func<T, bool>> CreateFiltering(string filterValue)
         {
-            Parse(filterValue, out IEnumerable<int> options);
+            Parse(filterValue, out int[] options);
 
-            Expression<Func<IEnumerable<int>, bool>> comparer = value => value.Any(number => options.Contains(number));
+            var comparer = CreateComparer(options[0]);
+
+            for (int i = 1; i < options.Length; i++)
+                comparer = comparer.And(CreateComparer(options[i]));
 
             return PropertySelector.Compose(comparer);
         }
 
-        private void Parse(string filterValue, out IEnumerable<int> options)
+        private Expression<Func<IEnumerable<int>, bool>> CreateComparer(int option)
+        {
+            return value => value.Contains(option);
+        }
+
+        private void Parse(string filterValue, out int[] options)
         {
             options = filterValue.Split(',')
                 .Select(str => int.Parse(str))
