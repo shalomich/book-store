@@ -9,6 +9,7 @@
     <div class="quantity">{{product.quantity}}</div>
     <button mat-flat-button (click)="increase()">+</button>
   </div>
+  <div class="cost">{{product.cost}}р.</div>
   <div class="remove-button-block">
     <button mat-stroked-button (click)="basketService.remove(product)">
       <mat-icon>remove_shopping_cart</mat-icon>
