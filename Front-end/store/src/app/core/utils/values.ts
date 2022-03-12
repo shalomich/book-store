@@ -13,9 +13,9 @@ export const HINT_SIZE = 5;
 export const SELECTION_SIZE = 5;
 
 export const SEARCH_TARGET_GROUP = {
-  Book: "name",
-  Author: "authorName",
-  Publisher: "publisherName"
-}
+  Book: 'name',
+  Author: 'authorName',
+  Publisher: 'publisherName',
+};
 
 export const SEARCH_TARGETS: string[] = [SEARCH_TARGET_GROUP.Book, SEARCH_TARGET_GROUP.Author, SEARCH_TARGET_GROUP.Publisher];

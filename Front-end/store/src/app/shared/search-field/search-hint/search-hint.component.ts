@@ -26,7 +26,7 @@ export class SearchHintComponent implements OnInit {
 
   public loading = false;
 
-  @Input() hints: string [] = []
+  @Input() hints: string [] = [];
 
   @Input() target: string | undefined;
 
