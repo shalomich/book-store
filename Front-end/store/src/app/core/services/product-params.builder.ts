@@ -23,8 +23,8 @@ export class ProductParamsBuilder {
   public addPaging(paginationOptions: PaginationOptions): ProductParamsBuilder {
     const { pageNumber, pageSize } = paginationOptions;
 
-    this.params = this.params.set('pageSize', pageSize);
-    this.params = this.params.set('pageNumber', pageNumber);
+    this.params = this.params.set('pagging.pageSize', pageSize);
+    this.params = this.params.set('pagging.pageNumber', pageNumber);
 
     return this;
   }

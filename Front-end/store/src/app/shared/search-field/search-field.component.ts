@@ -2,14 +2,19 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
-import {SearchService} from "../../core/services/search.service";
-import {HINT_SIZE, SEARCH_DEPTH, SEARCH_TARGET_GROUP} from "../../core/utils/values";
-import {Observable} from "rxjs";
-import {ProductOptionsStorage} from "../../core/services/product-options.storage";
-import {SearchHintsDto} from "../../core/DTOs/search-hints-dto";
-import {switchMap} from "rxjs/operators";
-import {SearchOptions} from "../../core/interfaces/search-options";
-import {PaginationOptions} from "../../core/interfaces/pagination-options";
+
+import { Observable } from 'rxjs';
+
+import {map, startWith, switchMap} from 'rxjs/operators';
+
+import { SearchService } from '../../core/services/search.service';
+import { HINT_SIZE, SEARCH_DEPTH, SEARCH_TARGET_GROUP } from '../../core/utils/values';
+import { ProductOptionsStorage } from '../../core/services/product-options.storage';
+import { SearchHintsDto } from '../../core/DTOs/search-hints-dto';
+
+
+import { SearchOptions } from '../../core/interfaces/search-options';
+import { PaginationOptions } from '../../core/interfaces/pagination-options';
 
 
 @Component({
@@ -24,14 +29,14 @@ export class SearchFieldComponent implements OnInit {
     propertyName: 'name',
     value: '',
     searchDepth: SEARCH_DEPTH,
-  }
+  };
 
   public readonly searchTargetGroup = SEARCH_TARGET_GROUP;
 
   private readonly paginationOptions: PaginationOptions = {
     pageNumber: 1,
-    pageSize: HINT_SIZE
-  }
+    pageSize: HINT_SIZE,
+  };
 
   private readonly searchUrlTemplate: string = '/book-store/catalog/book';
 
@@ -44,21 +49,20 @@ export class SearchFieldComponent implements OnInit {
   constructor(
     private readonly router: Router,
     private readonly searchService: SearchService,
-  ) { }
-
-  ngOnInit(): void {
-    this.input.valueChanges.subscribe(searchValue => {
-        this.uploadHints(searchValue);
-    });
+  ) {
+    this.searchHints$ = this.input.valueChanges.pipe(
+      startWith(''),
+      switchMap(value => value ? this.uploadHints(value) : new Observable<SearchHintsDto>()),
+    );
   }
 
-  private uploadHints(searchValue: string) {
-    if (!searchValue)
-      return;
+  ngOnInit(): void {
+  }
 
+  private uploadHints(searchValue: string): Observable<SearchHintsDto> {
     this.searchOptions.value = searchValue;
 
-    this.searchHints$ = this.searchService.getHints(this.searchOptions, this.paginationOptions);
+    return this.searchService.getHints(this.searchOptions, this.paginationOptions);
   }
 
   public buildSearchUrl(target: string, searchValue: string): string {
