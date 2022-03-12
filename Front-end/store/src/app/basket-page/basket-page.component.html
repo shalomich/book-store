@@ -7,7 +7,7 @@
       <app-basket-element *ngFor="let product of basketService.basketProducts | async" [product]="product"></app-basket-element>
     </div>
   </div>
-  <app-basket-info-block></app-basket-info-block>
+  <app-basket-info-block [products]="basketService.basketProducts"></app-basket-info-block>
 </div>
 
 <ng-template #emptyBasket>

@@ -6,10 +6,11 @@
 }
 
 .main-block {
-  margin: 2em 5em;
+  margin-top: 3em;
+  display: flex;
 }
 
 .basket-list {
-  height: 55em;
-  overflow-y: auto;
+  margin-left: 5em;
+  width: 105em;
 }

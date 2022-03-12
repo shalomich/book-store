@@ -1,0 +1,44 @@
+.basket-info-block {
+  position: fixed;
+  margin-left: 3em;
+  margin-top: 1.7em;
+  padding: 0 1em;
+}
+
+.order-button {
+  border: 0.1em solid #2199e8;
+  color: #2199e8;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+  margin-top: 1em;
+  font-size: 1.6em;
+  font-weight: 400;
+}
+
+.order-button:hover {
+  background-color: #2199e8;
+  color: #ffffff;
+}
+
+.total-amount {
+  font-size: 1.4em;
+  color: #2199e8;
+  margin-bottom: 1em;
+}
+
+.total-amount span {
+  color: #000000;
+  font-family: Trebuchet MS, serif;
+}
+
+.total-cost {
+  font-size: 1.4em;
+  color: #2199e8;
+  margin-top: 1em;
+}
+
+.total-cost span {
+  color: #000000;
+  font-family: Trebuchet MS, serif;
+}
