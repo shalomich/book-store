@@ -10,7 +10,6 @@
 }
 
 .basket-list {
-  border: 0.1em solid #2199e8;
-  border-radius: 10px;
-  height: 30em;
+  height: 55em;
+  overflow-y: auto;
 }

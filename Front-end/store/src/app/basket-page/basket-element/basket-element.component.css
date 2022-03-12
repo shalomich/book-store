@@ -1,9 +1,9 @@
 .basket-element-block {
   display: flex;
-  margin: 1em 1em;
+  align-items: center;
+  margin: 1em 0;
   border-top: 0.1em solid #2199e8;
-  border-bottom: 0.1em solid #2199e8;
-  padding: 1em 0;
+  padding: 1em 1em;
   justify-content: space-between;
 }
 
@@ -14,8 +14,32 @@
 .name-block {
   display: flex !important;
   justify-content: flex-start;
-  padding-left: 1em;;
   align-content: center;
   align-items: center;
   width: 30em;
+}
+
+.name-block span {
+  margin-left: 2em;
+  font-size: 1.2em;
+}
+
+.amount-block {
+  display: flex;
+  height: 3em;
+}
+
+.amount-block button {
+  border: 0.1em solid #2199e8;
+  width: 3em;
+  min-width: 3em;
+}
+
+.amount-block .quantity {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0.1em solid #2199e8;
+  border-radius: 5px;
+  width: 3em;
 }
