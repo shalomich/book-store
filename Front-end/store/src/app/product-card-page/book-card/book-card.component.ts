@@ -27,7 +27,6 @@ export class BookCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.book$.subscribe(data => console.log(data));
   }
 
 }
