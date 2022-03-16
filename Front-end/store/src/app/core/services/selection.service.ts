@@ -58,7 +58,10 @@ export class SelectionService {
 
     const params = this.paramsBuilder.build();
 
-    return this.http.get<ProductPreviewSetDto>(`${SELECTION_URL}${selection}`, { params, headers }).pipe(
+    const options = this.authorizationDataProvider.token.value ? { headers, params } : { params };
+
+
+    return this.http.get<ProductPreviewSetDto>(`${SELECTION_URL}${selection}`, options).pipe(
       map(setDto => this.productPreviewSetMapper.fromDto(setDto)),
     );
   }

@@ -22,7 +22,7 @@ import { OptionGroup } from '../interfaces/option-group';
 import { SearchOptions } from '../interfaces/search-options';
 
 import { ProductParamsBuilder } from './product-params.builder';
-import {AuthorizationDataProvider} from './authorization-data.provider';
+import { AuthorizationDataProvider } from './authorization-data.provider';
 
 @Injectable({
   providedIn: 'root',
@@ -45,7 +45,9 @@ export class BookService {
       Authorization: `Bearer ${this.authorizationDataProvider.token.value}`,
     };
 
-    const book$ = this.http.get<BookDto>(`${PRODUCT_URL}${this.type}/${id}`, { headers });
+    const options = this.authorizationDataProvider.token.value ? { headers } : {};
+
+    const book$ = this.http.get<BookDto>(`${PRODUCT_URL}${this.type}/${id}`, options);
 
     return book$.pipe(
       map(book => this.bookMapper.fromDto(book)),
@@ -75,7 +77,9 @@ export class BookService {
 
     const params = this.paramsBuilder.build();
 
-    return this.http.get<ProductPreviewSetDto>(`${PRODUCT_URL}${this.type}`, { params, headers }).pipe(
+    const options = this.authorizationDataProvider.token.value ? { headers, params } : { params };
+
+    return this.http.get<ProductPreviewSetDto>(`${PRODUCT_URL}${this.type}`, options).pipe(
       map(setDto => this.productPreviewSetMapper.fromDto(setDto)),
     );
   }
