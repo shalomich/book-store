@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {SortingOptions} from '../../../core/interfaces/sorting-options';
-import {BasketService} from '../../../core/services/basket.service';
+
+import { SortingOptions } from '../../../core/interfaces/sorting-options';
+import { BasketService } from '../../../core/services/basket.service';
 
 @Component({
   selector: 'app-add-to-cart',
@@ -13,9 +14,12 @@ export class AddToCartComponent implements OnInit {
   public cost = '';
 
   @Input()
-  public bookId: number = 0;
+  public bookId = 0;
 
-  public constructor(private readonly basketService: BasketService,) { }
+  @Input()
+  public isInBasket = false;
+
+  public constructor(private readonly basketService: BasketService) { }
 
   public ngOnInit(): void {
   }

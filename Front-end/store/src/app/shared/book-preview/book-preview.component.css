@@ -27,7 +27,7 @@
   text-align: center;
 }
 
-.add-to-cart-button {
+.add-to-basket-button {
   height: min-content;
   font-size: 1em;
   border: 0.1em solid gray;
@@ -36,9 +36,18 @@
   margin-bottom: 1em;
 }
 
-.add-to-cart-button:hover {
+.add-to-basket-button:hover {
   background-color: gray;
   color: white;
+}
+
+.in-basket-button {
+  height: min-content;
+  background-color: #2199e8;
+  color: white;
+  padding-right: 1em;
+  padding-left: 1em;
+  margin-bottom: 1em;
 }
 
 .buy-block span {

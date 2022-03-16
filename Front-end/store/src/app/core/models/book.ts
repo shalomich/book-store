@@ -37,6 +37,8 @@ export class Book {
 
   public titleImage: Base64Image;
 
+  public isInBasket: boolean;
+
 
   public constructor(book: Book) {
     this.id = book.id;
@@ -57,5 +59,6 @@ export class Book {
     this.notTitleImages = book.notTitleImages;
     this.titleImage = book.titleImage;
     this.isbn = book.isbn;
+    this.isInBasket = book.isInBasket;
   }
 }

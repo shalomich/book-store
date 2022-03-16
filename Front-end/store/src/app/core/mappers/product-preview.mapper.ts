@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { BookDto } from '../DTOs/book-dto';
 import { Book } from '../models/book';
 
+import { ProductPreviewDto } from '../DTOs/product-preview-dto';
+import { ProductPreview } from '../models/product-preview';
+
 import { Mapper } from './mapper/mapper';
-import {ProductPreviewDto} from '../DTOs/product-preview-dto';
-import {ProductPreview} from '../models/product-preview';
 
 /**
  * Mapper for film entity.
@@ -20,6 +21,7 @@ export class ProductPreviewMapper extends Mapper<ProductPreviewDto, ProductPrevi
       name: data.name,
       cost: data.cost,
       titleImage: data.titleImage,
+      isInBasket: data.isInBasket,
     };
   }
 
@@ -30,6 +32,7 @@ export class ProductPreviewMapper extends Mapper<ProductPreviewDto, ProductPrevi
       name: data.name,
       cost: data.cost,
       titleImage: data.titleImage,
+      isInBasket: data.isInBasket,
     });
   }
 }

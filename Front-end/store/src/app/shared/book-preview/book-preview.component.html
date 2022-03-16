@@ -7,6 +7,10 @@
   </div>
   <div class="buy-block">
     <span>{{item.cost}} &#8381;</span>
-    <button (click)="basketService.addProduct(item.id)" class="add-to-cart-button" mat-button>Купить</button>
+    <button *ngIf="!item.isInBasket; else inBasket" (click)="basketService.addProduct(item.id)" class="add-to-basket-button" mat-button>Купить</button>
   </div>
 </div>
+
+<ng-template #inBasket>
+  <button routerLink="/book-store/basket" class="in-basket-button" mat-button>В корзине</button>
+</ng-template>
