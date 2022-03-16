@@ -14,3 +14,10 @@
   margin-left: 5em;
   width: 105em;
 }
+
+.empty-basket {
+  width: 105em;
+  display: flex;
+  justify-content: center;
+  padding-top: 5em;
+}

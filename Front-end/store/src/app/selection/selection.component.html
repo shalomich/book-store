@@ -5,8 +5,8 @@
         {{selectionHeader}}
       </a>
     </h3>
-    <app-product-list-item *ngFor="let book of (bookSet$ | async)?.previews"
+    <app-book-preview *ngFor="let book of (bookSet$ | async)?.previews"
                            [item]="book">
-    </app-product-list-item>
+    </app-book-preview>
   </div>
 </ng-container>

@@ -4,11 +4,11 @@ import { ProductPreview } from '../../core/models/product-preview';
 import { BasketService } from '../../core/services/basket.service';
 
 @Component({
-  selector: 'app-product-list-item',
-  templateUrl: './product-list-item.component.html',
-  styleUrls: ['./product-list-item.component.css'],
+  selector: 'app-book-preview',
+  templateUrl: './book-preview.component.html',
+  styleUrls: ['./book-preview.component.css'],
 })
-export class ProductListItemComponent implements OnInit {
+export class BookPreviewComponent implements OnInit {
 
   @Input()
   public item: ProductPreview = {} as ProductPreview;

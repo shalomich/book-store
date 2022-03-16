@@ -11,7 +11,7 @@
   <div class="list-block">
     <sorting [propertyNamesWithText]="propertyNamesWithText" [setSortingsCallback]="onSortChanged"></sorting>
     <div *ngIf="books.length !== 0; else emptyResult" class="books-list">
-      <app-product-list-item *ngFor="let book of books | paginate: config" [item]="book"></app-product-list-item>
+      <app-book-preview *ngFor="let book of books | paginate: config" [item]="book"></app-book-preview>
     </div>
   </div>
 </div>
