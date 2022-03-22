@@ -12,11 +12,11 @@
 
 .basket-list {
   margin-left: 5em;
-  width: 105em;
+  width: 65vw;
 }
 
 .empty-basket {
-  width: 105em;
+  width: 70vw;
   display: flex;
   justify-content: center;
   padding-top: 5em;

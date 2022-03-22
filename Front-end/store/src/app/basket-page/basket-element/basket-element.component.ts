@@ -1,9 +1,11 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 
-import {FormControl} from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
-import {BasketProduct} from '../../core/interfaces/basket-product';
-import {BasketService} from '../../core/services/basket.service';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { BasketProduct } from '../../core/interfaces/basket-product';
+import { BasketService } from '../../core/services/basket.service';
 
 @Component({
   selector: 'app-basket-element',
@@ -18,7 +20,7 @@ export class BasketElementComponent implements OnInit {
 
   public readonly quantity = new FormControl();
 
-  constructor(public readonly basketService: BasketService) {
+  constructor(public readonly basketService: BasketService, private readonly router: Router) {
   }
 
   ngOnInit(): void {
@@ -35,4 +37,7 @@ export class BasketElementComponent implements OnInit {
     this.basketService.decrease(this.product);
   }
 
+  public handleProductClick(): void {
+    window.open(`/book-store/catalog/book/${this.product.id}`, '_blank');
+  }
 }

@@ -1,6 +1,6 @@
 <div class="basket-element-block">
 <!--  <img alt="Title image" src="{{product.titleImage | base64ToImgSrc}}">-->
-  <div class="name-block">
+  <div (click)="handleProductClick()" class="name-block">
     <img class="title-image" width="127" height="199" *ngIf="product.titleImage" alt="Title Image" src="{{product.titleImage | base64ToImgSrc}}">
     <span>{{product.name}}</span>
   </div>

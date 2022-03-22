@@ -13,8 +13,17 @@ export class BookPreviewComponent implements OnInit {
   @Input()
   public item: ProductPreview = {} as ProductPreview;
 
+  public inBasketFlag = false;
+
   public constructor(public readonly basketService: BasketService) { }
 
   public ngOnInit(): void {
+    this.inBasketFlag = this.item.isInBasket;
+  }
+
+  public handleAddToBasketClick(): void {
+    this.basketService.addProduct(this.item.id).subscribe(_ => {
+      this.inBasketFlag = true;
+    });
   }
 }

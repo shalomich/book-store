@@ -29,12 +29,12 @@ export class BasketService {
     return this._basketProducts.asObservable();
   }
 
-  public addProduct(productId: number): void {
+  public addProduct(productId: number): Observable<{}> {
     const headers = {
       Authorization: `Bearer ${this.authorizationDataProvider.token.value}`,
     };
 
-    this.http.post(BASKET_URL, { productId }, { headers }).subscribe();
+    return this.http.post(BASKET_URL, { productId }, { headers });
   }
 
   public removeAll(): void {

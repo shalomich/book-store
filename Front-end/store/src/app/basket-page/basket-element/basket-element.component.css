@@ -19,6 +19,10 @@
   width: 30em;
 }
 
+.name-block:hover {
+  cursor: pointer;
+}
+
 .name-block span {
   margin-left: 2em;
   font-size: 1.2em;

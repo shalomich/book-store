@@ -7,7 +7,7 @@
   </div>
   <div class="buy-block">
     <span>{{item.cost}} &#8381;</span>
-    <button *ngIf="!item.isInBasket; else inBasket" (click)="basketService.addProduct(item.id)" class="add-to-basket-button" mat-button>Купить</button>
+    <button *ngIf="!inBasketFlag; else inBasket" (click)="handleAddToBasketClick()" class="add-to-basket-button" mat-button>Купить</button>
   </div>
 </div>
 

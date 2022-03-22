@@ -19,13 +19,17 @@ export class AddToCartComponent implements OnInit {
   @Input()
   public isInBasket = false;
 
+  public inBasketFlag = false;
+
   public constructor(private readonly basketService: BasketService) { }
 
   public ngOnInit(): void {
+    this.inBasketFlag = this.isInBasket;
   }
 
-  public handleBasketClick() {
-    this.basketService.addProduct(this.bookId);
+  public handleAddToBasketClick() {
+    this.basketService.addProduct(this.bookId).subscribe(_ => {
+      this.inBasketFlag = true;
+    });
   }
-
 }
