@@ -23,6 +23,11 @@
   cursor: pointer;
 }
 
+.name-block:hover span {
+  color: #2199e8;
+  text-decoration: underline;
+}
+
 .name-block span {
   margin-left: 2em;
   font-size: 1.2em;

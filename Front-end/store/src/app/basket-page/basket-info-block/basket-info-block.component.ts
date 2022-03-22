@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { BasketProduct } from '../../core/interfaces/basket-product';
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
+
+import { BasketProduct } from '../../core/models/basket-product';
 
 @Component({
   selector: 'app-basket-info-block',

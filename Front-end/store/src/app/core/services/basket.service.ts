@@ -3,8 +3,12 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 
-import { BasketProduct } from '../interfaces/basket-product';
 import { BASKET_URL } from '../utils/values';
+
+import { BasketProductMapper } from '../mappers/basket-product.mapper';
+
+import { BasketProductDto } from '../DTOs/basket-product-dto';
+import { BasketProduct } from '../models/basket-product';
 
 import { AuthorizationDataProvider } from './authorization-data.provider';
 
@@ -15,14 +19,19 @@ export class BasketService {
 
   private _basketProducts: BehaviorSubject<BasketProduct[]> = new BehaviorSubject<BasketProduct[]>([]);
 
-  constructor(private readonly http: HttpClient, private readonly authorizationDataProvider: AuthorizationDataProvider) { }
+  constructor(
+    private readonly http: HttpClient,
+    private readonly authorizationDataProvider: AuthorizationDataProvider,
+    private readonly basketProductMapper: BasketProductMapper,
+  ) { }
 
   public getBasket(): void {
     const headers = {
       Authorization: `Bearer ${this.authorizationDataProvider.token.value}`,
     };
 
-    this.http.get<BasketProduct[]>(BASKET_URL, { headers }).subscribe(data => this._basketProducts.next(data));
+    this.http.get<BasketProductDto[]>(BASKET_URL, { headers })
+      .subscribe(data => this._basketProducts.next(data.map(item => this.basketProductMapper.fromDto(item))));
   }
 
   public get basketProducts(): Observable<BasketProduct[]> {

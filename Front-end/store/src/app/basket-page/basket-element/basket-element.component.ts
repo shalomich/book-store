@@ -4,8 +4,8 @@ import { FormControl } from '@angular/forms';
 
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { BasketProduct } from '../../core/interfaces/basket-product';
 import { BasketService } from '../../core/services/basket.service';
+import { BasketProduct } from '../../core/models/basket-product';
 
 @Component({
   selector: 'app-basket-element',
@@ -38,6 +38,6 @@ export class BasketElementComponent implements OnInit {
   }
 
   public handleProductClick(): void {
-    window.open(`/book-store/catalog/book/${this.product.id}`, '_blank');
+    window.open(`/book-store/catalog/book/${this.product.productId}`, '_blank');
   }
 }
