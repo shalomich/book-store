@@ -1,0 +1,23 @@
+.remove-all-button {
+  color: #2199e8 !important;
+  margin-bottom: 2em;
+  display: flex;
+  justify-content: right;
+}
+
+.main-block {
+  margin-top: 3em;
+  display: flex;
+}
+
+.basket-list {
+  margin-left: 5em;
+  width: 65vw;
+}
+
+.empty-basket {
+  width: 70vw;
+  display: flex;
+  justify-content: center;
+  padding-top: 5em;
+}

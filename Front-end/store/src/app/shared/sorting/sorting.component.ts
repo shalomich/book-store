@@ -1,13 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
+import {Component, Input, ViewEncapsulation } from '@angular/core';
 
-import { BehaviorSubject } from 'rxjs';
 import { _MatOptionBase, MatOptionSelectionChange } from '@angular/material/core';
-import { ViewEncapsulation } from '@angular/core';
+
 import { FormControl } from '@angular/forms';
 
 import { SortingOptions } from '../../core/interfaces/sorting-options';
-import { ProductOptionsStorage } from '../../core/services/product-options.storage';
 
 @Component({
   selector: 'sorting',

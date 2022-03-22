@@ -32,6 +32,7 @@ export class BookMapper extends Mapper<BookDto, Book> {
       coverArt: data.coverArt,
       bookFormat: data.bookFormat,
       pageQuantity: data.pageQuantity,
+      isInBasket: data.isInBasket,
     };
   }
 
@@ -56,6 +57,7 @@ export class BookMapper extends Mapper<BookDto, Book> {
       coverArt: data.coverArt,
       bookFormat: data.bookFormat,
       pageQuantity: data.pageQuantity,
+      isInBasket: data.isInBasket,
     });
   }
 }

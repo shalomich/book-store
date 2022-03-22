@@ -13,6 +13,14 @@ import { MatExpansionModule } from '@angular/material/expansion';
 
 import { MatIconModule } from '@angular/material/icon';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { MatButtonModule } from '@angular/material/button';
+
+import { MatFormFieldModule } from '@angular/material/form-field';
+
+import { MatInputModule } from '@angular/material/input';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -24,18 +32,16 @@ import { SelectionComponent } from './selection/selection.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { SelectionPageComponent } from './selection-page/selection-page.component';
 import { CatalogComponent } from './catalog/catalog.component';
-import {ProductOptionsStorage} from './core/services/product-options.storage';
+
+import { BasketPageComponent } from './basket-page/basket-page.component';
+import { BasketElementComponent } from './basket-page/basket-element/basket-element.component';
+import { BasketInfoBlockComponent } from './basket-page/basket-info-block/basket-info-block.component';
+
+import { ProductOptionsStorage } from './core/services/product-options.storage';
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    BookSearchPageComponent,
-    SelectionComponent,
-    MainPageComponent,
-    SelectionPageComponent,
-    CatalogComponent,
-  ],
+  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent, MainPageComponent, SelectionPageComponent, CatalogComponent, BasketPageComponent, BasketElementComponent, BasketInfoBlockComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -48,6 +54,11 @@ import {ProductOptionsStorage} from './core/services/product-options.storage';
     NgxPaginationModule,
     MatExpansionModule,
     MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   providers: [ProductOptionsStorage],
   bootstrap: [AppComponent],

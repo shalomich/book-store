@@ -22,6 +22,7 @@ import { OptionGroup } from '../interfaces/option-group';
 import { SearchOptions } from '../interfaces/search-options';
 
 import { ProductParamsBuilder } from './product-params.builder';
+import { AuthorizationDataProvider } from './authorization-data.provider';
 
 @Injectable({
   providedIn: 'root',
@@ -36,10 +37,17 @@ export class BookService {
     private readonly productPreviewSetMapper: ProductPreviewSetMapper,
     private readonly relatedEntityMapper: RelatedEntityMapper,
     private readonly paramsBuilder: ProductParamsBuilder,
+    private readonly authorizationDataProvider: AuthorizationDataProvider,
   ) { }
 
   public getById(id: number) {
-    const book$ = this.http.get<BookDto>(`${PRODUCT_URL}${this.type}/${id}`);
+    const headers = {
+      Authorization: `Bearer ${this.authorizationDataProvider.token.value}`,
+    };
+
+    const options = this.authorizationDataProvider.token.value ? { headers } : {};
+
+    const book$ = this.http.get<BookDto>(`${PRODUCT_URL}${this.type}/${id}`, options);
 
     return book$.pipe(
       map(book => this.bookMapper.fromDto(book)),
@@ -47,6 +55,9 @@ export class BookService {
   }
 
   public get(optionGroup: OptionGroup, searchOptions?: SearchOptions): Observable<ProductPreviewSet> {
+    const headers = {
+      Authorization: `Bearer ${this.authorizationDataProvider.token.value}`,
+    };
 
     const { pagingOptions, filterOptions, sortingOptions } = optionGroup;
 
@@ -66,7 +77,9 @@ export class BookService {
 
     const params = this.paramsBuilder.build();
 
-    return this.http.get<ProductPreviewSetDto>(`${PRODUCT_URL}${this.type}`, { params }).pipe(
+    const options = this.authorizationDataProvider.token.value ? { headers, params } : { params };
+
+    return this.http.get<ProductPreviewSetDto>(`${PRODUCT_URL}${this.type}`, options).pipe(
       map(setDto => this.productPreviewSetMapper.fromDto(setDto)),
     );
   }

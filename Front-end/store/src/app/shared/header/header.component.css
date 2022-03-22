@@ -8,10 +8,9 @@
   color: #2199e8 !important;
   align-self: flex-end;
 }
-
 .search-field {
   align-self: center;
-  margin-right: 30em;
+  margin-right: 20vw;
 }
 
 .logo {
@@ -30,5 +29,13 @@
 .catalog-button {
   color: #2199e8 !important;
   margin-left: 20em;
+}
+
+.basket-button {
+  color: #2199e8 !important;
+}
+
+.authorized-block {
+  display: flex;
 }
 

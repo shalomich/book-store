@@ -23,18 +23,16 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { RouterModule } from '@angular/router';
 
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 
 import { CoreModule } from '../core/core.module';
 
-import { ProductOptionsStorage } from '../core/services/product-options.storage';
 
 import { ProductImagesComponent } from './product-card/product-images/product-images.component';
 import { AddToCartComponent } from './product-card/add-to-cart/add-to-cart.component';
 
 import { SortingComponent } from './sorting/sorting.component';
-import { ProductListItemComponent } from './product-list-item/product-list-item.component';
+import { BookPreviewComponent } from './book-preview/book-preview.component';
 import { RangeFilterComponent } from './filters/range-filter/range-filter.component';
 
 import { StatusFilterComponent } from './filters/status-filter/status-filter.component';
@@ -55,7 +53,7 @@ import { RegisterDialogComponent } from './header/register-dialog/register-dialo
   declarations: [
     ProductImagesComponent,
     AddToCartComponent,
-    ProductListItemComponent,
+    BookPreviewComponent,
     RangeFilterComponent,
     PlentyFilterComponent,
     FilterGroupComponent,
@@ -71,7 +69,7 @@ import { RegisterDialogComponent } from './header/register-dialog/register-dialo
   exports: [
     ProductImagesComponent,
     AddToCartComponent,
-    ProductListItemComponent,
+    BookPreviewComponent,
     RangeFilterComponent,
     PlentyFilterComponent,
     FilterGroupComponent,

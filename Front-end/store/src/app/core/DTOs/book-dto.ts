@@ -36,4 +36,6 @@ export interface BookDto {
   readonly notTitleImages: Base64Image[];
 
   readonly titleImage: Base64Image;
+
+  readonly isInBasket: boolean;
 }

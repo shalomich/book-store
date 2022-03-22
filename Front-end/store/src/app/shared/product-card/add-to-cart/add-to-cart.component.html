@@ -1,6 +1,10 @@
 <div class="add-to-cart-block">
   <div class="add-to-cart">
     <span>Цена: {{cost}} &#8381;</span>
-    <button mat-button>Добавить в корзину</button>
+    <button *ngIf="!inBasketFlag; else inBasket" mat-button (click)="handleAddToBasketClick()">Добавить в корзину</button>
   </div>
 </div>
+
+<ng-template #inBasket>
+  <button routerLink="/book-store/basket" class="in-basket-button" mat-button>В корзине</button>
+</ng-template>

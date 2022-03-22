@@ -34,3 +34,8 @@
   background-color: gray;
   color: white;
 }
+.in-basket-button, .in-basket-button:hover {
+  background-color: #2199e8 !important;
+  color: white;
+}
+

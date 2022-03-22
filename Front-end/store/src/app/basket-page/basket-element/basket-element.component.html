@@ -1,0 +1,18 @@
+<div class="basket-element-block">
+<!--  <img alt="Title image" src="{{product.titleImage | base64ToImgSrc}}">-->
+  <div (click)="handleProductClick()" class="name-block">
+    <img class="title-image" width="127" height="199" *ngIf="product.titleImage" alt="Title Image" src="{{product.titleImage | base64ToImgSrc}}">
+    <span>{{product.name}}</span>
+  </div>
+  <div class="amount-block">
+    <button mat-flat-button [disabled]="quantity.value <= 1" (click)="decrease()">-</button>
+    <div class="quantity">{{product.quantity}}</div>
+    <button mat-flat-button (click)="increase()">+</button>
+  </div>
+  <div class="cost">{{product.cost * product.quantity}} &#8381;</div>
+  <div class="remove-button-block">
+    <button mat-stroked-button (click)="basketService.remove(product)">
+      <mat-icon>remove_shopping_cart</mat-icon>
+    </button>
+  </div>
+</div>

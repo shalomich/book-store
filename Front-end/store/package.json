@@ -31,6 +31,7 @@
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-jsdoc": "^36.0.8",
     "filereader": "^0.10.3",
+    "ng-event-bus": "^4.0.0",
     "ngx-auto-unsubscribe": "^3.0.1",
     "ngx-pagination": "^5.1.1",
     "object-hash": "^2.2.0",
