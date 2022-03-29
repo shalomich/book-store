@@ -9,5 +9,6 @@ namespace BookStore.Domain.Entities.Products
     public class Tag : RelatedEntity
     {
         public ISet<ProductTag> ProductTags { set; get; }
+        public ISet<User> Users { set; get; }
     }
 }

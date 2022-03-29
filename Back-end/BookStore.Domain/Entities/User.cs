@@ -17,5 +17,6 @@ namespace BookStore.Domain.Entities
         public ISet<BasketProduct> BasketProducts { get; set; }
         public IEnumerable<Order> Orders { get; set; }
         public ISet<Mark> Marks { get; set; }
+        public ISet<Tag> Tags { get; set; }
     }
 }
