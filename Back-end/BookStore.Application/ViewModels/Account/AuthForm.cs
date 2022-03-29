@@ -15,12 +15,9 @@ namespace BookStore.Application.ViewModels.Account
         public string Email { init; get; }
 
         [Required]
-        public string Password { init; get; }
+        public string UserName { init; get; }
 
-        public void Deconstruct(out string email, out string password)
-        {
-            email = Email;
-            password = Password;
-        }
+        [Required]
+        public string Password { init; get; }
     }
 }
