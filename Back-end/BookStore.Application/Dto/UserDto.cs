@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BookStore.Application.Dto;
 
-namespace BookStore.Application.Dto
+public record UserDto
 {
-    public record UserDto
-    {
-        public string UserName { init; get; }
-        public string Email { init; get; }
-        public string PhoneNumber { init; get; }
-    }
+    public string FirstName { init; get; }
+    public string LastName { init; get; }
+    public string Email { init; get; }
+    public string PhoneNumber { init; get; }
+    public string Address { init; get; }
 }
+
