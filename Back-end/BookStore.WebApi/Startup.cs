@@ -76,6 +76,18 @@ namespace BookStore.WebApi
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddTokenProvider(_configuration["AppTokenProvider"], typeof(DataProtectorTokenProvider<User>));
             
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.User.AllowedUserNameCharacters = "";
+                options.Password.RequiredLength = 8;
+                options.Password.RequireDigit = true;
+                options.User.RequireUniqueEmail = true;
+            });
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
                 opt =>
                 {
