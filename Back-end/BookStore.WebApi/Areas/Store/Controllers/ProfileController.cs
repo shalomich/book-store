@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookStore.Application.Commands;
+using BookStore.Application.Commands.Profile;
 using BookStore.Application.Dto;
 using BookStore.Application.Queries;
 using BookStore.Application.Services.DbQueryBuilders;
@@ -11,6 +12,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
@@ -67,6 +70,20 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         public async Task<NoContentResult> RemoveMark([FromBody] int bookId)
         {
             await Mediator.Send(new RemoveMarkCommand(bookId));
+
+            return NoContent();
+        }
+
+        [HttpGet("tag")]
+        public async Task<IEnumerable<RelatedEntityDto>> GetTags()
+        {
+            return await Mediator.Send(new GetUserTagsQuery(User.GetUserId()));
+        }
+
+        [HttpPut("tag")]
+        public async Task<NoContentResult> UpdateTags([FromBody][Required] int[] tagIds)
+        {
+            await Mediator.Send(new UpdateUserTagsCommand(User.GetUserId(), tagIds));
 
             return NoContent();
         }
