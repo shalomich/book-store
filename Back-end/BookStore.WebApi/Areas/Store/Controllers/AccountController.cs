@@ -26,7 +26,7 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<TokensDto> Login(AuthForm authForm)
+        public async Task<TokensDto> Login(LoginForm authForm)
         {
             var user = await _mediator.Send(new FindUserByEmailQuery(authForm.Email));
 
@@ -34,7 +34,7 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpPost("registration")]
-        public Task<TokensDto> Registration(AuthForm authForm)
+        public Task<TokensDto> Registration(RegistrationForm authForm)
         {
             return _mediator.Send(new RegistrationCommand(authForm.Email, authForm.UserName, authForm.Password));
         }
