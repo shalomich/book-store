@@ -10,7 +10,7 @@ public record RegistrationForm
     public string Email { init; get; }
 
     [Required]
-    public string UserName { init; get; }
+    public string FirstName { init; get; }
 
     [Required]
     public string Password { init; get; }

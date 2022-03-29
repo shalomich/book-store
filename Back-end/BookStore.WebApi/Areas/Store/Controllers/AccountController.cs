@@ -36,7 +36,7 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         [HttpPost("registration")]
         public Task<TokensDto> Registration(RegistrationForm authForm)
         {
-            return _mediator.Send(new RegistrationCommand(authForm.Email, authForm.UserName, authForm.Password));
+            return _mediator.Send(new RegistrationCommand(authForm.Email, authForm.FirstName, authForm.Password));
         }
 
         [HttpPost("logout")]

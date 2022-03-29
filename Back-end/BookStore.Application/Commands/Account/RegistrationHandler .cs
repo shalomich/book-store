@@ -18,7 +18,7 @@ using BookStore.Application.Providers;
 
 namespace BookStore.Application.Commands.Account
 {
-	public record RegistrationCommand(string Email, string UserName, string Password) : IRequest<TokensDto>;
+	public record RegistrationCommand(string Email, string FirstName, string Password) : IRequest<TokensDto>;
 	internal class RegistrationHandler : IRequestHandler<RegistrationCommand, TokensDto>
 	{ 
 		private UserManager<User> UserManager { get; }
@@ -32,9 +32,14 @@ namespace BookStore.Application.Commands.Account
 
         public async Task<TokensDto> Handle(RegistrationCommand request, CancellationToken cancellationToken)
 		{
-			var (email, userName, password) = request;
+			var (email, fistName, password) = request;
 
-			var user = new User { Email = email, UserName = userName };
+			var user = new User 
+			{ 
+				Email = email, 
+				UserName = email,
+				FirstName = fistName
+			};
 
 			var result = await UserManager.CreateAsync(user, password);
 
