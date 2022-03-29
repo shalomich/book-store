@@ -3,6 +3,7 @@ using BookStore.Application.Commands;
 using BookStore.Application.Dto;
 using BookStore.Application.Queries;
 using BookStore.Application.Services.DbQueryBuilders;
+using BookStore.Application.ViewModels.Profile;
 using BookStore.Domain.Entities;
 using BookStore.Domain.Entities.Products;
 using BookStore.WebApi.Extensions;
@@ -43,11 +44,11 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<UserDto>> Update(UserDto userDto)
+        public async Task<IActionResult> Update(UserProfileForm profileForm)
         {
             var user = await GetCurrentUser();
 
-            user = Mapper.Map(userDto, user);
+            user = Mapper.Map(profileForm, user);
 
             await Mediator.Send(new UpdateCommand(User.GetUserId(), user));
 
