@@ -44,7 +44,7 @@ input.mat-input-element {
   padding-bottom: 0;
 }
 
-.mat-error {
+.login-modal .mat-error {
   margin-top: -2em;
   margin-bottom: 1em;
 }

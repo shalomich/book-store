@@ -3,7 +3,7 @@
   justify-content: center;
 }
 
-.login-title {
+.register-title {
   margin-bottom: 1em;
   font-size: 1.4em;
 }
@@ -20,6 +20,7 @@
 
 .register-button button {
   color: #2199e8 !important;
+  margin-top: 1em;
 }
 
 .register-modal-field {
@@ -48,7 +49,7 @@ input.mat-input-element {
   padding-bottom: 0;
 }
 
-.mat-error {
+.register-modal .mat-error {
   margin-top: -1em;
 }
 
