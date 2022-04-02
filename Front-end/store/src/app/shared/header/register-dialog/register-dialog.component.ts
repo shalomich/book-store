@@ -23,6 +23,8 @@ export class RegisterDialogComponent implements OnInit {
     repeatPassword: new FormControl('', { validators: Validators.required, updateOn: 'blur' }),
   });
 
+  public hidePassword = true;
+
   constructor(private dialog: MatDialog, private readonly authService: AuthorizationService) {}
 
   ngOnInit(): void {

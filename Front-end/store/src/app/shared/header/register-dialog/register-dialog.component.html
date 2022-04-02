@@ -19,14 +19,15 @@
     </mat-error>
     <mat-form-field class="register-modal-field" appearance="outline">
       <mat-label>Пароль</mat-label>
-      <input formControlName="password" matInput>
+      <input [type]="hidePassword ? 'password' : 'text'" formControlName="password" matInput>
+      <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
     </mat-form-field>
     <mat-error *ngIf="registerForm.controls.password.hasError('error')">
       {{registerForm.controls.password.errors?.error}}
     </mat-error>
     <mat-form-field class="register-modal-field" appearance="outline">
       <mat-label>Повторите пароль</mat-label>
-      <input formControlName="repeatPassword" matInput>
+      <input [type]="hidePassword ? 'password' : 'text'" formControlName="repeatPassword" matInput>
     </mat-form-field>
     <mat-error *ngIf="registerForm.controls.repeatPassword.hasError('error')">
       {{registerForm.controls.repeatPassword.errors?.error}}

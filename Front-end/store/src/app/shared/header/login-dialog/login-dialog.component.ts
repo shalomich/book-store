@@ -15,11 +15,12 @@ import {LOGIN_ERROR} from '../../../core/utils/validation-errors';
   encapsulation: ViewEncapsulation.None,
 })
 export class LoginDialogComponent implements OnInit {
-
   public loginForm = new FormGroup({
     email: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
   });
+
+  public hidePassword = true;
 
   constructor(private dialog: MatDialog,
     private readonly authService: AuthorizationService,
