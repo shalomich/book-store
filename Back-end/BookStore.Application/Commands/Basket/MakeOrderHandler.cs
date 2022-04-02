@@ -19,21 +19,20 @@ namespace BookStore.Application.Commands
     public class MakeOrderHandler : IRequestHandler<MakeOrderCommand, Order>
     {
         private const string EmptyBasketMessage = "Basket is empty";
-        private DbEntityQueryBuilder<BasketProduct> BasketProductQueryBuilder { get; }
+        private ApplicationContext Context { get;}
 
-        public MakeOrderHandler(DbEntityQueryBuilder<BasketProduct> basketProductQueryBuilder)
+        public MakeOrderHandler(ApplicationContext context)
         {
-            BasketProductQueryBuilder = basketProductQueryBuilder ?? throw new ArgumentNullException(nameof(basketProductQueryBuilder));
+            Context = context;
         }
 
         public async Task<Order> Handle(MakeOrderCommand request, CancellationToken cancellationToken)
         {
             var (userId, orderMaking) = request;
 
-            IEnumerable<BasketProduct> basketProducts = await BasketProductQueryBuilder
-                .AddSpecification(new BasketProductByUserIdSpecification(userId))
-                .AddIncludeRequirements(new BasketProductIncludeRequirement())
-                .Build()
+            IEnumerable<BasketProduct> basketProducts = await Context.BasketProducts
+                .Include(basketProduct => basketProduct.Product)
+                .Where(basketProduct => basketProduct.UserId == userId)
                 .ToListAsync();
 
             if (!basketProducts.Any())
@@ -55,7 +54,10 @@ namespace BookStore.Application.Commands
                 Products = orderProducts,
                 UserName = orderMaking.UserName,
                 Email = orderMaking.Email,
-                PhoneNumber = orderMaking.PhoneNumber
+                PhoneNumber = orderMaking.PhoneNumber,
+                Address = orderMaking.Address,
+                OrderReceiptMethod = orderMaking.OrderReceiptMethod,
+                PaymentMethod = orderMaking.PaymentMethod
             };
         }
     }
