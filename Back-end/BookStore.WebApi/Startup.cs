@@ -26,6 +26,8 @@ using BookStore.WebApi.Middlewares;
 using BookStore.Application.Providers;
 using Microsoft.AspNetCore.Identity;
 using BookStore.Application.Services.CatalogSelections;
+using Telegram.Bot;
+using BookStore.TelegramBot.Notifications;
 
 namespace BookStore.WebApi
 {
@@ -42,6 +44,7 @@ namespace BookStore.WebApi
         {
             var applicationAssembly = AppDomain.CurrentDomain.GetAssemblies()
                 .Single(assebmly => assebmly.GetName().Name == "BookStore.Application");
+
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationContext>(options =>
             {
@@ -62,6 +65,8 @@ namespace BookStore.WebApi
             services.AddScoped<CategorySelection>();
             services.AddScoped<SpecialForYouCategorySelection>();
 
+            services.AddSingleton<ITelegramBotClient>(new TelegramBotClient("5298206558:AAE3BhhtWnrQgDJSaDzoZ6-FZpiIWJsFUrw"));
+
             services.AddDataTransformerBuildFacade(applicationAssembly);
             services.AddScoped(typeof(DbEntityQueryBuilder<>));
             services.AddScoped(typeof(DbFormEntityQueryBuilder<>));
@@ -71,6 +76,8 @@ namespace BookStore.WebApi
 
             services.Configure<DataProtectionTokenProviderOptions>(options => 
                 options.TokenLifespan = TimeSpan.FromMinutes(15));
+
+            services.Configure<TelegramBotMessages>(_configuration.GetSection("TelegramBot:Messages"));
 
             services.AddIdentity<User, IdentityRole<int>>()
                 .AddEntityFrameworkStores<ApplicationContext>()
@@ -100,7 +107,7 @@ namespace BookStore.WebApi
                     };
                 });
 
-            services.AddMediatR(applicationAssembly);
+            services.AddMediatR(applicationAssembly, typeof(TelegramBotMessages).Assembly);
             services.AddAutoMapper(Assembly.GetExecutingAssembly(), applicationAssembly);
             services.AddCors();
 
