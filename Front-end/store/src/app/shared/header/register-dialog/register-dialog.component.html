@@ -2,24 +2,39 @@
   <div class="register-title">
     <span>Регистрация</span>
   </div>
-  <mat-form-field class="register-modal-field" appearance="outline">
-    <mat-label>Email</mat-label>
-    <input [formControl]="email" matInput>
-  </mat-form-field>
-  <mat-form-field class="register-modal-field" appearance="outline">
-    <mat-label>Пароль</mat-label>
-    <input [formControl]="password" matInput>
-  </mat-form-field>
-  <mat-form-field class="register-modal-field" appearance="outline">
-    <mat-label>Повторите пароль</mat-label>
-    <input [formControl]="repeatPassword" matInput>
-  </mat-form-field>
-  <mat-error *ngIf="this.repeatPassword.hasError('passwordMatchError')">
-    {{repeatPassword.errors?.passwordMatchError}}
-  </mat-error>
-  <div class="register-button">
-    <button (click)="register()" mat-stroked-button color="primary">Регистрация</button>
-  </div>
+  <form [formGroup]="registerForm" (submit)="register()">
+    <mat-form-field class="register-modal-field" appearance="outline">
+      <mat-label>Email</mat-label>
+      <input formControlName="email" matInput>
+    </mat-form-field>
+    <mat-error *ngIf="registerForm.controls.email.hasError('error')">
+      {{registerForm.controls.email.errors?.error}}
+    </mat-error>
+    <mat-form-field class="register-modal-field" appearance="outline">
+      <mat-label>Имя</mat-label>
+      <input formControlName="name" matInput>
+    </mat-form-field>
+    <mat-error *ngIf="registerForm.controls.name.hasError('error')">
+      {{registerForm.controls.name.errors?.error}}
+    </mat-error>
+    <mat-form-field class="register-modal-field" appearance="outline">
+      <mat-label>Пароль</mat-label>
+      <input formControlName="password" matInput>
+    </mat-form-field>
+    <mat-error *ngIf="registerForm.controls.password.hasError('error')">
+      {{registerForm.controls.password.errors?.error}}
+    </mat-error>
+    <mat-form-field class="register-modal-field" appearance="outline">
+      <mat-label>Повторите пароль</mat-label>
+      <input formControlName="repeatPassword" matInput>
+    </mat-form-field>
+    <mat-error *ngIf="registerForm.controls.repeatPassword.hasError('error')">
+      {{registerForm.controls.repeatPassword.errors?.error}}
+    </mat-error>
+    <div class="register-button">
+      <button [disabled]="!registerForm.valid" type="submit" mat-stroked-button color="primary">Регистрация</button>
+    </div>
+  </form>
   <div class="register-link">
     <span>Уже есть аккаунт? <a (click)="openLoginDialog($event)" href="">Войдите</a></span>
   </div>

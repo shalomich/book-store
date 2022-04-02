@@ -1,32 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 
-import { MatDialog } from '@angular/material/dialog';
-import { FormControl } from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
-import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
-import { AuthorizationService } from '../../../core/services/authorization.service';
-import {RegisterValidator} from '../../../core/validators/register-validator';
-import {AuthorizationDataProvider} from "../../../core/services/authorization-data.provider";
+import {LoginDialogComponent} from '../login-dialog/login-dialog.component';
+import {AuthorizationService} from '../../../core/services/authorization.service';
+import {AuthValidator} from '../../../core/validators/auth-validator';
 
 @Component({
   selector: 'app-register-dialog',
   templateUrl: './register-dialog.component.html',
   styleUrls: ['./register-dialog.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class RegisterDialogComponent implements OnInit {
 
-  public email: FormControl = new FormControl();
+  public registerForm = new FormGroup({
+    email: new FormControl('', { validators: [AuthValidator.emailFormat(), Validators.required], updateOn: 'blur' }),
+    name: new FormControl('', { validators: Validators.required, updateOn: 'blur' }),
+    password: new FormControl('', { validators: [Validators.required, AuthValidator.passwordFormat()], updateOn: 'blur' }),
+    repeatPassword: new FormControl('', { validators: Validators.required, updateOn: 'blur' }),
+  });
 
-  public password: FormControl = new FormControl();
-
-  public repeatPassword: FormControl = new FormControl();
-
-  constructor(private dialog: MatDialog,
-              private readonly authService: AuthorizationService) {
-    this.repeatPassword.setValidators(RegisterValidator.matchPassword(this.password));
-  }
+  constructor(private dialog: MatDialog, private readonly authService: AuthorizationService) {}
 
   ngOnInit(): void {
+    this.registerForm.controls.repeatPassword.setValidators(AuthValidator.matchPassword(this.registerForm.controls.password));
   }
 
   public openLoginDialog(e: Event) {
@@ -38,7 +37,7 @@ export class RegisterDialogComponent implements OnInit {
   }
 
   public register(): void {
-    this.authService.register(this.email.value, this.password.value);
+    this.authService.register(this.registerForm.value.email, this.registerForm.value.password, this.registerForm.value.name);
     this.dialog.closeAll();
   }
 }

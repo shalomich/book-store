@@ -24,8 +24,8 @@ export class AuthorizationService {
       });
   }
 
-  public register(email: string, password: string): void {
-    this.http.post<{accessToken: string; refreshToken: string;}>(REGISTER_URL, { email, password })
+  public register(email: string, password: string, firstName: string): void {
+    this.http.post<{accessToken: string; refreshToken: string;}>(REGISTER_URL, { email, password, firstName })
       .subscribe(data => {
         this.authProvider.token.next(data.accessToken);
         this.authProvider.refreshToken.next(data.refreshToken);
