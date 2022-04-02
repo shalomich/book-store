@@ -14,14 +14,16 @@ export class AuthorizationService {
 
   constructor(private readonly http: HttpClient, private readonly authProvider: AuthorizationDataProvider) { }
 
-  public login(email: string, password: string): void {
+  public login(email: string, password: string, exitModalCallback: () => void, setErrorCallback: () => void): void {
     this.http.post<{accessToken: string; refreshToken: string;}>(LOGIN_URL, { email, password })
       .subscribe(data => {
         this.authProvider.token.next(data.accessToken);
         this.authProvider.refreshToken.next(data.refreshToken);
         localStorage.setItem('token', data.accessToken);
         localStorage.setItem('refreshToken', data.refreshToken);
-      });
+        exitModalCallback();
+      },
+        error => setErrorCallback());
   }
 
   public register(email: string, password: string, firstName: string, exitModalCallback: () => void, setErrorCallback: () => void): void {

@@ -1,9 +1,12 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {RegisterDialogComponent} from '../register-dialog/register-dialog.component';
-import {AuthorizationService} from '../../../core/services/authorization.service';
-import {FormControl} from '@angular/forms';
-import {AuthorizationDataProvider} from "../../../core/services/authorization-data.provider";
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { RegisterDialogComponent } from '../register-dialog/register-dialog.component';
+import { AuthorizationService } from '../../../core/services/authorization.service';
+import { AuthorizationDataProvider } from '../../../core/services/authorization-data.provider';
+import {LOGIN_ERROR} from '../../../core/utils/validation-errors';
 
 @Component({
   selector: 'app-login-dialog',
@@ -13,13 +16,14 @@ import {AuthorizationDataProvider} from "../../../core/services/authorization-da
 })
 export class LoginDialogComponent implements OnInit {
 
-  public email: FormControl = new FormControl();
-
-  public password: FormControl = new FormControl();
+  public loginForm = new FormGroup({
+    email: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
+  });
 
   constructor(private dialog: MatDialog,
-              private readonly authService: AuthorizationService,
-              private readonly authProvider: AuthorizationDataProvider) { }
+    private readonly authService: AuthorizationService,
+    private readonly authProvider: AuthorizationDataProvider) { }
 
   ngOnInit(): void {
   }
@@ -33,7 +37,15 @@ export class LoginDialogComponent implements OnInit {
   }
 
   public login() {
-    this.authService.login(this.email.value, this.password.value);
+    this.authService.login(this.loginForm.controls.email.value, this.loginForm.controls.password.value,
+      () => this.close(), () => this.setLoginError());
+  }
+
+  public close() {
     this.dialog.closeAll();
+  }
+
+  public setLoginError() {
+    this.loginForm.setErrors({ error: LOGIN_ERROR });
   }
 }

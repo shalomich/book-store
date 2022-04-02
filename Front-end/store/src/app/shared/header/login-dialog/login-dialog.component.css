@@ -39,3 +39,8 @@ input.mat-input-element {
 .mat-form-field.mat-focused .mat-form-field-label {
   color: #2199e8 !important;
 }
+.mat-error {
+  margin-top: -3em;
+  margin-bottom: 2em;
+}
+

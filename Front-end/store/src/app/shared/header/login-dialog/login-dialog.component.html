@@ -2,17 +2,22 @@
   <div class="login-title">
     <span>Вход</span>
   </div>
-  <mat-form-field class="login-modal-field" appearance="outline">
-    <mat-label>Email</mat-label>
-    <input [formControl]="email" matInput>
-  </mat-form-field>
-  <mat-form-field class="login-modal-field" appearance="outline">
-    <mat-label>Пароль</mat-label>
-    <input [formControl]="password" matInput>
-  </mat-form-field>
-  <div class="login-button">
-    <button (click)="login()"  mat-stroked-button color="primary">Войти</button>
-  </div>
+  <form [formGroup]="loginForm" (submit)="login()">
+    <mat-form-field class="login-modal-field" appearance="outline">
+      <mat-label>Email</mat-label>
+      <input formControlName="email" matInput>
+    </mat-form-field>
+    <mat-form-field class="login-modal-field" appearance="outline">
+      <mat-label>Пароль</mat-label>
+      <input formControlName="password" matInput>
+    </mat-form-field>
+    <mat-error *ngIf="loginForm.hasError('error')">
+      {{loginForm.errors?.error}}
+    </mat-error>
+    <div class="login-button">
+      <button [disabled]="!loginForm.valid" type="submit"  mat-stroked-button color="primary">Войти</button>
+    </div>
+  </form>
   <div class="register-link">
     <span>Нет аккаунта? <a (click)="openRegisterDialog($event)" href="">Зарегистрируйтесь</a></span>
   </div>
