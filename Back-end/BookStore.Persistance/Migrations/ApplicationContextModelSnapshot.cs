@@ -579,7 +579,10 @@ namespace App.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("MarkNotificationEnable")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("TagNotificationEnable")
                         .HasColumnType("bit");
 
                     b.Property<long?>("TelegramId")

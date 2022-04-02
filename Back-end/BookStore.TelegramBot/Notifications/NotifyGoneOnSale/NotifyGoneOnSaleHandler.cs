@@ -1,4 +1,5 @@
-﻿using BookStore.Application.Notifications.BookCreated;
+﻿using BookStore.Application.DbQueryConfigs.Specifications;
+using BookStore.Application.Notifications.BookCreated;
 using BookStore.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -58,7 +59,8 @@ internal class NotifyGoneOnSaleHandler : INotificationHandler<BookCreatedNotific
     private async Task<(long TelegramId, string[] Tags)[]> GetTagSubscribersInfo(IEnumerable<int> tagIds, CancellationToken cancellationToken)
     {
         var usersWithActiveSubsription = Context.Users
-            .Where(user => user.Subscription.IsActive == true);
+            .Where(new HasConfirmedSubsciptionSpecification())
+            .Where(user => user.Subscription.TagNotificationEnable == true);
 
         var usersHaveTags = usersWithActiveSubsription
             .Where(user => user.Tags.Any(

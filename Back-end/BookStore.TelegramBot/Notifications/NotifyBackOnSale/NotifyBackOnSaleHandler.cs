@@ -1,4 +1,5 @@
-﻿using BookStore.Application.Notifications.BookUpdated;
+﻿using BookStore.Application.DbQueryConfigs.Specifications;
+using BookStore.Application.Notifications.BookUpdated;
 using BookStore.Domain.Entities.Products;
 using BookStore.Persistance;
 using MediatR;
@@ -90,7 +91,8 @@ internal class NotifyBackOnSaleHandler : INotificationHandler<BookUpdatedNotific
     private async Task<IEnumerable<long>> GetMarkSubsriberTelegramIds(IEnumerable<int> markIds, CancellationToken cancellationToken)
     {
         var usersWithActiveSubsription = Context.Users
-            .Where(user => user.Subscription.IsActive == true);
+            .Where(new HasConfirmedSubsciptionSpecification())
+            .Where(user => user.Subscription.MarkNotificationEnable == true);
 
         var usersHaveMark = usersWithActiveSubsription
             .Where(user => user.Marks.Any(

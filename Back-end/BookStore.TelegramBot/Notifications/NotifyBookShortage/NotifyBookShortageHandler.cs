@@ -1,4 +1,5 @@
-﻿using BookStore.Application.Notifications.OrderPlaced;
+﻿using BookStore.Application.DbQueryConfigs.Specifications;
+using BookStore.Application.Notifications.OrderPlaced;
 using BookStore.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -82,7 +83,8 @@ internal class NotifyBookShortageHandler : INotificationHandler<OrderPlacedNotif
     private async Task<IEnumerable<long>> GetMarkSubsriberTelegramIds(IEnumerable<int> markIds, CancellationToken cancellationToken)
     {
         var usersWithActiveSubsription = Context.Users
-            .Where(user => user.Subscription.IsActive == true);
+            .Where(new HasConfirmedSubsciptionSpecification())
+            .Where(user => user.Subscription.MarkNotificationEnable == true);
 
         var usersHaveMark = usersWithActiveSubsription
             .Where(user => user.Marks.Any(

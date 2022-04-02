@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220401145803_CreateTableSubscription")]
-    partial class CreateTableSubscription
+    [Migration("20220402115306_CreateTableSubscriptions")]
+    partial class CreateTableSubscriptions
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -581,7 +581,10 @@ namespace App.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("MarkNotificationEnable")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("TagNotificationEnable")
                         .HasColumnType("bit");
 
                     b.Property<long?>("TelegramId")

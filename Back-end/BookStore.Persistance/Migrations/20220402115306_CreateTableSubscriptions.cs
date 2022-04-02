@@ -4,7 +4,7 @@
 
 namespace App.Migrations
 {
-    public partial class CreateTableSubscription : Migration
+    public partial class CreateTableSubscriptions : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,8 @@ namespace App.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TelegramId = table.Column<long>(type: "bigint", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    MarkNotificationEnable = table.Column<bool>(type: "bit", nullable: false),
+                    TagNotificationEnable = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
