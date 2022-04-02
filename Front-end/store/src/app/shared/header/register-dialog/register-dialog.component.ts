@@ -1,11 +1,12 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
-import {MatDialog} from '@angular/material/dialog';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import {LoginDialogComponent} from '../login-dialog/login-dialog.component';
-import {AuthorizationService} from '../../../core/services/authorization.service';
-import {AuthValidator} from '../../../core/validators/auth-validator';
+import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
+import { AuthorizationService } from '../../../core/services/authorization.service';
+import { AuthValidator } from '../../../core/validators/auth-validator';
+import {EXISTING_EMAIL_ERROR} from '../../../core/utils/validation-errors';
 
 @Component({
   selector: 'app-register-dialog',
@@ -37,7 +38,15 @@ export class RegisterDialogComponent implements OnInit {
   }
 
   public register(): void {
-    this.authService.register(this.registerForm.value.email, this.registerForm.value.password, this.registerForm.value.name);
+    this.authService.register(this.registerForm.value.email, this.registerForm.value.password, this.registerForm.value.name,
+      () => this.close(), () => this.setExistingEmailError());
+  }
+
+  public close() {
     this.dialog.closeAll();
+  }
+
+  public setExistingEmailError() {
+    this.registerForm.controls.email.setErrors({ error: EXISTING_EMAIL_ERROR });
   }
 }

@@ -24,14 +24,16 @@ export class AuthorizationService {
       });
   }
 
-  public register(email: string, password: string, firstName: string): void {
+  public register(email: string, password: string, firstName: string, exitModalCallback: () => void, setErrorCallback: () => void): void {
     this.http.post<{accessToken: string; refreshToken: string;}>(REGISTER_URL, { email, password, firstName })
       .subscribe(data => {
         this.authProvider.token.next(data.accessToken);
         this.authProvider.refreshToken.next(data.refreshToken);
         localStorage.setItem('token', data.accessToken);
         localStorage.setItem('refreshToken', data.refreshToken);
-      });
+        exitModalCallback();
+      },
+        error => setErrorCallback());
   }
 
   public logout(): void {

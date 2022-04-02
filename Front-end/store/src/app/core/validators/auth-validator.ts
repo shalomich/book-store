@@ -1,10 +1,11 @@
 import { AbstractControl, AsyncValidatorFn, FormControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import {EMAIL_FORMAT_ERROR, PASSWORD_FORMAT_ERROR, PASSWORD_MATCH_ERROR} from '../utils/validation-errors';
 export class AuthValidator {
 
   public static matchPassword(password: AbstractControl): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control.value !== password.value) {
-        return { error: 'Пароли не совпадают' };
+        return { error: PASSWORD_MATCH_ERROR };
       }
 
       return null;
@@ -20,7 +21,7 @@ export class AuthValidator {
         );
 
       if (!isFormatValid && control.value) {
-        return { error: 'Неверный формат email' };
+        return { error: EMAIL_FORMAT_ERROR };
       }
 
       return null;
@@ -32,7 +33,7 @@ export class AuthValidator {
       const isFormatValid = (control.value.search(/\d/) !== -1) && (control.value.search(/[a-zA-Z]/) !== -1);
 
       if ((control.value.length < 8 || !isFormatValid) && control.value) {
-        return { error: 'Пароль должен быть не меньше 8 символов, и содержать буквы и цифры' };
+        return { error: PASSWORD_FORMAT_ERROR };
       }
 
       return null;
