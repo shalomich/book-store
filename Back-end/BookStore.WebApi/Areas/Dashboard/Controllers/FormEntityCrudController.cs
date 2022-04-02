@@ -60,18 +60,18 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
         }
 
         [HttpPost] 
-        public async Task<IActionResult> Create(TForm entityForm) 
+        public virtual async Task<int> Create(TForm entityForm) 
         {
             var formEntity = Mapper.Map<TFormEntity>(entityForm);
 
             var createdEntity = await Mediator.Send(new CreateCommand(formEntity));
 
-            return CreatedAtAction(nameof(Read), new { id = createdEntity.Id }, Mapper.Map<TForm>(createdEntity));
+            return createdEntity.Id;
         }
 
         
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, TForm entityForm, [FromServices] DbFormEntityQueryBuilder<Book> queryBuilder)
+        public virtual async Task<IActionResult> Update(int id, TForm entityForm, [FromServices] DbFormEntityQueryBuilder<Book> queryBuilder)
         {
             TFormEntity formEntity = await ReadById(id);
             

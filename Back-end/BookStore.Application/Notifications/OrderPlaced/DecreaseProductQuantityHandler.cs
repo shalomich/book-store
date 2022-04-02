@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using BookStore.Domain.Entities.Products;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.Application.Notifications.OrderPlaced
 {
@@ -27,12 +28,23 @@ namespace BookStore.Application.Notifications.OrderPlaced
             int[] productIds = productQuantityDecreases.Keys.ToArray();
 
             var products = Context.Set<Product>()
+                .Include(product => product.ProductCloseout)
                 .Where(product => productIds.Contains(product.Id));
 
             foreach (var product in products)
+            {
                 product.Quantity -= productQuantityDecreases[product.Id];
-            
-            await Context.SaveChangesAsync();
+
+                if (product.Quantity == 0)
+                {
+                    product.ProductCloseout = new ProductCloseout
+                    {
+                        Date = DateTime.Now,
+                    };      
+                }
+            }
+
+            await Context.SaveChangesAsync(cancellationToken);
         }
     }
 }

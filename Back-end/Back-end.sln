@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30804.86
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.WebApi", "BookStore.WebApi\BookStore.WebApi.csproj", "{00100D42-513A-418A-92B4-062F03BBC666}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Persistance", "BookStore.Persistance\BookStore.Persistance.csproj", "{383AEC47-5ABE-48C0-9BA0-9033F0CC076F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Application", "BookStore.Application\BookStore.Application.csproj", "{EBD07790-090A-4317-92BC-1CB8631C2B7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookStore.TelegramBot", "BookStore.TelegramBot\BookStore.TelegramBot.csproj", "{5E372897-38A0-44D7-8916-D0123E8E1446}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{EBD07790-090A-4317-92BC-1CB8631C2B7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBD07790-090A-4317-92BC-1CB8631C2B7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBD07790-090A-4317-92BC-1CB8631C2B7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E372897-38A0-44D7-8916-D0123E8E1446}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E372897-38A0-44D7-8916-D0123E8E1446}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E372897-38A0-44D7-8916-D0123E8E1446}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E372897-38A0-44D7-8916-D0123E8E1446}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

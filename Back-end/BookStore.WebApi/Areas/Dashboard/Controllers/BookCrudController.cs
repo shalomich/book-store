@@ -11,6 +11,8 @@ using BookStore.Application.Services.DbQueryBuilders;
 using BookStore.Application.DbQueryConfigs.IncludeRequirements;
 using BookStore.WebApi.Areas.Dashboard.ViewModels.Forms;
 using BookStore.Application.Queries;
+using BookStore.Application.Notifications.BookCreated;
+using BookStore.Application.Notifications.BookUpdated;
 
 namespace BookStore.WebApi.Areas.Dashboard.Controllers
 {
@@ -28,6 +30,24 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
                 new BookGenresIncludeRequirement(),
                 new BookTagsIncludeRequirement()
             });
+        }
+
+        public override async Task<int> Create(BookForm entityForm)
+        {
+            int createdBookId = await base.Create(entityForm);
+            
+            await Mediator.Publish(new BookCreatedNotification(createdBookId));
+
+            return createdBookId;
+        }
+
+        public override async Task<IActionResult> Update(int id, BookForm entityForm, [FromServices] DbFormEntityQueryBuilder<Book> queryBuilder)
+        {
+            var result = await base.Update(id, entityForm, queryBuilder);
+
+            await Mediator.Publish(new BookUpdatedNotification(id));
+
+            return result;
         }
 
         [HttpGet("isbn-existed")]
