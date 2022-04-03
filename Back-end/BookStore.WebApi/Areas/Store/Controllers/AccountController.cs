@@ -69,5 +69,13 @@ namespace BookStore.WebApi.Areas.Store.Controllers
                 return false;
             }
         }
+
+        [HttpGet("telegram")]
+        public IActionResult RedirectToTelegram()
+        {
+            string query = HttpContext.Request.QueryString.Value;
+            return Redirect($"tg://resolve?{query}");
+        }
+
     }
 }
