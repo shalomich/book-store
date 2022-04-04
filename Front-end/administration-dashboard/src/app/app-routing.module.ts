@@ -6,6 +6,7 @@ import { ProductPageComponent } from './product-page/product-page.component';
 import { RelatedEntityPageComponent } from './related-entity-page/related-entity-page.component';
 import { BookFormComponent } from './forms/book-form/book-form.component';
 import { RelatedEntityFormComponent } from './forms/related-entity-form/related-entity-form.component';
+import { TelegramRedirectComponent } from './telegram-redirect/telegram-redirect.component';
 
 const productFormsRoutes: Routes = [
   { path: 'dashboard/form/book', component: BookFormComponent, pathMatch: 'full' },
@@ -17,6 +18,7 @@ const productFormsRoutes: Routes = [
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard/product', pathMatch: 'full' },
   { path: 'dashboard/product', component: ProductTypePageComponent },
+  { path: 'dashboard/telegram', component: TelegramRedirectComponent },
   { path: 'dashboard/product/:product', component: ProductPageComponent },
   { path: 'dashboard/product/:product/:relatedEntity', component: RelatedEntityPageComponent },
 ];
