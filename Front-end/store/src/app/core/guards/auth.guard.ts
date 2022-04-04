@@ -4,9 +4,10 @@ import { Observable, of } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+import { catchError, map } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+
 import { REFRESH_URL } from '../utils/values';
-import {catchError, map} from 'rxjs/operators';
-import {MatDialog} from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +32,7 @@ export class AuthGuard implements CanActivate {
     }
     const isRefreshSuccess = this.tryRefreshingTokens(token);
     if (!isRefreshSuccess) {
-      this.router.navigate(['/book-store/catalog/book']);
+      this.router.navigate(['/book-store']);
     }
     return isRefreshSuccess;
   }
@@ -51,7 +52,7 @@ export class AuthGuard implements CanActivate {
       map(response => {
         const newToken = (<any>response).body.accessToken;
         const newRefreshToken = (<any>response).body.refreshToken;
-        localStorage.setItem('jwt', newToken);
+        localStorage.setItem('token', newToken);
         localStorage.setItem('refreshToken', newRefreshToken);
         return true;
       }),

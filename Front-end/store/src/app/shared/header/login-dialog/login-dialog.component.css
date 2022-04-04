@@ -39,3 +39,18 @@ input.mat-input-element {
 .mat-form-field.mat-focused .mat-form-field-label {
   color: #2199e8 !important;
 }
+
+.mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+.login-modal .mat-error {
+  margin-top: -2em;
+  margin-bottom: 1em;
+}
+
+.mat-icon {
+  color: #2199e8;
+  cursor: pointer;
+}
+
