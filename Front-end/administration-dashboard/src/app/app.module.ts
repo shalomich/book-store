@@ -29,6 +29,7 @@ import { PlentyFilterComponent } from './shared/plenty-filter/plenty-filter.comp
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TelegramRedirectComponent } from './telegram-redirect/telegram-redirect.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     RelatedEntityListItemComponent,
     RangeFilterComponent,
     RangeFilterComponent,
-    PlentyFilterComponent
+    PlentyFilterComponent,
+    TelegramRedirectComponent
   ],
   imports: [
     BrowserModule,
