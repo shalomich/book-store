@@ -14,7 +14,7 @@ export class TelegramRedirectComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(data => {
       const queryParamsString = new HttpParams({ fromObject: data }).toString();
-      window.open(`tg://resolve?${queryParamsString}`, '_self');
+      window.open(`tg:resolve?${queryParamsString}`, '_self');
     });
   }
 
