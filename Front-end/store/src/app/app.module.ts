@@ -40,10 +40,12 @@ import { BasketElementComponent } from './basket-page/basket-element/basket-elem
 import { BasketInfoBlockComponent } from './basket-page/basket-info-block/basket-info-block.component';
 
 import { ProductOptionsStorage } from './core/services/product-options.storage';
+import { ProfilePageComponent } from './profile-page/profile-page.component';
+import {ProfileService} from './core/services/profile.service';
 
 
 @NgModule({
-  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent, MainPageComponent, SelectionPageComponent, CatalogComponent, BasketPageComponent, BasketElementComponent, BasketInfoBlockComponent],
+  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent, MainPageComponent, SelectionPageComponent, CatalogComponent, BasketPageComponent, BasketElementComponent, BasketInfoBlockComponent, ProfilePageComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -62,7 +64,7 @@ import { ProductOptionsStorage } from './core/services/product-options.storage';
     MatFormFieldModule,
     MatInputModule,
   ],
-  providers: [ProductOptionsStorage],
+  providers: [ProductOptionsStorage, ProfileService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
