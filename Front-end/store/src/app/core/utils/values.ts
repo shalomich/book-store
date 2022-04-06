@@ -4,6 +4,7 @@ export const LOGIN_URL = 'https://localhost:44327/store/account/login';
 export const REGISTER_URL = 'https://localhost:44327/store/account/registration';
 export const REFRESH_URL = 'https://localhost:44327/store/account/refresh';
 export const BASKET_URL = 'https://localhost:44327/store/basket/product';
+export const PROFILE_URL = 'https://localhost:44327/store/profile';
 
 export const PAGE_SIZE = 3;
 export const PAGE_NUMBER = 1;

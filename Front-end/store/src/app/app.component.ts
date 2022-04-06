@@ -14,6 +14,6 @@ export class AppComponent implements OnInit {
   constructor(private readonly profileService: ProfileService) {}
 
   public ngOnInit() {
-    this.profileService.getUserPofile();
+    this.profileService.getUserProfile();
   }
 }
