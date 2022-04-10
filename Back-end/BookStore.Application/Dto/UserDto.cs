@@ -2,6 +2,7 @@
 
 public record UserDto
 {
+    public int Id { init; get; } 
     public string FirstName { init; get; }
     public string LastName { init; get; }
     public string Email { init; get; }
