@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { map } from 'rxjs/operators';
+import {map, share} from 'rxjs/operators';
 
 import { UserProfile } from '../models/user-profile';
 import { PROFILE_URL } from '../utils/values';
@@ -31,6 +31,7 @@ export class ProfileService {
 
     this.userProfile = this.http.get<UserProfileDto>(PROFILE_URL, { headers }).pipe(
       map(profile => this.userProfileMapper.fromDto(profile)),
+      share(),
     );
   }
 

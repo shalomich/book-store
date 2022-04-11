@@ -15,5 +15,6 @@ export class AppComponent implements OnInit {
 
   public ngOnInit() {
     this.profileService.getUserProfile();
+    this.profileService.userProfile.subscribe();
   }
 }

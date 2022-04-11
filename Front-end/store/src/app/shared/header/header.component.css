@@ -1,6 +1,5 @@
 .header {
   display: flex;
-  justify-content: space-between;
   padding: 2em 2em 2em;
 }
 
@@ -8,9 +7,9 @@
   color: #2199e8 !important;
   align-self: flex-end;
 }
-.search-field {
+
+.search-field-block {
   align-self: center;
-  margin-right: 20vw;
 }
 
 .logo {
@@ -28,14 +27,60 @@
 
 .catalog-button {
   color: #2199e8 !important;
-  margin-left: 20em;
+  margin-left: 20vw;
+  margin-right: 5vw;
 }
 
 .basket-button {
   color: #2199e8 !important;
+  border: none !important;
 }
 
-.authorized-block {
+.authorized-block, .header-search-block {
   display: flex;
+}
+
+.authorized-block, .unauthorized-block {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.profile-menu-button {
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis;
+  width: 8vw;
+  min-width: 165px !important;
+  font-size: 1.2em;
+  color: #2199e8;
+}
+
+.profile-menu {
+  width: 8vw;
+  min-width: 165px !important;
+  box-shadow: none;
+  border: 1px #2199e8 solid;
+  border-radius: 0;
+}
+
+.profile-menu .mat-menu-content:not(:empty) {
+  padding: 0;
+}
+
+.profile-menu .mat-menu-content button {
+  color: #2199e8;
+  text-align: center;
+}
+
+.profile-menu .mat-menu-content hr {
+  color: #2199e8;
+  background-color: #2199e8;
+  border-width: 0;
+  height: 0.5px;
+  margin: 0;
+}
+
+.logout-button {
+  color: #f44336 !important;
 }
 

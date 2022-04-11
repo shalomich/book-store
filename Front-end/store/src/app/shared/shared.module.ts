@@ -47,6 +47,7 @@ import { SearchHintComponent } from './search-field/search-hint/search-hint.comp
 import { HeaderComponent } from './header/header.component';
 import { LoginDialogComponent } from './header/login-dialog/login-dialog.component';
 import { RegisterDialogComponent } from './header/register-dialog/register-dialog.component';
+import {MatMenuModule} from '@angular/material/menu';
 
 
 @NgModule({
@@ -80,22 +81,23 @@ import { RegisterDialogComponent } from './header/register-dialog/register-dialo
     SearchHintComponent,
     HeaderComponent,
   ],
-  imports: [
-    CommonModule,
-    CoreModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatExpansionModule,
-    MatIconModule,
-    NgxPaginationModule,
-    MatOptionModule,
-    MatCheckboxModule,
-    MatDialogModule,
-    RouterModule,
-  ],
+    imports: [
+        CommonModule,
+        CoreModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatExpansionModule,
+        MatIconModule,
+        NgxPaginationModule,
+        MatOptionModule,
+        MatCheckboxModule,
+        MatDialogModule,
+        RouterModule,
+        MatMenuModule,
+    ],
 })
 
 export class SharedModule { }

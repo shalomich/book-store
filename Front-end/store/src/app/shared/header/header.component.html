@@ -2,21 +2,32 @@
   <div routerLink="/book-store" class="logo">
     ComicStore
   </div>
-  <div class="catalog-button">
-    <button mat-stroked-button routerLink="/book-store/catalog/book">Каталог</button>
-  </div>
-  <div class="search-field">
-    <app-search-field></app-search-field>
+  <div class="header-search-block">
+    <div class="catalog-button">
+      <button mat-stroked-button routerLink="/book-store/catalog/book">Каталог</button>
+    </div>
+    <div class="search-field-block">
+      <app-search-field></app-search-field>
+    </div>
   </div>
   <div class="authorized-block" *ngIf="authorizationDataProvider.token | async; else loginButton">
+    <div>
+      <button class="profile-menu-button" mat-button [matMenuTriggerFor]="profileMenu">{{userName}}</button>
+      <mat-menu #profileMenu="matMenu" class="profile-menu">
+        <button routerLink="book-store/profile" mat-menu-item>Профиль</button>
+        <hr />
+        <button class="logout-button" mat-menu-item (click)="logout()">Выход</button>
+      </mat-menu>
+    </div>
     <button mat-stroked-button class="basket-button" routerLink="/book-store/basket">
       <mat-icon>shopping_cart</mat-icon>
     </button>
-    <button mat-stroked-button class="login-button" (click)="logout()">Выйти из аккаунта</button>
   </div>
 </div>
 
 <ng-template #loginButton>
-  <button class="login-button" mat-stroked-button (click)="openLoginDialog()">Войти</button>
+  <div class="unauthorized-block">
+    <button class="login-button" mat-stroked-button (click)="openLoginDialog()">Войти</button>
+  </div>
 </ng-template>
 
