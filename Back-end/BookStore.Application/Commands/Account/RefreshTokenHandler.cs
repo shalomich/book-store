@@ -34,8 +34,11 @@ namespace BookStore.Application.Commands.Account
 			var (user, refreshToken) = request;
 
 			if (await RefreshTokenRepository.IsValid(refreshToken, user) == false)
+            {
+				await RefreshTokenRepository.Remove(user);
 				throw new BadRequestException(WrongRefreshTokenMessage);
-
+			}
+			
 			return await TokensFactory.GenerateTokens(user);
 		}
 	}
