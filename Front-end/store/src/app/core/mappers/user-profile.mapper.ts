@@ -20,6 +20,7 @@ export class UserProfileMapper extends Mapper<UserProfileDto, UserProfile> {
   /** @inheritdoc */
   public toDto(data: UserProfile): UserProfileDto {
     return {
+      id: data.id,
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
@@ -31,6 +32,7 @@ export class UserProfileMapper extends Mapper<UserProfileDto, UserProfile> {
   /** @inheritdoc */
   public fromDto(dto: UserProfileDto): UserProfile {
     return new UserProfile({
+      id: dto.id,
       firstName: dto.firstName,
       lastName: dto.lastName,
       email: dto.email,

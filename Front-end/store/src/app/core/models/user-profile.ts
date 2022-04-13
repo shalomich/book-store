@@ -1,4 +1,6 @@
 export class UserProfile {
+  id: number;
+
   public firstName: string;
 
   public lastName: string;
@@ -11,6 +13,7 @@ export class UserProfile {
 
 
   constructor(profile: UserProfile) {
+    this.id = profile.id;
     this.firstName = profile.firstName;
     this.lastName = profile.lastName;
     this.email = profile.email;
