@@ -28,11 +28,9 @@ namespace BookStore.Application.Services
 
             return refreshToken;
         }
-        public async Task<bool> IsValid(string refreshToken, User user)
+        public Task<bool> IsValid(string refreshToken, User user)
         {
-            string currentRefreshToken = await UserManager.GetAuthenticationTokenAsync(user, AppTokenProvider, refreshTokenName);
-
-            return currentRefreshToken == refreshToken;
+            return UserManager.VerifyUserTokenAsync(user, AppTokenProvider, refreshTokenName, refreshToken);
         }
 
         public Task Remove(User user)
