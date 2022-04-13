@@ -5,12 +5,19 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthorizationDataProvider {
-  public token: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
+  public get accessToken(): string {
+    return localStorage.getItem('token') ?? '';
+  }
 
-  public refreshToken: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
+  public get refreshToken(): string {
+    return localStorage.getItem('refreshToken') ?? '';
+  }
 
-  constructor() {
-    this.token.next(localStorage.getItem('token'));
-    this.refreshToken.next(localStorage.getItem('refreshToken'));
+  public set accessToken(token: string) {
+    localStorage.setItem('token', token);
+  }
+
+  public set refreshToken(token: string) {
+    localStorage.setItem('refreshToken', token);
   }
 }

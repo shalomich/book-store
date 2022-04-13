@@ -42,10 +42,10 @@ export class BookService {
 
   public getById(id: number) {
     const headers = {
-      Authorization: `Bearer ${this.authorizationDataProvider.token.value}`,
+      Authorization: `Bearer ${this.authorizationDataProvider.accessToken}`,
     };
 
-    const options = this.authorizationDataProvider.token.value ? { headers } : {};
+    const options = this.authorizationDataProvider.accessToken ? { headers } : {};
 
     const book$ = this.http.get<BookDto>(`${PRODUCT_URL}${this.type}/${id}`, options);
 
@@ -56,7 +56,7 @@ export class BookService {
 
   public get(optionGroup: OptionGroup, searchOptions?: SearchOptions): Observable<ProductPreviewSet> {
     const headers = {
-      Authorization: `Bearer ${this.authorizationDataProvider.token.value}`,
+      Authorization: `Bearer ${this.authorizationDataProvider.accessToken}`,
     };
 
     const { pagingOptions, filterOptions, sortingOptions } = optionGroup;
@@ -77,7 +77,7 @@ export class BookService {
 
     const params = this.paramsBuilder.build();
 
-    const options = this.authorizationDataProvider.token.value ? { headers, params } : { params };
+    const options = this.authorizationDataProvider.accessToken ? { headers, params } : { params };
 
     return this.http.get<ProductPreviewSetDto>(`${PRODUCT_URL}${this.type}`, options).pipe(
       map(setDto => this.productPreviewSetMapper.fromDto(setDto)),

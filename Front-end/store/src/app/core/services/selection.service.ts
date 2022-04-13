@@ -41,7 +41,7 @@ export class SelectionService {
 
   public get(selection: Selection, optionGroup: OptionGroup): Observable<ProductPreviewSet> {
     const headers = {
-      Authorization: `Bearer ${this.authorizationDataProvider.token.value}`,
+      Authorization: `Bearer ${this.authorizationDataProvider.accessToken}`,
     };
 
     const { pagingOptions, filterOptions, sortingOptions } = optionGroup;
@@ -58,7 +58,7 @@ export class SelectionService {
 
     const params = this.paramsBuilder.build();
 
-    const options = this.authorizationDataProvider.token.value ? { headers, params } : { params };
+    const options = this.authorizationDataProvider.accessToken ? { headers, params } : { params };
 
 
     return this.http.get<ProductPreviewSetDto>(`${SELECTION_URL}${selection}`, options).pipe(

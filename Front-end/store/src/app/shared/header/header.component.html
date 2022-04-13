@@ -10,7 +10,7 @@
       <app-search-field></app-search-field>
     </div>
   </div>
-  <div class="authorized-block" *ngIf="authorizationDataProvider.token | async; else loginButton">
+  <div class="authorized-block" *ngIf="isAuthorized; else loginButton">
     <div>
       <button class="profile-menu-button" mat-button [matMenuTriggerFor]="profileMenu">{{userName}}</button>
       <mat-menu #profileMenu="matMenu" class="profile-menu">
