@@ -1,11 +1,12 @@
 ﻿
 using BookStore.Domain.Entities;
+using BookStore.Domain.Entities.Battles;
 using BookStore.Domain.Entities.Books;
 using BookStore.Domain.Entities.Products;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BookStore.Persistance
 {
@@ -22,6 +23,8 @@ namespace BookStore.Persistance
         public DbSet<BasketProduct> BasketProducts { set; get; }
         public DbSet<Order> Orders { set; get; }
         public DbSet<Mark> Marks { set; get; }
+        public DbSet<Battle> Battles { set; get; }
+        public DbSet<Vote> Votes { set; get; }
 
 
         public ApplicationContext(DbContextOptions options) : base(options)
@@ -37,6 +40,13 @@ namespace BookStore.Persistance
 
             modelBuilder.Entity<Product>().ToTable("Products");
             modelBuilder.Entity<Mark>().ToTable("Marks");
+
+            SetupEntity(modelBuilder.Entity<Vote>());
+        }
+
+        private void SetupEntity(EntityTypeBuilder<Vote> builder)
+        {
+            builder.HasIndex(entity => new { entity.UserId, entity.BattleBookId }).IsUnique();
         }
     }
 }
