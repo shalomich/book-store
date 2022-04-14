@@ -48,5 +48,11 @@ public class BattleController : ControllerBase
     {
         return await Mediator.Send(new GetBattlesSettingsQuery(), cancellationToken);
     }
+
+    [HttpPut("settings")]
+    public async Task UpdateBattlesSettings(BattleSettings battleSettings, CancellationToken cancellationToken)
+    {
+        await Mediator.Send(new UpdateBattleSettingsCommand(battleSettings), cancellationToken);
+    }
 }
 
