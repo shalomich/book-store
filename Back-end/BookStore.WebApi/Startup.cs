@@ -116,6 +116,8 @@ namespace BookStore.WebApi
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            _configuration[nameof(env.ContentRootPath)] = env.ContentRootPath;
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
