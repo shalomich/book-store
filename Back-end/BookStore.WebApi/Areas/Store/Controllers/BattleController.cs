@@ -1,8 +1,10 @@
-﻿using BookStore.Application.Queries.Battle.GetBattleInfo;
+﻿using BookStore.Application.Commands.Battle;
+using BookStore.Application.Queries.Battle.GetBattleInfo;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,6 +27,12 @@ public class BattleController : ControllerBase
     public async Task<BattleInfoDto> GetBattleInfo(CancellationToken cancellationToken)
     {
         return await Mediator.Send(new GetBattleInfoQuery(), cancellationToken);
+    }
+
+    [HttpPost]
+    public async Task CastVote([FromBody][Required] int battleBookId, CancellationToken cancellationToken)
+    {
+        await Mediator.Send(new CastVoteCommand(battleBookId), cancellationToken);
     }
 }
 
