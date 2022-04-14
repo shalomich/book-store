@@ -7,74 +7,72 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace BookStore.Application.Services
+namespace BookStore.Application.Services;
+
+public class JwtParser
 {
-    public class JwtParser
+    private JwtSettings JwtSettings { get; }
+
+    public JwtParser(IConfiguration configuration)
     {
-        private JwtSettings JwtSettings { get; }
+        JwtSettings = configuration
+            .GetSection(nameof(JwtSettings))
+            .Get<JwtSettings>();
+    }
 
-        public JwtParser(IConfiguration configuration)
+    public int FromToken(string token)
+    {
+        string tokenKey = JwtSettings.TokenKey;
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
+
+        var tokenValidationParameters = new TokenValidationParameters
         {
-            JwtSettings = configuration
-                .GetSection(nameof(JwtSettings))
-                .Get<JwtSettings>();
-        }
+            ValidateAudience = false,
+            ValidateIssuer = false,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = securityKey,
+            ValidateLifetime = false
+        };
 
-        public int FromToken(string token)
+        var tokenHandler = new JwtSecurityTokenHandler();
+
+        var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+
+        var jwtSecurityToken = securityToken as JwtSecurityToken;
+
+        if (jwtSecurityToken == null)
+            throw new SecurityTokenException();
+
+        int userId = int.Parse(principal.Claims
+            .Single(claim => claim.Type == nameof(userId))
+            .Value);
+
+        return userId;
+    }
+
+    public string ToToken(int userId)
+    {
+        var claims = new List<Claim> {
+            new Claim(nameof(userId), userId.ToString())
+        };
+
+        var (tokenKey, expiredMinutes) = JwtSettings;
+
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature);
+
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
-            string tokenKey = JwtSettings.TokenKey;
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
+            Subject = new ClaimsIdentity(claims),
+            Expires = DateTime.Now.AddMinutes(expiredMinutes),
+            SigningCredentials = credentials
+        };
 
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateAudience = false,
-                ValidateIssuer = false,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = securityKey,
-                ValidateLifetime = false
-            };
+        var tokenHandler = new JwtSecurityTokenHandler();
 
-            var tokenHandler = new JwtSecurityTokenHandler();
+        var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
-
-            var jwtSecurityToken = securityToken as JwtSecurityToken;
-
-            if (jwtSecurityToken == null)
-                throw new SecurityTokenException();
-
-            int userId = int.Parse(principal.Claims
-                .Single(claim => claim.Type == nameof(userId))
-                .Value);
-
-            return userId;
-        }
-
-        public string ToToken(int userId)
-        {
-            var claims = new List<Claim> {
-                new Claim(nameof(userId), userId.ToString())
-            };
-
-            var (tokenKey, expiredMinutes) = JwtSettings;
-
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddMinutes(expiredMinutes),
-                SigningCredentials = credentials
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return tokenHandler.WriteToken(token);
-        }
+        return tokenHandler.WriteToken(token);
     }
 }

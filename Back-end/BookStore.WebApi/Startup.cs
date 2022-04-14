@@ -28,6 +28,7 @@ using Microsoft.AspNetCore.Identity;
 using BookStore.Application.Services.CatalogSelections;
 using Telegram.Bot;
 using BookStore.TelegramBot.Notifications;
+using BookStore.Application.Extensions;
 
 namespace BookStore.WebApi
 {
@@ -56,14 +57,7 @@ namespace BookStore.WebApi
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
                 .ConfigureApplicationPartManager(options => options.FeatureProviders.Add(new GenericControllerFeatureProvider())); ;
 
-            services.AddScoped<JwtParser>();
-            services.AddScoped<TokensFactory>();
-            services.AddScoped<RefreshTokenRepository>();
-            services.AddScoped<LoggedUserAccessor>();
-
-            services.AddScoped<SearchSelection>();
-            services.AddScoped<CategorySelection>();
-            services.AddScoped<SpecialForYouCategorySelection>();
+            services.AddApplicationService();
 
             services.AddSingleton<ITelegramBotClient>(new TelegramBotClient("5298206558:AAE3BhhtWnrQgDJSaDzoZ6-FZpiIWJsFUrw"));
 

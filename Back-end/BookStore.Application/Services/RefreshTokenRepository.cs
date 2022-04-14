@@ -2,40 +2,36 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace BookStore.Application.Services
+namespace BookStore.Application.Services;
+internal class RefreshTokenRepository
 {
-    public class RefreshTokenRepository
+    private const string refreshTokenName = "RefreshToken";
+    private string AppTokenProvider { get; } 
+    private UserManager<User> UserManager { get; }
+
+    public RefreshTokenRepository(UserManager<User> userManager, IConfiguration configuration)
     {
-        private const string refreshTokenName = "RefreshToken";
-        private string AppTokenProvider { get; } 
-        private UserManager<User> UserManager { get; }
+        UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+        AppTokenProvider = configuration[nameof(AppTokenProvider)];
+    }
 
-        public RefreshTokenRepository(UserManager<User> userManager, IConfiguration configuration)
-        {
-            UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-            AppTokenProvider = configuration[nameof(AppTokenProvider)];
-        }
+    public async Task<string> Create(User user)
+    {
+        string refreshToken = await UserManager.GenerateUserTokenAsync(user, AppTokenProvider, refreshTokenName);
+        await UserManager.SetAuthenticationTokenAsync(user, AppTokenProvider, refreshTokenName, refreshToken);
 
-        public async Task<string> Create(User user)
-        {
-            string refreshToken = await UserManager.GenerateUserTokenAsync(user, AppTokenProvider, refreshTokenName);
-            await UserManager.SetAuthenticationTokenAsync(user, AppTokenProvider, refreshTokenName, refreshToken);
+        return refreshToken;
+    }
+   
+    public Task<bool> IsValid(string refreshToken, User user)
+    {
+        return UserManager.VerifyUserTokenAsync(user, AppTokenProvider, refreshTokenName, refreshToken);
+    }
 
-            return refreshToken;
-        }
-        public Task<bool> IsValid(string refreshToken, User user)
-        {
-            return UserManager.VerifyUserTokenAsync(user, AppTokenProvider, refreshTokenName, refreshToken);
-        }
-
-        public Task Remove(User user)
-        {
-            return UserManager.RemoveAuthenticationTokenAsync(user, AppTokenProvider, refreshTokenName);
-        }
+    public Task Remove(User user)
+    {
+        return UserManager.RemoveAuthenticationTokenAsync(user, AppTokenProvider, refreshTokenName);
     }
 }

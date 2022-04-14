@@ -1,36 +1,29 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BookStore.Application.Services
+namespace BookStore.Application.Services;
+public class LoggedUserAccessor
 {
-    public class LoggedUserAccessor
+    private IHttpContextAccessor HttpContextAccessor { get;}
+
+    public LoggedUserAccessor(IHttpContextAccessor httpContextAccessor)
     {
-        private IHttpContextAccessor HttpContextAccessor { get;}
+        HttpContextAccessor = httpContextAccessor;
+    }
 
-        public LoggedUserAccessor(IHttpContextAccessor httpContextAccessor)
-        {
-            HttpContextAccessor = httpContextAccessor;
-        }
+    public int GetCurrentUserId()
+    {
+        int userId;
 
-        public int GetCurrentUserId()
-        {
-            int userId;
-
-            var userIdString = HttpContextAccessor.HttpContext
-                .User.FindFirst(nameof(userId)).Value;
+        var userIdString = HttpContextAccessor.HttpContext
+            .User.FindFirst(nameof(userId)).Value;
             
-            userId = int.Parse(userIdString);
+        userId = int.Parse(userIdString);
 
-            return userId;
-        }
+        return userId;
+    }
 
-        public bool IsAuthenticated()
-        {
-            return HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
-        }
+    public bool IsAuthenticated()
+    {
+        return HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
     }
 }
