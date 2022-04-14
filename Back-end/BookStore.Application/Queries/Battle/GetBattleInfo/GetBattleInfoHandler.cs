@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using BookStore.Application.Exceptions;
 using BookStore.Application.Services;
 using BookStore.Domain.Entities.Battles;
 using BookStore.Persistance;
@@ -33,7 +34,12 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
 
         var battleInfo = await currentBattle
             .ProjectTo<BattleInfoDto>(Mapper.ConfigurationProvider)
-            .SingleAsync(cancellationToken);
+            .SingleOrDefaultAsync(cancellationToken);
+
+        if (battleInfo == null)
+        {
+            throw new NotFoundException("There is not active battle.");
+        }
 
         int currentUserId = LoggedUserAccessor.GetCurrentUserId();
 
