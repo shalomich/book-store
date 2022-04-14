@@ -9,11 +9,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using BookStore.Application.Queries.Battle.GetBattleSettings;
 
 namespace BookStore.Application.Commands.Battles.BeginBookBattle;
 
-public record BeginBookBattleCommand() : IRequest;
-internal class BeginBookBattleHandler : AsyncRequestHandler<BeginBookBattleCommand>
+public record BeginBookBattleCommand() : IRequest<int?>;
+internal class BeginBookBattleHandler : IRequestHandler<BeginBookBattleCommand, int?>
 {
     private ApplicationContext Context { get; }
     private BattleSettingsProvider BattleSettingsProvider { get; }
@@ -24,7 +25,7 @@ internal class BeginBookBattleHandler : AsyncRequestHandler<BeginBookBattleComma
         BattleSettingsProvider = battleSettingsProvider;
     }
 
-    protected override async Task Handle(BeginBookBattleCommand request, CancellationToken cancellationToken)
+    public async Task<int?> Handle(BeginBookBattleCommand request, CancellationToken cancellationToken)
     {
         var currentBattle = await Context.Battles
             .SingleOrDefaultAsync(battle => battle.IsActive, cancellationToken);
@@ -37,24 +38,30 @@ internal class BeginBookBattleHandler : AsyncRequestHandler<BeginBookBattleComma
 
             if (!battleFinished)
             {
-                return;
+                return null;
             }
-            else
-            {
-                currentBattle.IsActive = false;
-            }
+
+            currentBattle.IsActive = false;
         }
 
         var battleSettings = BattleSettingsProvider.GetBattleSettings();
 
+        var newBattle = await CreateNewBattle(battleSettings, cancellationToken);
+
+        Context.Add(newBattle);
+        await Context.SaveChangesAsync(cancellationToken);
+
+        return newBattle.Id;
+    }
+
+    private async Task<Battle> CreateNewBattle(BattleSettings battleSettings, CancellationToken cancellationToken)
+    {
         var newBattle = new Battle();
-        
+
         newBattle.EndDate = DateTimeOffset.Now.AddDays(battleSettings.BattleDurationInDays);
         newBattle.BattleBooks = await FindBattleBooksAsync(cancellationToken);
 
-        Context.Add(newBattle);
-
-        await Context.SaveChangesAsync(cancellationToken);
+        return newBattle;
     }
 
     private async Task<IEnumerable<BattleBook>> FindBattleBooksAsync(CancellationToken cancellationToken)

@@ -1,4 +1,5 @@
 ﻿using BookStore.Application.Commands.Battles.BeginBookBattle;
+using BookStore.Application.Notifications.BattleBegun;
 using MediatR;
 using System;
 using System.Threading;
@@ -17,7 +18,13 @@ internal class BeginBookBattleJob
 
     public async Task BeginBookBattle(CancellationToken cancellationToken)
     {
-        await Mediator.Send(new BeginBookBattleCommand(), cancellationToken);
+        
+        int? battleId = await Mediator.Send(new BeginBookBattleCommand(), cancellationToken);
+        
+        if (battleId.HasValue)
+        {
+            await Mediator.Publish(new BattleBegunNotification(battleId.Value));
+        }
     } 
 }
 
