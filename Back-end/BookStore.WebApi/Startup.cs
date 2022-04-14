@@ -29,6 +29,11 @@ using BookStore.Application.Services.CatalogSelections;
 using Telegram.Bot;
 using BookStore.TelegramBot.Notifications;
 using BookStore.Application.Extensions;
+using Hangfire;
+using Newtonsoft.Json;
+using Hangfire.SqlServer;
+using BookStore.WebApi.BackgroundJobs.Battles;
+using System.Threading;
 
 namespace BookStore.WebApi
 {
@@ -106,6 +111,22 @@ namespace BookStore.WebApi
             services.AddCors();
 
             services.AddSwaggerGen();
+
+            ConfigureHangfire(services);
+        }
+
+        private void ConfigureHangfire(IServiceCollection services)
+        {
+            var connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            services.AddHangfire(configuration => configuration
+               .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+               .UseSimpleAssemblyNameTypeSerializer()
+               .UseRecommendedSerializerSettings()
+               .UseSerializerSettings(new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })
+               .UseSqlServerStorage(connectionString));
+
+            services.AddHangfireServer();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -132,9 +153,12 @@ namespace BookStore.WebApi
                 .AllowAnyHeader()
                 .WithExposedHeaders("dataCount"));
 
+            RunBackgroundJobs();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHangfireDashboard();
             });
 
             app.UseSwagger();
@@ -143,6 +167,11 @@ namespace BookStore.WebApi
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+        }
+
+        private void RunBackgroundJobs()
+        {
+            RecurringJob.AddOrUpdate<BeginBookBattleJob>(job => job.BeginBookBattle(CancellationToken.None), Cron.Hourly);
         }
     }
 }
