@@ -2,32 +2,26 @@
 using Microsoft.EntityFrameworkCore;
 using QueryWorker;
 using QueryWorker.Args;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BookStore.Application.Services.CatalogSelections
+namespace BookStore.Application.Services.CatalogSelections;
+public class SearchSelection : ICatalogSelection
 {
-    public class SearchSelection : ICatalogSelection
+    private SelectionConfigurator<Book> SelectionConfigurator { get; }
+    public SearchArgs SearchArgs { get; set; }
+
+    public SearchSelection(SelectionConfigurator<Book> selectionConfigurator)
     {
-        private SelectionConfigurator<Book> SelectionConfigurator { get; }
-        public SearchArgs SearchArgs { get; set; }
+        SelectionConfigurator = selectionConfigurator;
+    }
 
-        public SearchSelection(SelectionConfigurator<Book> selectionConfigurator)
-        {
-            SelectionConfigurator = selectionConfigurator;
-        }
+    public IQueryable<Book> Select(DbSet<Book> bookSet)
+    {
+        IQueryable<Book> searchBooks = bookSet;
 
-        public IQueryable<Book> Select(DbSet<Book> bookSet)
-        {
-            IQueryable<Book> searchBooks = bookSet;
+        if (SearchArgs != null)
+            searchBooks = SelectionConfigurator.AddSearch(searchBooks, SearchArgs);
 
-            if (SearchArgs != null)
-                searchBooks = SelectionConfigurator.AddSearch(searchBooks, SearchArgs);
-
-            return searchBooks;
-        }
+        return searchBooks;
     }
 }
