@@ -12,6 +12,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<TokensFactory>();
         services.AddScoped<RefreshTokenRepository>();
         services.AddScoped<LoggedUserAccessor>();
+        services.AddScoped<BattleSettingsProvider>();
 
         services.AddScoped<SearchSelection>();
         services.AddScoped<CategorySelection>();

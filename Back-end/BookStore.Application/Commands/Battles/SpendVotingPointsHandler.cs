@@ -1,5 +1,4 @@
-﻿
-using BookStore.Application.Exceptions;
+﻿using BookStore.Application.Exceptions;
 using BookStore.Application.Services;
 using BookStore.Persistance;
 using MediatR;
@@ -8,7 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookStore.Application.Commands.Battle;
+namespace BookStore.Application.Commands.Battles;
 
 public record SpendVotingPointsCommand(int VotingPointCount) : IRequest;
 internal class SpendVotingPointsHandler : AsyncRequestHandler<SpendVotingPointsCommand>

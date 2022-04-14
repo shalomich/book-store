@@ -1,5 +1,5 @@
-﻿using BookStore.Application.Commands.Battle;
-using BookStore.Application.Commands.Battle.UpdateBattleSettings;
+﻿using BookStore.Application.Commands.Battles;
+using BookStore.Application.Commands.Battles.UpdateBattleSettings;
 using BookStore.Application.Queries.Battle.GetBattleInfo;
 using BookStore.Application.Queries.Battle.GetBattleSettings;
 using MediatR;

@@ -1,4 +1,5 @@
 ﻿
+using BookStore.Application.Services;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -12,36 +13,16 @@ namespace BookStore.Application.Queries.Battle.GetBattleSettings;
 public record GetBattlesSettingsQuery() : IRequest<BattleSettings>;
 internal class GetBattlesSettingsHandler : IRequestHandler<GetBattlesSettingsQuery, BattleSettings>
 {
-    private string ContentRootPath { get; }
+    private BattleSettingsProvider BattleSettingsProvider { get; }
 
-    public GetBattlesSettingsHandler(IConfiguration configuration)
+    public GetBattlesSettingsHandler(BattleSettingsProvider battleSettingsProvider)
     {
-        ContentRootPath = configuration[nameof(ContentRootPath)];
+        BattleSettingsProvider = battleSettingsProvider;
     }
     public Task<BattleSettings> Handle(GetBattlesSettingsQuery request, CancellationToken cancellationToken)
     {
-        var battleSettingsFilePath = Path.Combine(ContentRootPath, "battlesettings.json");
-
-        BattleSettings battleSettings;
-        string battleSettingsString;
-
-        if (!File.Exists(battleSettingsFilePath))
-        {
-            battleSettings = new BattleSettings();
-
-            battleSettingsString = JsonConvert.SerializeObject(battleSettings, Formatting.Indented);
-
-            using var streamWriter = File.CreateText(battleSettingsFilePath);
-            
-            streamWriter.Write(battleSettingsString);
-        }
-        else
-        {
-            battleSettingsString = File.ReadAllText(battleSettingsFilePath);
-
-            battleSettings = JsonConvert.DeserializeObject<BattleSettings>(battleSettingsString);
-        }
-       
+        var battleSettings = BattleSettingsProvider.GetBattleSettings();
+        
         return Task.FromResult(battleSettings);
     }
 }

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookStore.Application.Commands.Battle;
+namespace BookStore.Application.Commands.Battles;
 
 public record CastVoteCommand(int BattleBookId) : IRequest;
 internal class CastVoteHandler : AsyncRequestHandler<CastVoteCommand>
