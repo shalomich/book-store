@@ -29,10 +29,16 @@ public class BattleController : ControllerBase
         return await Mediator.Send(new GetBattleInfoQuery(), cancellationToken);
     }
 
-    [HttpPost]
+    [HttpPost("vote")]
     public async Task CastVote([FromBody][Required] int battleBookId, CancellationToken cancellationToken)
     {
         await Mediator.Send(new CastVoteCommand(battleBookId), cancellationToken);
+    }
+
+    [HttpPut("vote")]
+    public async Task SpendVotingPoints([FromBody][Required] int votingPointCount, CancellationToken cancellationToken)
+    {
+        await Mediator.Send(new SpendVotingPointsCommand(votingPointCount), cancellationToken);
     }
 }
 
