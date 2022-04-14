@@ -1,5 +1,7 @@
 ﻿using BookStore.Application.Commands.Battle;
+using BookStore.Application.Commands.Battle.UpdateBattleSettings;
 using BookStore.Application.Queries.Battle.GetBattleInfo;
+using BookStore.Application.Queries.Battle.GetBattleSettings;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +41,12 @@ public class BattleController : ControllerBase
     public async Task SpendVotingPoints([FromBody][Required] int votingPointCount, CancellationToken cancellationToken)
     {
         await Mediator.Send(new SpendVotingPointsCommand(votingPointCount), cancellationToken);
+    }
+
+    [HttpGet("settings")]
+    public async Task<BattleSettings> GetBattlesSettings(CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(new GetBattlesSettingsQuery(), cancellationToken);
     }
 }
 
