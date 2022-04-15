@@ -11,17 +11,21 @@
     </div>
   </div>
   <div class="authorized-block" *ngIf="isAuthorized; else loginButton">
+    <button mat-stroked-button class="basket-button" routerLink="/book-store/basket">
+      <mat-icon>shopping_cart</mat-icon>
+    </button>
     <div>
-      <button class="profile-menu-button" mat-button [matMenuTriggerFor]="profileMenu">{{userName}}</button>
+      <button class="profile-menu-button" mat-button [matMenuTriggerFor]="profileMenu">
+        {{userName}}
+        <mat-icon class="arrow-down-icon">arrow_drop_down</mat-icon>
+        <mat-icon class="arrow-up-icon">arrow_drop_up</mat-icon>
+      </button>
       <mat-menu #profileMenu="matMenu" class="profile-menu">
         <button routerLink="book-store/profile" mat-menu-item>Профиль</button>
         <hr />
         <button class="logout-button" mat-menu-item (click)="logout()">Выход</button>
       </mat-menu>
     </div>
-    <button mat-stroked-button class="basket-button" routerLink="/book-store/basket">
-      <mat-icon>shopping_cart</mat-icon>
-    </button>
   </div>
 </div>
 

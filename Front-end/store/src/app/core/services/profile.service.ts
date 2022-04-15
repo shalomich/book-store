@@ -52,6 +52,9 @@ export class ProfileService {
       Authorization: `Bearer ${this.authorizationDataProvider.accessToken}`,
     };
 
+    this.userProfile = { ...profile, id: this.userProfile.id };
+    this.isUserAuthorized$.next(true);
+
     this.http.put<void>(PROFILE_URL, profile, { headers }).subscribe();
   }
 }
