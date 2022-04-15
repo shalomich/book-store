@@ -31,9 +31,9 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.profileService.userProfile.subscribe(profile => {
-      this.userName = profile.firstName;
-      this.isAuthorized = this.profileService.isUserAuthorized;
+    this.profileService.isUserAuthorized$.subscribe(isAuth => {
+      this.userName = this.profileService.userProfile.firstName;
+      this.isAuthorized = isAuth;
     });
   }
 

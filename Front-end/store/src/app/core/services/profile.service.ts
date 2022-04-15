@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 
 import { map, share } from 'rxjs/operators';
 
@@ -16,9 +16,7 @@ import { AuthorizationDataProvider } from './authorization-data.provider';
 })
 export class ProfileService {
 
-  public userProfile: Observable<UserProfile> = new Observable<UserProfile>();
-
-  public isUserAuthorized = false;
+  public isUserAuthorized$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private readonly http: HttpClient,
@@ -26,15 +24,24 @@ export class ProfileService {
     private readonly authorizationDataProvider: AuthorizationDataProvider,
   ) { }
 
-  public getUserProfile(): void {
+  public get userProfile(): UserProfile {
+    return JSON.parse(sessionStorage.getItem('profile') ?? '') as UserProfile;
+  }
+
+  public set userProfile(profile: UserProfile) {
+    sessionStorage.setItem('profile', JSON.stringify(profile));
+  }
+
+  public getUserProfile(): Observable<void> {
     const headers = {
       Authorization: `Bearer ${this.authorizationDataProvider.accessToken}`,
     };
 
-    this.userProfile = this.http.get<UserProfileDto>(PROFILE_URL, { headers }).pipe(
+    return this.http.get<UserProfileDto>(PROFILE_URL, { headers }).pipe(
       map(profile => {
-        this.isUserAuthorized = !!profile.id;
-        return this.userProfileMapper.fromDto(profile);
+        this.userProfile = this.userProfileMapper.fromDto(profile);
+
+        this.isUserAuthorized$.next(!!profile.id);
       }),
       share(),
     );

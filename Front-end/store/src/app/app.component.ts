@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   public ngOnInit() {
     this.tokenValidationService.isTokenValid().subscribe(isValid => {
       if (isValid) {
-        this.profileService.getUserProfile();
+        this.profileService.getUserProfile().subscribe();
       }
     });
   }

@@ -23,14 +23,13 @@ export class ProfilePageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.profileService.userProfile.subscribe(profile => {
-      this.profileForm.setValue({
-        email: profile.email,
-        firstName: profile.firstName,
-        lastName: profile.lastName,
-        phoneNumber: profile.phoneNumber,
-        address: profile.address,
-      });
+    const profile = this.profileService.userProfile;
+    this.profileForm.setValue({
+      email: profile.email,
+      firstName: profile.firstName,
+      lastName: profile.lastName,
+      phoneNumber: profile.phoneNumber,
+      address: profile.address,
     });
   }
 
