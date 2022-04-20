@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookStore.Application.Dto;
+using BookStore.Application.Queries.Order.GetOrders;
 using BookStore.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,10 @@ namespace BookStore.Application.Profiles
                 .ForMember(orderProduct => orderProduct.Id, mapper =>
                     mapper.Ignore());
 
-            CreateMap<User, OrderUserInfo>();
+            CreateMap<OrderProduct, OrderProductDto>();
+
+            CreateMap<Order, OrderDto>();
+
         }
     }
 }

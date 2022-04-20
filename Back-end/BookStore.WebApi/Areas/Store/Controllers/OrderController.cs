@@ -15,6 +15,8 @@ using System.Linq;
 using BookStore.Application.Commands;
 using BookStore.Application.Dto;
 using BookStore.Application.Notifications.OrderPlaced;
+using System.Collections.Generic;
+using BookStore.Application.Queries.Order.GetOrders;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
 {
@@ -35,6 +37,12 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         public async Task<OrderUserInfo> GetOrderUserInfo()
         {
             return await Mediator.Send(new GetOrderUserInfoQuery());
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<OrderDto>> GetOrders()
+        {
+            return await Mediator.Send(new GetOrdersQuery());
         }
 
         [HttpPost]
