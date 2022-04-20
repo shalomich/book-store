@@ -46,7 +46,7 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpPost]
-        public async Task PlaceOrder(OrderForm orderForm, [FromServices] DbEntityQueryBuilder<BasketProduct> basketProductQueryBuilder)
+        public async Task<int> PlaceOrder(OrderForm orderForm, [FromServices] DbEntityQueryBuilder<BasketProduct> basketProductQueryBuilder)
         {
             int userId = User.GetUserId();
 
@@ -59,6 +59,8 @@ namespace BookStore.WebApi.Areas.Store.Controllers
             await Mediator.Send(new CreateCommand(order));
 
             await Mediator.Publish(new OrderPlacedNotification(order));
+
+            return order.Id;
         }
     }
 }
