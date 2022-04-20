@@ -1,0 +1,27 @@
+.personal-data-block {
+  padding: 3em;
+  margin: 0 5em;
+}
+
+.personal-data-form {
+  margin: 0 5em;
+}
+
+.form-title {
+  margin-bottom: 2em !important;
+  color: #2199e8;
+}
+
+.personal-data-form-field {
+  margin-right: 5em;
+  width: 20vw;
+}
+
+/* Border */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #2199e8 !important;
+}
+
+.mat-form-field.mat-focused .mat-form-field-label {
+  color: #2199e8 !important;
+}

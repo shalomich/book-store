@@ -11,7 +11,7 @@ import { BasketProductDto } from '../DTOs/basket-product-dto';
 import { BasketProduct } from '../models/basket-product';
 
 import { AuthorizationDataProvider } from './authorization-data.provider';
-import {AuthorizationService} from './authorization.service';
+import { AuthorizationService } from './authorization.service';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +37,10 @@ export class BasketService {
 
   public get basketProducts(): Observable<BasketProduct[]> {
     return this._basketProducts.asObservable();
+  }
+
+  public get basketProductsValue(): BasketProduct[] {
+    return this._basketProducts.value;
   }
 
   public addProduct(productId: number): Observable<{}> {

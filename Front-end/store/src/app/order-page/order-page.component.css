@@ -1,0 +1,50 @@
+.order-apply-button {
+  border: 1px solid #2199e8;
+  color: #2199e8;
+  font-size: 1.6em;
+  font-weight: 400;
+  max-height: 2em;
+}
+
+.order-apply-button:hover {
+  background-color: #2199e8;
+  color: #ffffff;
+}
+
+.new-order-block {
+  box-shadow: 0 0 10px 0 rgba(34, 60, 80, 0.2);
+  width: 80vw;
+  padding: 2em;
+  margin: 1em auto;
+}
+
+.address-info {
+  margin-bottom: 1em;
+  font-size: 1.6em;
+}
+
+.total-info {
+  display: inline;
+}
+
+.order-bottom-block {
+  margin-left: 8em;
+  margin-top: 4em;
+  display: flex;
+}
+
+.total-cost {
+  font-size: 1.6em;
+  color: #2199e8;
+}
+
+.total-cost span {
+  color: black;
+}
+
+.order-button-block {
+  display: flex;
+  margin-left: auto;
+  margin-right: 2em;
+  align-items: center;
+}
