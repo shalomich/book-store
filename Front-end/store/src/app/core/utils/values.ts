@@ -6,6 +6,8 @@ export const REFRESH_URL = 'https://localhost:44327/store/account/refresh';
 export const BASKET_URL = 'https://localhost:44327/store/basket/product';
 export const PROFILE_URL = 'https://localhost:44327/store/profile';
 
+export const ORDER_URL = 'https://localhost:44327/store/order';
+
 export const PAGE_SIZE = 3;
 export const PAGE_NUMBER = 1;
 

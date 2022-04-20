@@ -12,15 +12,10 @@ import { SortingOptions } from '../../core/interfaces/sorting-options';
   styleUrls: ['./personal-data-form.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class PersonalDataFormComponent implements OnInit, OnChanges, OnDestroy {
+export class PersonalDataFormComponent implements OnInit, OnChanges {
 
   @Input()
   public userData: UserProfile = new UserProfile();
-
-  @Input()
-  public onPersonalDataChanges: (personalData: UserProfile) => void = () => {};
-
-  private subs: Subscription = new Subscription();
 
   public personalDataForm = new FormGroup({
     firstName: new FormControl(''),
@@ -32,9 +27,6 @@ export class PersonalDataFormComponent implements OnInit, OnChanges, OnDestroy {
   constructor() { }
 
   ngOnInit(): void {
-    this.subs.add(this.personalDataForm.valueChanges.subscribe(_ => {
-      this.onPersonalDataChanges(this.personalDataForm.value);
-    }));
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -47,9 +39,4 @@ export class PersonalDataFormComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
   }
-
-  ngOnDestroy() {
-    this.subs.unsubscribe();
-  }
-
 }

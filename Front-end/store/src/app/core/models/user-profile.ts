@@ -5,7 +5,7 @@ export class UserProfile {
 
   public lastName: string;
 
-  public readonly email: string;
+  public email: string;
 
   public phoneNumber: string;
 
