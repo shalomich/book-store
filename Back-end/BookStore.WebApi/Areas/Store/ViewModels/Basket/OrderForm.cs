@@ -19,7 +19,6 @@ namespace BookStore.WebApi.Areas.Store.ViewModels.Basket
         [Phone]
         public string PhoneNumber { get; set; }
 
-        [Required]
         public string Address { get; set; }
 
         [Required]

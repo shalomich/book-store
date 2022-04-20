@@ -16,7 +16,6 @@ namespace BookStore.Persistance.DatabaseConfigs
             builder.Property(order => order.Email).IsRequired();
             builder.Property(order => order.UserName).IsRequired();
             builder.Property(order => order.PhoneNumber).IsRequired();
-            builder.Property(order => order.Address).IsRequired();
         }
     }
 }
