@@ -1,0 +1,40 @@
+<div class="profile-block">
+  <div class="profile-title">
+    <span>Профиль</span>
+  </div>
+  <form (submit)="onSaveChanges()" [formGroup]="profileForm">
+    <div class="profile-form-field">
+      <div class="label">
+        <label>Email: </label>
+      </div>
+      <input class="email" readonly formControlName="email">
+    </div>
+    <div class="profile-form-field">
+      <div class="label">
+        <label>Имя: </label>
+      </div>
+      <input formControlName="firstName">
+    </div>
+    <div class="profile-form-field">
+      <div class="label">
+        <label>Фамилия: </label>
+      </div>
+      <input formControlName="lastName">
+    </div>
+    <div class="profile-form-field">
+      <div class="label">
+        <label>Номер телефона: </label>
+      </div>
+      <input formControlName="phoneNumber">
+    </div>
+    <div class="profile-form-field">
+      <div class="label">
+        <label>Адрес: </label>
+      </div>
+      <input formControlName="address">
+    </div>
+    <div class="save-changes-button-block">
+      <button mat-stroked-button type="submit">Сохранить изменения</button>
+    </div>
+  </form>
+</div>

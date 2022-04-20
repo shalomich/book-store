@@ -7,10 +7,12 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { SelectionPageComponent } from './selection-page/selection-page.component';
 import { BasketPageComponent } from './basket-page/basket-page.component';
 import { AuthGuard } from './core/guards/auth.guard';
+import {ProfilePageComponent} from './profile-page/profile-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'book-store', pathMatch: 'full' },
   { path: 'book-store', component: MainPageComponent },
+  { path: 'book-store/profile', component: ProfilePageComponent, canActivate: [AuthGuard] },
   { path: 'book-store/basket', component: BasketPageComponent, canActivate: [AuthGuard] },
   { path: 'book-store/catalog/book', component: BookSearchPageComponent },
   { path: 'book-store/catalog/book/:id', component: BookCardComponent },

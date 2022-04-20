@@ -1,0 +1,67 @@
+.profile-block {
+  width: max-content;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2em;
+  border: 1px solid #2199e8;
+  box-shadow: 0 0 10px 0 rgba(34, 60, 80, 0.2);
+  padding: 2em 7em;
+}
+
+.profile-title, .save-changes-button-block {
+  display: flex;
+}
+
+.profile-title span {
+  margin-right: auto;
+  margin-left: auto;
+  color: #2199e8;
+  font-size: 2.4em;
+  margin-bottom: 2em;
+}
+
+.profile-form-field {
+  margin-bottom: 7vh;
+  display: flex;
+  font-size: 1.4em;
+  color: #2199e8;
+}
+
+.profile-form-field .label {
+  display: flex;
+  align-items: center;
+  width: 10em;
+}
+
+.profile-form-field input {
+  width: 20vw;
+  height: 3vh;
+  font-size: 0.8em;
+}
+
+.profile-form-field input:focus-visible {
+  outline-color: #2199e8;
+}
+
+.email:hover {
+  cursor: default;
+}
+
+.email:focus-visible {
+  outline: none;
+}
+
+.save-changes-button-block button  {
+  color: #2199e8;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.4em;
+  height: 5vh;
+  border: 2px solid #2199e8 !important;
+}
+
+.save-changes-button-block button:hover  {
+  background-color: #2199e8;
+  color: white;
+}
+
