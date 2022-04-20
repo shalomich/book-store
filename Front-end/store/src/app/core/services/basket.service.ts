@@ -11,6 +11,7 @@ import { BasketProductDto } from '../DTOs/basket-product-dto';
 import { BasketProduct } from '../models/basket-product';
 
 import { AuthorizationDataProvider } from './authorization-data.provider';
+import {AuthorizationService} from './authorization.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,13 +22,13 @@ export class BasketService {
 
   constructor(
     private readonly http: HttpClient,
-    private readonly authorizationDataProvider: AuthorizationDataProvider,
+    private readonly authorizationService: AuthorizationService,
     private readonly basketProductMapper: BasketProductMapper,
   ) { }
 
   public getBasket(): void {
     const headers = {
-      Authorization: `Bearer ${this.authorizationDataProvider.accessToken}`,
+      Authorization: `Bearer ${this.authorizationService.accessToken}`,
     };
 
     this.http.get<BasketProductDto[]>(BASKET_URL, { headers })
@@ -40,7 +41,7 @@ export class BasketService {
 
   public addProduct(productId: number): Observable<{}> {
     const headers = {
-      Authorization: `Bearer ${this.authorizationDataProvider.accessToken}`,
+      Authorization: `Bearer ${this.authorizationService.accessToken}`,
     };
 
     return this.http.post(BASKET_URL, { productId }, { headers });
@@ -48,7 +49,7 @@ export class BasketService {
 
   public removeAll(): void {
     const headers = {
-      Authorization: `Bearer ${this.authorizationDataProvider.accessToken}`,
+      Authorization: `Bearer ${this.authorizationService.accessToken}`,
     };
 
     this._basketProducts.next([]);
@@ -57,7 +58,7 @@ export class BasketService {
 
   public remove(inputProduct: BasketProduct): void {
     const headers = {
-      Authorization: `Bearer ${this.authorizationDataProvider.accessToken}`,
+      Authorization: `Bearer ${this.authorizationService.accessToken}`,
     };
 
     const { id } = inputProduct;
@@ -69,7 +70,7 @@ export class BasketService {
 
   public saveBasket(): void {
     const headers = {
-      Authorization: `Bearer ${this.authorizationDataProvider.accessToken}`,
+      Authorization: `Bearer ${this.authorizationService.accessToken}`,
     };
 
     this._basketProducts.value.forEach(product => {

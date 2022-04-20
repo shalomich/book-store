@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ProfileService } from './core/services/profile.service';
+import { ProfileProviderService } from './core/services/profile-provider.service';
 import { AuthorizationDataProvider } from './core/services/authorization-data.provider';
 import { TokenValidationService } from './core/services/token-validation.service';
 
@@ -13,17 +13,8 @@ export class AppComponent implements OnInit {
 
   public title = 'store';
 
-  constructor(
-    private readonly profileService: ProfileService,
-    private readonly authorizationDataProvider: AuthorizationDataProvider,
-    private readonly tokenValidationService: TokenValidationService,
-  ) { }
+  constructor() { }
 
   public ngOnInit() {
-    this.tokenValidationService.isTokenValid().subscribe(isValid => {
-      if (isValid) {
-        this.profileService.getUserProfile().subscribe();
-      }
-    });
   }
 }

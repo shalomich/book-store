@@ -1,8 +1,8 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
-import {FormControl, FormGroup} from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
-import {ProfileService} from '../core/services/profile.service';
+import { ProfileProviderService } from '../core/services/profile-provider.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -19,22 +19,24 @@ export class ProfilePageComponent implements OnInit {
     address: new FormControl(''),
   });
 
-  constructor(private readonly profileService: ProfileService) {
+  constructor(private readonly profileService: ProfileProviderService) {
   }
 
   ngOnInit(): void {
-    const profile = this.profileService.userProfile;
-    this.profileForm.setValue({
-      email: profile.email,
-      firstName: profile.firstName,
-      lastName: profile.lastName,
-      phoneNumber: profile.phoneNumber,
-      address: profile.address,
+    this.profileService.userProfile.subscribe(profile => {
+      this.profileForm.setValue({
+        email: profile.email,
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        phoneNumber: profile.phoneNumber,
+        address: profile.address,
+      });
     });
   }
 
   public onSaveChanges() {
-    this.profileService.saveProfileChanges(this.profileForm.value);
+    this.profileService.saveProfileChanges(this.profileForm.value)
+      .subscribe(_ => window.location.reload());
   }
 
 }

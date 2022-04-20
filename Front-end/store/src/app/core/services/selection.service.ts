@@ -26,6 +26,7 @@ import { OptionGroup } from '../interfaces/option-group';
 
 import { ProductParamsBuilder } from './product-params.builder';
 import {AuthorizationDataProvider} from './authorization-data.provider';
+import {AuthorizationService} from './authorization.service';
 
 @Injectable({
   providedIn: 'root',
@@ -36,12 +37,12 @@ export class SelectionService {
     private readonly http: HttpClient,
     private readonly productPreviewSetMapper: ProductPreviewSetMapper,
     private readonly paramsBuilder: ProductParamsBuilder,
-    private readonly authorizationDataProvider: AuthorizationDataProvider,
+    private readonly authorizationService: AuthorizationService,
   ) { }
 
   public get(selection: Selection, optionGroup: OptionGroup): Observable<ProductPreviewSet> {
     const headers = {
-      Authorization: `Bearer ${this.authorizationDataProvider.accessToken}`,
+      Authorization: `Bearer ${this.authorizationService.accessToken}`,
     };
 
     const { pagingOptions, filterOptions, sortingOptions } = optionGroup;
@@ -58,7 +59,7 @@ export class SelectionService {
 
     const params = this.paramsBuilder.build();
 
-    const options = this.authorizationDataProvider.accessToken ? { headers, params } : { params };
+    const options = this.authorizationService.accessToken ? { headers, params } : { params };
 
 
     return this.http.get<ProductPreviewSetDto>(`${SELECTION_URL}${selection}`, options).pipe(

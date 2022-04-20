@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {REFRESH_URL} from '../utils/values';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {catchError, map} from 'rxjs/operators';
-import {JwtHelperService} from '@auth0/angular-jwt';
-import {Router} from '@angular/router';
-import {AuthorizationDataProvider} from './authorization-data.provider';
+import { Observable, of } from 'rxjs';
+
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { catchError, map } from 'rxjs/operators';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
+
+import { REFRESH_URL } from '../utils/values';
+
+import { AuthorizationDataProvider } from './authorization-data.provider';
+import {AuthorizationService} from './authorization.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TokenValidationService {
 
@@ -16,11 +20,11 @@ export class TokenValidationService {
     private readonly jwtHelper: JwtHelperService,
     private readonly router: Router,
     private readonly http: HttpClient,
-    private readonly authorizationDataProvider: AuthorizationDataProvider,
+    private readonly authorizationService: AuthorizationService,
   ) { }
 
   public isTokenValid(): Observable<boolean> {
-    const token = this.authorizationDataProvider.accessToken;
+    const token = this.authorizationService.accessToken;
     if (token && !this.jwtHelper.isTokenExpired(token)) {
       return of(true);
     }
@@ -30,7 +34,7 @@ export class TokenValidationService {
   }
 
   private tryRefreshingTokens(token: string | null): Observable<boolean> {
-    const refreshToken: string | null = this.authorizationDataProvider.refreshToken;
+    const { refreshToken } = this.authorizationService;
     if (!token || !refreshToken) {
       this.router.navigate(['/book-store']);
       return of(false);
@@ -45,8 +49,8 @@ export class TokenValidationService {
       map(response => {
         const newToken = (<any>response).body.accessToken;
         const newRefreshToken = (<any>response).body.refreshToken;
-        this.authorizationDataProvider.accessToken = newToken;
-        this.authorizationDataProvider.refreshToken = newRefreshToken;
+        this.authorizationService.accessToken = newToken;
+        this.authorizationService.refreshToken = newRefreshToken;
         return true;
       }),
       catchError(() => {

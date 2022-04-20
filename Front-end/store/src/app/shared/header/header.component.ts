@@ -3,13 +3,19 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { Router } from '@angular/router';
 
+import { map, switchMap, tap } from 'rxjs/operators';
+
 import { AuthorizationDataProvider } from '../../core/services/authorization-data.provider';
 
 import { AuthorizationService } from '../../core/services/authorization.service';
 
-import { ProfileService } from '../../core/services/profile.service';
+import { ProfileProviderService } from '../../core/services/profile-provider.service';
+
+import { TokenValidationService } from '../../core/services/token-validation.service';
 
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
+import {of} from 'rxjs';
+import {UserProfile} from '../../core/models/user-profile';
 
 @Component({
   selector: 'app-header',
@@ -27,13 +33,23 @@ export class HeaderComponent implements OnInit {
     private dialog: MatDialog,
     private readonly authorizationService: AuthorizationService,
     private router: Router,
-    private readonly profileService: ProfileService,
+    private readonly profileService: ProfileProviderService,
+    private readonly tokenValidationService: TokenValidationService,
   ) { }
 
   ngOnInit(): void {
-    this.profileService.isUserAuthorized$.subscribe(isAuth => {
-      this.userName = this.profileService.userProfile.firstName;
-      this.isAuthorized = isAuth;
+    this.tokenValidationService.isTokenValid().pipe(
+      switchMap(isValid => {
+        if (isValid) {
+          return this.profileService.getUserProfile();
+        }
+
+        return of({} as UserProfile);
+      }),
+    )
+      .subscribe(profile => {
+        this.isAuthorized = !!profile.id;
+        this.userName = profile.firstName;
     });
   }
 

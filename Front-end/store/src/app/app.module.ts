@@ -41,7 +41,7 @@ import { BasketInfoBlockComponent } from './basket-page/basket-info-block/basket
 
 import { ProductOptionsStorage } from './core/services/product-options.storage';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
-import {ProfileService} from './core/services/profile.service';
+import {ProfileProviderService} from './core/services/profile-provider.service';
 
 
 @NgModule({
@@ -64,7 +64,7 @@ import {ProfileService} from './core/services/profile.service';
     MatFormFieldModule,
     MatInputModule,
   ],
-  providers: [ProductOptionsStorage, ProfileService],
+  providers: [ProductOptionsStorage, ProfileProviderService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

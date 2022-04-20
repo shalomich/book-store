@@ -18,7 +18,6 @@ export class AuthGuard implements CanActivate {
   constructor(
     private readonly jwtHelper: JwtHelperService,
     private readonly router: Router,
-    private readonly http: HttpClient,
     private readonly tokenValidationService: TokenValidationService,
   ) {
   }
