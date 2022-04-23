@@ -12,6 +12,7 @@ namespace BookStore.Domain.Entities
         public int Id { get; set; }
         public User User { get; set; }
         public int UserId { get; set; }
+        public OrderState State { get; set; } = OrderState.Placed;
         public string UserName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
