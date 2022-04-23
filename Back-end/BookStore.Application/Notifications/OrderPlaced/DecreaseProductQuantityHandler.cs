@@ -1,50 +1,55 @@
 ﻿using BookStore.Persistance;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using BookStore.Domain.Entities.Products;
 using Microsoft.EntityFrameworkCore;
+using BookStore.Domain.Entities;
 
-namespace BookStore.Application.Notifications.OrderPlaced
+namespace BookStore.Application.Notifications.OrderPlaced;
+internal class DecreaseProductQuantityHandler : INotificationHandler<OrderPlacedNotification>
 {
-    internal class DecreaseProductQuantityHandler : INotificationHandler<OrderPlacedNotification>
+    private ApplicationContext Context { get; }
+
+    public DecreaseProductQuantityHandler(ApplicationContext context)
     {
-        private ApplicationContext Context { get; }
+        Context = context;
+    }
 
-        public DecreaseProductQuantityHandler(ApplicationContext context)
+    public async Task Handle(OrderPlacedNotification notification, CancellationToken cancellationToken)
+    {
+        var orderProductCounts = await Context.Set<OrderProduct>()
+            .Where(orderProduct => orderProduct.OrderId == notification.OrderId)
+            .Select(orderProduct => new { orderProduct.ProductId, orderProduct.Quantity })
+            .ToListAsync(cancellationToken);
+
+        var productIds = orderProductCounts
+            .Select(orderProductCount => orderProductCount.ProductId);
+
+        var products = Context.Set<Product>()
+            .Include(product => product.ProductCloseout)
+            .Where(product => productIds.Contains(product.Id));
+
+        foreach (var product in products)
         {
-            Context = context ?? throw new ArgumentNullException(nameof(context));
-        }
+            var productDecrease = orderProductCounts
+                .Single(orderProductCount => orderProductCount.ProductId == product.Id)
+                .Quantity;
 
-        public async Task Handle(OrderPlacedNotification notification, CancellationToken cancellationToken)
-        {
-            var productQuantityDecreases = notification.Order.Products
-                .ToDictionary(orderProduct => orderProduct.ProductId, orderProduct => orderProduct.Quantity);
+            product.Quantity -= productDecrease;
 
-            int[] productIds = productQuantityDecreases.Keys.ToArray();
-
-            var products = Context.Set<Product>()
-                .Include(product => product.ProductCloseout)
-                .Where(product => productIds.Contains(product.Id));
-
-            foreach (var product in products)
+            if (product.Quantity == 0)
             {
-                product.Quantity -= productQuantityDecreases[product.Id];
-
-                if (product.Quantity == 0)
+                product.ProductCloseout = new ProductCloseout
                 {
-                    product.ProductCloseout = new ProductCloseout
-                    {
-                        Date = DateTime.Now,
-                    };      
-                }
+                    Date = DateTime.Now,
+                };      
             }
-
-            await Context.SaveChangesAsync(cancellationToken);
         }
+
+        await Context.SaveChangesAsync(cancellationToken);
     }
 }
+

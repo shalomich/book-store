@@ -27,7 +27,7 @@ internal class NotifyBookShortageHandler : INotificationHandler<OrderPlacedNotif
     }
     public async Task Handle(OrderPlacedNotification notification, CancellationToken cancellationToken)
     {
-        var bookIds = await GetOrderBookIds(notification.Order.Id, cancellationToken);
+        var bookIds = await GetOrderBookIds(notification.OrderId, cancellationToken);
 
         await foreach (var shortageBookInfo in GetShortageBooksInfo(bookIds, cancellationToken))
         {

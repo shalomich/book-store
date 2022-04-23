@@ -1,36 +1,36 @@
-﻿using BookStore.Application.DbQueryConfigs.Specifications;
-using BookStore.Domain.Entities;
-using BookStore.Persistance;
+﻿using BookStore.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookStore.Application.Notifications.OrderPlaced
-{
+namespace BookStore.Application.Notifications.OrderPlaced;
     
-    internal class ClearBasketHandler : INotificationHandler<OrderPlacedNotification>
+internal class ClearBasketHandler : INotificationHandler<OrderPlacedNotification>
+{
+    private ApplicationContext Context { get; }
+
+    public ClearBasketHandler(ApplicationContext context)
     {
-        private ApplicationContext Context { get; }
+        Context = context;
+    }
 
-        public ClearBasketHandler(ApplicationContext context)
-        {
-            Context = context ?? throw new ArgumentNullException(nameof(context));
-        }
+    public async Task Handle(OrderPlacedNotification notification, CancellationToken cancellationToken)
+    {
+        var orderUserId = await Context.Orders
+            .Where(order => order.Id == notification.OrderId)
+            .Select(order => order.UserId)
+            .SingleAsync(cancellationToken);
 
-        public async Task Handle(OrderPlacedNotification notification, CancellationToken cancellationToken)
-        {
-            var user = (User) await Context.Users
-                .Include(user => user.BasketProducts)
-                .FirstOrDefaultAsync(new EntityByIdSpecification(notification.Order.UserId).ToExpression());
+        var basketProductsToRemove = await Context.BasketProducts
+            .Where(basketProduct => basketProduct.UserId == orderUserId)
+            .ToListAsync(cancellationToken);
 
-            user.BasketProducts = null;
-
-            await Context.SaveChangesAsync();
-        }
+        Context.RemoveRange(basketProductsToRemove);
+        
+        await Context.SaveChangesAsync();
     }
 }
+

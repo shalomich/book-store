@@ -8,5 +8,5 @@ using System.Threading.Tasks;
 
 namespace BookStore.Application.Notifications.OrderPlaced
 {
-    public record OrderPlacedNotification(Order Order) : INotification;
+    public record OrderPlacedNotification(int OrderId) : INotification;
 }
