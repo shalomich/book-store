@@ -74,7 +74,7 @@ namespace BookStore.WebApi
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.TokenKey));
 
             services.Configure<DataProtectionTokenProviderOptions>(options => 
-                options.TokenLifespan = TimeSpan.FromMinutes(15));
+                options.TokenLifespan = TimeSpan.FromMinutes(jwtSettings.RefreshTokenExpiredMinutes));
 
             services.Configure<TelegramBotMessages>(_configuration.GetSection("TelegramBot:Messages"));
 
@@ -137,8 +137,6 @@ namespace BookStore.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
-           
 
             app.UseRouting();
 
