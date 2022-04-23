@@ -57,15 +57,13 @@ public class JwtParser
             new Claim(nameof(userId), userId.ToString())
         };
 
-        var (tokenKey, expiredMinutes) = JwtSettings;
-
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings.TokenKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.Now.AddMinutes(expiredMinutes),
+            Expires = DateTime.Now.AddMinutes(JwtSettings.AccessTokenExpiredMinutes),
             SigningCredentials = credentials
         };
 
