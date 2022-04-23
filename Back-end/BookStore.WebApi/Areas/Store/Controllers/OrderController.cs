@@ -20,6 +20,7 @@ using BookStore.Application.Queries.Order.GetOrders;
 using BookStore.Application.Commands.Orders.PlaceOrder;
 using System.Threading;
 using BookStore.Application.Commands.Orders.MarkAsDelivered;
+using BookStore.Application.Commands.Orders.CancelOrder;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
 {
@@ -56,6 +57,12 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         public async Task MarkAsDelivered(int orderId, CancellationToken cancellationToken)
         {
             await Mediator.Send(new MarkAsDeliveredCommand(orderId), cancellationToken);
+        }
+
+        [HttpPut("{orderId}/cancelled")]
+        public async Task CancelOrder(int orderId, CancellationToken cancellationToken)
+        {
+            await Mediator.Send(new CancelOrderCommand(orderId), cancellationToken);
         }
     }
 }
