@@ -32,8 +32,17 @@ namespace BookStore.WebApi.Attributes
                 .ToString()
                 .Replace("Bearer ", "");
 
-            int userId = JwtParser.FromToken(token);
+            int userId;
 
+            try
+            {
+                userId = JwtParser.FromToken(token);
+            }
+            catch (Exception)
+            {
+                return;
+            }
+            
             var identity = new ClaimsIdentity(new Claim[]
             {
                 new Claim(nameof(userId), userId.ToString())

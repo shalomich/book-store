@@ -32,7 +32,8 @@ public class JwtParser
             ValidateIssuer = false,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = securityKey,
-            ValidateLifetime = false
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
