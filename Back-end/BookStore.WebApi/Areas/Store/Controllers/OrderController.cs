@@ -33,12 +33,6 @@ namespace BookStore.WebApi.Areas.Store.Controllers
             Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        [HttpGet("info")]
-        public async Task<OrderUserInfo> GetOrderUserInfo()
-        {
-            return await Mediator.Send(new GetOrderUserInfoQuery());
-        }
-
         [HttpGet]
         public async Task<IEnumerable<OrderDto>> GetOrders()
         {
