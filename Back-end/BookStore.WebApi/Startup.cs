@@ -103,6 +103,7 @@ namespace BookStore.WebApi
                         IssuerSigningKey = securityKey,
                         ValidateAudience = false,
                         ValidateIssuer = false,
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
 
