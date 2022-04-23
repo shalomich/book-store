@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using BookStore.Application.Queries.Order.GetOrders;
 using BookStore.Application.Commands.Orders.PlaceOrder;
 using System.Threading;
+using BookStore.Application.Commands.Orders.MarkAsDelivered;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
 {
@@ -49,6 +50,12 @@ namespace BookStore.WebApi.Areas.Store.Controllers
             await Mediator.Publish(new OrderPlacedNotification(orderId), cancellationToken);
 
             return orderId;
+        }
+
+        [HttpPut("{orderId}/delivered")]
+        public async Task MarkAsDelivered(int orderId, CancellationToken cancellationToken)
+        {
+            await Mediator.Send(new MarkAsDeliveredCommand(orderId), cancellationToken);
         }
     }
 }
