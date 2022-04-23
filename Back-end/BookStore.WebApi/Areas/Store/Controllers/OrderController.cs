@@ -17,6 +17,8 @@ using BookStore.Application.Dto;
 using BookStore.Application.Notifications.OrderPlaced;
 using System.Collections.Generic;
 using BookStore.Application.Queries.Order.GetOrders;
+using BookStore.Application.Commands.Orders.PlaceOrder;
+using System.Threading;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
 {
@@ -40,21 +42,13 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpPost]
-        public async Task<int> PlaceOrder(OrderForm orderForm, [FromServices] DbEntityQueryBuilder<BasketProduct> basketProductQueryBuilder)
+        public async Task<int> PlaceOrder(OrderForm orderForm, CancellationToken cancellationToken)
         {
-            int userId = User.GetUserId();
+            var orderId = await Mediator.Send(new PlaceOrderCommand(orderForm), cancellationToken);
 
-            await Mediator.Send(new CheckBasketProductQuantiesQuery(userId));
+            await Mediator.Publish(new OrderPlacedNotification(orderId), cancellationToken);
 
-            var orderMakingDto = Mapper.Map<OrderMakingDto>(orderForm);
-
-            Order order = await Mediator.Send(new MakeOrderCommand(userId, orderMakingDto));
-            
-            await Mediator.Send(new CreateCommand(order));
-
-            await Mediator.Publish(new OrderPlacedNotification(order));
-
-            return order.Id;
+            return orderId;
         }
     }
 }

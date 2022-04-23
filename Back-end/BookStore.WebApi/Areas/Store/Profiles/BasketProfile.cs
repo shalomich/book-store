@@ -18,9 +18,5 @@ public class BasketProfile : Profile
             .ForMember(dto => dto.TitleImage, mapper
                 => mapper.MapFrom(basketProduct => basketProduct.Product.Album.TitleImage))
             .IncludeAllDerived();
-
-        CreateMap<OrderForm, OrderMakingDto>()
-            .ForMember(order => order.UserName, mapper =>
-                mapper.MapFrom(form => $"{form.LastName} {form.FirstName}"));
     }
 }
