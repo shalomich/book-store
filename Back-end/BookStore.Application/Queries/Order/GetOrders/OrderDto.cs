@@ -1,5 +1,6 @@
 ﻿using BookStore.Domain.Enums;
 using System.Collections.Generic;
+using System;
 
 namespace BookStore.Application.Queries.Order.GetOrders;
 
@@ -13,6 +14,8 @@ public record OrderDto
     public string Address { get; set; }
     public string OrderReceiptMethod { get; set; }
     public string PaymentMethod { get; set; }
+    public string PlacedDate { get; set; }
+    public string DeliveredDate { get; set; }
     public IEnumerable<OrderProductDto> Products { get; set; }
 }
 

@@ -38,7 +38,11 @@ namespace BookStore.Application.Profiles
                .ForMember(orderProduct => orderProduct.Id, mapper =>
                    mapper.Ignore()); ;
 
-            CreateMap<Order, OrderDto>();
+            CreateMap<Order, OrderDto>()
+                .ForMember(orderProduct => orderProduct.PlacedDate, mapper =>
+                   mapper.MapFrom(basketProduct => basketProduct.PlacedDate.ToString("dd.MM.yyyy")))
+                .ForMember(orderProduct => orderProduct.DeliveredDate, mapper =>
+                   mapper.MapFrom(basketProduct => basketProduct.DeliveredDate.Value.ToString("dd.MM.yyyy")));
 
             CreateMap<OrderProduct, OrderProductDto>();    
         }
