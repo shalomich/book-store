@@ -13,6 +13,7 @@ namespace BookStore.Application.Dto
         public int Cost { init; get; }
         public ImageDto TitleImage { init; get; }
         public int Quantity { init; get; }
+        public int? DiscountPercentage { set; get; }
         public string Description { init; get; }
         public bool? IsInBasket { set; get; }
         public bool? IsMarked { set; get; }

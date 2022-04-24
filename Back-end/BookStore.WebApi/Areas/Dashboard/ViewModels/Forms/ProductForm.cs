@@ -23,11 +23,14 @@ namespace BookStore.WebApi.Areas.Dashboard.ViewModels.Forms
 
         [Required]
         [Range(Product.MinQuantity, int.MaxValue)]
-        public int Quantity { set; get; }
+        public int Quantity { init; get; }
+
+        [Range(1,100)]
+        public int? DiscountPercentage { init; get; }
 
         [MaxLength(Product.MaxDescriptionLength)]
-        public string Description { set; get; }
+        public string Description { init; get; }
 
-        public AlbumForm Album { set; get; }
+        public AlbumForm Album { init; get; }
     }
 }
