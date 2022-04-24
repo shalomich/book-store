@@ -16,6 +16,8 @@ using BookStore.Application.Queries;
 using BookStore.WebApi.Areas.Dashboard.ViewModels.Forms;
 using BookStore.Domain.Entities;
 using BookStore.Application.Commands.Editing.UpdateDiscount;
+using BookStore.Application.Notifications.DiscountUpdated;
+using System.Threading;
 
 namespace BookStore.WebApi.Areas.Dashboard.Controllers
 {
@@ -49,9 +51,11 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
         }
 
         [HttpPut("{id}/discount")]
-        public async Task<IActionResult> UpdateDiscount(int id, UpdateDiscountDto updateDiscountDto)
+        public async Task<IActionResult> UpdateDiscount(int id, UpdateDiscountDto updateDiscountDto, CancellationToken cancellationToken)
         {
-            await Mediator.Send(new UpdateDiscountCommand(id, typeof(TProduct), updateDiscountDto));
+            await Mediator.Send(new UpdateDiscountCommand(id, typeof(TProduct), updateDiscountDto), cancellationToken);
+
+            await Mediator.Publish(new DiscountUpdatedNotification(id), cancellationToken);
 
             return NoContent();
         }
