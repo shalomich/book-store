@@ -15,6 +15,7 @@ using BookStore.Application.DbQueryConfigs.IncludeRequirements;
 using BookStore.Application.Queries;
 using BookStore.WebApi.Areas.Dashboard.ViewModels.Forms;
 using BookStore.Domain.Entities;
+using BookStore.Application.Commands.Editing.UpdateDiscount;
 
 namespace BookStore.WebApi.Areas.Dashboard.Controllers
 {
@@ -45,6 +46,14 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
             IncludeRelatedEntities(QueryBuilder);
 
             return (TProduct) await Mediator.Send(new GetByIdQuery(id, QueryBuilder));
+        }
+
+        [HttpPut("{id}/discount")]
+        public async Task<IActionResult> UpdateDiscount(int id, UpdateDiscountDto updateDiscountDto)
+        {
+            await Mediator.Send(new UpdateDiscountCommand(id, typeof(TProduct), updateDiscountDto));
+
+            return NoContent();
         }
 
         protected abstract void IncludeRelatedEntities(DbFormEntityQueryBuilder<TProduct> queryBuilder);
