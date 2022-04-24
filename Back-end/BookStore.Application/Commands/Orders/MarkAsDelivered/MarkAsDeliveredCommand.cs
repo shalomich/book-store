@@ -4,6 +4,7 @@ using BookStore.Domain.Enums;
 using BookStore.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,6 +31,7 @@ internal class MarkAsDeliveredHandler : AsyncRequestHandler<MarkAsDeliveredComma
             .SingleAsync(order => order.Id == request.OrderId, cancellationToken);
 
         orderById.State = OrderState.Delivired;
+        orderById.DeliveredDate = DateTime.Now;
 
         await Context.SaveChangesAsync(cancellationToken);
     }
