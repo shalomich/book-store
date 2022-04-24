@@ -19,7 +19,8 @@ namespace BookStore.Domain.Entities
         public string Address { get; set; }
         public OrderReceiptMethod OrderReceiptMethod { get; set; }
         public PaymentMethod PaymentMethod  { get; set; }
+        public DateTime PlacedDate { get; set; }
+        public DateTime? DeliveredDate { get; set; }
         public ISet<OrderProduct> Products { get; set; }
-
     }
 }
