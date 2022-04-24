@@ -25,9 +25,6 @@ namespace BookStore.WebApi.Areas.Dashboard.ViewModels.Forms
         [Range(Product.MinQuantity, int.MaxValue)]
         public int Quantity { init; get; }
 
-        [Range(1,100)]
-        public int? DiscountPercentage { init; get; }
-
         [MaxLength(Product.MaxDescriptionLength)]
         public string Description { init; get; }
 
