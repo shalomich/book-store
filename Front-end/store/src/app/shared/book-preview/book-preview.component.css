@@ -19,26 +19,34 @@
 
 .item-block {
   width: 200px;
-  height: fit-content;
-  outline: 1px solid #000;
+  height: 370px;
+  outline: 1px solid #2199e8;
   display: inline-block;
   margin-bottom: 30px;
   margin-right: 5em;
   text-align: center;
 }
 
+.name {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  width: 200px;
+  height: 40px;
+  font-size: 0.8em;
+  text-overflow: ellipsis;
+  white-space: normal;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  margin-top: 1em;
+}
+
 .add-to-basket-button {
   height: min-content;
   font-size: 1em;
-  border: 0.1em solid gray;
+  color: #2199e8;
   padding-right: 1em;
   padding-left: 1em;
   margin-bottom: 1em;
-}
-
-.add-to-basket-button:hover {
-  background-color: gray;
-  color: white;
 }
 
 .in-basket-button {

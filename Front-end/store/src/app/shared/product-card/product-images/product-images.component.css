@@ -1,7 +1,7 @@
 .images-block {
   display: flex;
   height: fit-content;
-  margin-right: 2em;
+  margin-right: 10em;
 }
 
 .not-title-images img {
@@ -24,6 +24,4 @@
   width: 20em;
   height: 30em;
   margin: 0;
-  border: 0.2em solid gray;
-  background-color: gray;
 }

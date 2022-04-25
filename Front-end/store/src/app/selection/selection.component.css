@@ -1,11 +1,12 @@
 .selection-block {
-  margin: 2em 2em 0 2em;
+  margin: 1em 2em 0 2em;
   padding: 0 2em;
 }
 
 .selection-link {
   text-decoration: none;
   color: #2199e8 !important;
+  font-size: 1.2em;
 }
 
 .selection-link:hover {

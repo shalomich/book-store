@@ -1,11 +1,6 @@
 .add-to-cart-block {
-  position: absolute;
-  height: 7em;
-  left: 64vw;
-  top: 66.5vh;
-  border: 0.2em solid gray;
-  border-radius: 0.6em;
-  padding: 1em;
+  margin: 4em 0 2em 0;
+  height: fit-content;
 }
 
 .add-to-cart {
@@ -19,21 +14,17 @@
 .add-to-cart span {
   height: min-content;
   font-size: 1.4em;
-  margin-right: 1em;
+  margin-right: 4em;
 }
 
-.add-to-cart button {
+.add-to-basket-button {
   height: min-content;
   font-size: 1em;
-  border: 0.1em solid gray;
+  color: #2199e8;
   padding-right: 1em;
   padding-left: 1em;
 }
 
-.add-to-cart button:hover {
-  background-color: gray;
-  color: white;
-}
 .in-basket-button, .in-basket-button:hover {
   background-color: #2199e8 !important;
   color: white;

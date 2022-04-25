@@ -1,10 +1,21 @@
 .book-card {
   display: flex;
+  flex-wrap: wrap;
   margin: 5em auto 0 auto;
   width: fit-content;
-  border: 0.2em gray solid;
-  border-radius: 1em;
-  padding: 3em;
+  border: 2px #2199e8 solid;
+  border-radius: 5px;
+  padding: 3em 5em 3em 5em;
+}
+
+.book-name {
+  display: flex;
+  flex-basis: 100%;
+  margin-bottom: 2em;
+  color: #2199e8;
+  font-size: 1.6em;
+  width: min-content;
+  text-decoration: underline;
 }
 
 .info-block {
@@ -34,4 +45,17 @@
   height: fit-content;
   width: 30em;
   margin-left: 0;
+  max-height: 33vh;
+}
+
+.description-block {
+  height: 33vh;
+}
+
+.description.mat-expanded {
+  overflow-y: visible;
+}
+
+.description .mat-expansion-panel-header.mat-expanded {
+  position: sticky;
 }

@@ -26,7 +26,7 @@ export class OrderService {
       lastName: personalData.lastName,
       phoneNumber: personalData.phoneNumber,
       email: personalData.email,
-      address: 'dsadas',
+      address: '',
       orderReceiptMethod: 1,
       paymentMethod: 1,
     };

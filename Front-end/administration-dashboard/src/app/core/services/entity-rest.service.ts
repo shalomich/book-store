@@ -34,7 +34,7 @@ export class EntityRestService {
 
   public get(entityType: string): Observable<EntityDto[]> {
     this.checkEntityType(entityType);
-    return this.http.get<EntityDto[]>(`${API_FORM_ENTITY_URI}${entityType}`);
+    return this.http.get<EntityDto[]>(`${API_FORM_ENTITY_URI}${entityType}?pageSize=1000&pageNumber=1`);
   }
 
   public add(entityType: string, data: EntityDto): Observable<void> {
