@@ -15,6 +15,8 @@ internal class BattleProfile : Profile
                 battleBook => battleBook.Id))
             .ForMember(dto => dto.Name, mapper => mapper.MapFrom(
                 battleBook => battleBook.Book.Name))
+            .ForMember(dto => dto.Cost, mapper => mapper.MapFrom(
+                battleBook => battleBook.Book.Cost))
             .ForMember(dto => dto.AuthorName, mapper => mapper.MapFrom(
                 battleBook => battleBook.Book.Author.Name))
             .ForMember(dto => dto.TotalVotingPointCount, mapper => mapper.MapFrom(

@@ -66,14 +66,15 @@ internal class BeginBookBattleHandler : IRequestHandler<BeginBookBattleCommand, 
 
     private async Task<IEnumerable<BattleBook>> FindBattleBooksAsync(CancellationToken cancellationToken)
     {
-        int bookIdForBattle = await Context.Books
+        var bookIdsForBattle = await Context.Books
             .Select(book => book.Id)
-            .FirstAsync(cancellationToken);
+            .Take(2)
+            .ToListAsync(cancellationToken);
 
         return new[]
         {
-            new BattleBook { BookId = bookIdForBattle},
-            new BattleBook { BookId = bookIdForBattle},
+            new BattleBook { BookId = bookIdsForBattle.First()},
+            new BattleBook { BookId = bookIdsForBattle.Last()},
         };
     }
 }
