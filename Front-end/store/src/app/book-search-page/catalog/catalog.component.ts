@@ -5,13 +5,13 @@ import { map } from 'rxjs/operators';
 
 import { PaginationInstance } from 'ngx-pagination';
 
-import { ProductPreview } from '../core/models/product-preview';
-import { ProductOptionsStorage } from '../core/services/product-options.storage';
-import { ProductPreviewSet } from '../core/models/product-preview-set';
-import { PaginationOptions } from '../core/interfaces/pagination-options';
-import { PAGE_SIZE } from '../core/utils/values';
-import { SortingOptions } from '../core/interfaces/sorting-options';
-import { FilterOptions } from '../core/interfaces/filter-options';
+import { ProductPreview } from '../../core/models/product-preview';
+import { ProductOptionsStorage } from '../../core/services/product-options.storage';
+import { ProductPreviewSet } from '../../core/models/product-preview-set';
+import { PaginationOptions } from '../../core/interfaces/pagination-options';
+import { PAGE_SIZE } from '../../core/utils/values';
+import { SortingOptions } from '../../core/interfaces/sorting-options';
+import { FilterOptions } from '../../core/interfaces/filter-options';
 
 
 @Component({

@@ -2,13 +2,13 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { SelectionService } from '../core/services/selection.service';
-import { ProductOptionsStorage } from '../core/services/product-options.storage';
-import { ProductPreview } from '../core/models/product-preview';
-import { SELECTION_SIZE } from '../core/utils/values';
-import { Selection } from '../core/enums/selection';
-import {ProductPreviewSet} from "../core/models/product-preview-set";
-import {PaginationOptions} from "../core/interfaces/pagination-options";
+import { SelectionService } from '../../core/services/selection.service';
+import { ProductOptionsStorage } from '../../core/services/product-options.storage';
+import { ProductPreview } from '../../core/models/product-preview';
+import { SELECTION_SIZE } from '../../core/utils/values';
+import { Selection } from '../../core/enums/selection';
+import {ProductPreviewSet} from "../../core/models/product-preview-set";
+import {PaginationOptions} from "../../core/interfaces/pagination-options";
 
 @Component({
   selector: 'app-selection',
