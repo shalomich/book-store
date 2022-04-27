@@ -26,9 +26,8 @@ export class OrderService {
       lastName: personalData.lastName,
       phoneNumber: personalData.phoneNumber,
       email: personalData.email,
-      address: '',
-      orderReceiptMethod: 1,
-      paymentMethod: 1,
+      orderReceiptMethod: 'Pickup',
+      paymentMethod: 'Offline',
     };
 
     return this.http.post<void>(ORDER_URL, body, { headers });
