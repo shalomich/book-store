@@ -1,0 +1,13 @@
+<div class="new-order-block">
+  <app-personal-data-form #dataForm [userData]="(userProfile$ | async)!"></app-personal-data-form>
+  <app-order-info [orderProducts]="basketProducts"></app-order-info>
+  <div class="order-bottom-block">
+    <div class="total-info">
+      <div class="address-info">Заказ будет ожидать вас по адресу: ХХХ</div>
+      <span class="total-cost">Итоговая сумма заказа: <span>{{totalCost}} &#8381;</span></span>
+    </div>
+    <div class="order-button-block">
+      <button (click)="onOrderApply()" class="order-apply-button" mat-flat-button>Подтвердить заказ</button>
+    </div>
+  </div>
+</div>

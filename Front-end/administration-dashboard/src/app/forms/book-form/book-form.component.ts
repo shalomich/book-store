@@ -102,8 +102,9 @@ export class BookFormComponent implements OnInit, OnDestroy {
         this.bookForm.controls.ISBN.setAsyncValidators([BookFormValidation.isISBNValid(book.ISBN)]);
       });
       this.subscriptions.add(sub);
+    } else {
+      this.bookForm.controls.ISBN.setAsyncValidators([BookFormValidation.isISBNValid(null)]);
     }
-    this.bookForm.controls.ISBN.setAsyncValidators([BookFormValidation.isISBNValid(null)]);
   }
 
   public ngOnDestroy() {

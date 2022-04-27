@@ -1,4 +1,7 @@
 <div *ngIf="(book$ | async) as book" class="book-card">
+  <div class="book-name">
+    {{book.name}}
+  </div>
   <app-product-images [titleImage]="book.titleImage" [notTitleImages]="book.notTitleImages"></app-product-images>
   <div class="info-block">
     <div class="info-field">
@@ -46,11 +49,15 @@
       <div class="field-value">{{book.bookFormat}}</div>
     </div>
   </div>
-  <mat-expansion-panel expanded class="description">
-    <mat-expansion-panel-header>
-      <mat-panel-title>Описание</mat-panel-title>
-    </mat-expansion-panel-header>
-    <p>{{book.description}}</p>
-  </mat-expansion-panel>
-  <app-add-to-cart [bookId]="currentBookId" [isInBasket]="book.isInBasket" [cost]="book.cost"></app-add-to-cart>
+  <div>
+    <div class="description-block">
+      <mat-expansion-panel expanded class="description">
+        <mat-expansion-panel-header>
+          <mat-panel-title>Описание</mat-panel-title>
+        </mat-expansion-panel-header>
+        <p>{{book.description}}</p>
+      </mat-expansion-panel>
+    </div>
+    <app-add-to-cart [bookId]="currentBookId" [isInBasket]="book.isInBasket" [cost]="book.cost"></app-add-to-cart>
+  </div>
 </div>

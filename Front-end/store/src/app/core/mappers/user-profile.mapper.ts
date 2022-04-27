@@ -38,6 +38,6 @@ export class UserProfileMapper extends Mapper<UserProfileDto, UserProfile> {
       email: dto.email,
       phoneNumber: dto.phoneNumber,
       address: dto.address,
-    });
+    } as UserProfile);
   }
 }

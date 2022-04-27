@@ -42,10 +42,15 @@ import { BasketInfoBlockComponent } from './basket-page/basket-info-block/basket
 import { ProductOptionsStorage } from './core/services/product-options.storage';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import {ProfileProviderService} from './core/services/profile-provider.service';
+import { OrderPageComponent } from './order-page/order-page.component';
+import { PersonalDataFormComponent } from './order-page/personal-data-form/personal-data-form.component';
+import { OrderInfoComponent } from './order-page/order-info/order-info.component';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 
 @NgModule({
-  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent, MainPageComponent, SelectionPageComponent, CatalogComponent, BasketPageComponent, BasketElementComponent, BasketInfoBlockComponent, ProfilePageComponent],
+  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent, MainPageComponent, SelectionPageComponent, CatalogComponent, BasketPageComponent, BasketElementComponent, BasketInfoBlockComponent, ProfilePageComponent, OrderPageComponent, PersonalDataFormComponent, OrderInfoComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -63,6 +68,8 @@ import {ProfileProviderService} from './core/services/profile-provider.service';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
   ],
   providers: [ProductOptionsStorage, ProfileProviderService],
   bootstrap: [AppComponent],
