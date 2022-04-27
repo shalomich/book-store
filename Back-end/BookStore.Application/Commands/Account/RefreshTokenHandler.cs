@@ -1,39 +1,42 @@
 ﻿using BookStore.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using BookStore.Application.ViewModels.Account;
 using BookStore.Application.Services;
 using BookStore.Application.Exceptions;
 using BookStore.Application.Dto;
 
 namespace BookStore.Application.Commands.Account
 {
-	public record RefreshTokenCommand(User User, string RefreshToken) : IRequest<TokensDto>;
+	public record RefreshTokenCommand(string RefreshToken) : IRequest<TokensDto>;
 	internal class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, TokensDto>
 	{
 		private const string WrongRefreshTokenMessage = "Wrong refresh token";
 
 		private RefreshTokenRepository RefreshTokenRepository { get; }
         private TokensFactory TokensFactory { get; }
+		private LoggedUserAccessor LoggedUserAccessor { get; }
+		private UserManager<User> UserManager { get; }
 
-        public RefreshTokenHandler(RefreshTokenRepository refreshTokenRepository, TokensFactory tokensFactory)
+        public RefreshTokenHandler(RefreshTokenRepository refreshTokenRepository, TokensFactory tokensFactory, LoggedUserAccessor loggedUserAccessor, UserManager<User> userManager)
         {
-            RefreshTokenRepository = refreshTokenRepository ?? throw new ArgumentNullException(nameof(refreshTokenRepository));
-            TokensFactory = tokensFactory ?? throw new ArgumentNullException(nameof(tokensFactory));
+            RefreshTokenRepository = refreshTokenRepository;
+            TokensFactory = tokensFactory;
+            LoggedUserAccessor = loggedUserAccessor;
+            UserManager = userManager;
         }
 
         public async Task<TokensDto> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
 		{
-			var (user, refreshToken) = request;
+            int userId = LoggedUserAccessor.GetCurrentUserId();
 
-			if (await RefreshTokenRepository.IsValid(refreshToken, user) == false)
+            var user = await UserManager.FindByIdAsync(userId.ToString());
+
+            if (user == null)
+                throw new NotFoundException("Wrong access token.");
+            
+			if (await RefreshTokenRepository.IsValid(request.RefreshToken, user) == false)
             {
 				await RefreshTokenRepository.Remove(user);
 				throw new BadRequestException(WrongRefreshTokenMessage);

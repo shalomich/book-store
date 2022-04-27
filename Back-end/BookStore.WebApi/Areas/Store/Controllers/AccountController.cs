@@ -42,17 +42,13 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         [HttpPost("logout")]
         public async Task<Unit> Logout(TokensDto tokens)
         {
-            var user = await _mediator.Send(new FindUserByAcessTokenQuery(tokens.AccessToken));
-
-            return await _mediator.Send(new LogoutCommand(user, tokens.RefreshToken));
+            return await _mediator.Send(new LogoutCommand(tokens.RefreshToken));
         }
 
         [HttpPost("refresh")]
         public async Task<TokensDto> RefreshToken(TokensDto tokens)
         {
-            var user = await _mediator.Send(new FindUserByAcessTokenQuery(tokens.AccessToken));
-
-            return await _mediator.Send(new RefreshTokenCommand(user, tokens.RefreshToken));
+            return await _mediator.Send(new RefreshTokenCommand(tokens.RefreshToken));
         }
 
         [HttpGet("email-existence/{email}")]
