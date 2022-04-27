@@ -8,6 +8,8 @@ export const PROFILE_URL = 'https://localhost:44327/store/profile';
 
 export const ORDER_URL = 'https://localhost:44327/store/order';
 
+export const BATTLE_URL = 'https://localhost:44327/store/battle';
+
 export const PAGE_SIZE = 3;
 export const PAGE_NUMBER = 1;
 

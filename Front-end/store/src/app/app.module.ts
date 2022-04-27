@@ -48,6 +48,9 @@ import { OrderInfoComponent } from './order-page/order-info/order-info.component
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { BattlePageComponent } from './battle-page/battle-page.component';
+import {NgxSimpleCountdownModule} from 'ngx-simple-countdown';
+import {CountdownModule} from 'ngx-countdown';
+import {CdTimerModule} from 'angular-cd-timer';
 
 
 @NgModule({
@@ -71,6 +74,9 @@ import { BattlePageComponent } from './battle-page/battle-page.component';
     MatInputModule,
     MatTableModule,
     MatPaginatorModule,
+    NgxSimpleCountdownModule,
+    CountdownModule,
+    CdTimerModule,
   ],
   providers: [ProductOptionsStorage, ProfileProviderService],
   bootstrap: [AppComponent],

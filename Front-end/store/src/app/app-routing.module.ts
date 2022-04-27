@@ -9,6 +9,7 @@ import { BasketPageComponent } from './basket-page/basket-page.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import {ProfilePageComponent} from './profile-page/profile-page.component';
 import {OrderPageComponent} from './order-page/order-page.component';
+import {BattlePageComponent} from './battle-page/battle-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'book-store', pathMatch: 'full' },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'book-store/catalog/book', component: BookSearchPageComponent },
   { path: 'book-store/catalog/book/:id', component: BookCardComponent },
   { path: 'book-store/catalog/selection/:selectionName', component: SelectionPageComponent },
+  { path: 'book-store/battle', component: BattlePageComponent },
 ];
 
 @NgModule({

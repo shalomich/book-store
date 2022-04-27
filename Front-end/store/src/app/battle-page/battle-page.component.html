@@ -1,1 +1,37 @@
-<p>battle-page works!</p>
+<div *ngIf="(battleInfo$ | async) as battle" class="battle-block">
+  <div class="countdown">
+    Баттл завершится через: &nbsp;
+    <cd-timer class="time" [countdown]="true" [startTime]="getRemainingTime(battle.endDate)" format="user">
+      [days]д [hours]ч [minutes]м [seconds]с
+    </cd-timer>
+  </div>
+  <div class="first-book">
+    <div title="{{battle.firstBattleBook.name}}" class="book-name">{{battle.firstBattleBook.name}}</div>
+    <img [alt]="battle.firstBattleBook.name" src="{{battle.firstBattleBook.titleImage | base64ToImgSrc}}">
+    <div class="votes-count">Голосов: {{battle.firstBattleBook.totalVotingPointCount}}</div>
+    <div *ngIf="canUserVote(1, battle.firstBattleBook.votedByCurrentUser, battle.secondBattleBook.votedByCurrentUser)" class="voting-block">
+      <mat-form-field class="voting-filed" appearance="outline">
+        <input type="number" matInput placeholder="Введите количество голосов" />
+      </mat-form-field>
+      <div class="voting-button-block">
+        <button mat-stroked-button>Голосовать</button>
+      </div>
+    </div>
+  </div>
+  <div class="line-box">
+    <div class="diagonal-line"></div>
+  </div>
+  <div class="second-book">
+    <div title="{{battle.secondBattleBook.name}}" class="book-name">{{battle.secondBattleBook.name}}</div>
+    <img [alt]="battle.secondBattleBook.name" src="{{battle.secondBattleBook.titleImage | base64ToImgSrc}}">
+    <div class="votes-count">Голосов: {{battle.firstBattleBook.totalVotingPointCount}}</div>
+    <div *ngIf="canUserVote(2, battle.firstBattleBook.votedByCurrentUser, battle.secondBattleBook.votedByCurrentUser)" class="voting-block">
+      <mat-form-field class="voting-filed" appearance="outline">
+        <input type="number" matInput placeholder="Введите количество голосов" />
+      </mat-form-field>
+      <div class="voting-button-block">
+        <button mat-stroked-button>Голосовать</button>
+      </div>
+    </div>
+  </div>
+</div>
