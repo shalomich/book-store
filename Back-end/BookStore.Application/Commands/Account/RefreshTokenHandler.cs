@@ -9,37 +9,40 @@ using BookStore.Application.Dto;
 
 namespace BookStore.Application.Commands.Account
 {
-	public record RefreshTokenCommand(string RefreshToken) : IRequest<TokensDto>;
+	public record RefreshTokenCommand(TokensDto PreviousTokens) : IRequest<TokensDto>;
 	internal class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, TokensDto>
 	{
-		private const string WrongRefreshTokenMessage = "Wrong refresh token";
-
 		private RefreshTokenRepository RefreshTokenRepository { get; }
         private TokensFactory TokensFactory { get; }
-		private LoggedUserAccessor LoggedUserAccessor { get; }
 		private UserManager<User> UserManager { get; }
+		private JwtParser JwtParser { get; }
 
-        public RefreshTokenHandler(RefreshTokenRepository refreshTokenRepository, TokensFactory tokensFactory, LoggedUserAccessor loggedUserAccessor, UserManager<User> userManager)
+        public RefreshTokenHandler(RefreshTokenRepository refreshTokenRepository, TokensFactory tokensFactory,
+			JwtParser jwtParser, UserManager<User> userManager)
         {
             RefreshTokenRepository = refreshTokenRepository;
             TokensFactory = tokensFactory;
-            LoggedUserAccessor = loggedUserAccessor;
-            UserManager = userManager;
+			UserManager = userManager;
+			JwtParser = jwtParser;
         }
 
         public async Task<TokensDto> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
 		{
-            int userId = LoggedUserAccessor.GetCurrentUserId();
+			var (accessToken, refreshToken) = request.PreviousTokens;
+            
+			int userId = JwtParser.FromToken(accessToken,checkExpiration: false);
 
             var user = await UserManager.FindByIdAsync(userId.ToString());
 
             if (user == null)
-                throw new NotFoundException("Wrong access token.");
-            
-			if (await RefreshTokenRepository.IsValid(request.RefreshToken, user) == false)
+            {
+				throw new BadRequestException("Wrong access token. You need to login in system.");
+			}
+
+			if (await RefreshTokenRepository.IsValid(refreshToken, user) == false)
             {
 				await RefreshTokenRepository.Remove(user);
-				throw new BadRequestException(WrongRefreshTokenMessage);
+				throw new BadRequestException("Wrong refresh token. You need to login in system.");
 			}
 			
 			return await TokensFactory.GenerateTokens(user);

@@ -48,7 +48,7 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         [HttpPost("refresh")]
         public async Task<TokensDto> RefreshToken(TokensDto tokens)
         {
-            return await _mediator.Send(new RefreshTokenCommand(tokens.RefreshToken));
+            return await _mediator.Send(new RefreshTokenCommand(tokens));
         }
 
         [HttpGet("email-existence/{email}")]

@@ -21,7 +21,7 @@ public class JwtParser
             .Get<JwtSettings>();
     }
 
-    public int FromToken(string token)
+    public int FromToken(string token, bool checkExpiration = true)
     {
         string tokenKey = JwtSettings.TokenKey;
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
@@ -32,7 +32,7 @@ public class JwtParser
             ValidateIssuer = false,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = securityKey,
-            ValidateLifetime = true,
+            ValidateLifetime = checkExpiration,
             ClockSkew = TimeSpan.Zero
         };
 
