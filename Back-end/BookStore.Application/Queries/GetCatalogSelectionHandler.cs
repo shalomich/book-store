@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using BookStore.Application.Dto;
 using BookStore.Application.Services;
 using BookStore.Application.Services.CatalogSelections;
+using BookStore.Domain.Entities.Battles;
 using BookStore.Domain.Entities.Books;
 using BookStore.Persistance;
 using MediatR;
@@ -48,25 +49,60 @@ namespace BookStore.Application.Queries
             catalogBooks = SelectionConfigurator.AddPagging(catalogBooks, pagging);
             catalogBooks = SelectionConfigurator.AddSorting(catalogBooks, sortings);
 
-            var previews = await catalogBooks
+            IEnumerable<PreviewDto> previews = await catalogBooks
                 .ProjectTo<PreviewDto>(Mapper.ConfigurationProvider)
-                .ToArrayAsync();
+                .ToListAsync(cancellationToken);
+
+            previews = await SetBattleStatus(previews, cancellationToken);
 
             if (LoggedUserAccessor.IsAuthenticated())
             {
                 int currentUserId = LoggedUserAccessor.GetCurrentUserId();
 
-                var basketProductIds = await Context.BasketProducts
-                    .Where(basketProduct => basketProduct.UserId == currentUserId)
-                    .Select(basketProduct => basketProduct.ProductId)
-                    .ToArrayAsync();
-
-                foreach (var preview in previews)
-                    preview.IsInBasket = basketProductIds.Contains(preview.Id);
-
+                previews = await SetBasketStatus(previews, currentUserId, cancellationToken);
             }
 
             return new PreviewSetDto(previews, totalCount);
         }
+
+        private async Task<IEnumerable<PreviewDto>> SetBasketStatus(IEnumerable<PreviewDto> previews, int currentUserId,
+            CancellationToken cancellationToken)
+        {
+            var basketProductIds = await Context.BasketProducts
+                .Where(basketProduct => basketProduct.UserId == currentUserId)
+                .Select(basketProduct => basketProduct.ProductId)
+                .ToArrayAsync(cancellationToken);
+
+            var previewsWithBasketStatus = new List<PreviewDto>();
+
+            foreach (var preview in previews)
+            {
+                bool isInBasket = basketProductIds.Contains(preview.Id);
+                previewsWithBasketStatus.Add(preview with { IsInBasket = isInBasket });
+            }
+           
+            return previewsWithBasketStatus;
+        }
+
+        private async Task<IEnumerable<PreviewDto>> SetBattleStatus(IEnumerable<PreviewDto> previews,
+            CancellationToken cancellationToken)
+        {
+            var battleBookIds = await Context.Set<BattleBook>()
+                .Where(battleBook => battleBook.Battle.IsActive)
+                .Select(battleBook => battleBook.BookId)
+                .ToListAsync(cancellationToken);
+
+            var previewsWithBattleStatus = new List<PreviewDto>();
+
+            foreach (var preview in previews)
+            {
+                bool isInBattle = battleBookIds.Contains(preview.Id);
+                previewsWithBattleStatus.Add(preview with { IsInBattle = isInBattle });
+            }
+
+            return previewsWithBattleStatus;
+        }
+
+
     }
 }
