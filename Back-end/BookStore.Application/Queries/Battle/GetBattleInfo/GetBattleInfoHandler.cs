@@ -38,45 +38,46 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
 
         if (battleInfo == null)
         {
-            throw new NotFoundException("There is not active battle.");
+            var prevoiusBattles = Context.Battles
+                .Where(battle => !battle.IsActive)
+                .OrderByDescending(battle => battle.EndDate);
+
+            battleInfo = await prevoiusBattles
+                .ProjectTo<BattleInfoDto>(Mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (battleInfo == null)
+            {
+                throw new NotFoundException("There is not active battle.");
+            }
         }
 
-        int currentUserId = LoggedUserAccessor.GetCurrentUserId();
+        if (LoggedUserAccessor.IsAuthenticated())
+        {
+            var currentUserId = LoggedUserAccessor.GetCurrentUserId();
 
-        var currentUserVote = await currentBattle
-            .SelectMany(battle => battle.BattleBooks)
-            .SelectMany(battle => battle.Votes)
-            .SingleOrDefaultAsync(vote => vote.UserId == currentUserId, cancellationToken);
-
-        battleInfo = SetVotedStatus(battleInfo, currentUserVote);
+            return await SetCurrentUserBattleInfo(battleInfo, currentUserId, cancellationToken);
+        }
 
         return battleInfo;
     }
 
-    private BattleInfoDto SetVotedStatus(BattleInfoDto battleInfo, Vote currentUserVote)
+    private async Task<BattleInfoDto> SetCurrentUserBattleInfo(BattleInfoDto battleInfo, int currentUserId,
+        CancellationToken cancellationToken)
     {
+        var currentUserVote = await Context
+            .Set<BattleBook>()
+            .Where(battleBook => battleBook.BattleId == battleInfo.Id)
+            .SelectMany(battle => battle.Votes)
+            .SingleOrDefaultAsync(vote => vote.UserId == currentUserId, cancellationToken);
+
         if (currentUserVote != null)
         {
-            if (currentUserVote.BattleBookId == battleInfo.FirstBattleBook.BattleBookId)
+            return battleInfo with
             {
-                return battleInfo with
-                {
-                    FirstBattleBook = battleInfo.FirstBattleBook with
-                    {
-                        VotedByCurrentUser = true
-                    }
-                };
-            }
-            else if (currentUserVote.BattleBookId == battleInfo.SecondBattleBook.BattleBookId)
-            {
-                return battleInfo with
-                {
-                    SecondBattleBook = battleInfo.SecondBattleBook with
-                    {
-                        VotedByCurrentUser = true
-                    }
-                };
-            }
+                VotedBattleBookId = currentUserVote.BattleBookId,
+                SpentVotingPointCount = currentUserVote.VotingPointCount
+            };
         }
 
         return battleInfo;

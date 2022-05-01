@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System;
 
 namespace BookStore.Application.Services;
 public class LoggedUserAccessor
@@ -14,11 +15,17 @@ public class LoggedUserAccessor
     {
         int userId;
 
-        var userIdString = HttpContextAccessor.HttpContext
-            .User.FindFirst(nameof(userId)).Value;
-            
-        userId = int.Parse(userIdString);
+        try
+        {
+            var userIdString = HttpContextAccessor.HttpContext.User.FindFirst(nameof(userId)).Value;
 
+            userId = int.Parse(userIdString);
+        }
+        catch (Exception exception)
+        {
+            throw new InvalidOperationException("Can not get id of not authenticated user.", exception);
+        }
+        
         return userId;
     }
 
