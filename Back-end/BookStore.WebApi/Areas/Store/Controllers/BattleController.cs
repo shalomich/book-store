@@ -2,6 +2,7 @@
 using BookStore.Application.Commands.Battles.UpdateBattleSettings;
 using BookStore.Application.Queries.Battle.GetBattleInfo;
 using BookStore.Application.Queries.Battle.GetBattleSettings;
+using BookStore.WebApi.Attributes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,8 @@ public class BattleController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
+    [TypeFilter(typeof(OptionalAuthorizeFilter))]
     public async Task<BattleInfoDto> GetBattleInfo(CancellationToken cancellationToken)
     {
         return await Mediator.Send(new GetBattleInfoQuery(), cancellationToken);

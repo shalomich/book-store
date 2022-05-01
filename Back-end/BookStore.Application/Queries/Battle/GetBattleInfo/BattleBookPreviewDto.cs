@@ -11,6 +11,5 @@ public record BattleBookPreviewDto
     public ImageDto TitleImage { init; get; }
     public string AuthorName { init; get; }
     public int TotalVotingPointCount { init; get; }
-    public bool VotedByCurrentUser { init; get; }
 }
 
