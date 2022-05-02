@@ -8,6 +8,8 @@ public record BattleInfoDto
     public BattleBookPreviewDto SecondBattleBook { get; init; }
     public bool IsActive { get; init; }
     public DateTimeOffset EndDate { get; init; }
+    public int InitialDiscount { get; init; }
+    public int FinalDiscount { get; init; }
     public int? DiscountPercentage { get; init; }
     public int? VotedBattleBookId { get; init; }
     public int? SpentVotingPointCount { get; init; }

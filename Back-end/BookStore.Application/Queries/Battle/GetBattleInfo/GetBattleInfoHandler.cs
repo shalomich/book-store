@@ -43,7 +43,13 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
             return await SetCurrentUserBattleInfo(battleInfo, currentUserId, cancellationToken);
         }
 
-        return battleInfo;
+        var battleSettings = BattleSettingsProvider.GetBattleSettings();
+
+        return battleInfo with
+        {
+            InitialDiscount = battleSettings.InitialDiscount,
+            FinalDiscount = battleSettings.FinalDiscount
+        };
     }
 
     private async Task<BattleInfoDto> GetCurrentBattle(CancellationToken cancellationToken)
