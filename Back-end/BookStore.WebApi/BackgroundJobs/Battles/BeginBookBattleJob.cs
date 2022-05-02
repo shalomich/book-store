@@ -1,7 +1,7 @@
-﻿using BookStore.Application.Commands.Battles.BeginBookBattle;
-using BookStore.Application.Notifications.BattleBegun;
+﻿using BookStore.Application.Exceptions;
+using BookStore.Application.Notifications.BattleFinished;
+using BookStore.Application.Queries.Battle.CheckBattleFinished;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,12 +19,15 @@ internal class BeginBookBattleJob
     public async Task BeginBookBattle(CancellationToken cancellationToken)
     {
         
-        int? battleId = await Mediator.Send(new BeginBookBattleCommand(), cancellationToken);
-        
-        if (battleId.HasValue)
+        var checkBattleFinishedResult = await Mediator.Send(new CheckBattleFinishedQuery(), cancellationToken);
+
+        if (!checkBattleFinishedResult.IsFinished)
         {
-            await Mediator.Publish(new BattleBegunNotification(battleId.Value));
+            throw new BadRequestException("Battle hadn't finished yet.");
         }
+        
+        await Mediator.Publish(new BattleFinishedNotification(checkBattleFinishedResult.CurrentBattleId,
+            checkBattleFinishedResult.PreviousBattleId));
     } 
 }
 

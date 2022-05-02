@@ -6,8 +6,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookStore.Application.Notifications.BattleBegun;
-internal class AccrueVotingPointsForBattleBegunHandler : INotificationHandler<BattleBegunNotification>
+namespace BookStore.Application.Notifications.BattleFinished;
+internal class AccrueVotingPointsForBattleBegunHandler : INotificationHandler<BattleFinishedNotification>
 {
     private ApplicationContext Context { get; }
     private BattleSettingsProvider BattleSettingsProvider { get; }
@@ -18,7 +18,7 @@ internal class AccrueVotingPointsForBattleBegunHandler : INotificationHandler<Ba
         BattleSettingsProvider = battleSettingsProvider;
     }
 
-    public async Task Handle(BattleBegunNotification notification, CancellationToken cancellationToken)
+    public async Task Handle(BattleFinishedNotification notification, CancellationToken cancellationToken)
     {
         var battleSettings = BattleSettingsProvider.GetBattleSettings();
 
