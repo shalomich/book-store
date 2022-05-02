@@ -1,21 +1,21 @@
 .battle-block {
   display: flex;
-  flex-wrap: wrap;
   padding: 5vh 10vh 0 10vh;
 }
 
 .countdown {
-  display: flex;
-  flex-basis: 100%;
+  display: block;
   justify-content: center;
   color: #2199e8;
   font-size: 2em;
-  font-family: "Monaco", monospace;
-  margin-bottom: 2vh;
+  margin-bottom: 20vh;
 }
 
 .countdown .time {
-  font-family: "Monaco", monospace;
+  font-family: 'Arcade', sans-serif;
+  font-size: 2em;
+  text-align: center;
+  margin-top: 4vh;
 }
 
 .first-book {
@@ -34,51 +34,55 @@
 }
 
 .first-book img, .second-book img {
-  width: 300px;
-  height: 450px;
+  width: 400px;
+  height: 600px;
 }
 
-.line-box {
-  width: 45vw;
-  height: 80vh;
-  position: relative;
-  box-sizing: border-box;
-  overflow: hidden;
+.center-block {
+  text-align: center;
+  margin-top: 10vh;
+  width: 30vw;
 }
 
-.diagonal-line {
-  width: calc(1.414 * 45vw);
-  transform: rotate(-50deg);
-  transform-origin: bottom left;
-  border-top: 0.2em solid #2199e8;
-  position: absolute;
-  bottom: -2px;
-  left: 6vw;
-  box-sizing: border-box;
+.versus {
+  font-size: 20em;
+  color: #2199e8;
+  font-family: 'Arcade', sans-serif;
 }
 
-.book-name {
+.book-name a {
   display: -webkit-box;
   font-size: 1.6em;
   text-align: center;
   color: #2199e8;
   margin-bottom: 3vh;
-  max-width: 300px;
+  width: 400px;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   white-space: normal;
   overflow: hidden;
   -webkit-line-clamp: 2;
   height: 4vh;
+  text-decoration: none;
 }
 
-.book-name:hover {
+.book-name a:hover {
   text-decoration: underline;
   cursor: pointer;
 }
 
+.votes-block {
+  margin-top: 10vh;
+  text-align: center;
+  font-size: 2em;
+  color: #2199e8;
+}
+
 .votes-count {
-  font-size: 1.6em;
+  font-family: 'Arcade', sans-serif;
+  font-size: 2.6em;
+  display: flex;
+  justify-content: space-between;
   color: #2199e8;
   margin: 3vh 0;
   text-align: center;
@@ -88,6 +92,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 1vh;
 }
 
 /* Border */
@@ -98,6 +103,7 @@
 /* Font color */
 input.mat-input-element {
   color: #2199e8 !important;
+  font-size: 1.4em;
 }
 
 .mat-form-field.mat-focused .mat-form-field-label {
@@ -109,13 +115,14 @@ input.mat-input-element {
 }
 
 .voting-filed {
-  width: 10vw;
+  width: 15vw;
 }
 
 .voting-button-block button {
-  width: 10vw;
+  width: 15vw;
   height: 5vh;
   color: #2199e8;
+  font-size: 1.2em;
 }
 
 .voting-button-block button:hover {
