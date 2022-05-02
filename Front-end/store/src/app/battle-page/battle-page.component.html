@@ -6,7 +6,7 @@
       </a>
     </div>
     <img [alt]="battle.firstBattleBook.name" src="{{battle.firstBattleBook.titleImage | base64ToImgSrc}}">
-    <div *ngIf="canUserVote(1, battle.firstBattleBook.votedByCurrentUser, battle.secondBattleBook.votedByCurrentUser)" class="voting-block">
+    <div *ngIf="canUserVote(battle.firstBattleBook.bookId, battle.votedBattleBookId)" class="voting-block">
       <mat-form-field class="voting-filed" appearance="outline">
         <input min="0" type="number" matInput placeholder="Введите количество очков" />
       </mat-form-field>
@@ -40,6 +40,32 @@
         </div>
       </div>
     </div>
+    <div class="discount-block">
+      <div class="discount">
+        {{battle.discountPercentage}}% / 30%
+      </div>
+      <div class="prices-for-winner">
+        <div class="book-price">
+          <div class="old-price">
+            {{battle.firstBattleBook.cost}} &#8381;
+          </div>
+          &nbsp; &nbsp;
+          <div class="new-price">
+            {{battle.firstBattleBook.cost * (1 - battle.discountPercentage / 100)}} &#8381;
+          </div>
+        </div>
+        <mat-icon matTooltip="Цена в случае победы">help_outline</mat-icon>
+        <div class="book-price">
+          <div class="old-price">
+            {{battle.secondBattleBook.cost}} &#8381;
+          </div>
+          &nbsp; &nbsp;
+          <div class="new-price">
+            {{battle.secondBattleBook.cost * (1 - battle.discountPercentage / 100)}} &#8381;
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="second-book">
     <div title="{{battle.secondBattleBook.name}}" class="book-name">
@@ -48,7 +74,7 @@
       </a>
     </div>
     <img [alt]="battle.secondBattleBook.name" src="{{battle.secondBattleBook.titleImage | base64ToImgSrc}}">
-    <div *ngIf="canUserVote(2, battle.firstBattleBook.votedByCurrentUser, battle.secondBattleBook.votedByCurrentUser)" class="voting-block">
+    <div *ngIf="canUserVote(battle.secondBattleBook.bookId, battle.votedBattleBookId)" class="voting-block">
       <mat-form-field class="voting-filed" appearance="outline">
         <input min="0" type="number" matInput placeholder="Введите количество очков" />
       </mat-form-field>

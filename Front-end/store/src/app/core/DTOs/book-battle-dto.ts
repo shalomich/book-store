@@ -7,4 +7,12 @@ export interface BookBattleDto {
   readonly secondBattleBook: BattleBook;
 
   readonly endDate: string;
+
+  readonly isActive: boolean;
+
+  readonly discountPercentage: number;
+
+  readonly spentVotingPointCount: number;
+
+  readonly votedBattleBookId: number;
 }

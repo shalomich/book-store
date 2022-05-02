@@ -22,6 +22,10 @@ export class BookBattleMapper {
       firstBattleBook: data.firstBattleBook,
       secondBattleBook: data.secondBattleBook,
       endDate: new Date(data.endDate),
+      isActive: data.isActive,
+      discountPercentage: data.discountPercentage,
+      spentVotingPointCount: data.spentVotingPointCount,
+      votedBattleBookId: data.votedBattleBookId,
     });
   }
 }

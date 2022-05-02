@@ -7,11 +7,6 @@ import { CountdownConfig } from 'ngx-countdown';
 import { BattleService } from '../core/services/battle.service';
 import { BookBattle } from '../core/models/book-battle';
 
-enum BookNum {
-  FirstBook = 1,
-  SecondBook,
-}
-
 @Component({
   selector: 'app-battle-page',
   templateUrl: './battle-page.component.html',
@@ -31,19 +26,12 @@ export class BattlePageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public canUserVote(bookNumber: number, firstBookStatus: boolean, secondBookStatus: boolean): boolean {
-    if (!firstBookStatus && !secondBookStatus) {
+  public canUserVote(bookId: number, votedBookId: number): boolean {
+    if (!votedBookId) {
       return true;
     }
 
-    switch (bookNumber) {
-      case BookNum.FirstBook:
-        return firstBookStatus;
-      case BookNum.SecondBook:
-        return secondBookStatus;
-      default:
-        return true;
-    }
+    return votedBookId === bookId;
   }
 
   public getRemainingTime(endDate: Date): number {

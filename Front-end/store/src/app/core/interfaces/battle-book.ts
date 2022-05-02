@@ -7,11 +7,11 @@ export interface BattleBook {
 
   name: string;
 
+  cost: number;
+
   titleImage: Base64Image;
 
   authorName: string;
 
   totalVotingPointCount: 0;
-
-  votedByCurrentUser: true;
 }

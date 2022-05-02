@@ -51,33 +51,35 @@ import { BattlePageComponent } from './battle-page/battle-page.component';
 import {NgxSimpleCountdownModule} from 'ngx-simple-countdown';
 import {CountdownModule} from 'ngx-countdown';
 import {CdTimerModule} from 'angular-cd-timer';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 @NgModule({
   declarations: [AppComponent, BookSearchPageComponent, SelectionComponent, MainPageComponent, SelectionPageComponent, CatalogComponent, BasketPageComponent, BasketElementComponent, BasketInfoBlockComponent, ProfilePageComponent, OrderPageComponent, PersonalDataFormComponent, OrderInfoComponent, BattlePageComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    ProductCardPageModule,
-    CommonModule,
-    CoreModule,
-    SharedModule,
-    HttpClientModule,
-    NgxPaginationModule,
-    MatExpansionModule,
-    MatIconModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTableModule,
-    MatPaginatorModule,
-    NgxSimpleCountdownModule,
-    CountdownModule,
-    CdTimerModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        ProductCardPageModule,
+        CommonModule,
+        CoreModule,
+        SharedModule,
+        HttpClientModule,
+        NgxPaginationModule,
+        MatExpansionModule,
+        MatIconModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatTableModule,
+        MatPaginatorModule,
+        NgxSimpleCountdownModule,
+        CountdownModule,
+        CdTimerModule,
+        MatTooltipModule,
+    ],
   providers: [ProductOptionsStorage, ProfileProviderService],
   bootstrap: [AppComponent],
 })

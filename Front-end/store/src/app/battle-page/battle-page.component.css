@@ -1,6 +1,6 @@
 .battle-block {
   display: flex;
-  padding: 5vh 10vh 0 10vh;
+  padding: 5vh 5vh 0 5vh;
 }
 
 .countdown {
@@ -40,8 +40,8 @@
 
 .center-block {
   text-align: center;
-  margin-top: 10vh;
-  width: 30vw;
+  margin: 5vh 2vw 0 2vw;
+  width: 40vw;
 }
 
 .versus {
@@ -71,7 +71,7 @@
   cursor: pointer;
 }
 
-.votes-block {
+.votes-block, .discount-block {
   margin-top: 10vh;
   text-align: center;
   font-size: 2em;
@@ -79,13 +79,51 @@
 }
 
 .votes-count {
-  font-family: 'Arcade', sans-serif;
-  font-size: 2.6em;
   display: flex;
   justify-content: space-between;
+}
+
+.votes-count, .discount {
+  font-family: 'Arcade', sans-serif;
+  font-size: 2.6em;
   color: #2199e8;
   margin: 3vh 0;
   text-align: center;
+}
+
+.prices-for-winner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12vh;
+}
+
+.prices-for-winner .mat-icon {
+  width: 4vw;
+  height: 4vh;
+  font-size: 1.2em;
+}
+
+.prices-for-winner .mat-icon:hover {
+  cursor: pointer;
+}
+
+.prices-for-winner .mat-tooltip {
+
+}
+
+.book-price {
+  display: flex;
+}
+
+.book-price .old-price {
+  color: black;
+  text-decoration: line-through;
+  text-decoration-color: #f44336 !important;
+}
+
+.new-price {
+  text-decoration: underline;
 }
 
 .voting-block {
@@ -101,7 +139,7 @@
   opacity: 1 !important;
 }
 /* Font color */
-input.mat-input-element {
+.voting-filed input.mat-input-element {
   color: #2199e8 !important;
   font-size: 1.4em;
 }
