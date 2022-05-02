@@ -80,14 +80,7 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
 
         int totalBattleVotingPointCount = battleInfo.FirstBattleBook.TotalVotingPointCount + battleInfo.SecondBattleBook.TotalVotingPointCount;
 
-        int increase = (int) Math.Round(totalBattleVotingPointCount * battleSettings.DiscountPerVotingPoint);
-
-        int currentDiscount = increase + battleSettings.InitialDiscount;
-
-        if (currentDiscount > battleSettings.FinalDiscount)
-        {
-            currentDiscount = battleSettings.FinalDiscount;
-        }
+        int currentDiscount = BattleCalculator.CalculateDiscount(totalBattleVotingPointCount, battleSettings);
 
         return battleInfo with
         {
