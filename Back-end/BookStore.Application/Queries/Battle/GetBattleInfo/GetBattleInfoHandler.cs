@@ -19,18 +19,37 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
     private ApplicationContext Context { get; }
     private IMapper Mapper { get; }
     private LoggedUserAccessor LoggedUserAccessor { get; }
+    private BattleSettingsProvider BattleSettingsProvider { get; }
 
-    public GetBattleInfoHandler(ApplicationContext context, IMapper mapper, LoggedUserAccessor loggedUserAccessor)
+    public GetBattleInfoHandler(ApplicationContext context, IMapper mapper, LoggedUserAccessor loggedUserAccessor,
+        BattleSettingsProvider battleSettingsProvider)
     {
         Context = context;
         Mapper = mapper;
         LoggedUserAccessor = loggedUserAccessor;
+        BattleSettingsProvider = battleSettingsProvider;
     }
 
     public async Task<BattleInfoDto> Handle(GetBattleInfoQuery request, CancellationToken cancellationToken)
     {
+        var battleInfo = await GetCurrentBattle(cancellationToken);
+
+        battleInfo = CalucalateDiscountPercentage(battleInfo);
+
+        if (LoggedUserAccessor.IsAuthenticated())
+        {
+            var currentUserId = LoggedUserAccessor.GetCurrentUserId();
+
+            return await SetCurrentUserBattleInfo(battleInfo, currentUserId, cancellationToken);
+        }
+
+        return battleInfo;
+    }
+
+    private async Task<BattleInfoDto> GetCurrentBattle(CancellationToken cancellationToken)
+    {
         var currentBattle = Context.Battles
-            .Where(battle => battle.IsActive);
+           .Where(battle => battle.IsActive);
 
         var battleInfo = await currentBattle
             .ProjectTo<BattleInfoDto>(Mapper.ConfigurationProvider)
@@ -52,14 +71,28 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
             }
         }
 
-        if (LoggedUserAccessor.IsAuthenticated())
-        {
-            var currentUserId = LoggedUserAccessor.GetCurrentUserId();
+        return battleInfo;
+    }
 
-            return await SetCurrentUserBattleInfo(battleInfo, currentUserId, cancellationToken);
+    private BattleInfoDto CalucalateDiscountPercentage(BattleInfoDto battleInfo)
+    {
+        var battleSettings = BattleSettingsProvider.GetBattleSettings();
+
+        int totalBattleVotingPointCount = battleInfo.FirstBattleBook.TotalVotingPointCount + battleInfo.SecondBattleBook.TotalVotingPointCount;
+
+        int increase = (int) Math.Round(totalBattleVotingPointCount * battleSettings.DiscountPerVotingPoint);
+
+        int currentDiscount = increase + battleSettings.InitialDiscount;
+
+        if (currentDiscount > battleSettings.FinalDiscount)
+        {
+            currentDiscount = battleSettings.FinalDiscount;
         }
 
-        return battleInfo;
+        return battleInfo with
+        {
+            DiscountPercentage = currentDiscount
+        };
     }
 
     private async Task<BattleInfoDto> SetCurrentUserBattleInfo(BattleInfoDto battleInfo, int currentUserId,
