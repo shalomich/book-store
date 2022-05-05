@@ -25,15 +25,18 @@ namespace BookStore.Application.Queries
         private ApplicationContext Context { get; }
         private SelectionConfigurator<Book> SelectionConfigurator { get; }
         private IMapper Mapper { get; }
+        private S3Storage S3Storage { get; }
 
         public GetCatalogSelectionHandler(LoggedUserAccessor loggedUserAccessor, ApplicationContext context,
-            SelectionConfigurator<Book> selectionConfigurator, IMapper mapper)
+            SelectionConfigurator<Book> selectionConfigurator, IMapper mapper, S3Storage s3Storage)
         {
             LoggedUserAccessor = loggedUserAccessor;
             Context = context;
             SelectionConfigurator = selectionConfigurator;
             Mapper = mapper;
+            S3Storage = s3Storage;
         }
+
         public async Task<PreviewSetDto> Handle(GetCatalogSelectionQuery request, CancellationToken cancellationToken)
         {
             var (catalogSelection, optionParameters) = request;
@@ -53,6 +56,8 @@ namespace BookStore.Application.Queries
                 .ProjectTo<PreviewDto>(Mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
+            previews = SetFileUrls(previews);
+
             previews = await SetBattleStatus(previews, cancellationToken);
 
             if (LoggedUserAccessor.IsAuthenticated())
@@ -64,6 +69,21 @@ namespace BookStore.Application.Queries
 
             return new PreviewSetDto(previews, totalCount);
         }
+
+        private IEnumerable<PreviewDto> SetFileUrls(IEnumerable<PreviewDto> previews)
+        {
+            foreach(var preview in previews)
+            {
+
+                var titleImage = preview.TitleImage with
+                {
+                    FileUrl = S3Storage.GetPresignedUrlForViewing(preview.Id, preview.TitleImage.Id)
+                };
+
+                yield return preview with { TitleImage = titleImage };
+            }
+        }
+
 
         private async Task<IEnumerable<PreviewDto>> SetBasketStatus(IEnumerable<PreviewDto> previews, int currentUserId,
             CancellationToken cancellationToken)

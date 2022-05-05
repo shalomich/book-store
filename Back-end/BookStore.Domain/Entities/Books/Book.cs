@@ -65,10 +65,6 @@ namespace BookStore.Domain.Entities.Books
 
         public ISet<GenreBook> GenresBooks { set; get; }
 
-        public ISet<string> Genres => GenresBooks
-            ?.Select(genreBook => genreBook.Genre.Name)
-            .ToHashSet();
-
         public ISet<string> Tags => ProductTags
             ?.Select(bookTag => bookTag.Tag.Name)
             .ToHashSet();

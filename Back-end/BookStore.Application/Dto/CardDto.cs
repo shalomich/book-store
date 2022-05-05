@@ -18,13 +18,13 @@ namespace BookStore.Application.Dto
         public bool IsInBattle { init; get; }
         public bool? IsInBasket { init; get; }
         public bool? IsMarked { init; get; }
-        public ISet<ImageDto> NotTitleImages { init; get; }
+        public IEnumerable<ImageDto> NotTitleImages { init; get; }
         public string Isbn { init; get; }
         public int ReleaseYear { init; get; }
         public string AuthorName { init; get; }
         public string PublisherName { init; get; }
         public string Type { init; get; }
-        public string[] Genres { init; get; }
+        public IEnumerable<string> Genres { init; get; }
         public string OriginalName { init; get; }
         public string AgeLimit { init; get; }
         public string CoverArt { init; get; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Application.Dto
 {
-    public class BasketProductDto
+    public record BasketProductDto
     {
         public int Id { init; get; }
         public string Name { init; get; }

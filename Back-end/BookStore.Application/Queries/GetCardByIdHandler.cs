@@ -25,9 +25,11 @@ internal class GetCardByIdHandler : IRequestHandler<GetCardByIdQuery, CardDto>
         {
             CreateMap<Book, CardDto>()
                 .ForMember(card => card.TitleImage, mapper =>
-                    mapper.MapFrom(product => product.Album.TitleImage))
+                    mapper.MapFrom(product => product.Album.Images
+                        .Single(image => image.Name == product.Album.TitleImageName)))
                 .ForMember(card => card.NotTitleImages, mapper =>
-                    mapper.MapFrom(product => product.Album.NotTitleImages))
+                    mapper.MapFrom(product => product.Album.Images
+                        .Where(image => image.Name != product.Album.TitleImageName)))
                 .ForMember(card => card.PublisherName, mapper =>
                     mapper.MapFrom(book => book.Publisher.Name))
                 .ForMember(card => card.AuthorName, mapper =>
@@ -39,37 +41,34 @@ internal class GetCardByIdHandler : IRequestHandler<GetCardByIdQuery, CardDto>
                 .ForMember(card => card.CoverArt, mapper =>
                     mapper.MapFrom(book => book.CoverArt.Name))
                 .ForMember(card => card.Genres, mapper =>
-                    mapper.MapFrom(book => book.Genres.ToArray()));
+                    mapper.MapFrom(book => book.GenresBooks
+                        .Select(genreBook => genreBook.Genre.Name)));
         }
     }
 
     private LoggedUserAccessor LoggedUserAccessor { get; }
     private ApplicationContext Context { get; }
     private IMapper Mapper { get; }
+    private S3Storage S3Storage { get; }
 
     public GetCardByIdHandler(LoggedUserAccessor loggedUserAccessor, ApplicationContext context,
-        IMapper mapper)
+        IMapper mapper, S3Storage s3Storage)
     {
         LoggedUserAccessor = loggedUserAccessor;
         Context = context;
         Mapper = mapper;
+        S3Storage = s3Storage;
     }
     public async Task<CardDto> Handle(GetCardByIdQuery request, CancellationToken cancellationToken)
     {
-        var bookById = await Context.Books
-            .Include(book => book.Author)
-            .Include(book => book.Publisher)
-            .Include(book => book.Type)
-            .Include(book => book.CoverArt)
-            .Include(book => book.AgeLimit)
-            .Include(book => book.Album)
-            .ThenInclude(album => album.Images)
+        var card = await Context.Books
+            .ProjectTo<CardDto>(Mapper.ConfigurationProvider)
             .SingleOrDefaultAsync(book => book.Id == request.BookId);
 
-        if (bookById == null)
+        if (card == null)
             throw new NotFoundException("Book does not exist by this id.");
 
-        var card = Mapper.Map<CardDto>(bookById);
+        card = SetFileUrls(card);
 
         card = await SetBattleStatus(card, cancellationToken);
 
@@ -78,10 +77,33 @@ internal class GetCardByIdHandler : IRequestHandler<GetCardByIdQuery, CardDto>
             int currentUserId = LoggedUserAccessor.GetCurrentUserId();
 
             card = await SetBasketStatus(card, currentUserId, cancellationToken);
-            card = await SetMarkStatus(card, currentUserId, cancellationToken);  
+            card = await SetMarkStatus(card, currentUserId, cancellationToken);
         }
 
         return card;
+    }
+
+
+    private CardDto SetFileUrls(CardDto card)
+    {
+        var notTitleImages = new List<ImageDto>();
+
+        var titleImage = card.TitleImage with
+        {
+            FileUrl = S3Storage.GetPresignedUrlForViewing(card.Id, card.TitleImage.Id)
+        };
+
+        foreach (var notTitleImage in card.NotTitleImages)
+        {
+            var notTitleImageWithFileUrl = notTitleImage with
+            {
+                FileUrl = S3Storage.GetPresignedUrlForViewing(card.Id, notTitleImage.Id)
+            };
+
+            notTitleImages.Add(notTitleImageWithFileUrl);
+        }
+
+        return card with { TitleImage = titleImage, NotTitleImages = notTitleImages.ToHashSet() };
     }
 
     private async Task<CardDto> SetBasketStatus(CardDto card, int currentUserId, CancellationToken cancellationToken)
@@ -105,7 +127,7 @@ internal class GetCardByIdHandler : IRequestHandler<GetCardByIdQuery, CardDto>
     private async Task<CardDto> SetBattleStatus(CardDto card, CancellationToken cancellationToken)
     {
         bool isInBattle = await Context.Set<BattleBook>()
-            .AnyAsync(battleBook => battleBook.Battle.IsActive 
+            .AnyAsync(battleBook => battleBook.Battle.IsActive
                 && battleBook.BookId == card.Id, cancellationToken);
 
         return card with { IsInBattle = isInBattle };
