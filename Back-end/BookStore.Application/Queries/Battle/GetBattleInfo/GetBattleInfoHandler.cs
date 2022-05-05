@@ -20,14 +20,16 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
     private IMapper Mapper { get; }
     private LoggedUserAccessor LoggedUserAccessor { get; }
     private BattleSettingsProvider BattleSettingsProvider { get; }
+    private S3Storage S3Storage { get; }
 
     public GetBattleInfoHandler(ApplicationContext context, IMapper mapper, LoggedUserAccessor loggedUserAccessor,
-        BattleSettingsProvider battleSettingsProvider)
+        BattleSettingsProvider battleSettingsProvider, S3Storage s3Storage)
     {
         Context = context;
         Mapper = mapper;
         LoggedUserAccessor = loggedUserAccessor;
         BattleSettingsProvider = battleSettingsProvider;
+        S3Storage = s3Storage;
     }
 
     public async Task<BattleInfoDto> Handle(GetBattleInfoQuery request, CancellationToken cancellationToken)
@@ -35,6 +37,8 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
         var battleInfo = await GetCurrentBattle(cancellationToken);
 
         battleInfo = CalucalateDiscountPercentage(battleInfo);
+
+        battleInfo = SetFileUrls(battleInfo);
 
         if (LoggedUserAccessor.IsAuthenticated())
         {
@@ -91,6 +95,25 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
         return battleInfo with
         {
             DiscountPercentage = currentDiscount
+        };
+    }
+
+    private BattleInfoDto SetFileUrls(BattleInfoDto battleInfo)
+    {
+        var firstTitleImage = battleInfo.FirstBattleBook.TitleImage with
+        {
+            FileUrl = S3Storage.GetPresignedUrlForViewing(battleInfo.FirstBattleBook.BookId, battleInfo.FirstBattleBook.TitleImage.Id)
+        };
+
+        var secondTitleImage = battleInfo.SecondBattleBook.TitleImage with
+        {
+            FileUrl = S3Storage.GetPresignedUrlForViewing(battleInfo.SecondBattleBook.BookId, battleInfo.SecondBattleBook.TitleImage.Id)
+        };
+
+        return battleInfo with
+        {
+            FirstBattleBook = battleInfo.FirstBattleBook with { TitleImage = firstTitleImage },
+            SecondBattleBook = battleInfo.SecondBattleBook with { TitleImage = secondTitleImage }
         };
     }
 
