@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Abp" Version="6.5.0" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.8.27" />
     <PackageReference Include="DataAnnotationsExtensions" Version="5.0.1.27" />
     <PackageReference Include="MediatR" Version="10.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />

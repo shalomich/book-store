@@ -69,6 +69,7 @@ namespace BookStore.WebApi
             services.AddDataTransformerBuildFacade(applicationAssembly);
             services.AddScoped(typeof(DbEntityQueryBuilder<>));
             services.AddScoped(typeof(DbFormEntityQueryBuilder<>));
+            services.AddScoped<S3Storage>();
 
             var jwtSettings = _configuration.GetSection("JwtSettings").Get<JwtSettings>();
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.TokenKey));
@@ -77,6 +78,8 @@ namespace BookStore.WebApi
                 options.TokenLifespan = TimeSpan.FromMinutes(jwtSettings.RefreshTokenExpiredMinutes));
 
             services.Configure<TelegramBotMessages>(_configuration.GetSection("TelegramBot:Messages"));
+
+            services.Configure<S3Settings>(_configuration.GetSection("S3"));
 
             services.AddIdentity<User, IdentityRole<int>>()
                 .AddEntityFrameworkStores<ApplicationContext>()
