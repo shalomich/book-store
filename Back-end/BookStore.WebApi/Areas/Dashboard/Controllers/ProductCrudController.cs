@@ -18,6 +18,7 @@ using BookStore.Domain.Entities;
 using BookStore.Application.Commands.Editing.UpdateDiscount;
 using BookStore.Application.Notifications.DiscountUpdated;
 using System.Threading;
+using BookStore.Application.Commands;
 
 namespace BookStore.WebApi.Areas.Dashboard.Controllers
 {
@@ -48,6 +49,13 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
             IncludeRelatedEntities(QueryBuilder);
 
             return (TProduct) await Mediator.Send(new GetByIdQuery(id, QueryBuilder));
+        }
+
+        public override async Task<int> Create(TForm productForm)
+        {
+            var product = Mapper.Map<TProduct>(productForm);
+
+            return await Mediator.Send(new CreateProductCommand(product));
         }
 
         [HttpPut("{id}/discount")]
