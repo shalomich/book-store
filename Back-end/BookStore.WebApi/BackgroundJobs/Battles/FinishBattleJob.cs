@@ -1,4 +1,5 @@
 ﻿using BookStore.Application.Commands.Battles;
+using BookStore.Application.Commands.Battles.TryExtendBattle;
 using Hangfire;
 using MediatR;
 using System.Threading;
@@ -17,11 +18,20 @@ internal class FinishBattleJob
 
     public async Task FinishBattle(CancellationToken cancellationToken)
     {
-        var finishedBattleId = await Mediator.Send(new FinishBattleCommand(), cancellationToken);
+        var tryExtendBattleResult = await Mediator.Send(new TryExtendBattleCommand(), cancellationToken);
 
-        BackgroundJob.Enqueue<NotifyBattleFinishedJob>(job => job.NotifyBattleFinished(finishedBattleId, default));
+        if (tryExtendBattleResult.NeedToExtend)
+        {
+            BackgroundJob.Schedule<FinishBattleJob>(job => job.FinishBattle(default), tryExtendBattleResult.NewEndDate.Value);
+        }
+        else
+        {
+            var finishedBattleId = await Mediator.Send(new FinishBattleCommand(), cancellationToken);
 
-        BackgroundJob.Enqueue<StartBattleJob>(job => job.StartBattle(default));
+            BackgroundJob.Enqueue<NotifyBattleFinishedJob>(job => job.NotifyBattleFinished(finishedBattleId, default));
+
+            BackgroundJob.Enqueue<StartBattleJob>(job => job.StartBattle(default));
+        }
     }
 }
 

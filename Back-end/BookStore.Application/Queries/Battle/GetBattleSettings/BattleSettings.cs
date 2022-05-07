@@ -10,5 +10,6 @@ public record BattleSettings
     public double DiscountPerVotingPoint { get; init; }
     public int LowerBoundBookCost { get; init; }
     public int MaxBookCostDifference { get; init; }
+    public int BattleExtensionInHours { get; init; }
 }
 
