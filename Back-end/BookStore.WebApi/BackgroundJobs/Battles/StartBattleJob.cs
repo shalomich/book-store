@@ -1,5 +1,6 @@
 ﻿using BookStore.Application.Commands.Battles;
 using BookStore.Application.Commands.Battles.StartBattle;
+using BookStore.Application.Notifications.BattleStarted;
 using Hangfire;
 using MediatR;
 using System.Threading;
@@ -23,6 +24,8 @@ internal class StartBattleJob
         var (battleId, endDate) = startBattleResult;
 
         BackgroundJob.Schedule<FinishBattleJob>(job => job.FinishBattle(default), endDate);
+
+        BackgroundJob.Enqueue<NotifyBattleStartedJob>(job => job.NotifyBattleStarted(battleId, default));
     }
 }
 
