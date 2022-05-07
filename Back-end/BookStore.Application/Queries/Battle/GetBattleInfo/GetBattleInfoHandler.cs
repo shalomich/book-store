@@ -77,7 +77,7 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
 
             if (battleInfo == null)
             {
-                throw new NotFoundException("There is not active battle.");
+                throw new NotFoundException("There is no battle.");
             }
         }
 

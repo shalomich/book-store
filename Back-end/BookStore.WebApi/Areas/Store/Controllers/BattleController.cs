@@ -3,6 +3,8 @@ using BookStore.Application.Commands.Battles.UpdateBattleSettings;
 using BookStore.Application.Queries.Battle.GetBattleInfo;
 using BookStore.Application.Queries.Battle.GetBattleSettings;
 using BookStore.WebApi.Attributes;
+using BookStore.WebApi.BackgroundJobs.Battles;
+using Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +34,12 @@ public class BattleController : ControllerBase
     public async Task<BattleInfoDto> GetBattleInfo(CancellationToken cancellationToken)
     {
         return await Mediator.Send(new GetBattleInfoQuery(), cancellationToken);
+    }
+
+    [HttpPost]
+    public void StartBattle()
+    {
+        BackgroundJob.Enqueue<StartBattleJob>(job => job.StartBattle(default));
     }
 
     [HttpPost("vote")]
