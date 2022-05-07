@@ -34,6 +34,8 @@ internal class GetCardByIdHandler : IRequestHandler<GetCardByIdQuery, CardDto>
                     mapper.MapFrom(book => book.Publisher.Name))
                 .ForMember(card => card.AuthorName, mapper =>
                     mapper.MapFrom(book => book.Author.Name))
+                .ForMember(card => card.DiscountPercentage, mapper =>
+                    mapper.MapFrom(book => book.Discount.Percentage))
                 .ForMember(card => card.Type, mapper =>
                     mapper.MapFrom(book => book.Type.Name))
                 .ForMember(card => card.AgeLimit, mapper =>

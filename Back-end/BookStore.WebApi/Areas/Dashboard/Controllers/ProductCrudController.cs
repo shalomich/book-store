@@ -59,9 +59,9 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
         }
 
         [HttpPut("{id}/discount")]
-        public async Task<IActionResult> UpdateDiscount(int id, UpdateDiscountDto updateDiscountDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateDiscount(int id, DiscountForm discountForm, CancellationToken cancellationToken)
         {
-            await Mediator.Send(new UpdateDiscountCommand(id, typeof(TProduct), updateDiscountDto), cancellationToken);
+            await Mediator.Send(new SetDiscountCommand(id, discountForm), cancellationToken);
 
             await Mediator.Publish(new DiscountUpdatedNotification(id), cancellationToken);
 

@@ -20,7 +20,9 @@ namespace BookStore.Application.Profiles
               .ForMember(card => card.PublisherName, mapper =>
                 mapper.MapFrom(book => book.Publisher.Name))
               .ForMember(card => card.AuthorName, mapper =>
-                mapper.MapFrom(book => book.Author.Name));
+                mapper.MapFrom(book => book.Author.Name))
+              .ForMember(card => card.DiscountPercentage, mapper =>
+                mapper.MapFrom(book => book.Discount.Percentage));
         }
     }
 }

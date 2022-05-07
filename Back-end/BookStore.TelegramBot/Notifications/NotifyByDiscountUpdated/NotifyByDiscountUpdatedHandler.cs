@@ -53,7 +53,7 @@ internal class NotifyByDiscountUpdatedHandler : INotificationHandler<DiscountUpd
             {
                 BookName = book.Name,
                 AuthorName = book.Author.Name,
-                DiscountPercentage = book.DiscountPercentage,
+                DiscountPercentage = book.Discount.Percentage,
                 MarkIds = book.Marks.Select(mark => mark.Id).ToArray()
             })
             .SingleAsync(cancellationToken);
