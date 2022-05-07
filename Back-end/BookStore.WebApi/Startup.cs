@@ -34,6 +34,7 @@ using Newtonsoft.Json;
 using Hangfire.SqlServer;
 using BookStore.WebApi.BackgroundJobs.Battles;
 using System.Threading;
+using BookStore.WebApi.BackgroundJobs;
 
 namespace BookStore.WebApi
 {
@@ -155,6 +156,8 @@ namespace BookStore.WebApi
                 .AllowAnyHeader()
                 .WithExposedHeaders("dataCount"));
 
+            RunBackgroundJobs();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -167,6 +170,15 @@ namespace BookStore.WebApi
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+        }
+
+        private static void RunBackgroundJobs()
+        {
+            var removeDiscountHour = 24;
+            var hourDifference =  DateTimeOffset.Now.Hour - DateTimeOffset.UtcNow.Hour;
+            removeDiscountHour -= hourDifference;
+
+            RecurringJob.AddOrUpdate<RemoveDiscountJob>(job => job.RemoveDiscount(default), Cron.Daily(removeDiscountHour));
         }
     }
 }
