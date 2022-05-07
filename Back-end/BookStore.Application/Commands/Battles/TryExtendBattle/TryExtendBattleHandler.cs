@@ -1,5 +1,6 @@
 ﻿using BookStore.Application.Services;
 using BookStore.Domain.Entities.Battles;
+using BookStore.Domain.Enums;
 using BookStore.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,7 @@ internal class TryExtendBattleHandler : IRequestHandler<TryExtendBattleCommand, 
     public async Task<TryExtendBattleResult> Handle(TryExtendBattleCommand request, CancellationToken cancellationToken)
     {
         var votingPointCounts = await Context.Set<BattleBook>()
-            .Where(battleBook => battleBook.Battle.IsActive)
+            .Where(battleBook => battleBook.Battle.State != BattleState.Finished)
             .Select(battleBook => battleBook.Votes
                 .Sum(vote => vote.VotingPointCount))
             .ToListAsync(cancellationToken);
@@ -40,11 +41,12 @@ internal class TryExtendBattleHandler : IRequestHandler<TryExtendBattleCommand, 
         var extensionHours = BattleSettingsProvider.GetBattleSettings().BattleExtensionInHours;
 
         var battle = await Context.Battles
-            .SingleAsync(battle => battle.IsActive, cancellationToken);
+            .SingleAsync(battle => battle.State != BattleState.Finished, cancellationToken);
 
         var newEndingDate = battle.EndDate.AddHours(extensionHours);
 
         battle.EndDate = newEndingDate;
+        battle.State = BattleState.Extended;
 
         await Context.SaveChangesAsync(cancellationToken);
 

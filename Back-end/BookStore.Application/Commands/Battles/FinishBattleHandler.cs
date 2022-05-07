@@ -1,4 +1,5 @@
-﻿using BookStore.Persistance;
+﻿using BookStore.Domain.Enums;
+using BookStore.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -20,10 +21,10 @@ internal class FinishBattleHandler : IRequestHandler<FinishBattleCommand, int>
     public async Task<int> Handle(FinishBattleCommand request, CancellationToken cancellationToken)
     {
         var currentBattle = await Context.Battles
-            .Where(battle => battle.IsActive)
+            .Where(battle => battle.State != BattleState.Finished)
             .SingleAsync(cancellationToken);
 
-        currentBattle.IsActive = false;
+        currentBattle.State = BattleState.Finished;
 
         await Context.SaveChangesAsync(cancellationToken);
 

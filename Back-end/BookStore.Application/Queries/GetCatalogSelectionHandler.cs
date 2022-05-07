@@ -5,6 +5,7 @@ using BookStore.Application.Services;
 using BookStore.Application.Services.CatalogSelections;
 using BookStore.Domain.Entities.Battles;
 using BookStore.Domain.Entities.Books;
+using BookStore.Domain.Enums;
 using BookStore.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -108,7 +109,7 @@ namespace BookStore.Application.Queries
             CancellationToken cancellationToken)
         {
             var battleBookIds = await Context.Set<BattleBook>()
-                .Where(battleBook => battleBook.Battle.IsActive)
+                .Where(battleBook => battleBook.Battle.State != BattleState.Finished)
                 .Select(battleBook => battleBook.BookId)
                 .ToListAsync(cancellationToken);
 
