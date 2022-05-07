@@ -17,7 +17,9 @@ internal class FinishBattleJob
 
     public async Task FinishBattle(CancellationToken cancellationToken)
     {
-        await Mediator.Send(new FinishBattleCommand(), cancellationToken);
+        var finishedBattleId = await Mediator.Send(new FinishBattleCommand(), cancellationToken);
+
+        BackgroundJob.Enqueue<NotifyBattleFinishedJob>(job => job.NotifyBattleFinished(finishedBattleId, default));
 
         BackgroundJob.Enqueue<StartBattleJob>(job => job.StartBattle(default));
     }

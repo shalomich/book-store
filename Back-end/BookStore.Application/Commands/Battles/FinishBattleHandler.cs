@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace BookStore.Application.Commands.Battles;
 
-public record FinishBattleCommand() : IRequest;
-internal class FinishBattleHandler : AsyncRequestHandler<FinishBattleCommand>
+public record FinishBattleCommand() : IRequest<int>;
+internal class FinishBattleHandler : IRequestHandler<FinishBattleCommand, int>
 {
     private ApplicationContext Context { get; }
  
@@ -17,7 +17,7 @@ internal class FinishBattleHandler : AsyncRequestHandler<FinishBattleCommand>
         Context = context;
     }
 
-    protected override async Task Handle(FinishBattleCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(FinishBattleCommand request, CancellationToken cancellationToken)
     {
         var currentBattle = await Context.Battles
             .Where(battle => battle.IsActive)
@@ -26,6 +26,8 @@ internal class FinishBattleHandler : AsyncRequestHandler<FinishBattleCommand>
         currentBattle.IsActive = false;
 
         await Context.SaveChangesAsync(cancellationToken);
+
+        return currentBattle.Id;    
     }
 }
 
