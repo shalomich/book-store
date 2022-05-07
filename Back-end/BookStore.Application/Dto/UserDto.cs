@@ -8,5 +8,6 @@ public record UserDto
     public string Email { init; get; }
     public string PhoneNumber { init; get; }
     public string Address { init; get; }
+    public int VotingPointCount { init; get; }
 }
 
