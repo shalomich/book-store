@@ -44,7 +44,7 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
         {
             var currentUserId = LoggedUserAccessor.GetCurrentUserId();
 
-            return await SetCurrentUserBattleInfo(battleInfo, currentUserId, cancellationToken);
+            battleInfo = await SetCurrentUserBattleInfo(battleInfo, currentUserId, cancellationToken);
         }
 
         var battleSettings = BattleSettingsProvider.GetBattleSettings();
