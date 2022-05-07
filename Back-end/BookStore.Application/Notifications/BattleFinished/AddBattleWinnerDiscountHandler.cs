@@ -1,6 +1,7 @@
 ﻿using BookStore.Application.Services;
 using BookStore.Domain.Entities.Battles;
 using BookStore.Domain.Entities.Books;
+using BookStore.Domain.Entities.Products;
 using BookStore.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -25,9 +26,11 @@ internal class AddBattleWinnerDiscountHandler : INotificationHandler<BattleFinis
     {
         var battleParticipants = await Context.Set<BattleBook>()
            .Where(battleBook => battleBook.BattleId == notification.BattleId)
+           .Include(battleBook => battleBook.Book)
+                .ThenInclude(book => book.Discount)
            .Select(battleBook => new
            {
-               battleBook.Book,
+               BattleBook = battleBook,
                VotingPointCount = battleBook.Votes
                    .Sum(vote => vote.VotingPointCount)
            })
@@ -35,14 +38,22 @@ internal class AddBattleWinnerDiscountHandler : INotificationHandler<BattleFinis
 
         var battleWinner = battleParticipants
             .MaxBy(battleParticipant => battleParticipant.VotingPointCount)
-            .Book;
+            .BattleBook.Book;
 
         int totalVotingPointCount = battleParticipants
             .Sum(battleParticipant => battleParticipant.VotingPointCount);
 
-        int currentDiscount = BattleCalculator.CalculateDiscount(totalVotingPointCount, BattleSettingsProvider.GetBattleSettings());
+        var battleSettings = BattleSettingsProvider.GetBattleSettings();
 
-        battleWinner.DiscountPercentage = currentDiscount;
+        int currentDiscountPercentage = BattleCalculator.CalculateDiscount(totalVotingPointCount, battleSettings);
+
+        var endDate = DateTimeOffset.Now.AddDays(battleSettings.BattleDurationInDays);
+
+        battleWinner.Discount = new Discount
+        {
+            Percentage = currentDiscountPercentage,
+            EndDate = endDate
+        };
 
         Context.Books.Update(battleWinner);
         await Context.SaveChangesAsync(cancellationToken);
