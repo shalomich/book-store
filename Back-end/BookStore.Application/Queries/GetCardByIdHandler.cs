@@ -6,6 +6,7 @@ using BookStore.Application.Services;
 using BookStore.Domain.Entities.Battles;
 using BookStore.Domain.Entities.Books;
 using BookStore.Domain.Entities.Products;
+using BookStore.Domain.Enums;
 using BookStore.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -129,7 +130,7 @@ internal class GetCardByIdHandler : IRequestHandler<GetCardByIdQuery, CardDto>
     private async Task<CardDto> SetBattleStatus(CardDto card, CancellationToken cancellationToken)
     {
         bool isInBattle = await Context.Set<BattleBook>()
-            .AnyAsync(battleBook => battleBook.Battle.IsActive
+            .AnyAsync(battleBook => battleBook.Battle.State != BattleState.Finished
                 && battleBook.BookId == card.Id, cancellationToken);
 
         return card with { IsInBattle = isInBattle };

@@ -1,5 +1,6 @@
 ﻿using BookStore.Application.Exceptions;
 using BookStore.Application.Services;
+using BookStore.Domain.Enums;
 using BookStore.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +32,7 @@ internal class SpendVotingPointsHandler : AsyncRequestHandler<SpendVotingPointsC
             .SingleAsync(user => user.Id == currentUserId, cancellationToken);
 
         var currentUserVote = await Context.Votes
-            .Where(vote => vote.BattleBook.Battle.IsActive)
+            .Where(vote => vote.BattleBook.Battle.State != BattleState.Finished)
             .SingleAsync(vote => vote.UserId == currentUserId, cancellationToken);
 
         currentUserVote.VotingPointCount += request.VotingPointCount;
@@ -45,7 +46,7 @@ internal class SpendVotingPointsHandler : AsyncRequestHandler<SpendVotingPointsC
         int currentUserId = LoggedUserAccessor.GetCurrentUserId();
 
         var existCurrentUserVote = await Context.Battles
-            .Where(battle => battle.IsActive)
+            .Where(battle => battle.State != BattleState.Finished)
             .SelectMany(battle => battle.BattleBooks)
             .SelectMany(battleBook => battleBook.Votes)
             .AnyAsync(vote => vote.UserId == currentUserId, cancellationToken);

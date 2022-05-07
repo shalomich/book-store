@@ -1,6 +1,7 @@
 ﻿using BookStore.Application.Exceptions;
 using BookStore.Application.Services;
 using BookStore.Domain.Entities.Battles;
+using BookStore.Domain.Enums;
 using BookStore.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -43,7 +44,7 @@ internal class CastVoteHandler : AsyncRequestHandler<CastVoteCommand>
     private async Task Vaidate(CastVoteCommand request, CancellationToken cancellationToken)
     {
         var currentBattleBooks = Context.Battles
-            .Where(battle => battle.IsActive)
+            .Where(battle => battle.State != BattleState.Finished)
             .SelectMany(battle => battle.BattleBooks);
 
         bool existBattleBook = await currentBattleBooks

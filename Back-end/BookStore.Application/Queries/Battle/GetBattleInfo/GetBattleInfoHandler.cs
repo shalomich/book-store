@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using BookStore.Application.Exceptions;
 using BookStore.Application.Services;
 using BookStore.Domain.Entities.Battles;
+using BookStore.Domain.Enums;
 using BookStore.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -59,7 +60,7 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
     private async Task<BattleInfoDto> GetCurrentBattle(CancellationToken cancellationToken)
     {
         var currentBattle = Context.Battles
-           .Where(battle => battle.IsActive);
+           .Where(battle => battle.State != BattleState.Finished);
 
         var battleInfo = await currentBattle
             .ProjectTo<BattleInfoDto>(Mapper.ConfigurationProvider)
@@ -68,7 +69,7 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
         if (battleInfo == null)
         {
             var prevoiusBattles = Context.Battles
-                .Where(battle => !battle.IsActive)
+                .Where(battle => battle.State == BattleState.Finished)
                 .OrderByDescending(battle => battle.EndDate);
 
             battleInfo = await prevoiusBattles
