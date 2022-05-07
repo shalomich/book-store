@@ -63,8 +63,8 @@ namespace BookStore.Domain.Entities.Products
             }
         }
 
-        public int? DiscountPercentage { set; get; }
-
+        public Discount Discount { set; get; }
+       
         public DateTime AddingDate {private set; get; } = DateTime.Today;
 
         public Album Album { set; get; }
