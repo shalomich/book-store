@@ -1,65 +1,53 @@
-﻿using BookStore.Application.Services;
+﻿using BookStore.Application.Queries.Battle.GetBattleSettings;
+using BookStore.Application.Services;
 using BookStore.Domain.Entities.Battles;
 using BookStore.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using BookStore.Application.Queries.Battle.GetBattleSettings;
 
-namespace BookStore.Application.Commands.Battles.BeginBookBattle;
+namespace BookStore.Application.Commands.Battles.StartBattle;
 
-public record BeginBookBattleCommand() : IRequest<int?>;
-internal class BeginBookBattleHandler : IRequestHandler<BeginBookBattleCommand, int?>
+public record StartBattleCommand() : IRequest<StartBattleResult>;
+internal class StartBattleHandler : IRequestHandler<StartBattleCommand, StartBattleResult>
 {
     private ApplicationContext Context { get; }
     private BattleSettingsProvider BattleSettingsProvider { get; }
 
-    public BeginBookBattleHandler(ApplicationContext context, BattleSettingsProvider battleSettingsProvider)
+    public StartBattleHandler(ApplicationContext context, BattleSettingsProvider battleSettingsProvider)
     {
         Context = context;
         BattleSettingsProvider = battleSettingsProvider;
     }
 
-    public async Task<int?> Handle(BeginBookBattleCommand request, CancellationToken cancellationToken)
+    public async Task<StartBattleResult> Handle(StartBattleCommand request, CancellationToken cancellationToken)
     {
-        var currentBattle = await Context.Battles
-            .SingleOrDefaultAsync(battle => battle.IsActive, cancellationToken);
-
-        bool battleExist = currentBattle != null;
-        
-        if (battleExist)
-        {
-            bool battleFinished = currentBattle.EndDate < DateTimeOffset.UtcNow;
-
-            if (!battleFinished)
-            {
-                return null;
-            }
-
-            currentBattle.IsActive = false;
-        }
-
         var battleSettings = BattleSettingsProvider.GetBattleSettings();
 
         var newBattle = await CreateNewBattle(battleSettings, cancellationToken);
 
         Context.Add(newBattle);
+
         await Context.SaveChangesAsync(cancellationToken);
 
-        return newBattle.Id;
+        return new StartBattleResult(newBattle.Id, newBattle.EndDate);
     }
 
     private async Task<Battle> CreateNewBattle(BattleSettings battleSettings, CancellationToken cancellationToken)
     {
-        var newBattle = new Battle();
+        var battleBooks = await FindBattleBooksAsync(cancellationToken);
 
-        newBattle.EndDate = DateTimeOffset.Now.AddDays(battleSettings.BattleDurationInDays);
-        newBattle.BattleBooks = await FindBattleBooksAsync(cancellationToken);
+        var endDate = DateTimeOffset.Now.AddDays(battleSettings.BattleDurationInDays);
+
+        var newBattle = new Battle()
+        {
+            BattleBooks = battleBooks,
+            EndDate = endDate
+        };
 
         return newBattle;
     }

@@ -155,8 +155,6 @@ namespace BookStore.WebApi
                 .AllowAnyHeader()
                 .WithExposedHeaders("dataCount"));
 
-            RunBackgroundJobs();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -169,11 +167,6 @@ namespace BookStore.WebApi
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
-        }
-
-        private void RunBackgroundJobs()
-        {
-            RecurringJob.AddOrUpdate<BeginBookBattleJob>(job => job.BeginBookBattle(CancellationToken.None), Cron.Hourly);
         }
     }
 }
