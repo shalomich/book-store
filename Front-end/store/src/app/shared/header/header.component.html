@@ -10,6 +10,9 @@
       <app-search-field></app-search-field>
     </div>
   </div>
+  <div class="battle-redirect-block">
+    <button routerLink="/book-store/battle" mat-stroked-button class="battle-redirect">VS</button>
+  </div>
   <div class="authorized-block" *ngIf="isAuthorized; else loginButton">
     <button mat-stroked-button class="basket-button" routerLink="/book-store/basket">
       <mat-icon>shopping_cart</mat-icon>
