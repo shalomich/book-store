@@ -1,4 +1,5 @@
 ﻿using BookStore.Domain.Entities.Battles;
+using BookStore.Domain.Entities.Books;
 using BookStore.Domain.Entities.Products;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
@@ -20,5 +21,7 @@ namespace BookStore.Domain.Entities
         public ISet<Tag> Tags { get; set; }
         public Subscription Subscription { get; set; } 
         public IEnumerable<Vote> Votes { get; set; } = new List<Vote>();
+
+        public IEnumerable<View> Views = new List<View>();
     }
 }

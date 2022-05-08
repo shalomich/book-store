@@ -21,6 +21,7 @@ namespace BookStore.Persistance
         public DbSet<Genre> Genres { set; get; }
         public DbSet<Discount> Discounts { set; get; }
         public DbSet<Tag> Tags { set; get; }
+        public DbSet<View> Views { set; get; }
         public DbSet<BasketProduct> BasketProducts { set; get; }
         public DbSet<Order> Orders { set; get; }
         public DbSet<Mark> Marks { set; get; }
