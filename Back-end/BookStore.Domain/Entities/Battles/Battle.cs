@@ -9,6 +9,6 @@ public class Battle : IEntity
     public int Id { get; set; }
     public BattleState State { get; set; } = BattleState.Started;
     public DateTimeOffset EndDate { get; set; }
-    public IEnumerable<BattleBook> BattleBooks { get; set; } = new List<BattleBook>();
+    public ICollection<BattleBook> BattleBooks { get; set; } = new List<BattleBook>();
 }
 

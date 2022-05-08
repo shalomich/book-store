@@ -70,7 +70,7 @@ namespace BookStore.Domain.Entities.Products
         public Album Album { set; get; }
 
         public ISet<BasketProduct> BasketProducts { set; get; }
-        public ISet<Order> OrderProducts { set; get; }
+        public ISet<OrderProduct> OrderProducts { set; get; }
         public ProductCloseout ProductCloseout { set; get; }
         public ISet<ProductTag> ProductTags { set; get; }
         public ISet<Mark> Marks { set; get; }

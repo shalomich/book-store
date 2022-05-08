@@ -18,6 +18,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<CategorySelection>();
         services.AddScoped<SpecialForYouCategorySelection>();
         services.AddScoped<LastViewedSelection>();
+        services.AddScoped<BooksForBattleSelection>();
 
         return services;
     }
