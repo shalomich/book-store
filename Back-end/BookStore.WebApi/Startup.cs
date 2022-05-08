@@ -175,7 +175,7 @@ namespace BookStore.WebApi
         private static void RunBackgroundJobs()
         {
             var removeDiscountHour = 24;
-            var hourDifference =  DateTimeOffset.Now.Hour - DateTimeOffset.UtcNow.Hour;
+            var hourDifference = 7;
             removeDiscountHour -= hourDifference;
 
             RecurringJob.AddOrUpdate<RemoveDiscountJob>(job => job.RemoveDiscount(default), Cron.Daily(removeDiscountHour));

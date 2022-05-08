@@ -1,6 +1,8 @@
 ﻿using BookStore.Application.Queries.Battle.GetBattleSettings;
 using BookStore.Application.Services;
+using BookStore.Application.Services.CatalogSelections;
 using BookStore.Domain.Entities.Battles;
+using BookStore.Domain.Entities.Books;
 using BookStore.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,11 +19,14 @@ internal class StartBattleHandler : IRequestHandler<StartBattleCommand, StartBat
 {
     private ApplicationContext Context { get; }
     private BattleSettingsProvider BattleSettingsProvider { get; }
+    private BooksForBattleSelection BooksForBattleSelection { get; }
 
-    public StartBattleHandler(ApplicationContext context, BattleSettingsProvider battleSettingsProvider)
+    public StartBattleHandler(ApplicationContext context, BattleSettingsProvider battleSettingsProvider,
+        BooksForBattleSelection booksForBattleSelection)
     {
         Context = context;
         BattleSettingsProvider = battleSettingsProvider;
+        BooksForBattleSelection = booksForBattleSelection;
     }
 
     public async Task<StartBattleResult> Handle(StartBattleCommand request, CancellationToken cancellationToken)
@@ -39,30 +44,49 @@ internal class StartBattleHandler : IRequestHandler<StartBattleCommand, StartBat
 
     private async Task<Battle> CreateNewBattle(BattleSettings battleSettings, CancellationToken cancellationToken)
     {
-        var battleBooks = await FindBattleBooksAsync(cancellationToken);
+        var booksForBattle = await FindBooksForBattleAsync(battleSettings, cancellationToken);
 
         var endDate = DateTimeOffset.Now.AddDays(battleSettings.BattleDurationInDays);
 
         var newBattle = new Battle()
         {
-            BattleBooks = battleBooks,
+            BattleBooks = booksForBattle
+                .Select(book => new BattleBook
+                {
+                    BookId = book.Id
+                })
+                .ToList(),
             EndDate = endDate
         };
 
         return newBattle;
     }
 
-    private async Task<IEnumerable<BattleBook>> FindBattleBooksAsync(CancellationToken cancellationToken)
-    {
-        var bookIdsForBattle = await Context.Books
-            .Select(book => book.Id)
-            .Take(2)
-            .ToListAsync(cancellationToken);
+    private async Task<IEnumerable<Book>> FindBooksForBattleAsync(BattleSettings battleSettings, CancellationToken cancellationToken)
+    { 
+        var booksForBattle = BooksForBattleSelection.Select();
 
-        return new[]
+        var currentBattleBooks = await booksForBattle
+            .SelectMany(firstBook => booksForBattle
+                .Select(secondBook => new
+                {
+                    First = firstBook,
+                    Second = secondBook,
+                    CostDifference = firstBook.Cost - secondBook.Cost
+                }))
+            .Where(books => (books.CostDifference > 0 && books.CostDifference <= battleSettings.MaxBookCostDifference)
+                || (books.CostDifference < 0 && books.CostDifference >= -battleSettings.MaxBookCostDifference))
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (currentBattleBooks == null)
         {
-            new BattleBook { BookId = bookIdsForBattle.First()},
-            new BattleBook { BookId = bookIdsForBattle.Last()},
+            throw new InvalidOperationException("Can't pick up books for battle.");
+        }
+
+        return new Book[]
+        {
+            currentBattleBooks.First,
+            currentBattleBooks.Second
         };
     }
 }

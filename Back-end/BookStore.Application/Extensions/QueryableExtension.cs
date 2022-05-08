@@ -20,5 +20,10 @@ namespace BookStore.Application.Extensions
         {
             return order.Order(query);
         }
+
+        public static IQueryable<T> Paginate<T>(this IQueryable<T> query, int pageSize, int pageNumber) where T : IEntity
+        {
+            return query.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
+        }
     }
 }

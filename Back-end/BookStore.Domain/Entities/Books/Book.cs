@@ -1,4 +1,5 @@
 ﻿
+using BookStore.Domain.Entities.Battles;
 using BookStore.Domain.Entities.Products;
 using System;
 using System.Collections.Generic;
@@ -106,6 +107,7 @@ namespace BookStore.Domain.Entities.Books
             }
         }
 
-        public IEnumerable<View> Views = new List<View>();
+        public IEnumerable<View> Views { get; set; } = new List<View>();
+        public IEnumerable<BattleBook> BattleBooks { get; set; } = new List<BattleBook>();
     }
 }

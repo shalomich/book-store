@@ -21,7 +21,6 @@ namespace BookStore.Domain.Entities
         public ISet<Tag> Tags { get; set; }
         public Subscription Subscription { get; set; } 
         public IEnumerable<Vote> Votes { get; set; } = new List<Vote>();
-
-        public IEnumerable<View> Views = new List<View>();
+        public IEnumerable<View> Views { get; set; } = new List<View>();
     }
 }
