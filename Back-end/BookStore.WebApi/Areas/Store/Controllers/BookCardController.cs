@@ -18,6 +18,7 @@ using BookStore.Application.Queries;
 using BookStore.WebApi.Attributes;
 using BookStore.Application.Services.CatalogSelections;
 using BookStore.Domain.Entities.Products;
+using BookStore.Application.Commands;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
 {
@@ -46,7 +47,11 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         [TypeFilter(typeof(OptionalAuthorizeFilter))]
         public async Task<ActionResult<CardDto>> GetCardById(int id)
         {
-            return await Mediator.Send(new GetCardByIdQuery(id));
+            var bookCard = await Mediator.Send(new GetCardByIdQuery(id));
+
+            await Mediator.Send(new ViewBookCommand(id));
+
+            return bookCard;
         }
 
         protected async Task<IEnumerable<RelatedEntityDto>> GetRelatedEntities<TRelatedEntity>(IDbQueryBuilder<TRelatedEntity> relatedEntityqueryBuilder) where TRelatedEntity : RelatedEntity
