@@ -17,6 +17,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<SearchSelection>();
         services.AddScoped<CategorySelection>();
         services.AddScoped<SpecialForYouCategorySelection>();
+        services.AddScoped<LastViewedSelection>();
 
         return services;
     }

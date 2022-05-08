@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Application.Queries
 {
-    public record GetCatalogSelectionQuery(ICatalogSelection CatalogSelection, OptionParameters OptionParameters) : IRequest<PreviewSetDto>;
+    public record GetCatalogSelectionQuery(IBookSelection CatalogSelection, OptionParameters OptionParameters) : IRequest<PreviewSetDto>;
     internal class GetCatalogSelectionHandler : IRequestHandler<GetCatalogSelectionQuery, PreviewSetDto>
     {
         private LoggedUserAccessor LoggedUserAccessor { get; }
@@ -44,7 +44,7 @@ namespace BookStore.Application.Queries
 
             var (pagging, filters, sortings) = optionParameters;
 
-            IQueryable<Book> catalogBooks = catalogSelection.Select(Context.Books);
+            IQueryable<Book> catalogBooks = catalogSelection.Select();
 
             catalogBooks = SelectionConfigurator.AddFilters(catalogBooks, filters);
 

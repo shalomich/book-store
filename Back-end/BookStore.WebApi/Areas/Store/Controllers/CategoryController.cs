@@ -39,5 +39,12 @@ namespace BookStore.WebApi.Areas.Store.Controllers
 
             return await Mediator.Send(new GetCatalogSelectionQuery(specialForYouSelection, optionParameters));
         }
+
+        [HttpGet("lastViewed")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<PreviewSetDto> FindLastViewed([FromQuery] OptionParameters optionParameters, [FromServices] LastViewedSelection lastViewedSelection)
+        {
+            return await Mediator.Send(new GetCatalogSelectionQuery(lastViewedSelection, optionParameters));
+        }
     }
 }
