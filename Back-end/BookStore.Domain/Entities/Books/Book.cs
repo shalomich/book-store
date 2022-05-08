@@ -105,5 +105,7 @@ namespace BookStore.Domain.Entities.Books
                 return _pageQuantity;
             }
         }
+
+        public IEnumerable<View> Views = new List<View>();
     }
 }
