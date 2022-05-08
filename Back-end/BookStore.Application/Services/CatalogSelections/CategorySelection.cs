@@ -5,14 +5,23 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using BookStore.Application.Extensions;
+using BookStore.Persistance;
 
 namespace BookStore.Application.Services.CatalogSelections;
-public class CategorySelection : ICatalogSelection
+public class CategorySelection : IBookSelection
 {
+    private ApplicationContext Context { get; }
+
     public Category? ChoosenCategory { get; set; }
-    public IQueryable<Book> Select(DbSet<Book> bookSet)
+
+    public CategorySelection(ApplicationContext context)
     {
-        IQueryable<Book> categoryBooks = bookSet;
+        Context = context;
+    }
+
+    public IQueryable<Book> Select()
+    {
+        IQueryable<Book> categoryBooks = Context.Books;
 
         if (ChoosenCategory == null)
             return categoryBooks;

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace BookStore.Application.Services.CatalogSelections
 {
-    public interface ICatalogSelection
+    public interface IBookSelection
     {
-        IQueryable<Book> Select(DbSet<Book> bookSet);
+        IQueryable<Book> Select();
     }
 }

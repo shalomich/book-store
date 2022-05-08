@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace BookStore.Application.Services.CatalogSelections;
-public class SpecialForYouCategorySelection : ICatalogSelection
+public class SpecialForYouCategorySelection : IBookSelection
 {
     private ApplicationContext Context { get;}
     private LoggedUserAccessor LoggedUserAccessor { get; }
@@ -19,7 +19,7 @@ public class SpecialForYouCategorySelection : ICatalogSelection
         LoggedUserAccessor = loggedUserAccessor;
     }
 
-    public IQueryable<Book> Select(DbSet<Book> bookSet)
+    public IQueryable<Book> Select()
     {
         int currentUserId = LoggedUserAccessor.GetCurrentUserId();
 
@@ -44,10 +44,10 @@ public class SpecialForYouCategorySelection : ICatalogSelection
             .Take(TagCount.Value)
             .ToArray();
 
-        return bookSet
+        return Context.Books
             .Where(book => book.ProductTags
             .Any(productTag => selectionTagIds.Contains(productTag.TagId))
-            && !userOrderProductIds.Contains(book.Id))
+                && !userOrderProductIds.Contains(book.Id))
             .Shuffle();
     }
 }
