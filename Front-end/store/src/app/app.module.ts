@@ -52,34 +52,37 @@ import {NgxSimpleCountdownModule} from 'ngx-simple-countdown';
 import {CountdownModule} from 'ngx-countdown';
 import {CdTimerModule} from 'angular-cd-timer';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { BattleInfoDialogComponent } from './battle-page/battle-info-dialog/battle-info-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 @NgModule({
-  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent, MainPageComponent, SelectionPageComponent, CatalogComponent, BasketPageComponent, BasketElementComponent, BasketInfoBlockComponent, ProfilePageComponent, OrderPageComponent, PersonalDataFormComponent, OrderInfoComponent, BattlePageComponent],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        ProductCardPageModule,
-        CommonModule,
-        CoreModule,
-        SharedModule,
-        HttpClientModule,
-        NgxPaginationModule,
-        MatExpansionModule,
-        MatIconModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatTableModule,
-        MatPaginatorModule,
-        NgxSimpleCountdownModule,
-        CountdownModule,
-        CdTimerModule,
-        MatTooltipModule,
-    ],
+  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent, MainPageComponent, SelectionPageComponent, CatalogComponent, BasketPageComponent, BasketElementComponent, BasketInfoBlockComponent, ProfilePageComponent, OrderPageComponent, PersonalDataFormComponent, OrderInfoComponent, BattlePageComponent, BattleInfoDialogComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    ProductCardPageModule,
+    CommonModule,
+    CoreModule,
+    SharedModule,
+    HttpClientModule,
+    NgxPaginationModule,
+    MatExpansionModule,
+    MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    NgxSimpleCountdownModule,
+    CountdownModule,
+    CdTimerModule,
+    MatTooltipModule,
+    MatDialogModule,
+  ],
   providers: [ProductOptionsStorage, ProfileProviderService],
   bootstrap: [AppComponent],
 })

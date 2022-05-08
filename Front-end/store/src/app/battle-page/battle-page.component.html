@@ -54,7 +54,7 @@
             {{battle.firstBattleBook.cost * (1 - battle.discountPercentage / 100)}} &#8381;
           </div>
         </div>
-        <mat-icon matTooltip="Цена в случае победы">help_outline</mat-icon>
+        <mat-icon (click)="openBattleInfoDialog()" matTooltip="Информация о баттле">help_outline</mat-icon>
         <div class="book-price">
           <div class="old-price">
             {{battle.secondBattleBook.cost}} &#8381;
