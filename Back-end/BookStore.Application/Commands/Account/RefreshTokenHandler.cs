@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BookStore.Application.Services;
 using BookStore.Application.Exceptions;
 using BookStore.Application.Dto;
+using BookStore.Application.Services.Jwt;
 
 namespace BookStore.Application.Commands.Account
 {
@@ -15,10 +16,10 @@ namespace BookStore.Application.Commands.Account
 		private RefreshTokenRepository RefreshTokenRepository { get; }
         private TokensFactory TokensFactory { get; }
 		private UserManager<User> UserManager { get; }
-		private JwtParser JwtParser { get; }
+		private WebJwtParser JwtParser { get; }
 
         public RefreshTokenHandler(RefreshTokenRepository refreshTokenRepository, TokensFactory tokensFactory,
-			JwtParser jwtParser, UserManager<User> userManager)
+			WebJwtParser jwtParser, UserManager<User> userManager)
         {
             RefreshTokenRepository = refreshTokenRepository;
             TokensFactory = tokensFactory;

@@ -8,22 +8,13 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
-namespace BookStore.Application.Services;
+namespace BookStore.Application.Services.Jwt;
 
-public class JwtParser
+public static class JwtParser
 {
-    private JwtSettings JwtSettings { get; }
-
-    public JwtParser(IConfiguration configuration)
+    public static int FromToken(string token, JwtSettings jwtSettings, bool checkExpiration = true)
     {
-        JwtSettings = configuration
-            .GetSection(nameof(JwtSettings))
-            .Get<JwtSettings>();
-    }
-
-    public int FromToken(string token, bool checkExpiration = true)
-    {
-        string tokenKey = JwtSettings.TokenKey;
+        string tokenKey = jwtSettings.TokenKey;
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
 
         var tokenValidationParameters = new TokenValidationParameters
@@ -52,19 +43,19 @@ public class JwtParser
         return userId;
     }
 
-    public string ToToken(int userId)
+    public static string ToToken(int userId, JwtSettings jwtSettings)
     {
         var claims = new List<Claim> {
             new Claim(nameof(userId), userId.ToString())
         };
 
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings.TokenKey));
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.TokenKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.Now.AddMinutes(JwtSettings.AccessTokenExpiredMinutes),
+            Expires = DateTime.Now.AddMinutes(jwtSettings.ExpiredMinutes),
             SigningCredentials = credentials
         };
 

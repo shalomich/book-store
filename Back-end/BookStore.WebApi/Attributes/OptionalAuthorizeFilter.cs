@@ -1,6 +1,4 @@
-﻿using BookStore.Application.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
+﻿using BookStore.Application.Services.Jwt;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
 using System;
@@ -10,9 +8,9 @@ namespace BookStore.WebApi.Attributes
 {
     public class OptionalAuthorizeFilter : IAuthorizationFilter
     {
-        private JwtParser JwtParser { get;}
+        private WebJwtParser JwtParser { get;}
 
-        public OptionalAuthorizeFilter(JwtParser jwtParser)
+        public OptionalAuthorizeFilter(WebJwtParser jwtParser)
         {
             JwtParser = jwtParser;
         }
