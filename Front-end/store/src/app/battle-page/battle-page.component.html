@@ -6,9 +6,11 @@
       </a>
     </div>
     <img [alt]="battle.firstBattleBook.name" src="{{battle.firstBattleBook.titleImage | base64ToImgSrc}}">
-    <app-battle-voting-block [votingBookId]="battle.firstBattleBook.bookId"
-                             [canUserVote]="canUserVote(battle.firstBattleBook.bookId, battle)"
-                             [userMaxPoints]="(userProfile$ | async)?.votingPointCount || 0">
+    <app-battle-voting-block [votingBookId]="battle.firstBattleBook.battleBookId"
+                             [canUserVote]="canUserVote(battle.firstBattleBook.battleBookId, battle)"
+                             [userMaxPoints]="(userProfile$ | async)?.votingPointCount || 0"
+                             [battleVotedBookId]="battle.votedBattleBookId"
+                             [onVote]="handleVoting">
     </app-battle-voting-block>
   </div>
   <div class="center-block">
@@ -70,9 +72,11 @@
       </a>
     </div>
     <img [alt]="battle.secondBattleBook.name" src="{{battle.secondBattleBook.titleImage | base64ToImgSrc}}">
-    <app-battle-voting-block [votingBookId]="battle.firstBattleBook.bookId"
-                             [canUserVote]="canUserVote(battle.secondBattleBook.bookId, battle)"
-                             [userMaxPoints]="(userProfile$ | async)?.votingPointCount || 0">
+    <app-battle-voting-block [votingBookId]="battle.firstBattleBook.battleBookId"
+                             [canUserVote]="canUserVote(battle.secondBattleBook.battleBookId, battle)"
+                             [userMaxPoints]="(userProfile$ | async)?.votingPointCount || 0"
+                             [battleVotedBookId]="battle.votedBattleBookId"
+                             [onVote]="handleVoting">
     </app-battle-voting-block>
   </div>
 </div>

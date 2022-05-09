@@ -3,6 +3,6 @@
     <input [formControl]="pointsForVote" matTooltip="Ваши очки: {{userMaxPoints}}" min="0" type="number" matInput placeholder="Введите количество очков" />
   </mat-form-field>
   <div class="voting-button-block">
-    <button [disabled]="!userMaxPoints" mat-stroked-button>Голосовать</button>
+    <button (click)="onVote(battleVotedBookId, votingBookId, pointsForVote.value)" [disabled]="!pointsForVote.value" mat-stroked-button>Голосовать</button>
   </div>
 </div>

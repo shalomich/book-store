@@ -81,4 +81,9 @@ export class BattlePageComponent implements OnInit, OnDestroy {
       autoFocus: false,
     });
   }
+
+  public handleVoting(votedBookId: number, votingBookId: number, points: number): void {
+    this.subs.add(this.battleService.vote(!votedBookId, votedBookId || votingBookId, points)
+      .subscribe(_ => window.location.reload()));
+  }
 }

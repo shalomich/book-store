@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import {BattleService} from '../../core/services/battle.service';
 
 @Component({
   selector: 'app-battle-voting-block',
@@ -19,11 +20,17 @@ export class BattleVotingBlockComponent implements OnInit, OnDestroy {
   @Input()
   public votingBookId = 0;
 
+  @Input()
+  public battleVotedBookId = 0;
+
+  @Input()
+  public onVote: (votedBookId: number, votingBookId: number, points: number) => void = () => {};
+
   public pointsForVote: FormControl = new FormControl();
 
   private subs: Subscription = new Subscription();
 
-  constructor() { }
+  constructor(private readonly battleService: BattleService) { }
 
   ngOnInit(): void {
     this.subs.add(this.pointsForVote.valueChanges.subscribe(value => {
