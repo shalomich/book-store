@@ -1,4 +1,5 @@
 ﻿using BookStore.Application.Dto;
+using BookStore.Application.Services.Jwt;
 using BookStore.Domain.Entities;
 using System;
 using System.Threading.Tasks;
@@ -6,10 +7,10 @@ using System.Threading.Tasks;
 namespace BookStore.Application.Services;
 internal class TokensFactory
 {
-    private JwtParser JwtParser { get; }
+    private WebJwtParser JwtParser { get; }
     private RefreshTokenRepository RefreshTokenRepository { get; }
 
-    public TokensFactory(JwtParser jwtParser, RefreshTokenRepository refreshTokenRepository)
+    public TokensFactory(WebJwtParser jwtParser, RefreshTokenRepository refreshTokenRepository)
     {
         JwtParser = jwtParser ?? throw new ArgumentNullException(nameof(jwtParser));
         RefreshTokenRepository = refreshTokenRepository ?? throw new ArgumentNullException(nameof(refreshTokenRepository));

@@ -14,7 +14,7 @@ internal class RefreshTokenRepository
     public RefreshTokenRepository(UserManager<User> userManager, IConfiguration configuration)
     {
         UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-        AppTokenProvider = configuration[nameof(AppTokenProvider)];
+        AppTokenProvider = configuration["Auth:AppTokenProvider"];
     }
 
     public async Task<string> Create(User user)

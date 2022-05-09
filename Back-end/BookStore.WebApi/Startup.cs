@@ -72,31 +72,18 @@ namespace BookStore.WebApi
             services.AddScoped(typeof(DbFormEntityQueryBuilder<>));
             services.AddScoped<S3Storage>();
 
-            var jwtSettings = _configuration.GetSection("JwtSettings").Get<JwtSettings>();
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.TokenKey));
-
-            services.Configure<DataProtectionTokenProviderOptions>(options => 
-                options.TokenLifespan = TimeSpan.FromMinutes(jwtSettings.RefreshTokenExpiredMinutes));
-
             services.Configure<TelegramBotMessages>(_configuration.GetSection("TelegramBot:Messages"));
 
             services.Configure<S3Settings>(_configuration.GetSection("S3"));
 
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Auth:Jwt:Web:TokenKey"]));
+
+            services.Configure<DataProtectionTokenProviderOptions>(options =>
+                options.TokenLifespan = TimeSpan.FromMinutes(_configuration.GetSection("Auth:RefreshTokenExpiredMinutes").Get<int>()));
+
             services.AddIdentity<User, IdentityRole<int>>()
                 .AddEntityFrameworkStores<ApplicationContext>()
-                .AddTokenProvider(_configuration["AppTokenProvider"], typeof(DataProtectorTokenProvider<User>));
-            
-            services.Configure<IdentityOptions>(options =>
-            {
-                options.Password.RequireUppercase = false;
-                options.Password.RequireDigit = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireLowercase = false;
-                options.User.AllowedUserNameCharacters = "";
-                options.Password.RequiredLength = 8;
-                options.Password.RequireDigit = true;
-                options.User.RequireUniqueEmail = true;
-            });
+                .AddTokenProvider(_configuration["Auth:AppTokenProvider"], typeof(DataProtectorTokenProvider<User>));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
                 opt =>
@@ -110,6 +97,18 @@ namespace BookStore.WebApi
                         ClockSkew = TimeSpan.Zero
                     };
                 });
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.User.AllowedUserNameCharacters = "";
+                options.Password.RequiredLength = 8;
+                options.Password.RequireDigit = true;
+                options.User.RequireUniqueEmail = true;
+            });
 
             services.AddMediatR(applicationAssembly, typeof(TelegramBotMessages).Assembly);
             services.AddAutoMapper(Assembly.GetExecutingAssembly(), applicationAssembly);

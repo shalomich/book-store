@@ -1,5 +1,6 @@
 ﻿using BookStore.Application.Services;
 using BookStore.Application.Services.CatalogSelections;
+using BookStore.Application.Services.Jwt;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BookStore.Application.Extensions;
@@ -8,7 +9,9 @@ public static class ServiceCollectionExtension
 {
     public static IServiceCollection AddApplicationService(this IServiceCollection services)
     {
-        services.AddScoped<JwtParser>();
+        services.AddScoped<WebJwtParser>();
+        services.AddScoped<TelegramBotJwtParser>();
+
         services.AddScoped<TokensFactory>();
         services.AddScoped<RefreshTokenRepository>();
         services.AddScoped<LoggedUserAccessor>();
