@@ -8,7 +8,7 @@ export interface BookBattleDto {
 
   readonly endDate: string;
 
-  readonly isActive: boolean;
+  readonly state: string;
 
   readonly discountPercentage: number;
 

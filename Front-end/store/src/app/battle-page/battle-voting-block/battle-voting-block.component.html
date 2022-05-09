@@ -1,0 +1,8 @@
+<div *ngIf="canUserVote" class="voting-block">
+  <mat-form-field class="voting-filed" appearance="outline">
+    <input [formControl]="pointsForVote" matTooltip="Ваши очки: {{userMaxPoints}}" min="0" type="number" matInput placeholder="Введите количество очков" />
+  </mat-form-field>
+  <div class="voting-button-block">
+    <button [disabled]="!userMaxPoints" mat-stroked-button>Голосовать</button>
+  </div>
+</div>

@@ -54,10 +54,11 @@ import {CdTimerModule} from 'angular-cd-timer';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { BattleInfoDialogComponent } from './battle-page/battle-info-dialog/battle-info-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
+import { BattleVotingBlockComponent } from './battle-page/battle-voting-block/battle-voting-block.component';
 
 
 @NgModule({
-  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent, MainPageComponent, SelectionPageComponent, CatalogComponent, BasketPageComponent, BasketElementComponent, BasketInfoBlockComponent, ProfilePageComponent, OrderPageComponent, PersonalDataFormComponent, OrderInfoComponent, BattlePageComponent, BattleInfoDialogComponent],
+  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent, MainPageComponent, SelectionPageComponent, CatalogComponent, BasketPageComponent, BasketElementComponent, BasketInfoBlockComponent, ProfilePageComponent, OrderPageComponent, PersonalDataFormComponent, OrderInfoComponent, BattlePageComponent, BattleInfoDialogComponent, BattleVotingBlockComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

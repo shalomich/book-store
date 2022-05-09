@@ -6,14 +6,10 @@
       </a>
     </div>
     <img [alt]="battle.firstBattleBook.name" src="{{battle.firstBattleBook.titleImage | base64ToImgSrc}}">
-    <div *ngIf="canUserVote(battle.firstBattleBook.bookId, battle.votedBattleBookId)" class="voting-block">
-      <mat-form-field class="voting-filed" appearance="outline">
-        <input min="0" type="number" matInput placeholder="Введите количество очков" />
-      </mat-form-field>
-      <div class="voting-button-block">
-        <button mat-stroked-button>Голосовать</button>
-      </div>
-    </div>
+    <app-battle-voting-block [votingBookId]="battle.firstBattleBook.bookId"
+                             [canUserVote]="canUserVote(battle.firstBattleBook.bookId, battle)"
+                             [userMaxPoints]="(userProfile$ | async)?.votingPointCount || 0">
+    </app-battle-voting-block>
   </div>
   <div class="center-block">
     <div class="countdown">
@@ -74,13 +70,9 @@
       </a>
     </div>
     <img [alt]="battle.secondBattleBook.name" src="{{battle.secondBattleBook.titleImage | base64ToImgSrc}}">
-    <div *ngIf="canUserVote(battle.secondBattleBook.bookId, battle.votedBattleBookId)" class="voting-block">
-      <mat-form-field class="voting-filed" appearance="outline">
-        <input min="0" type="number" matInput placeholder="Введите количество очков" />
-      </mat-form-field>
-      <div class="voting-button-block">
-        <button mat-stroked-button>Голосовать</button>
-      </div>
-    </div>
+    <app-battle-voting-block [votingBookId]="battle.firstBattleBook.bookId"
+                             [canUserVote]="canUserVote(battle.secondBattleBook.bookId, battle)"
+                             [userMaxPoints]="(userProfile$ | async)?.votingPointCount || 0">
+    </app-battle-voting-block>
   </div>
 </div>

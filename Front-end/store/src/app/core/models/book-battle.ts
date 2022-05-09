@@ -7,7 +7,7 @@ export class BookBattle {
 
   public readonly endDate: Date;
 
-  public readonly isActive: boolean;
+  public readonly state: string;
 
   public readonly discountPercentage: number;
 
@@ -19,7 +19,7 @@ export class BookBattle {
     this.firstBattleBook = battle.firstBattleBook;
     this.secondBattleBook = battle.secondBattleBook;
     this.endDate = battle.endDate;
-    this.isActive = battle.isActive;
+    this.state = battle.state;
     this.discountPercentage = battle.discountPercentage;
     this.spentVotingPointCount = battle.spentVotingPointCount;
     this.votedBattleBookId = battle.votedBattleBookId;

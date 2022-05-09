@@ -22,7 +22,7 @@ export class BookBattleMapper {
       firstBattleBook: data.firstBattleBook,
       secondBattleBook: data.secondBattleBook,
       endDate: new Date(data.endDate),
-      isActive: data.isActive,
+      state: data.state,
       discountPercentage: data.discountPercentage,
       spentVotingPointCount: data.spentVotingPointCount,
       votedBattleBookId: data.votedBattleBookId,
