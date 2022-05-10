@@ -65,14 +65,14 @@ internal class NotifyByDiscountUpdatedHandler : INotificationHandler<DiscountUpd
     private async Task<IEnumerable<long>> GetMarkSubsriberTelegramIds(IEnumerable<int> markIds, CancellationToken cancellationToken)
     {
         var usersWithActiveSubsription = Context.Users
-            .Where(user => user.Subscription.IsActive == true);
+            .Where(user => user.TelegramBotContact.IsAuthenticated == true);
 
         var usersHaveMark = usersWithActiveSubsription
             .Where(user => user.Marks.Any(
                 mark => markIds.Contains(mark.Id)));
 
         return await usersHaveMark
-            .Select(user => user.Subscription.TelegramId.Value)
+            .Select(user => user.TelegramBotContact.TelegramUserId)
             .ToListAsync(cancellationToken);
     }
 

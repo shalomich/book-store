@@ -58,7 +58,7 @@ internal class NotifyGoneOnSaleHandler : INotificationHandler<BookCreatedNotific
     private async Task<(long TelegramId, string[] Tags)[]> GetTagSubscribersInfo(IEnumerable<int> tagIds, CancellationToken cancellationToken)
     {
         var usersWithActiveSubsription = Context.Users
-            .Where(user => user.Subscription.IsActive == true);
+            .Where(user => user.TelegramBotContact.IsAuthenticated == true);
 
         var usersHaveTags = usersWithActiveSubsription
             .Where(user => user.Tags.Any(
@@ -71,7 +71,7 @@ internal class NotifyGoneOnSaleHandler : INotificationHandler<BookCreatedNotific
                     .Where(tag => tagIds.Contains(tag.Id))
                     .Select(tag => tag.Name)
                     .ToArray(),
-                TelegramId = user.Subscription.TelegramId.Value
+                TelegramId = user.TelegramBotContact.TelegramUserId
             })
             .ToListAsync(cancellationToken);
 

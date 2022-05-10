@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 
 namespace BookStore.Application.Services.Jwt;
-internal class TelegramBotJwtParser
+public class TelegramBotJwtParser
 {
     private JwtSettings JwtSettings { get; }
     public TelegramBotJwtParser(IConfiguration configuration)

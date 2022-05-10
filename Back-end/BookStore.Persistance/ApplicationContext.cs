@@ -27,7 +27,7 @@ namespace BookStore.Persistance
         public DbSet<Mark> Marks { set; get; }
         public DbSet<Battle> Battles { set; get; }
         public DbSet<Vote> Votes { set; get; }
-
+        public DbSet<TelegramBotContact> TelegramBotContacts { set; get; }
 
         public ApplicationContext(DbContextOptions options) : base(options)
         {
