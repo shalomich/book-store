@@ -1,11 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using QueryWorker.Args;
+﻿using QueryWorker.Args;
 using QueryWorker.Configurations;
 using QueryWorker.DataTransformers;
 using QueryWorker.DataTransformers.Filters;

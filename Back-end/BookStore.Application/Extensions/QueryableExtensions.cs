@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Application.Extensions
 {
-    public static class QueryableExtension
+    public static class QueryableExtensions
     {
         public static IQueryable<T> Shuffle<T>(this IQueryable<T> query)
         {

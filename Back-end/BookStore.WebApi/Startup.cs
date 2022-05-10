@@ -1,40 +1,24 @@
 
 using BookStore.Domain.Entities;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using QueryWorker.Extensions;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using BookStore.Persistance;
-using BookStore.Application.Services;
-using BookStore.Application.Services.DbQueryBuilders;
-using System.Reflection;
 using BookStore.WebApi.Attributes.GenericController;
 using BookStore.WebApi.Middlewares;
-using BookStore.Application.Providers;
 using Microsoft.AspNetCore.Identity;
-using BookStore.Application.Services.CatalogSelections;
-using Telegram.Bot;
-using BookStore.TelegramBot.Notifications;
 using BookStore.Application.Extensions;
 using Hangfire;
 using Newtonsoft.Json;
-using Hangfire.SqlServer;
-using BookStore.WebApi.BackgroundJobs.Battles;
-using System.Threading;
 using BookStore.WebApi.BackgroundJobs;
+using BookStore.Persistance.Extensions;
 
 namespace BookStore.WebApi
 {
@@ -49,32 +33,14 @@ namespace BookStore.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var applicationAssembly = AppDomain.CurrentDomain.GetAssemblies()
-                .Single(assebmly => assebmly.GetName().Name == "BookStore.Application");
+            var currentAssemblyName = typeof(Startup).Assembly;
 
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApplicationContext>(options =>
-            {
-                options.UseSqlServer(connectionString, 
-                    builder => builder.MigrationsAssembly("BookStore.Persistance"));
-            });
+            services.AddPersistance(_configuration);
+            services.AddApplicationCore(_configuration, currentAssemblyName);
 
             services.AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
                 .ConfigureApplicationPartManager(options => options.FeatureProviders.Add(new GenericControllerFeatureProvider())); ;
-
-            services.AddApplicationService();
-
-            services.AddSingleton<ITelegramBotClient>(new TelegramBotClient("5298206558:AAE3BhhtWnrQgDJSaDzoZ6-FZpiIWJsFUrw"));
-
-            services.AddDataTransformerBuildFacade(applicationAssembly);
-            services.AddScoped(typeof(DbEntityQueryBuilder<>));
-            services.AddScoped(typeof(DbFormEntityQueryBuilder<>));
-            services.AddScoped<S3Storage>();
-
-            services.Configure<TelegramBotMessages>(_configuration.GetSection("TelegramBot:Messages"));
-
-            services.Configure<S3Settings>(_configuration.GetSection("S3"));
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Auth:Jwt:Web:TokenKey"]));
 
@@ -110,8 +76,6 @@ namespace BookStore.WebApi
                 options.User.RequireUniqueEmail = true;
             });
 
-            services.AddMediatR(applicationAssembly, typeof(TelegramBotMessages).Assembly);
-            services.AddAutoMapper(Assembly.GetExecutingAssembly(), applicationAssembly);
             services.AddCors();
 
             services.AddSwaggerGen();
