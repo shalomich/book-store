@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Application.Extensions
 {
-    public static class EnumerableExtension
+    public static class EnumerableExtensions
     {
         public static IEnumerable<T> EmptyIfNull<T>(this IEnumerable<T> source)
         {

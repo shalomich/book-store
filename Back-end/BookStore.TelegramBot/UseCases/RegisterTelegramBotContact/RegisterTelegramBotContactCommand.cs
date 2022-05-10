@@ -10,15 +10,15 @@ using Telegram.Bot.Types;
 namespace BookStore.TelegramBot.UseCases.RegisterTelegramBotContact;
 
 public record RegisterTelegramBotContactCommand(Message Message) : IRequest;
-internal class AuthorizeTelegramBotHandler : AsyncRequestHandler<RegisterTelegramBotContactCommand>
+internal class RegisterTelegramBotContactHandler : AsyncRequestHandler<RegisterTelegramBotContactCommand>
 {
     private ApplicationContext Context { get; }
     private ITelegramBotClient BotClient { get; }
     private TelegramBotJwtParser JwtParser { get; }
     private ILogger Logger { get; }
 
-    public AuthorizeTelegramBotHandler(ApplicationContext context, ITelegramBotClient botClient, 
-        TelegramBotJwtParser jwtParser, ILogger<AuthorizeTelegramBotHandler> logger)
+    public RegisterTelegramBotContactHandler(ApplicationContext context, ITelegramBotClient botClient, 
+        TelegramBotJwtParser jwtParser, ILogger<RegisterTelegramBotContactHandler> logger)
     {
         Context = context;
         BotClient = botClient;

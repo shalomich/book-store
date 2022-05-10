@@ -13,8 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="Abp" Version="6.5.0" />
-    <PackageReference Include="AutoMapper" Version="10.1.1" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="DataAnnotationsExtensions" Version="5.0.1.27" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.28" />
     <PackageReference Include="Hangfire.SqlServer" Version="1.7.28" />
@@ -38,7 +37,6 @@
     <ProjectReference Include="..\BookStore.Application\BookStore.Application.csproj" />
     <ProjectReference Include="..\BookStore.Domain\BookStore.Domain.csproj" />
     <ProjectReference Include="..\BookStore.Persistance\BookStore.Persistance.csproj" />
-    <ProjectReference Include="..\BookStore.TelegramBot\BookStore.TelegramBot.csproj" />
     <ProjectReference Include="..\QueryWorker\QueryWorker.csproj" />
   </ItemGroup>
 
