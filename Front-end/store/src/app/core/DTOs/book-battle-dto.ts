@@ -15,4 +15,6 @@ export interface BookBattleDto {
   readonly spentVotingPointCount: number;
 
   readonly votedBattleBookId: number;
+
+  readonly finalDiscount: number;
 }

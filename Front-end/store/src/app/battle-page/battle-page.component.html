@@ -16,9 +16,9 @@
   <div class="center-block">
     <div class="countdown">
       <div>
-        Баттл завершится через:
+        {{getBattleMessage(battle)}}
       </div>
-      <div class="time">
+      <div *ngIf="!hasBattleEnded(battle)" class="time">
         <cd-timer [countdown]="true" [startTime]="getRemainingTime(battle.endDate)" format="user">
           [days]:[hours]:[minutes]:[seconds]
         </cd-timer>
@@ -40,7 +40,7 @@
     </div>
     <div class="discount-block">
       <div class="discount">
-        {{battle.discountPercentage}}% / 30%
+        {{battle.discountPercentage}}% / {{battle.finalDiscount}}%
       </div>
       <div class="prices-for-winner">
         <div class="book-price">

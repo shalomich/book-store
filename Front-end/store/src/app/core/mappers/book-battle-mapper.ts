@@ -26,6 +26,7 @@ export class BookBattleMapper {
       discountPercentage: data.discountPercentage,
       spentVotingPointCount: data.spentVotingPointCount,
       votedBattleBookId: data.votedBattleBookId,
+      finalDiscount: data.finalDiscount,
     });
   }
 }

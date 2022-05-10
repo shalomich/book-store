@@ -15,6 +15,8 @@ export class BookBattle {
 
   public readonly votedBattleBookId: number;
 
+  public readonly finalDiscount: number;
+
   constructor(battle: BookBattle) {
     this.firstBattleBook = battle.firstBattleBook;
     this.secondBattleBook = battle.secondBattleBook;
@@ -23,5 +25,6 @@ export class BookBattle {
     this.discountPercentage = battle.discountPercentage;
     this.spentVotingPointCount = battle.spentVotingPointCount;
     this.votedBattleBookId = battle.votedBattleBookId;
+    this.finalDiscount = battle.finalDiscount;
   }
 }

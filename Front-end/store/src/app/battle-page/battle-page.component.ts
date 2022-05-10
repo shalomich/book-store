@@ -6,6 +6,8 @@ import { CountdownConfig } from 'ngx-countdown';
 
 import { MatDialog } from '@angular/material/dialog';
 
+import { map } from 'rxjs/operators';
+
 import { BattleService } from '../core/services/battle.service';
 import { BookBattle } from '../core/models/book-battle';
 import { LoginDialogComponent } from '../shared/header/login-dialog/login-dialog.component';
@@ -15,6 +17,9 @@ import { UserProfile } from '../core/models/user-profile';
 
 import { BattleInfoDialogComponent } from './battle-info-dialog/battle-info-dialog.component';
 
+const STARTED_BATTLE = 'Баттл завершится через:';
+const EXTENDED_BATTLE = 'Баттл продлен:';
+const FINISHED_BATTLE = 'Баттл завершен';
 
 enum BattleStates {
   Started = 'Started',
@@ -44,12 +49,14 @@ export class BattlePageComponent implements OnInit, OnDestroy {
     private readonly dialog: MatDialog,
     private readonly profileProviderService: ProfileProviderService,
   ) {
-    this.battleInfo$ = this.battleService.getBattleInfo();
+    this.battleInfo$ = this.battleService.getBattleInfo().pipe(map(battle => {
+      this.openBattleInfoDialog();
+      return battle;
+    }));
     this.userProfile$ = this.profileProviderService.userProfile;
   }
 
   ngOnInit(): void {
-    this.openBattleInfoDialog();
     this.subs.add(this.userProfile$.subscribe(user => {
       this.isAuthorized = user.isAuthorized();
     }));
@@ -85,5 +92,20 @@ export class BattlePageComponent implements OnInit, OnDestroy {
   public handleVoting(votedBookId: number, votingBookId: number, points: number): void {
     this.subs.add(this.battleService.vote(!votedBookId, votedBookId || votingBookId, points)
       .subscribe(_ => window.location.reload()));
+  }
+
+  public hasBattleEnded(battle: BookBattle): boolean {
+    return battle.state === BattleStates.Finished;
+  }
+
+  public getBattleMessage(battle: BookBattle): string {
+    switch (battle.state) {
+      case BattleStates.Extended:
+        return EXTENDED_BATTLE;
+      case BattleStates.Finished:
+        return FINISHED_BATTLE;
+      default:
+        return STARTED_BATTLE;
+    }
   }
 }
