@@ -1,9 +1,9 @@
 ﻿using BookStore.Application.Extensions;
 using BookStore.Persistance.Extensions;
 using BookStore.TelegramBot.Notifications;
-using BookStore.TelegramBot.UseCases.RegisterTelegramBotContact;
+using BookStore.TelegramBot.UseCases.AuthenticateTelegramBotContact;
+using BookStore.TelegramBot.UseCases.Common;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -18,13 +18,13 @@ namespace BookStore.TelegramBot;
 class Program
 {
     private static IServiceProvider ServiceProvider { set; get; }
-    
+
     static void Main(string[] args)
     {
         ServiceProvider = ConfigureServices();
 
         var botClient = ServiceProvider.GetRequiredService<ITelegramBotClient>();
-        
+
         botClient.StartReceiving(
             HandleUpdateAsync,
             HandleErrorAsync,
@@ -42,21 +42,27 @@ class Program
         {
             var message = update.Message;
 
-            if (message.Text.StartsWith("/"))
+            string command = null;
+
+            bool isCommand = message.Text.StartsWith("/");
+
+            if (isCommand)
             {
-                var commandEndIndex = message.Text.IndexOf(" ") - 1;
+                var commandEndIndex = message.Text.IndexOf(" ");
 
-                var command = commandEndIndex == -1
+                command = commandEndIndex == -1
                     ? message.Text.Substring(1)
-                    : message.Text.Substring(1, commandEndIndex);
+                    : message.Text.Substring(1, commandEndIndex + 1);
 
-                IRequest request = command switch
-                {
-                    "start" => new RegisterTelegramBotContactCommand(message),
-                    _ => throw new ArgumentOutOfRangeException()
-                };
+            }
 
-                await mediator.Send(request, cancellationToken);
+            bool isStartCommand = isCommand && command == Commands.Start;
+
+            bool isConnectionSuccess = await mediator.Send(new TryConnectToStoreCommand(message, isStartCommand), cancellationToken);
+
+            if (!isConnectionSuccess && !isCommand)
+            {
+                return;
             }
         }
     }
@@ -89,4 +95,5 @@ class Program
         return services.BuildServiceProvider();
     }
 }
+ 
 
