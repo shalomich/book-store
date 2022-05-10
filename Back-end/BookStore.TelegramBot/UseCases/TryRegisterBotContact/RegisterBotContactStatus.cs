@@ -1,4 +1,4 @@
-﻿namespace BookStore.TelegramBot.UseCases.AuthenticateTelegramBotContact;
+﻿namespace BookStore.TelegramBot.UseCases.TryRegisterBotContact;
 internal enum RegisterBotContactStatus
 {
     Ready,

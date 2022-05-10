@@ -1,4 +1,4 @@
-﻿namespace BookStore.TelegramBot.UseCases.TryConnectToStore;
+﻿namespace BookStore.TelegramBot.UseCases.TryAuthenticateTelegramUser;
 internal enum AuthenticateTelegramUserStatus
 {
     Ready,
