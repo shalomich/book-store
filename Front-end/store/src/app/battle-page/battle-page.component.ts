@@ -26,6 +26,11 @@ enum BattleStates {
   Extended = 'Extended',
   Finished = 'Finished',
 }
+
+enum BattleBooks {
+  FirstBook = 1,
+  SecondBook,
+}
 @Component({
   selector: 'app-battle-page',
   templateUrl: './battle-page.component.html',
@@ -106,6 +111,21 @@ export class BattlePageComponent implements OnInit, OnDestroy {
         return FINISHED_BATTLE;
       default:
         return STARTED_BATTLE;
+    }
+  }
+
+  public isWinner(bookNum: number, battle: BookBattle): boolean {
+    if (battle.state !== BattleStates.Finished) {
+      return false;
+    }
+
+    switch (bookNum) {
+      case BattleBooks.FirstBook:
+        return battle.firstBattleBook.totalVotingPointCount > battle.secondBattleBook.totalVotingPointCount;
+      case BattleBooks.SecondBook:
+        return battle.secondBattleBook.totalVotingPointCount > battle.firstBattleBook.totalVotingPointCount;
+      default:
+        return false;
     }
   }
 }
