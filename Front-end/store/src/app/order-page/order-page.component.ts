@@ -53,7 +53,6 @@ export class OrderPageComponent implements OnInit, OnDestroy {
   }
 
   public onOrderApply() {
-    console.log(this.personalData.personalDataForm.value);
     this.subs.add(this.orderService.applyOrder(this.personalData.personalDataForm.value).subscribe(_ => {
       this.router.navigate(['/']);
     }));

@@ -23,6 +23,20 @@ import { MatInputModule } from '@angular/material/input';
 
 import { JwtModule } from '@auth0/angular-jwt';
 
+import { MatTableModule } from '@angular/material/table';
+
+import { MatPaginatorModule } from '@angular/material/paginator';
+
+import { NgxSimpleCountdownModule } from 'ngx-simple-countdown';
+
+import { CountdownModule } from 'ngx-countdown';
+
+import { CdTimerModule } from 'angular-cd-timer';
+
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+import { MatDialogModule } from '@angular/material/dialog';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -41,24 +55,41 @@ import { BasketInfoBlockComponent } from './basket-page/basket-info-block/basket
 
 import { ProductOptionsStorage } from './core/services/product-options.storage';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
-import {ProfileProviderService} from './core/services/profile-provider.service';
+import { ProfileProviderService } from './core/services/profile-provider.service';
 import { OrderPageComponent } from './order-page/order-page.component';
 import { PersonalDataFormComponent } from './order-page/personal-data-form/personal-data-form.component';
 import { OrderInfoComponent } from './order-page/order-info/order-info.component';
-import {MatTableModule} from '@angular/material/table';
-import {MatPaginatorModule} from '@angular/material/paginator';
+
 import { BattlePageComponent } from './battle-page/battle-page.component';
-import {NgxSimpleCountdownModule} from 'ngx-simple-countdown';
-import {CountdownModule} from 'ngx-countdown';
-import {CdTimerModule} from 'angular-cd-timer';
-import {MatTooltipModule} from '@angular/material/tooltip';
+
+
 import { BattleInfoDialogComponent } from './battle-page/battle-info-dialog/battle-info-dialog.component';
-import {MatDialogModule} from '@angular/material/dialog';
+
+
 import { BattleVotingBlockComponent } from './battle-page/battle-voting-block/battle-voting-block.component';
+import { OrdersListPageComponent } from './orders-list-page/orders-list-page.component';
 
 
 @NgModule({
-  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent, MainPageComponent, SelectionPageComponent, CatalogComponent, BasketPageComponent, BasketElementComponent, BasketInfoBlockComponent, ProfilePageComponent, OrderPageComponent, PersonalDataFormComponent, OrderInfoComponent, BattlePageComponent, BattleInfoDialogComponent, BattleVotingBlockComponent],
+  declarations: [
+    AppComponent,
+    BookSearchPageComponent,
+    SelectionComponent,
+    MainPageComponent,
+    SelectionPageComponent,
+    CatalogComponent,
+    BasketPageComponent,
+    BasketElementComponent,
+    BasketInfoBlockComponent,
+    ProfilePageComponent,
+    OrderPageComponent,
+    PersonalDataFormComponent,
+    OrderInfoComponent,
+    OrdersListPageComponent,
+    BattlePageComponent,
+    BattleInfoDialogComponent,
+    BattleVotingBlockComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
