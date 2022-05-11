@@ -1,4 +1,4 @@
-﻿namespace BookStore.Application.Queries.Order.GetOrders;
+﻿namespace BookStore.Application.Queries.Orders.GetOrders;
 public record OrderProductDto
 {
     public int Id { get; set; }

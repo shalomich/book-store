@@ -1,26 +1,17 @@
 ﻿using AutoMapper;
-using BookStore.Application.Services.DbQueryBuilders;
-using BookStore.Domain.Entities;
-using BookStore.WebApi.Areas.Store.ViewModels.Basket;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using BookStore.WebApi.Extensions;
-using BookStore.Application.DbQueryConfigs.Specifications;
-using BookStore.Application.DbQueryConfigs.IncludeRequirements;
-using BookStore.Application.Queries;
-using System.Linq;
-using BookStore.Application.Commands;
-using BookStore.Application.Dto;
 using BookStore.Application.Notifications.OrderPlaced;
 using System.Collections.Generic;
-using BookStore.Application.Queries.Order.GetOrders;
 using BookStore.Application.Commands.Orders.PlaceOrder;
 using System.Threading;
 using BookStore.Application.Commands.Orders.MarkAsDelivered;
 using BookStore.Application.Commands.Orders.CancelOrder;
+using QueryWorker.Args;
+using BookStore.Application.Queries.Orders.GetOrders;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
 {
@@ -38,9 +29,9 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<OrderDto>> GetOrders()
+        public async Task<IEnumerable<OrderDto>> GetOrders([FromQuery] PaggingArgs pagging)
         {
-            return await Mediator.Send(new GetOrdersQuery());
+            return await Mediator.Send(new GetOrdersQuery(pagging));
         }
 
         [HttpPost]
