@@ -1,1 +1,15 @@
-<p>orders-list-page works!</p>
+<div class="orders-list">
+  <div class="order" *ngFor="let order of (orders$ | async)">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Заказ №{{order.id}}
+        </mat-panel-title>
+        <mat-panel-description>
+          State
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-order-info [placedOrder]="true" [orderProducts]="order.products"></app-order-info>
+    </mat-expansion-panel>
+  </div>
+</div>

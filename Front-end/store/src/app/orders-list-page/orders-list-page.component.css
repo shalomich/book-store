@@ -1,0 +1,25 @@
+.orders-list {
+  box-shadow: 0 0 5px 0 rgba(34, 60, 80, 0.2);
+  margin: 5vh auto;
+  padding: 2vh 2vw;
+  width: max-content;
+}
+
+.order {
+  margin: 8vh 0;
+}
+
+.order .mat-expansion-panel-header {
+  padding: 1vh 2vh;
+}
+
+.order .mat-expansion-panel-header-title {
+  color: #2199e8;
+  font-size: 1.4em;
+}
+
+.order .mat-expansion-panel-header-description {
+  font-size: 1.4em;
+  justify-content: end;
+  margin-right: 2vw;
+}

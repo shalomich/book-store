@@ -48,7 +48,7 @@ export class OrderService {
       Authorization: `Bearer ${this.authorizationService.accessToken}`,
     };
 
-    return this.http.get<OrderDto[]>(ORDER_URL, { headers }).pipe(
+    return this.http.get<OrderDto[]>(`${ORDER_URL}/?pageSize=4&&pageNumber=1`, { headers }).pipe(
       map(orders => orders.map(order => this.orderMapper.fromDto(order))),
     );
   }

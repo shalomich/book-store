@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {OrderService} from '../core/services/order.service';
 import {Observable} from 'rxjs';
 import {Order} from '../core/models/order';
@@ -6,7 +6,8 @@ import {Order} from '../core/models/order';
 @Component({
   selector: 'app-orders-list-page',
   templateUrl: './orders-list-page.component.html',
-  styleUrls: ['./orders-list-page.component.css']
+  styleUrls: ['./orders-list-page.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class OrdersListPageComponent implements OnInit {
 

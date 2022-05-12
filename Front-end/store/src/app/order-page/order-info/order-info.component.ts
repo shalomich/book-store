@@ -12,6 +12,9 @@ export class OrderInfoComponent implements OnInit {
   @Input()
   public orderProducts: BasketProduct[] = [];
 
+  @Input()
+  public placedOrder: boolean = false;
+
   public readonly displayedColumns=['name', 'quantity', 'cost', 'total'];
 
   constructor() { }
