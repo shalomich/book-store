@@ -30,10 +30,10 @@ import { ProductCardPageModule } from './product-card-page/product-card-page.mod
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { BookSearchPageComponent } from './book-search-page/book-search-page.component';
-import { SelectionComponent } from './selection/selection.component';
+import { SelectionComponent } from './main-page/selection/selection.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { SelectionPageComponent } from './selection-page/selection-page.component';
-import { CatalogComponent } from './catalog/catalog.component';
+import { CatalogComponent } from './book-search-page/catalog/catalog.component';
 
 import { BasketPageComponent } from './basket-page/basket-page.component';
 import { BasketElementComponent } from './basket-page/basket-element/basket-element.component';
@@ -47,10 +47,18 @@ import { PersonalDataFormComponent } from './order-page/personal-data-form/perso
 import { OrderInfoComponent } from './order-page/order-info/order-info.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { BattlePageComponent } from './battle-page/battle-page.component';
+import {NgxSimpleCountdownModule} from 'ngx-simple-countdown';
+import {CountdownModule} from 'ngx-countdown';
+import {CdTimerModule} from 'angular-cd-timer';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { BattleInfoDialogComponent } from './battle-page/battle-info-dialog/battle-info-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import { BattleVotingBlockComponent } from './battle-page/battle-voting-block/battle-voting-block.component';
 
 
 @NgModule({
-  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent, MainPageComponent, SelectionPageComponent, CatalogComponent, BasketPageComponent, BasketElementComponent, BasketInfoBlockComponent, ProfilePageComponent, OrderPageComponent, PersonalDataFormComponent, OrderInfoComponent],
+  declarations: [AppComponent, BookSearchPageComponent, SelectionComponent, MainPageComponent, SelectionPageComponent, CatalogComponent, BasketPageComponent, BasketElementComponent, BasketInfoBlockComponent, ProfilePageComponent, OrderPageComponent, PersonalDataFormComponent, OrderInfoComponent, BattlePageComponent, BattleInfoDialogComponent, BattleVotingBlockComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -70,6 +78,11 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatInputModule,
     MatTableModule,
     MatPaginatorModule,
+    NgxSimpleCountdownModule,
+    CountdownModule,
+    CdTimerModule,
+    MatTooltipModule,
+    MatDialogModule,
   ],
   providers: [ProductOptionsStorage, ProfileProviderService],
   bootstrap: [AppComponent],

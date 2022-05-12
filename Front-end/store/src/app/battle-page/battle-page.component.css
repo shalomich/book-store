@@ -1,0 +1,145 @@
+.battle-block {
+  display: flex;
+  padding: 5vh 5vh 0 5vh;
+}
+
+.countdown {
+  display: block;
+  justify-content: center;
+  color: #2199e8;
+  font-size: 2em;
+  margin-bottom: 20vh;
+}
+
+.countdown .time {
+  font-family: 'Arcade', sans-serif;
+  font-size: 2em;
+  text-align: center;
+  margin-top: 4vh;
+}
+
+.first-book {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.second-book {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.first-book, .second-book {
+  width: max-content;
+  margin-top: 3vh;
+}
+
+.first-book img, .second-book img {
+  width: 300px;
+  height: 450px;
+}
+
+.center-block {
+  text-align: center;
+  margin: 5vh 2vw 0 2vw;
+  width: 40vw;
+}
+
+.versus {
+  font-size: 20em;
+  color: #2199e8;
+  font-family: 'Arcade', sans-serif;
+}
+
+.book-name a {
+  display: -webkit-box;
+  font-size: 1.6em;
+  text-align: center;
+  color: #2199e8;
+  margin-bottom: 3vh;
+  width: 400px;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  white-space: normal;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  height: 4vh;
+  text-decoration: none;
+}
+
+.book-name a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.votes-block, .discount-block {
+  margin-top: 10vh;
+  text-align: center;
+  font-size: 2em;
+  color: #2199e8;
+}
+
+.votes-count {
+  display: flex;
+  justify-content: space-between;
+}
+
+.votes-count, .discount {
+  font-family: 'Arcade', sans-serif;
+  font-size: 2.6em;
+  color: #2199e8;
+  margin: 3vh 0;
+  text-align: center;
+}
+
+.prices-for-winner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12vh;
+}
+
+.prices-for-winner .mat-icon {
+  width: 4vw;
+  height: 4vh;
+  font-size: 1.2em;
+}
+
+.prices-for-winner .mat-icon:hover {
+  cursor: pointer;
+}
+
+.book-price {
+  display: flex;
+}
+
+.book-price .old-price {
+  color: black;
+  text-decoration: line-through;
+  text-decoration-color: #f44336 !important;
+}
+
+.book-price .loser-price {
+  color: black;
+}
+
+.new-price {
+  text-decoration: underline;
+}
+
+.winner-discount-text {
+  font-size: 0.4em;
+  margin-bottom: 3vh;
+}
+
+.battle-winner-text {
+  color: #2199e8;
+  font-size: 2em;
+  margin-bottom: 3vh;
+  text-align: center;
+  font-weight: bold;
+}
+
+.battle-winner {
+  box-shadow: 0 0 10px 2px #2199e8;
+  padding: 20px;
+}

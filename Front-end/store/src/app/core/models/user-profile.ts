@@ -11,6 +11,8 @@ export class UserProfile {
 
   public address: string;
 
+  public votingPointCount: number;
+
 
   constructor(profile?: UserProfile) {
     if (profile !== undefined) {
@@ -20,6 +22,7 @@ export class UserProfile {
       this.email = profile.email;
       this.phoneNumber = profile.phoneNumber;
       this.address = profile.address;
+      this.votingPointCount = profile.votingPointCount;
     } else {
       this.id = 0;
       this.email = '';
@@ -27,6 +30,11 @@ export class UserProfile {
       this.firstName = '';
       this.lastName = '';
       this.phoneNumber = '';
+      this.votingPointCount = 0;
     }
+  }
+
+  public isAuthorized(): boolean {
+    return !!this.id && !!this.email && !!this.firstName;
   }
 }

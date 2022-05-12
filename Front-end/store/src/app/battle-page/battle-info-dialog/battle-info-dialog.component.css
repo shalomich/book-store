@@ -1,0 +1,47 @@
+.close-button-block {
+  display: flex;
+  justify-content: end;
+}
+
+.close-button-block button {
+  color: #2199e8;
+}
+
+.battle-info-dialog .mat-dialog-container {
+  padding: 5px 20px 20px 20px;
+  width: 30vw;
+  overflow: hidden;
+  height: max-content;
+}
+
+.battle-info-dialog-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+  color: #2199e8;
+  margin-bottom: 2vh;
+  height: 4vh;
+}
+
+.battle-info-dialog-content {
+  font-size: 1.2em;
+}
+
+.battle-info-dialog-content ul {
+  list-style: decimal;
+}
+
+.battle-info-dialog-content ul li {
+  list-style: decimal;
+  margin-bottom: 1vh;
+}
+
+.battle-info-dialog-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.battle-info-dialog-actions .mat-flat-button.mat-primary {
+  background-color: #2199e8;
+}

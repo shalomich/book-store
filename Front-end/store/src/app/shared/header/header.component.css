@@ -31,6 +31,30 @@
   margin-right: 5vw;
 }
 
+.battle-redirect-block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5vw;
+  outline: 2px dashed #2199e8;
+  box-shadow: 0 0 0 2px #ffffff;
+  animation: 1s animateBorder ease infinite;
+  border-radius: 2px;
+}
+
+.battle-redirect {
+  font-size: 3em;
+  color: #2199e8;
+  font-family: 'Arcade', sans-serif;
+  border: none !important;
+}
+
+.battle-redirect .mat-button-wrapper {
+  display: flex;
+  margin-bottom: -6px;
+  margin-top: 4px;
+}
+
 .basket-button {
   color: #2199e8 !important;
   border: none !important;
@@ -85,7 +109,7 @@
   text-align: center;
 }
 
-.profile-menu .mat-menu-content hr {
+.profile-menu .mat-menu-content .divider {
   color: #2199e8;
   background-color: #2199e8;
   border-width: 0;
@@ -93,7 +117,29 @@
   margin: 0;
 }
 
+.user-bonus-block {
+  display: flex;
+  color: #2199e8;
+  font-size: 1.2em;
+  text-align: center;
+  align-items: center;
+  margin: 0 1vw;
+}
+
+.bonus-divider {
+  margin: 0 1vw !important;
+  background-color: #2199e8;
+  height: 2vh;
+}
+
 .logout-button {
   color: #f44336 !important;
+}
+
+@keyframes animateBorder {
+  to {
+    outline-color: #ffffff;
+    box-shadow: 0 0 0 3px #2199e8;
+  }
 }
 

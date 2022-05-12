@@ -48,6 +48,7 @@ import { HeaderComponent } from './header/header.component';
 import { LoginDialogComponent } from './header/login-dialog/login-dialog.component';
 import { RegisterDialogComponent } from './header/register-dialog/register-dialog.component';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatDividerModule} from '@angular/material/divider';
 
 
 @NgModule({
@@ -97,6 +98,7 @@ import {MatMenuModule} from '@angular/material/menu';
         MatDialogModule,
         RouterModule,
         MatMenuModule,
+        MatDividerModule,
     ],
 })
 
