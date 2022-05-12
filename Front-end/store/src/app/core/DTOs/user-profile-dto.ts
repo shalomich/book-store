@@ -10,4 +10,6 @@ export interface UserProfileDto {
   phoneNumber: string;
 
   address: string;
+
+  votingPointCount: number;
 }

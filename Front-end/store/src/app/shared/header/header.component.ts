@@ -25,7 +25,7 @@ import {UserProfile} from '../../core/models/user-profile';
 })
 export class HeaderComponent implements OnInit {
 
-  public userName = '';
+  public user: UserProfile = new UserProfile();
 
   public isAuthorized = false;
 
@@ -49,7 +49,7 @@ export class HeaderComponent implements OnInit {
     )
       .subscribe(profile => {
         this.isAuthorized = !!profile.id;
-        this.userName = profile.firstName;
+        this.user = profile;
     });
   }
 
