@@ -46,5 +46,29 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
         {
             return await Mediator.Send(new CheckRelatedEntityNameQuery(name, QueryBuilder));
         }
+
+        [HttpGet("{id}")]
+        public override Task<ActionResult<RelatedEntityForm>> Read(int id)
+        {
+            return base.Read(id);
+        }
+
+        [HttpPost]
+        public override Task<int> Create(RelatedEntityForm entityForm)
+        {
+            return base.Create(entityForm);
+        }
+
+        [HttpPut("{id}")]
+        public override Task<IActionResult> Update(int id, RelatedEntityForm entityForm)
+        {
+            return base.Update(id, entityForm);
+        }
+
+        [HttpDelete("{id}")]
+        public override Task<IActionResult> Delete(int id)
+        {
+            return base.Delete(id);
+        }
     }
 }

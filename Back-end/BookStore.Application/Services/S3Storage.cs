@@ -38,7 +38,7 @@ public class S3Storage : IDisposable
         var presignedUrl = s3Client.GetPreSignedURL(new GetPreSignedUrlRequest
         {
             BucketName = settings.BucketName,
-            Key = CreatePath(productId, imageId),
+            Key = $"{productId}/{imageId}",
             Expires = expireDate.DateTime,
             Protocol = GetServiceUrlProtocol(),
             Verb = HttpVerb.GET
@@ -47,32 +47,23 @@ public class S3Storage : IDisposable
         return presignedUrl;
     }
 
-    public async Task PostAsync(int productId, int imageId, string base64Image, CancellationToken cancellationToken = default)
+    public async Task PostAsync(string path, Stream fileStream, CancellationToken cancellationToken = default)
     {
         using var transferUtility = new TransferUtility(s3Client);
-
-        var bytes = Convert.FromBase64String(base64Image);
-
-        using var stream = new MemoryStream(bytes);
         
         var uploadRequest = new TransferUtilityUploadRequest()
         {
             CannedACL = S3CannedACL.Private,
-            InputStream = stream,
+            InputStream = fileStream,
             BucketName = settings.BucketName,
-            Key = CreatePath(productId, imageId),
+            Key = path,
         };
         await transferUtility.UploadAsync(uploadRequest, cancellationToken);
     }
 
-    public async Task RemoveAsync(int productId, int imageId, CancellationToken cancellationToken = default)
+    public async Task RemoveAsync(string path, CancellationToken cancellationToken = default)
     {
-        await s3Client.DeleteObjectAsync(settings.BucketName, CreatePath(productId, imageId), cancellationToken);
-    }
-
-    private string CreatePath(int productId, int imageId)
-    {
-        return $"{productId}/{imageId}";
+        await s3Client.DeleteObjectAsync(settings.BucketName, path, cancellationToken);
     }
 
     private Protocol GetServiceUrlProtocol()

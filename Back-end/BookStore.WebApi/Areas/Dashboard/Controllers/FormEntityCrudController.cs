@@ -42,8 +42,7 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
 
         protected abstract Task<TFormEntity> ReadById(int id);
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TForm>> Read(int id)
+        public virtual async Task<ActionResult<TForm>> Read(int id)
         {
             TFormEntity formEntity = await ReadById(id);
 
@@ -59,7 +58,6 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
             HttpContext.Response.Headers.Add(metadata);
         }
 
-        [HttpPost] 
         public virtual async Task<int> Create(TForm entityForm) 
         {
             var formEntity = Mapper.Map<TFormEntity>(entityForm);
@@ -69,9 +67,7 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
             return createdEntity.Id;
         }
 
-        
-        [HttpPut("{id}")]
-        public virtual async Task<IActionResult> Update(int id, TForm entityForm, [FromServices] DbFormEntityQueryBuilder<Book> queryBuilder)
+        public virtual async Task<IActionResult> Update(int id, TForm entityForm)
         {
             TFormEntity formEntity = await ReadById(id);
             
@@ -82,8 +78,7 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public virtual async Task<IActionResult> Delete(int id)
         {
             var deletedFormEntity = (IFormEntity) await Mediator.Send(new GetByIdQuery(id, QueryBuilder));
             await Mediator.Send(new DeleteCommand(deletedFormEntity));

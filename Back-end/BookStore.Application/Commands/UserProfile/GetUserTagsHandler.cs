@@ -12,7 +12,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookStore.Application.Commands.Profile;
+namespace BookStore.Application.Commands.UserProfile;
 
 public record GetUserTagsQuery(int UserId) : IRequest<IEnumerable<RelatedEntityDto>>;
 internal class GetUserTagsHandler : IRequestHandler<GetUserTagsQuery, IEnumerable<RelatedEntityDto>>

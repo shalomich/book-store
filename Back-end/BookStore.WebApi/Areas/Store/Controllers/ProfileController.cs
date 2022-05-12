@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using BookStore.Application.Commands;
-using BookStore.Application.Commands.Profile;
+using BookStore.Application.Commands.UserProfile;
 using BookStore.Application.Dto;
 using BookStore.Application.Queries;
 using BookStore.Application.Services.DbQueryBuilders;
 using BookStore.Application.ViewModels.Profile;
 using BookStore.Domain.Entities;
-using BookStore.Domain.Entities.Products;
 using BookStore.WebApi.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

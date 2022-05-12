@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookStore.Application.Commands.Profile;
+namespace BookStore.Application.Commands.UserProfile;
 
 public record UpdateUserTagsCommand(int UserId, int[] TagIds) : IRequest;
 internal class UpdateUserTagsHandler : AsyncRequestHandler<UpdateUserTagsCommand>
