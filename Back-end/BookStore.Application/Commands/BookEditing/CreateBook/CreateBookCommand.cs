@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BookStore.Application.Commands.BookEditing.Common;
 using BookStore.Application.Exceptions;
+using BookStore.Application.Extensions;
 using BookStore.Application.Notifications.BookCreated;
 using BookStore.Domain.Entities.Books;
 using BookStore.Persistance;
@@ -42,10 +43,10 @@ internal class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, int
         }
         catch (Exception exception)
         {
-            throw new BadRequestException(exception.InnerException.Message);
+            throw new BadRequestException(exception.GetFullMessage());
         }
 
-        await ImageFileRepository.AddImageFiles(book.Album.Images, book.Id, cancellationToken);
+        await ImageFileRepository.AddImageFiles(book.Album.Images, cancellationToken);
 
         await Mediator.Publish(new BookCreatedNotification(book.Id));
 

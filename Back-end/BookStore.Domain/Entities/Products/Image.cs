@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace BookStore.Domain.Entities.Products
 {
-    public class Image : IEntity
+    public class Image : IEntity, IEquatable<Image>
     {
         public const int MinHeight = 1;
         public const int MinWidth = 1;
@@ -55,9 +55,13 @@ namespace BookStore.Domain.Entities.Products
 
         public override bool Equals(object obj)
         {
-            return obj is Image image 
-                && Name == image.Name
-                && AlbumId == image.AlbumId;
+            return obj is Image other && Equals(other);
+        }
+
+        public bool Equals(Image other)
+        {
+            return Name == other.Name
+                && AlbumId == other.AlbumId;
         }
 
         public override int GetHashCode()

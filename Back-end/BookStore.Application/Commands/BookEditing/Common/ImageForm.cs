@@ -6,7 +6,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace BookStore.Application.Commands.BookEditing.Common;
-public record ImageForm
+public record ImageForm : IEquatable<ImageForm>
 {
     [Required]
     public string Name { init; get; }
@@ -26,4 +26,14 @@ public record ImageForm
     [Required]
     [Range(Image.MinWidth, int.MaxValue)]
     public int Width { init; get; }
+
+    public bool Equals(Image other)
+    {
+        return Name == other.Name;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Name);
+    }
 }

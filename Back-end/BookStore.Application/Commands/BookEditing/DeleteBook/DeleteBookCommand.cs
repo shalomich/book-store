@@ -7,6 +7,7 @@ using BookStore.Application.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using BookStore.Domain.Entities.Books;
 using BookStore.Application.Commands.BookEditing.Common;
+using BookStore.Application.Extensions;
 
 namespace BookStore.Application.Commands.BookEditing.DeleteBook;
 
@@ -37,6 +38,8 @@ internal class DeleteBookCommandHandler : AsyncRequestHandler<DeleteBookCommand>
             throw new NotFoundException(nameof(Book));
         }
 
+        await ImageRepository.RemoveImagesFiles(bookById.Album.Images, cancellationToken);
+
         try
         {
             Context.Books.Remove(bookById);
@@ -44,9 +47,7 @@ internal class DeleteBookCommandHandler : AsyncRequestHandler<DeleteBookCommand>
         }
         catch (Exception exception)
         {
-            throw new BadRequestException(exception.InnerException.Message);
+            throw new BadRequestException(exception.GetFullMessage());
         }
-
-        await ImageRepository.RemoveImagesFiles(bookById.Album.Images, bookById.Id, cancellationToken);
     }
 }

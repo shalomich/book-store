@@ -11,6 +11,10 @@ using BookStore.Domain.Entities.Books;
 using BookStore.Application.Commands.BookEditing.Common;
 using BookStore.Application.Notifications.BookUpdated;
 using BookStore.Application.Notifications.DiscountUpdated;
+using BookStore.Application.Extensions;
+using System.Collections;
+using System.Collections.Generic;
+using BookStore.Domain.Entities.Products;
 
 namespace BookStore.Application.Commands.BookEditing.UpdateBook;
 
@@ -51,7 +55,10 @@ internal class UpdateBookCommandHandler : AsyncRequestHandler<UpdateBookCommand>
             throw new NotFoundException(nameof(Book));
         }
 
-        var updatedBook = Mapper.Map(bookForm, bookById);
+        var oldImages = bookById.Album.Images.ToList();
+        var oldDiscountPercentage = bookById.Discount?.Percentage;
+
+        bookById = Mapper.Map(bookForm, bookById);
 
         try
         {
@@ -59,29 +66,32 @@ internal class UpdateBookCommandHandler : AsyncRequestHandler<UpdateBookCommand>
         }
         catch (Exception exception)
         {
-            throw new BadRequestException(exception.InnerException.Message);
+            throw new BadRequestException(exception.GetFullMessage());
         }
 
-        await UpdateImageFiles(bookById, updatedBook, cancellationToken);
+        await UpdateImageFiles(oldImages, bookById.Album.Images, cancellationToken);
 
         await Mediator.Publish(new BookUpdatedNotification(id));
 
-        if (updatedBook.Discount.Percentage != bookById.Discount.Percentage
-            && updatedBook.Discount.Percentage != 0)
-        {
-            await Mediator.Publish(new DiscountUpdatedNotification(id));
-        }
+        await CheckDiscountChange(oldDiscountPercentage, bookById.Discount?.Percentage, id, cancellationToken);
     }
 
-    private async Task UpdateImageFiles(Book oldBook, Book newBook, CancellationToken cancellationToken)
+    private async Task UpdateImageFiles(IEnumerable<Image> oldImages, IEnumerable<Image> newImages, CancellationToken cancellationToken)
     {
-        var oldImages = oldBook.Album.Images;
-        var newImages = newBook.Album.Images;
+        var imagesToAdd = newImages.Except(oldImages).ToList();
+        var imagesToRemove = oldImages.Except(newImages).ToList();
 
-        var imagesToAdd = newImages.Except(oldImages);
-        var imagesToRemove = oldImages.Except(newImages);
+        await ImageRepository.AddImageFiles(imagesToAdd, cancellationToken);
+        await ImageRepository.RemoveImagesFiles(imagesToRemove, cancellationToken);
+    }
 
-        await ImageRepository.AddImageFiles(imagesToAdd, newBook.Id, cancellationToken);
-        await ImageRepository.RemoveImagesFiles(imagesToRemove, newBook.Id, cancellationToken);
+    private async Task CheckDiscountChange(int? oldDiscountPercentage, int? newDiscountPercentage, int bookId, CancellationToken cancellationToken)
+    {
+        if (newDiscountPercentage.HasValue
+            && newDiscountPercentage != 0
+            && newDiscountPercentage != oldDiscountPercentage)
+        {
+            await Mediator.Publish(new DiscountUpdatedNotification(bookId), cancellationToken);
+        }
     }
 }

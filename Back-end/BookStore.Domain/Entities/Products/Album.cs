@@ -14,7 +14,7 @@ namespace BookStore.Domain.Entities.Products
 
         public int Id { set; get; }
         public string TitleImageName { set; get; }
-        public ISet<Image> Images { set; get; }
+        public IEnumerable<Image> Images { set; get; }
         public Image TitleImage => Images?.Single(image => image.Name == TitleImageName);
 
         public ISet<Image> NotTitleImages => Images

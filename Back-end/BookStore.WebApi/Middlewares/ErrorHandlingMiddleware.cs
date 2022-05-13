@@ -31,19 +31,22 @@ namespace BookStore.WebApi.Middlewares
 
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
+            string errorMessage;
 
             if (exception is RestException restException)
             {
                 context.Response.StatusCode = (int)restException.Code;
+                errorMessage = restException.Message;
             }
             else
             {
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                errorMessage = exception.ToString();   
             }
 
             context.Response.ContentType = "appliation/json";
 
-            string responce = JsonConvert.SerializeObject(new { errors = new { Server = new string[] { exception.Message } } });
+            string responce = JsonConvert.SerializeObject(new { errors = new { Server = new string[] { errorMessage } } });
 
             await context.Response.WriteAsync(responce);
         }
