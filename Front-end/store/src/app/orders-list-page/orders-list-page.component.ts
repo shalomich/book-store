@@ -1,7 +1,10 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {OrderService} from '../core/services/order.service';
-import {Observable} from 'rxjs';
-import {Order} from '../core/models/order';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+
+import { Observable } from 'rxjs';
+
+import { OrderService } from '../core/services/order.service';
+import { Order } from '../core/models/order';
+import { getTotalCost } from '../core/utils/helpers';
 
 @Component({
   selector: 'app-orders-list-page',
@@ -18,5 +21,9 @@ export class OrdersListPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  public getOrderTotalCost(order: Order): number {
+    return getTotalCost(order.products);
   }
 }

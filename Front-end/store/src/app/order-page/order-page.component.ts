@@ -9,6 +9,7 @@ import {BasketProduct} from '../core/models/basket-product';
 import {OrderService} from '../core/services/order.service';
 import {Router} from '@angular/router';
 import {PersonalDataFormComponent} from './personal-data-form/personal-data-form.component';
+import {getTotalCost} from '../core/utils/helpers';
 
 @Component({
   selector: 'app-order-page',
@@ -40,7 +41,7 @@ export class OrderPageComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.subs.add(this.basketService.basketProducts.subscribe(products => {
       this.basketProducts = products;
-      this.totalCost = products.reduce((sum, a) => sum + (a.cost * a.quantity), 0);
+      this.totalCost = getTotalCost(products);
     }));
 
     if (!this.basketService.basketProductsValue.length) {
