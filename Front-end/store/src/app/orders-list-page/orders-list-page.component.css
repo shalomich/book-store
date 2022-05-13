@@ -77,10 +77,21 @@
 }
 
 .order .cancel-order-button {
-  color: #f44336;
+  color: #f44336 !important;
 }
 
 .order .cancel-order-button:hover {
   color: white;
   background-color: #f44336;
+}
+
+.fetch-more-block {
+  display: flex;
+  justify-content: center;
+  margin-top: 10vh;
+}
+
+.fetch-more-block button {
+  color: #2199e8;
+  font-size: 1.4em;
 }

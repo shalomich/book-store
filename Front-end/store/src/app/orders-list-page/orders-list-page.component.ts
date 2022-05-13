@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import {combineLatest, Observable, of, Subscription} from 'rxjs';
+
+import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { OrderService } from '../core/services/order.service';
 import { Order } from '../core/models/order';
@@ -18,8 +20,12 @@ export class OrdersListPageComponent implements OnInit {
 
   public newOrderId = 0;
 
+  public isLastPage = false;
+
+  private pageNumber = 1;
+
   constructor(private readonly orderService: OrderService) {
-    this.orders$ = this.orderService.getOrdersList();
+    this.orders$ = this.orderService.getOrdersList(this.pageNumber);
   }
 
   ngOnInit(): void {
@@ -31,5 +37,20 @@ export class OrdersListPageComponent implements OnInit {
 
   public getOrderTotalCost(order: Order): number {
     return getTotalCost(order.products);
+  }
+
+  public showMoreOrders(): void {
+    this.pageNumber += 1;
+
+    this.orders$ = combineLatest([this.orders$, this.orderService.getOrdersList(this.pageNumber)]).pipe(
+      map(([currentOrders, loadedOrders]) => {
+        if (!loadedOrders.length) {
+          this.isLastPage = true;
+          return currentOrders;
+        }
+
+        return currentOrders.concat(loadedOrders);
+      }),
+    );
   }
 }

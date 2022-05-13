@@ -39,4 +39,7 @@
       </mat-action-row>
     </mat-expansion-panel>
   </div>
+  <div *ngIf="!isLastPage" class="fetch-more-block">
+    <button (click)="showMoreOrders()" mat-button><mat-icon>sync</mat-icon> Показать еще</button>
+  </div>
 </div>

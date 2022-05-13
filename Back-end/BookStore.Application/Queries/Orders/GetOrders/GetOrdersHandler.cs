@@ -37,6 +37,7 @@ internal class GetOrdersHandler : IRequestHandler<GetOrdersQuery, IEnumerable<Or
 
         return await Context.Orders
             .Where(order => order.UserId == currentUserId)
+            .OrderByDescending(order => order.PlacedDate)
             .Paginate(pagging.PageSize, pagging.PageNumber)
             .ProjectTo<OrderDto>(Mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);

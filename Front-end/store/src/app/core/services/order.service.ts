@@ -43,12 +43,12 @@ export class OrderService {
     return this.http.post<number>(ORDER_URL, body, { headers });
   }
 
-  public getOrdersList(): Observable<Order[]> {
+  public getOrdersList(pageNumber: number): Observable<Order[]> {
     const headers = {
       Authorization: `Bearer ${this.authorizationService.accessToken}`,
     };
 
-    return this.http.get<OrderDto[]>(`${ORDER_URL}/?pageSize=4&&pageNumber=1`, { headers }).pipe(
+    return this.http.get<OrderDto[]>(`${ORDER_URL}/?pageSize=4&&pageNumber=${pageNumber}`, { headers }).pipe(
       map(orders => orders.map(order => this.orderMapper.fromDto(order))),
     );
   }
