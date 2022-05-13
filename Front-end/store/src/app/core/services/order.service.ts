@@ -26,7 +26,7 @@ export class OrderService {
     private readonly orderMapper: OrderMapper,
   ) { }
 
-  public applyOrder(personalData: UserProfile): Observable<void> {
+  public applyOrder(personalData: UserProfile): Observable<number> {
     const headers = {
       Authorization: `Bearer ${this.authorizationService.accessToken}`,
     };
@@ -40,7 +40,7 @@ export class OrderService {
       paymentMethod: 'Offline',
     };
 
-    return this.http.post<void>(ORDER_URL, body, { headers });
+    return this.http.post<number>(ORDER_URL, body, { headers });
   }
 
   public getOrdersList(): Observable<Order[]> {

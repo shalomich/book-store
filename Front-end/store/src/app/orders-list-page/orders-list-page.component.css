@@ -76,11 +76,11 @@
   padding-right: 1vw;
 }
 
-.cancel-order-button {
+.order .cancel-order-button {
   color: #f44336;
 }
 
-.cancel-order-button:hover {
+.order .cancel-order-button:hover {
   color: white;
   background-color: #f44336;
 }

@@ -16,11 +16,17 @@ export class OrdersListPageComponent implements OnInit {
 
   public orders$: Observable<Order[]> = new Observable<Order[]>();
 
+  public newOrderId = 0;
+
   constructor(private readonly orderService: OrderService) {
     this.orders$ = this.orderService.getOrdersList();
   }
 
   ngOnInit(): void {
+    if (sessionStorage.getItem('createdOrderId')) {
+      this.newOrderId = Number(sessionStorage.getItem('createdOrderId'));
+      sessionStorage.removeItem('createdOrderId');
+    }
   }
 
   public getOrderTotalCost(order: Order): number {

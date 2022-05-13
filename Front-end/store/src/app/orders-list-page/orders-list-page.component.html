@@ -1,6 +1,6 @@
 <div class="orders-list">
   <div class="order" *ngFor="let order of (orders$ | async)">
-    <mat-expansion-panel>
+    <mat-expansion-panel [expanded]="!!newOrderId && newOrderId === order.id">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Заказ №{{order.id}}

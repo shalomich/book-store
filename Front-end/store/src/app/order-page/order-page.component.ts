@@ -54,8 +54,9 @@ export class OrderPageComponent implements OnInit, OnDestroy {
   }
 
   public onOrderApply() {
-    this.subs.add(this.orderService.applyOrder(this.personalData.personalDataForm.value).subscribe(_ => {
-      this.router.navigate(['/']);
+    this.subs.add(this.orderService.applyOrder(this.personalData.personalDataForm.value).subscribe(orderId => {
+      sessionStorage.setItem('createdOrderId', orderId.toString());
+      this.router.navigate(['/book-store/orders']);
     }));
   }
 }
