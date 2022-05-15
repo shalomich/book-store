@@ -1,0 +1,14 @@
+.confirmation-message {
+  font-size: 1.4em;
+  margin: 4vh 0;
+}
+
+.confirmation-buttons-block {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.confirmation-buttons-block .confirm-button {
+  background-color: #2199e8;
+  color: white ;
+}

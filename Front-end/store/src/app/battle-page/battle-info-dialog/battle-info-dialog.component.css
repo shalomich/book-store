@@ -1,6 +1,6 @@
 .close-button-block {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .close-button-block button {

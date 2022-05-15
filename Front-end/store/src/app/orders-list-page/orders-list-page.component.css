@@ -81,7 +81,7 @@
 }
 
 .order .cancel-order-button:hover {
-  color: white;
+  color: white !important;
   background-color: #f44336;
 }
 

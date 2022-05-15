@@ -49,6 +49,7 @@ import { LoginDialogComponent } from './header/login-dialog/login-dialog.compone
 import { RegisterDialogComponent } from './header/register-dialog/register-dialog.component';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatDividerModule} from '@angular/material/divider';
+import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 
 
 @NgModule({
@@ -67,6 +68,7 @@ import {MatDividerModule} from '@angular/material/divider';
     HeaderComponent,
     LoginDialogComponent,
     RegisterDialogComponent,
+    ConfirmationModalComponent,
   ],
   exports: [
     ProductImagesComponent,

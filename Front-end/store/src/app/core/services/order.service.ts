@@ -52,4 +52,12 @@ export class OrderService {
       map(orders => orders.map(order => this.orderMapper.fromDto(order))),
     );
   }
+
+  public cancelOrder(orderId: number): Observable<void> {
+    const headers = {
+      Authorization: `Bearer ${this.authorizationService.accessToken}`,
+    };
+
+    return this.http.put<void>(`${ORDER_URL}/${orderId}/cancelled`, orderId, { headers });
+  }
 }
