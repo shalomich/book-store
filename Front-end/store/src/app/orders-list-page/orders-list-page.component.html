@@ -1,5 +1,5 @@
 <div class="orders-list">
-  <div class="order" *ngFor="let order of (orders$ | async)">
+  <div class="order" *ngFor="let order of orders">
     <mat-expansion-panel [expanded]="!!newOrderId && newOrderId === order.id">
       <mat-expansion-panel-header>
         <mat-panel-title>

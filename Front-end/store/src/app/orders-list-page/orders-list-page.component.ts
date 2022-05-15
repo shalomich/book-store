@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 
-import { combineLatest, Observable, of, Subscription } from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable, of, Subject, Subscription} from 'rxjs';
 
-import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import { map, scan, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { MatDialog } from '@angular/material/dialog';
 
@@ -10,7 +10,7 @@ import { OrderService } from '../core/services/order.service';
 import { Order } from '../core/models/order';
 import { getTotalCost } from '../core/utils/helpers';
 import { ConfirmationModalComponent } from '../shared/confirmation-modal/confirmation-modal.component';
-import {ORDER_CANCEL_MESSAGE} from '../core/utils/messages';
+import { ORDER_CANCEL_MESSAGE } from '../core/utils/messages';
 
 @Component({
   selector: 'app-orders-list-page',
@@ -18,20 +18,19 @@ import {ORDER_CANCEL_MESSAGE} from '../core/utils/messages';
   styleUrls: ['./orders-list-page.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class OrdersListPageComponent implements OnInit {
+export class OrdersListPageComponent implements OnInit, OnDestroy {
 
-  public orders$: Observable<Order[]> = new Observable<Order[]>();
+  public orders: Order[] = [];
 
   public newOrderId = 0;
 
   public isLastPage = false;
 
-  private pageNumber = 1;
+  public pageNumber$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   private subs: Subscription = new Subscription();
 
   constructor(private readonly orderService: OrderService, private readonly dialog: MatDialog) {
-    this.orders$ = this.orderService.getOrdersList(this.pageNumber);
   }
 
   ngOnInit(): void {
@@ -39,6 +38,22 @@ export class OrdersListPageComponent implements OnInit {
       this.newOrderId = Number(sessionStorage.getItem('createdOrderId'));
       sessionStorage.removeItem('createdOrderId');
     }
+
+    this.subs.add(this.pageNumber$.asObservable().pipe(
+      switchMap(pageNumber => this.orderService.getOrdersList(pageNumber)),
+      map(loadedOrders => {
+        if (!loadedOrders.length) {
+          this.isLastPage = true;
+        }
+        this.orders = this.orders.concat(loadedOrders);
+      }),
+    ).subscribe());
+
+    this.pageNumber$.next(1);
+  }
+
+  public ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
   public getOrderTotalCost(order: Order): number {
@@ -46,18 +61,7 @@ export class OrdersListPageComponent implements OnInit {
   }
 
   public showMoreOrders(): void {
-    this.pageNumber += 1;
-
-    this.orders$ = combineLatest([this.orders$, this.orderService.getOrdersList(this.pageNumber)]).pipe(
-      map(([currentOrders, loadedOrders]) => {
-        if (!loadedOrders.length) {
-          this.isLastPage = true;
-          return currentOrders;
-        }
-
-        return currentOrders.concat(loadedOrders);
-      }),
-    );
+    this.pageNumber$.next(this.pageNumber$.value + 1);
   }
 
   public onCancelOrder(orderId: number): void {
