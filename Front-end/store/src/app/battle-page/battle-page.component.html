@@ -7,7 +7,7 @@
           {{battle.firstBattleBook.name}}
         </a>
       </div>
-      <img [alt]="battle.firstBattleBook.name" src="{{battle.firstBattleBook.titleImage | base64ToImgSrc}}">
+      <img [alt]="battle.firstBattleBook.name" src="{{battle.firstBattleBook.titleImage.fileUrl}}">
       <app-battle-voting-block [votingBookId]="battle.firstBattleBook.battleBookId"
                                [canUserVote]="canUserVote(battle.firstBattleBook.battleBookId, battle)"
                                [userMaxPoints]="(userProfile$ | async)?.votingPointCount || 0"
@@ -77,7 +77,7 @@
           {{battle.secondBattleBook.name}}
         </a>
       </div>
-      <img [alt]="battle.secondBattleBook.name" src="{{battle.secondBattleBook.titleImage | base64ToImgSrc}}">
+      <img [alt]="battle.secondBattleBook.name" src="{{battle.secondBattleBook.titleImage.fileUrl}}">
       <app-battle-voting-block [votingBookId]="battle.firstBattleBook.battleBookId"
                                [canUserVote]="canUserVote(battle.secondBattleBook.battleBookId, battle)"
                                [userMaxPoints]="(userProfile$ | async)?.votingPointCount || 0"

@@ -1,4 +1,4 @@
-import { Base64Image } from '../interfaces/base64-image';
+import { Image } from '../interfaces/image';
 
 export class Book {
   public id: number;
@@ -33,9 +33,9 @@ export class Book {
 
   public quantity: number;
 
-  public notTitleImages: Base64Image[];
+  public notTitleImages: Image[];
 
-  public titleImage: Base64Image;
+  public titleImage: Image;
 
   public isInBasket: boolean;
 

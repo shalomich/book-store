@@ -1,4 +1,4 @@
-import { Base64Image } from './base64-image';
+import { Image } from './image';
 
 export interface BattleBook {
   bookId: number;
@@ -9,7 +9,7 @@ export interface BattleBook {
 
   cost: number;
 
-  titleImage: Base64Image;
+  titleImage: Image;
 
   authorName: string;
 

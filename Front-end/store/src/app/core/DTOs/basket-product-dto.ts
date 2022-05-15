@@ -1,10 +1,10 @@
-import { Base64Image } from '../interfaces/base64-image';
+import { Image } from '../interfaces/image';
 
 export interface BasketProductDto {
   id: number;
   name: string;
   cost: number;
   quantity: number;
-  titleImage: Base64Image;
+  titleImage: Image;
   productId: number;
 }

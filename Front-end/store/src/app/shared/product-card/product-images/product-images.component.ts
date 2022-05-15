@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { Base64Image } from '../../../core/interfaces/base64-image';
+import { Image } from '../../../core/interfaces/image';
 
 @Component({
   selector: 'app-product-images',
@@ -10,10 +10,10 @@ import { Base64Image } from '../../../core/interfaces/base64-image';
 export class ProductImagesComponent implements OnInit {
 
   @Input()
-  public titleImage: Base64Image = {} as Base64Image;
+  public titleImage: Image = {} as Image;
 
   @Input()
-  public notTitleImages: Base64Image[] = [];
+  public notTitleImages: Image[] = [];
 
   public constructor() { }
 
