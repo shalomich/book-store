@@ -13,7 +13,7 @@ public static class ExceptionExtensions
 
             if (!string.IsNullOrWhiteSpace(exception.Message))
             {
-                message += "/n" + exception.Message;
+                message += " " + exception.Message;
             }
         }
 
