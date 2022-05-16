@@ -31,14 +31,14 @@ public class S3Storage : IDisposable
         s3Client = new AmazonS3Client(credentials, config);
     }
 
-    public string GetPresignedUrlForViewing(int productId, int imageId)
+    public string GetPresignedUrlForViewing(string path)
     {
         DateTimeOffset expireDate = DateTimeOffset.UtcNow.AddDays(settings.PresignedUrlExpireDays);
 
         var presignedUrl = s3Client.GetPreSignedURL(new GetPreSignedUrlRequest
         {
             BucketName = settings.BucketName,
-            Key = $"{productId}/{imageId}",
+            Key = path,
             Expires = expireDate.DateTime,
             Protocol = GetServiceUrlProtocol(),
             Verb = HttpVerb.GET

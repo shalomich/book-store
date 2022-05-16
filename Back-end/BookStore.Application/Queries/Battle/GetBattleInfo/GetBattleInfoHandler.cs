@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using BookStore.Application.Commands.BookEditing.Common;
 using BookStore.Application.Exceptions;
 using BookStore.Application.Services;
 using BookStore.Domain.Entities.Battles;
@@ -21,16 +22,16 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
     private IMapper Mapper { get; }
     private LoggedUserAccessor LoggedUserAccessor { get; }
     private BattleSettingsProvider BattleSettingsProvider { get; }
-    private S3Storage S3Storage { get; }
+    private ImageFileRepository ImageFileRepository { get; }
 
     public GetBattleInfoHandler(ApplicationContext context, IMapper mapper, LoggedUserAccessor loggedUserAccessor,
-        BattleSettingsProvider battleSettingsProvider, S3Storage s3Storage)
+        BattleSettingsProvider battleSettingsProvider, ImageFileRepository imageFileRepository)
     {
         Context = context;
         Mapper = mapper;
         LoggedUserAccessor = loggedUserAccessor;
         BattleSettingsProvider = battleSettingsProvider;
-        S3Storage = s3Storage;
+        ImageFileRepository = imageFileRepository;
     }
 
     public async Task<BattleInfoDto> Handle(GetBattleInfoQuery request, CancellationToken cancellationToken)
@@ -39,7 +40,7 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
 
         battleInfo = CalucalateDiscountPercentage(battleInfo);
 
-        battleInfo = SetFileUrls(battleInfo);
+        battleInfo = await SetFileUrls(battleInfo, cancellationToken);
 
         if (LoggedUserAccessor.IsAuthenticated())
         {
@@ -99,16 +100,16 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
         };
     }
 
-    private BattleInfoDto SetFileUrls(BattleInfoDto battleInfo)
+    private async Task<BattleInfoDto> SetFileUrls(BattleInfoDto battleInfo, CancellationToken cancellationToken)
     {
         var firstTitleImage = battleInfo.FirstBattleBook.TitleImage with
         {
-            FileUrl = S3Storage.GetPresignedUrlForViewing(battleInfo.FirstBattleBook.BookId, battleInfo.FirstBattleBook.TitleImage.Id)
+            FileUrl = await ImageFileRepository.GetPresignedUrlForViewing(battleInfo.FirstBattleBook.TitleImage.Id, cancellationToken)
         };
 
         var secondTitleImage = battleInfo.SecondBattleBook.TitleImage with
         {
-            FileUrl = S3Storage.GetPresignedUrlForViewing(battleInfo.SecondBattleBook.BookId, battleInfo.SecondBattleBook.TitleImage.Id)
+            FileUrl = await ImageFileRepository.GetPresignedUrlForViewing(battleInfo.SecondBattleBook.BookId, cancellationToken)
         };
 
         return battleInfo with

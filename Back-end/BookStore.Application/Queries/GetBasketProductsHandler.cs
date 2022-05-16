@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using BookStore.Application.Commands.BookEditing.Common;
 using BookStore.Application.Dto;
 using BookStore.Application.Services;
 using BookStore.Persistance;
@@ -21,15 +22,15 @@ namespace BookStore.Application.Queries
         private LoggedUserAccessor LoggedUserAccessor { get;}
         private ApplicationContext Context { get; }
         private IMapper Mapper { get; }
-        private S3Storage S3Storage { get; }
+        private ImageFileRepository ImageFileRepository { get; }
 
         public GetBasketProductsHandler(LoggedUserAccessor loggedUserAccessor, 
-            ApplicationContext context, IMapper mapper, S3Storage s3Storage)
+            ApplicationContext context, IMapper mapper, ImageFileRepository imageFileRepository)
         {
             LoggedUserAccessor = loggedUserAccessor;
             Context = context;
             Mapper = mapper;
-            S3Storage = s3Storage;
+            ImageFileRepository = imageFileRepository;
         }
 
         public async Task<IEnumerable<BasketProductDto>> Handle(GetBasketProductsQuery request, CancellationToken cancellationToken)
@@ -41,23 +42,26 @@ namespace BookStore.Application.Queries
                 .ProjectTo<BasketProductDto>(Mapper.ConfigurationProvider)
                 .ToListAsync();
 
-            basketProducts = SetFileUrls(basketProducts);
+            basketProducts = await SetFileUrls(basketProducts, cancellationToken);
 
             return basketProducts;
         }
 
-        private IEnumerable<BasketProductDto> SetFileUrls(IEnumerable<BasketProductDto> basketProducts)
+        private async Task<IEnumerable<BasketProductDto>> SetFileUrls(IEnumerable<BasketProductDto> basketProducts, CancellationToken cancellationToken)
         {
+            var basketProductDtoWithUrl = new List<BasketProductDto>();
+
             foreach (var basketProduct in basketProducts)
             {
-
                 var titleImage = basketProduct.TitleImage with
                 {
-                    FileUrl = S3Storage.GetPresignedUrlForViewing(basketProduct.ProductId, basketProduct.TitleImage.Id)
+                    FileUrl = await ImageFileRepository.GetPresignedUrlForViewing(basketProduct.TitleImage.Id, cancellationToken)
                 };
 
-                yield return basketProduct with { TitleImage = titleImage };
+                basketProductDtoWithUrl.Add(basketProduct with { TitleImage = titleImage });
             }
+
+            return basketProductDtoWithUrl;
         }
     }
 }
