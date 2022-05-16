@@ -1,4 +1,4 @@
-import { Base64Image } from '../interfaces/base64-image';
+import { Image } from '../interfaces/image';
 
 export class BasketProduct {
   public id: number;
@@ -9,7 +9,7 @@ export class BasketProduct {
 
   public quantity: number;
 
-  public titleImage: Base64Image;
+  public titleImage: Image;
 
   public productId: number;
 

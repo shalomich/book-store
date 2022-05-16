@@ -1,8 +1,8 @@
 <div class="images-block">
   <div class="not-title-images">
-    <img alt="Изображение" *ngFor="let image of notTitleImages" [src]="image | base64ToImgSrc" />
+    <img alt="Изображение" *ngFor="let image of notTitleImages" [src]="image.fileUrl" />
   </div>
   <div class="title-image">
-    <img [src]="titleImage | base64ToImgSrc" alt="Титульное изображение" />
+    <img [src]="titleImage.fileUrl" alt="Титульное изображение" />
   </div>
 </div>

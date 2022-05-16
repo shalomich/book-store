@@ -30,7 +30,7 @@ internal class MarkAsDeliveredHandler : AsyncRequestHandler<MarkAsDeliveredComma
         var orderById = await Context.Orders
             .SingleAsync(order => order.Id == request.OrderId, cancellationToken);
 
-        orderById.State = OrderState.Delivired;
+        orderById.State = OrderState.Delivered;
         orderById.DeliveredDate = DateTime.Now;
 
         await Context.SaveChangesAsync(cancellationToken);

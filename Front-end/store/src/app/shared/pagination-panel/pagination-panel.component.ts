@@ -1,15 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { PaginationInstance } from 'ngx-pagination';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {PaginationInstance} from 'ngx-pagination';
 
-import {BehaviorSubject, config, Observable} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 
-import { PAGE_NUMBER, PAGE_SIZE } from '../../core/utils/values';
-import { PaginationOptions } from '../../core/interfaces/pagination-options';
+import {PAGE_SIZE} from '../../core/utils/values';
+import {PaginationOptions} from '../../core/interfaces/pagination-options';
 
 @Component({
   selector: 'pagination-panel',
   templateUrl: './pagination-panel.component.html',
   styleUrls: ['./pagination-panel.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class PaginationPanelComponent implements OnInit {
 

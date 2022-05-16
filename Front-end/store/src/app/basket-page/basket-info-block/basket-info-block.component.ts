@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { BasketProduct } from '../../core/models/basket-product';
+import {getTotalCost} from '../../core/utils/helpers';
 
 @Component({
   selector: 'app-basket-info-block',
@@ -25,7 +26,7 @@ export class BasketInfoBlockComponent implements OnInit {
     this.products.subscribe(products => {
       this.totalAmount = products.reduce((sum, a) => sum + a.quantity, 0);
 
-      this.totalCost = products.reduce((sum, a) => sum + (a.cost * a.quantity), 0);
+      this.totalCost = getTotalCost(products);
     });
   }
 

@@ -1,4 +1,4 @@
-import { Base64Image } from '../interfaces/base64-image';
+import { Image } from '../interfaces/image';
 
 export interface BookDto {
   readonly id: number;
@@ -33,9 +33,9 @@ export interface BookDto {
 
   readonly quantity: number;
 
-  readonly notTitleImages: Base64Image[];
+  readonly notTitleImages: Image[];
 
-  readonly titleImage: Base64Image;
+  readonly titleImage: Image;
 
   readonly isInBasket: boolean;
 }

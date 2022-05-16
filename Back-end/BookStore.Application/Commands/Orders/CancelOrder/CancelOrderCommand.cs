@@ -37,7 +37,6 @@ internal class CancelOrderHandler : AsyncRequestHandler<CancelOrderCommand>
         }
 
         orderById.State = OrderState.Cancelled;
-        orderById.Products = null;
 
         await Context.SaveChangesAsync(cancellationToken);
     }

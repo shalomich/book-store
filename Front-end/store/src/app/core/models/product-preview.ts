@@ -1,11 +1,11 @@
-import { Base64Image } from '../interfaces/base64-image';
+import { Image } from '../interfaces/image';
 
 export class ProductPreview {
   public id: number;
 
   public name: string;
 
-  public titleImage: Base64Image;
+  public titleImage: Image;
 
   public cost: number;
 

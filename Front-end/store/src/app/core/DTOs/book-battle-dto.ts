@@ -1,4 +1,4 @@
-import { Base64Image } from '../interfaces/base64-image';
+import { Image } from '../interfaces/image';
 import { BattleBook } from '../interfaces/battle-book';
 
 export interface BookBattleDto {

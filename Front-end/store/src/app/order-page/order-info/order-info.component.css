@@ -3,6 +3,10 @@
   margin: 0 5em;
 }
 
+.placed-order-info-block {
+  padding: 1em 3em;
+}
+
 .order-info-title {
   margin-bottom: 2em !important;
   color: #2199e8;
@@ -24,12 +28,21 @@ table {
   margin-left: 5em;
 }
 
+.centered-table-container {
+  max-height: 300px;
+  overflow: auto;
+}
+
 .mat-column-quantity {
   text-align: center !important;
 }
 
-.mat-column-total {
-  width: 5em;
+.mat-column-total, .mat-column-cost {
+  width: 5vw;
+}
+
+.mat-column-quantity {
+  width: 7vw;
 }
 
 .mat-header-cell {

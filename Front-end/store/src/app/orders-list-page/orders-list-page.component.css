@@ -1,0 +1,97 @@
+.orders-list {
+  box-shadow: 0 0 5px 0 rgba(34, 60, 80, 0.2);
+  margin: 5vh auto;
+  padding: 2vh 2vw;
+  width: max-content;
+}
+
+.order {
+  margin: 8vh 0;
+}
+
+.order .mat-expansion-panel-header {
+  padding: 1vh 2vh;
+}
+
+.order .mat-expansion-panel-header-title {
+  color: #2199e8;
+  font-size: 1.4em;
+  width: 40%;
+}
+
+.order .mat-expansion-panel-header-description {
+  font-size: 1.2em;
+  justify-content: space-between;
+  margin-right: 2vw;
+  width: 50%;
+}
+
+.order-date {
+  font-size: 0.8em;
+}
+
+.placed-order-state, .delivered-order-state, .cancelled-order-state {
+  display: flex;
+  align-items: center;
+}
+
+.delivered-order-state {
+  color: #29af29;
+}
+
+.cancelled-order-state {
+  color: #f44336;
+}
+
+.order-personal-info {
+  margin-top: 1vh;
+  margin-bottom: 4vh;
+  font-size: 1em;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+}
+
+.order-personal-info span {
+  color: #2199e8;
+  font-weight: normal;
+}
+
+.order-total-info-block {
+  margin-top: 3vh;
+  font-size: 1.4em;
+  margin-left: 1vw;
+}
+
+.order-total-info-block div {
+  margin-top: 2vh;
+}
+
+.order-total-info-block span {
+  color: #2199e8;
+}
+
+.order .mat-action-row {
+  margin-top: 2vh;
+  padding-right: 1vw;
+}
+
+.order .cancel-order-button {
+  color: #f44336 !important;
+}
+
+.order .cancel-order-button:hover {
+  color: white !important;
+  background-color: #f44336;
+}
+
+.fetch-more-block {
+  display: flex;
+  justify-content: center;
+  margin-top: 10vh;
+}
+
+.fetch-more-block button {
+  color: #2199e8;
+  font-size: 1.4em;
+}
