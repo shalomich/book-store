@@ -5,21 +5,58 @@ using System.Threading.Tasks;
 using BookStore.Domain.Entities.Books;
 using BookStore.Application.Services.DbQueryBuilders;
 using BookStore.Application.Queries;
-using BookStore.Application.Notifications.BookCreated;
 using BookStore.Application.Commands.BookEditing.UpdateBook;
 using BookStore.Application.Commands.BookEditing.Common;
 using BookStore.Application.Commands.BookEditing.CreateBook;
 using System.Threading;
 using BookStore.Application.Commands.BookEditing.GetEditBook;
 using BookStore.Application.Commands.BookEditing.DeleteBook;
+using System.Linq;
+using QueryWorker.Args;
+using BookStore.Application.DbQueryConfigs.IncludeRequirements;
+using BookStore.WebApi.Extensions;
 
 namespace BookStore.WebApi.Areas.Dashboard.Controllers
 {
     [Route("[area]/form-entity/book")]
-    public class BookEditingController : ProductCrudController<Book, BookStore.WebApi.Areas.Dashboard.ViewModels.Forms.BookForm>
+    [ApiController]
+    [Area("dashboard")]
+    public class BookEditingController : Controller
     {
-        public BookEditingController(IMediator mediator, IMapper mapper, DbFormEntityQueryBuilder<Book> queryBuilder) : base(mediator, mapper, queryBuilder)
+        public IMediator Mediator { get; }
+        public IMapper Mapper { get; }
+        public DbFormEntityQueryBuilder<Book> QueryBuilder { get; }
+
+        public BookEditingController(
+            IMediator mediator, 
+            IMapper mapper, 
+            DbFormEntityQueryBuilder<Book> queryBuilder)
         {
+            Mediator = mediator;
+            Mapper = mapper;
+            QueryBuilder = queryBuilder;
+        }
+
+        [HttpHead]
+        public async Task GetPaggingMetadata([FromQuery] PaggingArgs paggingArgs)
+        {
+            var metadata = await Mediator.Send(new GetMetadataQuery(paggingArgs, QueryBuilder));
+
+            HttpContext.Response.Headers.Add(metadata);
+        }
+
+        [HttpGet]
+        public async Task<BookForm[]> GetBooks([FromQuery] PaggingArgs paggingArgs, CancellationToken cancellationToken)
+        {
+            QueryBuilder
+               .AddPagging(paggingArgs)
+               .AddIncludeRequirements(new ProductAlbumIncludeRequirement<Book>());
+
+            var products = await Mediator.Send(new GetQuery(QueryBuilder));
+
+            return products
+                .Select(product => Mapper.Map<BookForm>(product))
+                .ToArray();
         }
 
         [HttpGet("{id}")]
