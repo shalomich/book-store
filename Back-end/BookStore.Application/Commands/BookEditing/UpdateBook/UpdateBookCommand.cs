@@ -60,16 +60,20 @@ internal class UpdateBookCommandHandler : AsyncRequestHandler<UpdateBookCommand>
 
         bookById = Mapper.Map(bookForm, bookById);
 
+        await using var transaction = await Context.Database.BeginTransactionAsync(cancellationToken);
+
         try
         {
             await Context.SaveChangesAsync(cancellationToken);
+
+            await UpdateImageFiles(oldImages, bookById.Album.Images, cancellationToken);
         }
         catch (Exception exception)
         {
             throw new BadRequestException(exception.GetFullMessage());
         }
 
-        await UpdateImageFiles(oldImages, bookById.Album.Images, cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
 
         await Mediator.Publish(new BookUpdatedNotification(id));
 

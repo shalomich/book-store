@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -104,7 +105,11 @@ internal class ImageFileRepository
     {
         var bookIdentifier = $"{book.Name} {book.Publisher.Name} {book.ReleaseYear} {book.Isbn}";
 
-        return $"{book.Author.Name}/{bookIdentifier}/{image.Name}{image.GetExtension()}";
+        var path = $"{book.Author.Name}/{bookIdentifier}/{image.Name}{image.GetExtension()}";
+
+        var regex = new Regex("(?:[^а-яёА-ЯЁa-zA-Z0-9-/. ]|(?<=['\"])s)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+        
+        return regex.Replace(path, string.Empty);
     }
 }
 

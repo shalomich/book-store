@@ -36,18 +36,22 @@ internal class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, int
     {
         var book = Mapper.Map<Book>(request.BookForm);
 
+        await using var transaction = await Context.Database.BeginTransactionAsync(cancellationToken);
+        
         try
         {
             await Context.AddAsync(book);
             await Context.SaveChangesAsync(cancellationToken);
+
+            await ImageFileRepository.AddImageFiles(book.Album.Images, cancellationToken);
         }
         catch (Exception exception)
         {
             throw new BadRequestException(exception.GetFullMessage());
         }
 
-        await ImageFileRepository.AddImageFiles(book.Album.Images, cancellationToken);
-
+        await transaction.CommitAsync(cancellationToken);
+        
         await Mediator.Publish(new BookCreatedNotification(book.Id));
 
         return book.Id;
