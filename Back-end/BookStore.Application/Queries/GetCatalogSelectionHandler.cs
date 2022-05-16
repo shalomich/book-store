@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using BookStore.Application.Commands.BookEditing.Common;
 using BookStore.Application.Dto;
 using BookStore.Application.Services;
 using BookStore.Application.Services.CatalogSelections;
@@ -26,16 +27,16 @@ namespace BookStore.Application.Queries
         private ApplicationContext Context { get; }
         private SelectionConfigurator<Book> SelectionConfigurator { get; }
         private IMapper Mapper { get; }
-        private S3Storage S3Storage { get; }
+        private ImageFileRepository ImageFileRepository { get; }
 
         public GetCatalogSelectionHandler(LoggedUserAccessor loggedUserAccessor, ApplicationContext context,
-            SelectionConfigurator<Book> selectionConfigurator, IMapper mapper, S3Storage s3Storage)
+            SelectionConfigurator<Book> selectionConfigurator, IMapper mapper, ImageFileRepository imageFileRepository)
         {
             LoggedUserAccessor = loggedUserAccessor;
             Context = context;
             SelectionConfigurator = selectionConfigurator;
             Mapper = mapper;
-            S3Storage = s3Storage;
+            ImageFileRepository = imageFileRepository;
         }
 
         public async Task<PreviewSetDto> Handle(GetCatalogSelectionQuery request, CancellationToken cancellationToken)
@@ -57,7 +58,7 @@ namespace BookStore.Application.Queries
                 .ProjectTo<PreviewDto>(Mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
-            previews = SetFileUrls(previews);
+            previews = await SetFileUrls(previews, cancellationToken);
 
             previews = await SetBattleStatus(previews, cancellationToken);
 
@@ -71,18 +72,21 @@ namespace BookStore.Application.Queries
             return new PreviewSetDto(previews, totalCount);
         }
 
-        private IEnumerable<PreviewDto> SetFileUrls(IEnumerable<PreviewDto> previews)
+        private async Task<IEnumerable<PreviewDto>> SetFileUrls(IEnumerable<PreviewDto> previews, CancellationToken cancellationToken)
         {
+            var previewsWithUrl = new List<PreviewDto>();   
+
             foreach(var preview in previews)
             {
-
                 var titleImage = preview.TitleImage with
                 {
-                    FileUrl = S3Storage.GetPresignedUrlForViewing(preview.Id, preview.TitleImage.Id)
+                    FileUrl = await ImageFileRepository.GetPresignedUrlForViewing(preview.TitleImage.Id, cancellationToken)
                 };
 
-                yield return preview with { TitleImage = titleImage };
+                previewsWithUrl.Add(preview with { TitleImage = titleImage });
             }
+
+            return previewsWithUrl;
         }
 
 

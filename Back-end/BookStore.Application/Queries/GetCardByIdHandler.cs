@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using BookStore.Application.Commands.BookEditing.Common;
 using BookStore.Application.Dto;
 using BookStore.Application.Exceptions;
 using BookStore.Application.Services;
@@ -52,15 +53,15 @@ internal class GetCardByIdHandler : IRequestHandler<GetCardByIdQuery, CardDto>
     private LoggedUserAccessor LoggedUserAccessor { get; }
     private ApplicationContext Context { get; }
     private IMapper Mapper { get; }
-    private S3Storage S3Storage { get; }
+    private ImageFileRepository ImageFileRepository { get; }
 
     public GetCardByIdHandler(LoggedUserAccessor loggedUserAccessor, ApplicationContext context,
-        IMapper mapper, S3Storage s3Storage)
+        IMapper mapper, ImageFileRepository imageFileRepository)
     {
         LoggedUserAccessor = loggedUserAccessor;
         Context = context;
         Mapper = mapper;
-        S3Storage = s3Storage;
+        ImageFileRepository = imageFileRepository;
     }
     public async Task<CardDto> Handle(GetCardByIdQuery request, CancellationToken cancellationToken)
     {
@@ -71,7 +72,7 @@ internal class GetCardByIdHandler : IRequestHandler<GetCardByIdQuery, CardDto>
         if (card == null)
             throw new NotFoundException("Book does not exist by this id.");
 
-        card = SetFileUrls(card);
+        card = await SetFileUrls(card, cancellationToken);
 
         card = await SetBattleStatus(card, cancellationToken);
 
@@ -87,20 +88,20 @@ internal class GetCardByIdHandler : IRequestHandler<GetCardByIdQuery, CardDto>
     }
 
 
-    private CardDto SetFileUrls(CardDto card)
+    private async Task<CardDto> SetFileUrls(CardDto card, CancellationToken cancellationToken)
     {
         var notTitleImages = new List<ImageDto>();
 
         var titleImage = card.TitleImage with
         {
-            FileUrl = S3Storage.GetPresignedUrlForViewing(card.Id, card.TitleImage.Id)
+            FileUrl = await ImageFileRepository.GetPresignedUrlForViewing(card.TitleImage.Id, cancellationToken)
         };
 
         foreach (var notTitleImage in card.NotTitleImages)
         {
             var notTitleImageWithFileUrl = notTitleImage with
             {
-                FileUrl = S3Storage.GetPresignedUrlForViewing(card.Id, notTitleImage.Id)
+                FileUrl = await ImageFileRepository.GetPresignedUrlForViewing(notTitleImage.Id, cancellationToken)
             };
 
             notTitleImages.Add(notTitleImageWithFileUrl);

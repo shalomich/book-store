@@ -80,6 +80,18 @@ internal class ImageFileRepository
         await Task.WhenAll(removeImageFileTasks);
     }
 
+    public async Task<string> GetPresignedUrlForViewing(int imageId, CancellationToken cancellationToken)
+    {
+        var image = await Context.Set<Image>()
+            .SingleAsync(image => image.Id == imageId, cancellationToken);
+
+        var ownerBook = await GetOwnerBook(image.AlbumId, cancellationToken);
+
+        var path = CreateStoragePath(image, ownerBook);
+
+        return S3Storage.GetPresignedUrlForViewing(path);
+    }
+
     private async Task<Book> GetOwnerBook(int albumId, CancellationToken cancellationToken)
     {
         return await Context.Books
