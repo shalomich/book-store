@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { REFRESH_URL } from '../utils/values';
 
 import { AuthorizationDataProvider } from './authorization-data.provider';
-import {AuthorizationService} from './authorization.service';
+import { AuthorizationService } from './authorization.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,20 +23,22 @@ export class TokenValidationService {
     private readonly authorizationService: AuthorizationService,
   ) { }
 
-  public isTokenValid(): Observable<boolean> {
+  public isTokenValid(redirectNeeded: boolean): Observable<boolean> {
     const token = this.authorizationService.accessToken;
     if (token && !this.jwtHelper.isTokenExpired(token)) {
       return of(true);
     }
-    const isRefreshSuccess = this.tryRefreshingTokens(token);
+    const isRefreshSuccess = this.tryRefreshingTokens(token, redirectNeeded);
 
     return isRefreshSuccess;
   }
 
-  private tryRefreshingTokens(token: string | null): Observable<boolean> {
+  private tryRefreshingTokens(token: string | null, redirectNeeded: boolean): Observable<boolean> {
     const { refreshToken } = this.authorizationService;
     if (!token || !refreshToken) {
-      this.router.navigate(['/book-store']);
+      if (redirectNeeded) {
+        this.router.navigate(['/book-store']);
+      }
       return of(false);
     }
     const credentials = JSON.stringify({ accessToken: token, refreshToken });

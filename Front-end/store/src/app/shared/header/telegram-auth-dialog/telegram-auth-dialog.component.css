@@ -1,5 +1,19 @@
-.telegram-dialog-block {
+.telegram-dialog .mat-dialog-container {
+  padding: 0;
+}
 
+.telegram-dialog-block {
+  margin: 2vh 2vw 3vh 2vw;
+}
+
+.close-button-block {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 2vh;
+}
+
+.close-button-block button {
+  color: #2199e8;
 }
 
 .telegram-dialog-title {
@@ -28,7 +42,6 @@
 }
 /* Font color */
 .telegram-dialog-field input.mat-input-element {
-  color: #2199e8 !important;
   font-size: 1.2em;
 }
 

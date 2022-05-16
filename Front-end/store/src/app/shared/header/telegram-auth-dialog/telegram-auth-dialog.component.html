@@ -1,3 +1,6 @@
+<div class="close-button-block">
+  <button (click)="onClose()" mat-icon-button><mat-icon>close</mat-icon></button>
+</div>
 <div class="telegram-dialog-block">
   <div class="telegram-dialog-title">
     Привязка аккаунта к Telegram
@@ -5,11 +8,11 @@
   <div class="telegram-dialog-field">
     <mat-form-field appearance="outline">
       <mat-label>Номер телефона</mat-label>
-      <input placeholder="8/+7 9XX XXX XX XX" [formControl]="phoneNumberControl" [value]="(userProfile | async)?.phoneNumber || ''" matInput/>
+      <input placeholder="8/+7 9XX XXX XX XX" [formControl]="phoneNumberControl" matInput/>
       <mat-hint>Номер взят из вашего профиля. Если в профиле не был указан номер, то введенный номер привяжется к вашему аккаунту. </mat-hint>
     </mat-form-field>
   </div>
   <div class="telegram-button">
-    <button [disabled]="!phoneNumberControl.valid" type="submit" mat-stroked-button color="primary">Перейти в Telegram</button>
+    <button (click)="onTelegramClick()" [disabled]="!phoneNumberControl.valid" type="submit" mat-stroked-button color="primary">Перейти в Telegram</button>
   </div>
 </div>

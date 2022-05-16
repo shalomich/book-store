@@ -15,6 +15,7 @@ import { OrdersListPageComponent } from './orders-list-page/orders-list-page.com
 const routes: Routes = [
   { path: '', redirectTo: 'book-store', pathMatch: 'full' },
   { path: 'book-store', component: MainPageComponent },
+  { path: 'book-store?:openTelegramDialog', component: MainPageComponent },
   { path: 'book-store/profile', component: ProfilePageComponent, canActivate: [AuthGuard] },
   { path: 'book-store/basket', component: BasketPageComponent, canActivate: [AuthGuard] },
   { path: 'book-store/order', component: OrderPageComponent, canActivate: [AuthGuard] },
