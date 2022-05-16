@@ -16,6 +16,7 @@ import { TokenValidationService } from '../../core/services/token-validation.ser
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import {of} from 'rxjs';
 import {UserProfile} from '../../core/models/user-profile';
+import {TelegramAuthDialogComponent} from './telegram-auth-dialog/telegram-auth-dialog.component';
 
 @Component({
   selector: 'app-header',
@@ -61,5 +62,11 @@ export class HeaderComponent implements OnInit {
 
   public logout(): void {
     this.authorizationService.logout();
+  }
+
+  public onTelegramClick(): void {
+    this.dialog.open(TelegramAuthDialogComponent, {
+      autoFocus: false,
+    });
   }
 }

@@ -50,6 +50,7 @@ import { RegisterDialogComponent } from './header/register-dialog/register-dialo
 import {MatMenuModule} from '@angular/material/menu';
 import {MatDividerModule} from '@angular/material/divider';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
+import { TelegramAuthDialogComponent } from './header/telegram-auth-dialog/telegram-auth-dialog.component';
 
 
 @NgModule({
@@ -69,6 +70,7 @@ import { ConfirmationModalComponent } from './confirmation-modal/confirmation-mo
     LoginDialogComponent,
     RegisterDialogComponent,
     ConfirmationModalComponent,
+    TelegramAuthDialogComponent,
   ],
   exports: [
     ProductImagesComponent,

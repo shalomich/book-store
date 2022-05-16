@@ -1,0 +1,54 @@
+.telegram-dialog-block {
+
+}
+
+.telegram-dialog-title {
+  color: #2199e8;
+  font-size: 1.6em;
+  margin-bottom: 4vh;
+}
+
+.telegram-dialog-field {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 6vh;
+}
+
+.telegram-dialog-field .mat-form-field {
+  width: 15vw;
+}
+
+.telegram-dialog-field .mat-hint {
+  font-size: 1.2em !important;
+}
+
+/* Border */
+.telegram-dialog-field .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #2199e8 !important;
+}
+/* Font color */
+.telegram-dialog-field input.mat-input-element {
+  color: #2199e8 !important;
+  font-size: 1.2em;
+}
+
+.telegram-dialog-field .mat-form-field.mat-focused .mat-form-field-label {
+  color: #2199e8 !important;
+}
+
+.telegram-button {
+  display: flex;
+  justify-content: center;
+}
+
+.telegram-button button {
+  color: #2199e8 !important;
+  font-size: 1.4em;
+  padding: 1vh 1vw;
+}
+
+.telegram-button button:disabled {
+  color: gray !important;
+}
+
+
