@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace BookStore.Application.Commands.TelegramBot;
 
-public record CreateTelegramBotTokenCommand() : IRequest<string>;
-internal class CreateTelegramBotTokenHandler : IRequestHandler<CreateTelegramBotTokenCommand, string>
+public record CreateTelegramBotTokenCommand() : IRequest<TelegramBotTokenDto>;
+internal class CreateTelegramBotTokenHandler : IRequestHandler<CreateTelegramBotTokenCommand, TelegramBotTokenDto>
 {
     private LoggedUserAccessor LoggedUserAccessor { get; }
     private TelegramBotJwtParser JwtParser { get; }
@@ -19,13 +19,16 @@ internal class CreateTelegramBotTokenHandler : IRequestHandler<CreateTelegramBot
         JwtParser = jwtParser;
     }
 
-    public Task<string> Handle(CreateTelegramBotTokenCommand request, CancellationToken cancellationToken)
+    public Task<TelegramBotTokenDto> Handle(CreateTelegramBotTokenCommand request, CancellationToken cancellationToken)
     {
         var currentUserId = LoggedUserAccessor.GetCurrentUserId();
 
-        var telegramAccessToken = JwtParser.ToToken(currentUserId);
+        var telegramBotTokenDto = new TelegramBotTokenDto
+        {
+            BotToken = JwtParser.ToToken(currentUserId)
+        };
 
-        return Task.FromResult(telegramAccessToken);
+        return Task.FromResult(telegramBotTokenDto);
     }
 }
 
