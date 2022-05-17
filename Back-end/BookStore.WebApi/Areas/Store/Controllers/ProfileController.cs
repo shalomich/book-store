@@ -38,11 +38,11 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpGet]
-        public async Task<UserDto> Get()
+        public async Task<UserProfileDto> Get()
         {
             var user = await GetCurrentUser();
 
-            return Mapper.Map<UserDto>(user);
+            return Mapper.Map<UserProfileDto>(user);
         }
 
         [HttpPut]
