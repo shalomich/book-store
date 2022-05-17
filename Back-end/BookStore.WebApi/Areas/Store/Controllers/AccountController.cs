@@ -28,7 +28,7 @@ namespace BookStore.WebApi.Areas.Store.Controllers
 
         [HttpPost("telegram-bot-token")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<string> TelegramBotRegistration()
+        public async Task<TelegramBotTokenDto> TelegramBotRegistration()
         {
             return await _mediator.Send(new CreateTelegramBotTokenCommand());
         }
