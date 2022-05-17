@@ -1,7 +1,9 @@
-﻿using BookStore.Application.Services;
+﻿using BookStore.Application.Exceptions;
+using BookStore.Application.Services;
 using BookStore.Application.Services.Jwt;
 using BookStore.Persistance;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,23 +14,41 @@ internal class CreateTelegramBotTokenHandler : IRequestHandler<CreateTelegramBot
 {
     private LoggedUserAccessor LoggedUserAccessor { get; }
     private TelegramBotJwtParser JwtParser { get; }
+    public ApplicationContext Context { get; }
 
-    public CreateTelegramBotTokenHandler(LoggedUserAccessor loggedUserAccessor, TelegramBotJwtParser jwtParser)
+    public CreateTelegramBotTokenHandler(
+        LoggedUserAccessor loggedUserAccessor, 
+        TelegramBotJwtParser jwtParser,
+        ApplicationContext context)
     {
         LoggedUserAccessor = loggedUserAccessor;
         JwtParser = jwtParser;
+        Context = context;
     }
 
-    public Task<TelegramBotTokenDto> Handle(CreateTelegramBotTokenCommand request, CancellationToken cancellationToken)
+    public async Task<TelegramBotTokenDto> Handle(CreateTelegramBotTokenCommand request, CancellationToken cancellationToken)
     {
+        await Validate(request, cancellationToken);
+
         var currentUserId = LoggedUserAccessor.GetCurrentUserId();
 
-        var telegramBotTokenDto = new TelegramBotTokenDto
+        return new TelegramBotTokenDto
         {
             BotToken = JwtParser.ToToken(currentUserId)
         };
+    }
 
-        return Task.FromResult(telegramBotTokenDto);
+    private async Task Validate(CreateTelegramBotTokenCommand request, CancellationToken cancellationToken)
+    {
+        var currentUserId = LoggedUserAccessor.GetCurrentUserId();
+
+        var currentUser = await Context.Users
+            .SingleAsync(user => user.Id == currentUserId, cancellationToken);
+
+        if (string.IsNullOrEmpty(currentUser.PhoneNumber))
+        {
+            throw new BadRequestException("User has no phone number.");
+        }
     }
 }
 
