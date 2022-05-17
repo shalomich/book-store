@@ -101,6 +101,8 @@ class Program
     {
         var mediator = ServiceProvider.GetRequiredService<IMediator>();
 
+        var authenticationUrl = ServiceProvider.GetRequiredService<IConfiguration>()["TelegramBot:AuthenticationUrl"];
+
         var registerStatus = await mediator.Send(new TryRegisterBotContactCommand(message, isStartCommand), cancellationToken);
 
         switch ((isStartCommand, registerStatus))
@@ -112,7 +114,7 @@ class Program
 
             case (isStartCommand: true, registerStatus: RegisterBotContactStatus.Invalid):
 
-                await botClient.SendTextMessageAsync(message.Chat.Id, "Необходимо залогиниться через сайт по ссылке: ");
+                await botClient.SendTextMessageAsync(message.Chat.Id, "Необходимо залогиниться через сайт по ссылке: " + authenticationUrl);
                 return false;
 
             case (isStartCommand: true, registerStatus: RegisterBotContactStatus.Success):
@@ -122,7 +124,7 @@ class Program
 
             case (isStartCommand: false, registerStatus: RegisterBotContactStatus.Invalid):
 
-                await botClient.SendTextMessageAsync(message.Chat.Id, "Необходимо залогиниться через сайт по ссылке: ");
+                await botClient.SendTextMessageAsync(message.Chat.Id, "Необходимо залогиниться через сайт по ссылке: " + authenticationUrl);
                 return false;
         }
 
