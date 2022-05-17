@@ -1,6 +1,6 @@
 ﻿namespace BookStore.Application.Dto;
 
-public record UserDto
+public record UserProfileDto
 {
     public int Id { init; get; } 
     public string FirstName { init; get; }
@@ -9,5 +9,6 @@ public record UserDto
     public string PhoneNumber { init; get; }
     public string Address { init; get; }
     public int VotingPointCount { init; get; }
+    public bool IsTelegramBotLinked { init; get; }
 }
 

@@ -9,7 +9,9 @@ namespace BookStore.Application.Profiles
     {
         public UserToDtoProfile()
         {
-            CreateMap<User, UserDto>();
+            CreateMap<User, UserProfileDto>()
+                .ForMember(dto => dto.IsTelegramBotLinked, mapper => mapper.MapFrom
+                    (user => user.TelegramBotContact.IsAuthenticated));
 
             CreateMap<UserProfileForm, User>();
         }
