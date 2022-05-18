@@ -5,7 +5,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 @font-face {
   font-family: "Arcade";
-  src: local("Arcade"), url(../assets/fonts/Arcade/Arcade.ttf) format("truetype");
+  src: local("Arcade"), url(/assets/Arcade/Arcade.ttf) format("truetype");
 }
 
 .mat-tooltip {
