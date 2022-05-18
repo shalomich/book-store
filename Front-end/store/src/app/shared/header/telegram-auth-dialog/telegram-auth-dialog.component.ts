@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import { TelegramAuthService } from '../../../core/services/telegram-auth.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 interface DialogData {
   phoneNumber: string;
@@ -26,6 +27,8 @@ export class TelegramAuthDialogComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     public dialogRef: MatDialogRef<TelegramAuthDialogComponent>,
     private readonly telegramAuthService: TelegramAuthService,
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
   ) { }
 
   public ngOnInit(): void {
@@ -33,11 +36,20 @@ export class TelegramAuthDialogComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy() {
+    this.subs.unsubscribe();
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.activatedRoute,
+        queryParams: {},
+      });
 
   }
 
   public onTelegramClick(): void {
-    // this.subs.add(this.telegramAuthService.getTelegramToken(this.phoneNumberControl.value).subscribe(data => console.log(data)));
+    this.subs.add(this.telegramAuthService.getTelegramToken(this.phoneNumberControl.value).subscribe(data => {
+      this.telegramAuthService.redirectToTelegram(data.botToken);
+    }));
   }
 
   public onClose(): void {

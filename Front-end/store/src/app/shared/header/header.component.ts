@@ -61,7 +61,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }),
     )
       .subscribe(params => {
-        if (params.openTelegramDialog) {
+        if (params.openTelegramBotDialog) {
           this.openTelegramDialog(this.user.phoneNumber);
         }
     }));
