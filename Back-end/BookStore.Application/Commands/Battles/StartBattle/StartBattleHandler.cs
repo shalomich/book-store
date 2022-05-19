@@ -1,8 +1,10 @@
-﻿using BookStore.Application.Queries.Battle.GetBattleSettings;
+﻿using BookStore.Application.Exceptions;
+using BookStore.Application.Queries.Battle.GetBattleSettings;
 using BookStore.Application.Services;
 using BookStore.Application.Services.CatalogSelections;
 using BookStore.Domain.Entities.Battles;
 using BookStore.Domain.Entities.Books;
+using BookStore.Domain.Enums;
 using BookStore.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +33,8 @@ internal class StartBattleHandler : IRequestHandler<StartBattleCommand, StartBat
 
     public async Task<StartBattleResult> Handle(StartBattleCommand request, CancellationToken cancellationToken)
     {
+        await Validate(request, cancellationToken);
+
         var battleSettings = BattleSettingsProvider.GetBattleSettings();
 
         var newBattle = await CreateNewBattle(battleSettings, cancellationToken);
@@ -88,6 +92,18 @@ internal class StartBattleHandler : IRequestHandler<StartBattleCommand, StartBat
             currentBattleBooks.First,
             currentBattleBooks.Second
         };
+    }
+
+    private async Task Validate(StartBattleCommand request, CancellationToken cancellationToken)
+    {
+        bool hasNotFinishedBattles = await Context.Battles
+            .Where(battle => battle.State != BattleState.Finished)
+            .AnyAsync(cancellationToken);
+
+        if (hasNotFinishedBattles)
+        {
+            throw new BadRequestException("There is battle which not finished yet.");
+        }
     }
 }
 
