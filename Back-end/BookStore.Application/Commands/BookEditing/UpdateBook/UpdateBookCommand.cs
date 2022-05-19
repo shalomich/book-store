@@ -83,11 +83,8 @@ internal class UpdateBookCommandHandler : AsyncRequestHandler<UpdateBookCommand>
 
     private async Task UpdateImageFiles(IEnumerable<Image> oldImages, IEnumerable<Image> newImages, CancellationToken cancellationToken)
     {
-        var imagesToAdd = newImages.Except(oldImages).ToList();
-        var imagesToRemove = oldImages.Except(newImages).ToList();
-
-        await ImageRepository.AddImageFiles(imagesToAdd, cancellationToken);
-        await ImageRepository.RemoveImagesFiles(imagesToRemove, cancellationToken);
+        await ImageRepository.AddImageFiles(newImages, cancellationToken);
+        await ImageRepository.RemoveImagesFiles(oldImages, cancellationToken);
     }
 
     private async Task CheckDiscountChange(int? oldDiscountPercentage, int? newDiscountPercentage, int bookId, CancellationToken cancellationToken)

@@ -44,7 +44,7 @@
     <div class="discount-block">
       <div class="discount">
         <div class="winner-discount-text" *ngIf="battle.state === 'Finished'">Итоговая скидка</div>
-        <span>{{battle.discountPercentage}}%</span> <span *ngIf="battle.state !== 'Finished'">/ {{battle.finalDiscount}}%</span>
+        <span>{{battle.discountPercentage}}%</span> <span *ngIf="battle.state !== 'Finished'"> / {{battle.finalDiscount}}%</span>
       </div>
       <div class="prices-for-winner">
         <div class="book-price">
