@@ -14,5 +14,6 @@ public record UserProfileDto
     public int VotingPointCount { init; get; }
     public bool IsTelegramBotLinked { init; get; }
     public IEnumerable<int> BasketBookIds { init; get; } = Enumerable.Empty<int>();
+    public IEnumerable<int> MarkBookIds { init; get; } = Enumerable.Empty<int>();
 }
 

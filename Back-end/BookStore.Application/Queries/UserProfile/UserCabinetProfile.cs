@@ -14,7 +14,10 @@ internal class UserCabinetProfile : Profile
                 (user => user.TelegramBotContact.IsAuthenticated))
             .ForMember(dto => dto.BasketBookIds, mapper => mapper.MapFrom
                 (user => user.BasketProducts
-                    .Select(basketProduct => basketProduct.ProductId)));
+                    .Select(basketProduct => basketProduct.ProductId)))
+            .ForMember(dto => dto.MarkBookIds, mapper => mapper.MapFrom
+                (user => user.Marks
+                    .Select(mark => mark.ProductId)));
 
         CreateMap<UserProfileForm, User>();
     }
