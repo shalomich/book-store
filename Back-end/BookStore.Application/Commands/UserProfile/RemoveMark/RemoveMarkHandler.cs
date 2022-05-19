@@ -10,13 +10,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookStore.Application.Commands
+namespace BookStore.Application.Commands.UserProfile.RemoveMark
 {
     public record RemoveMarkCommand(int BookId) : IRequest;
     internal class RemoveMarkHandler : AsyncRequestHandler<RemoveMarkCommand>
     {
-        private ApplicationContext Context { get;}
-        private LoggedUserAccessor LoggedUserAccessor { get;}
+        private ApplicationContext Context { get; }
+        private LoggedUserAccessor LoggedUserAccessor { get; }
 
         public RemoveMarkHandler(ApplicationContext context, LoggedUserAccessor loggedUserAccessor)
         {
@@ -29,7 +29,7 @@ namespace BookStore.Application.Commands
             var removedMark = await Context.Marks
                 .SingleOrDefaultAsync(mark => mark.ProductId == request.BookId
                 && mark.UserId == LoggedUserAccessor.GetCurrentUserId());
-            
+
             if (removedMark == null)
                 throw new NotFoundException("Mark does not exist by this book id.");
 

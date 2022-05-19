@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BookStore.Application.ViewModels.Profile;
+namespace BookStore.Application.Commands.UserProfile.UpdateUserProfile;
 
 public record UserProfileForm
 {
