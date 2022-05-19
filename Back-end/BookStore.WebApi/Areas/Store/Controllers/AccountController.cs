@@ -1,6 +1,6 @@
 ﻿
 using BookStore.Application.Commands.Account;
-using BookStore.Application.Commands.TelegramBot;
+using BookStore.Application.Commands.TelegramBot.CreateTelegramBotToken;
 using BookStore.Application.Dto;
 using BookStore.Application.Queries;
 using BookStore.Application.ViewModels.Account;
@@ -24,13 +24,6 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         public AccountController(IMediator mediator)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-        }
-
-        [HttpPost("telegram-bot-token")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<TelegramBotTokenDto> TelegramBotRegistration()
-        {
-            return await _mediator.Send(new CreateTelegramBotTokenCommand());
         }
 
         [HttpPost("login")]
