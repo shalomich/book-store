@@ -7,12 +7,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookStore.Application.Commands;
+namespace BookStore.Application.Commands.BookEditing.RemoveDiscount;
 
 public record RemoveDiscountCommand() : IRequest;
 internal class RemoveDiscountHandler : AsyncRequestHandler<RemoveDiscountCommand>
 {
-    private ApplicationContext Context { get;}
+    private ApplicationContext Context { get; }
 
     public RemoveDiscountHandler(ApplicationContext context)
     {

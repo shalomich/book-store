@@ -11,13 +11,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookStore.Application.Commands
+namespace BookStore.Application.Commands.UserProfile.CreateMark
 {
     public record CreateMarkCommand(int BookId) : IRequest;
     internal class CreateMarkHandler : AsyncRequestHandler<CreateMarkCommand>
     {
-        private ApplicationContext Context { get;}
-        private LoggedUserAccessor LoggedUserAccessor { get;}
+        private ApplicationContext Context { get; }
+        private LoggedUserAccessor LoggedUserAccessor { get; }
 
         public CreateMarkHandler(ApplicationContext context, LoggedUserAccessor loggedUserAccessor)
         {

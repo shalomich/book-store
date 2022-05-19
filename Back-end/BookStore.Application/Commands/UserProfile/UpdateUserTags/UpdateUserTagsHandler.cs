@@ -1,5 +1,5 @@
 ﻿using BookStore.Application.Exceptions;
-using BookStore.Domain.Entities;
+using BookStore.Application.Services;
 using BookStore.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,25 +8,29 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookStore.Application.Commands.UserProfile;
+namespace BookStore.Application.Commands.UserProfile.UpdateUserTags;
 
-public record UpdateUserTagsCommand(int UserId, int[] TagIds) : IRequest;
+public record UpdateUserTagsCommand(int[] TagIds) : IRequest;
 internal class UpdateUserTagsHandler : AsyncRequestHandler<UpdateUserTagsCommand>
 {
     private ApplicationContext Context { get; }
+    public LoggedUserAccessor LoggedUserAccessor { get; }
 
-    public UpdateUserTagsHandler(ApplicationContext context)
+    public UpdateUserTagsHandler(
+        ApplicationContext context,
+        LoggedUserAccessor loggedUserAccessor)
     {
         Context = context;
+        LoggedUserAccessor = loggedUserAccessor;
     }
 
     protected override async Task Handle(UpdateUserTagsCommand request, CancellationToken cancellationToken)
     {
-        var (userId, tagIds) = request;
+        var tagIds = request.TagIds;
 
         var user = await Context.Users
             .Include(user => user.Tags)
-            .SingleOrDefaultAsync(user => user.Id == userId, cancellationToken);
+            .SingleOrDefaultAsync(user => user.Id == LoggedUserAccessor.GetCurrentUserId(), cancellationToken);
 
         if (tagIds.Length == 0)
         {
@@ -46,6 +50,6 @@ internal class UpdateUserTagsHandler : AsyncRequestHandler<UpdateUserTagsCommand
             user.Tags = tags.ToHashSet();
         }
 
-        await Context.SaveChangesAsync(cancellationToken);        
+        await Context.SaveChangesAsync(cancellationToken);
     }
 }

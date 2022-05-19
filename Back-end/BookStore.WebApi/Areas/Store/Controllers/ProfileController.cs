@@ -1,90 +1,73 @@
-﻿using AutoMapper;
-using BookStore.Application.Commands;
-using BookStore.Application.Commands.UserProfile;
+﻿using BookStore.Application.Commands.UserProfile;
+using BookStore.Application.Commands.UserProfile.CreateMark;
+using BookStore.Application.Commands.UserProfile.RemoveMark;
+using BookStore.Application.Commands.UserProfile.UpdateUserProfile;
+using BookStore.Application.Commands.UserProfile.UpdateUserTags;
 using BookStore.Application.Dto;
-using BookStore.Application.Queries;
-using BookStore.Application.Services.DbQueryBuilders;
-using BookStore.Application.ViewModels.Profile;
-using BookStore.Domain.Entities;
-using BookStore.WebApi.Extensions;
+using BookStore.Application.Queries.UserProfile.GetUserProfile;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookStore.WebApi.Areas.Store.Controllers
+namespace BookStore.WebApi.Areas.Store.Controllers;
+
+[Route("[area]/[controller]")]
+[Authorize(AuthenticationSchemes = "Bearer")]
+public class ProfileController : StoreController
 {
-    [Route("[area]/[controller]")]
-    [Authorize(AuthenticationSchemes = "Bearer")]
-    public class ProfileController : StoreController
+    private IMediator Mediator { get; }
+ 
+    public ProfileController(IMediator mediator)
     {
-        private IMediator Mediator { get; }
-        private IMapper Mapper { get; }
-        private DbEntityQueryBuilder<User> UserQueryBuilder { get; }
+        Mediator = mediator;
+    }
 
-        public ProfileController(IMediator mediator, IMapper mapper, DbEntityQueryBuilder<User> userQueryBuilder)
-        {
-            Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-            Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            UserQueryBuilder = userQueryBuilder ?? throw new ArgumentNullException(nameof(userQueryBuilder));
-        }
+    [HttpGet]
+    public async Task<UserProfileDto> Get(CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(new GetUserProfileQuery(), cancellationToken);
+    }
 
-        private async Task<User> GetCurrentUser()
-        {
-            return (User) await Mediator.Send(new GetByIdQuery(User.GetUserId(), UserQueryBuilder));
-        }
+    [HttpPut]
+    public async Task<IActionResult> Update(UserProfileForm profileForm, CancellationToken cancellationToken)
+    {
+        await Mediator.Send(new UpdateUserProfileCommand(profileForm), cancellationToken);
 
-        [HttpGet]
-        public async Task<UserProfileDto> Get()
-        {
-            var user = await GetCurrentUser();
+        return NoContent();
+    }
 
-            return Mapper.Map<UserProfileDto>(user);
-        }
+    [HttpPost("mark")]
+    public async Task<NoContentResult> CreateMark([FromBody] int bookId, CancellationToken cancellationToken)
+    {
+        await Mediator.Send(new CreateMarkCommand(bookId), cancellationToken);
 
-        [HttpPut]
-        public async Task<IActionResult> Update(UserProfileForm profileForm)
-        {
-            var user = await GetCurrentUser();
+        return NoContent();
+    }
 
-            user = Mapper.Map(profileForm, user);
+    [HttpDelete("mark")]
+    public async Task<NoContentResult> RemoveMark([FromBody] int bookId, CancellationToken cancellationToken)
+    {
+        await Mediator.Send(new RemoveMarkCommand(bookId), cancellationToken);
 
-            await Mediator.Send(new UpdateCommand(User.GetUserId(), user));
+        return NoContent();
+    }
 
-            return NoContent();
-        }
+    [HttpGet("tag")]
+    public async Task<IEnumerable<RelatedEntityDto>> GetTags(CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(new GetUserTagsQuery(), cancellationToken);
+    }
 
-        [HttpPost("mark")]
-        public async Task<NoContentResult> CreateMark([FromBody] int bookId)
-        {
-            await Mediator.Send(new CreateMarkCommand(bookId));
+    [HttpPut("tag")]
+    public async Task<NoContentResult> UpdateTags([FromBody][Required] int[] tagIds, CancellationToken cancellationToken)
+    {
+        await Mediator.Send(new UpdateUserTagsCommand(tagIds), cancellationToken);
 
-            return NoContent();
-        }
-
-        [HttpDelete("mark")]
-        public async Task<NoContentResult> RemoveMark([FromBody] int bookId)
-        {
-            await Mediator.Send(new RemoveMarkCommand(bookId));
-
-            return NoContent();
-        }
-
-        [HttpGet("tag")]
-        public async Task<IEnumerable<RelatedEntityDto>> GetTags()
-        {
-            return await Mediator.Send(new GetUserTagsQuery(User.GetUserId()));
-        }
-
-        [HttpPut("tag")]
-        public async Task<NoContentResult> UpdateTags([FromBody][Required] int[] tagIds)
-        {
-            await Mediator.Send(new UpdateUserTagsCommand(User.GetUserId(), tagIds));
-
-            return NoContent();
-        }
+        return NoContent();
     }
 }
+

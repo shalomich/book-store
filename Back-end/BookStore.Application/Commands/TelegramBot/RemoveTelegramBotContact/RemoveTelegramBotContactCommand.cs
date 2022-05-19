@@ -1,4 +1,5 @@
 ﻿using BookStore.Application.Exceptions;
+using BookStore.Application.Notifications.PhoneNumberUpdated;
 using BookStore.Application.Services;
 using BookStore.Persistance;
 using MediatR;
@@ -9,7 +10,8 @@ using System.Threading.Tasks;
 namespace BookStore.Application.Commands.TelegramBot.RemoveTelegramBotContact;
 
 public record RemoveTelegramBotContactCommand() : IRequest;
-internal class RemoveTelegramBotContactCommandHandler : AsyncRequestHandler<RemoveTelegramBotContactCommand>
+internal class RemoveTelegramBotContactCommandHandler : AsyncRequestHandler<RemoveTelegramBotContactCommand>,
+    INotificationHandler<PhoneNumberUpdatedNotification>
 {
     private LoggedUserAccessor LoggedUserAccessor { get;}
     private ApplicationContext Context { get; }
@@ -26,8 +28,18 @@ internal class RemoveTelegramBotContactCommandHandler : AsyncRequestHandler<Remo
     {
         var currentUserId = LoggedUserAccessor.GetCurrentUserId();
 
+        await RemoveTelegramBotContact(currentUserId, cancellationToken);
+    }
+
+    public async Task Handle(PhoneNumberUpdatedNotification notification, CancellationToken cancellationToken)
+    {
+        await RemoveTelegramBotContact(notification.UserId, cancellationToken);
+    }
+
+    private async Task RemoveTelegramBotContact(int userId, CancellationToken cancellationToken)
+    {
         var telegramBotContact = await Context.TelegramBotContacts
-            .SingleOrDefaultAsync(contact => contact.UserId == currentUserId, cancellationToken);
+            .SingleOrDefaultAsync(contact => contact.UserId == userId, cancellationToken);
 
         if (telegramBotContact == null)
         {

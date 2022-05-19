@@ -1,8 +1,8 @@
-﻿namespace BookStore.Application.Dto;
+﻿namespace BookStore.Application.Queries.UserProfile.GetUserProfile;
 
 public record UserProfileDto
 {
-    public int Id { init; get; } 
+    public int Id { init; get; }
     public string FirstName { init; get; }
     public string LastName { init; get; }
     public string Email { init; get; }
