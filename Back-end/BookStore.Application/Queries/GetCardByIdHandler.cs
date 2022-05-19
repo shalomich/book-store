@@ -49,16 +49,15 @@ internal class GetCardByIdHandler : IRequestHandler<GetCardByIdQuery, CardDto>
                         .Select(genreBook => genreBook.Genre.Name)));
         }
     }
-
-    private LoggedUserAccessor LoggedUserAccessor { get; }
     private ApplicationContext Context { get; }
     private IMapper Mapper { get; }
     private ImageFileRepository ImageFileRepository { get; }
 
-    public GetCardByIdHandler(LoggedUserAccessor loggedUserAccessor, ApplicationContext context,
-        IMapper mapper, ImageFileRepository imageFileRepository)
+    public GetCardByIdHandler(
+        ApplicationContext context,
+        IMapper mapper, 
+        ImageFileRepository imageFileRepository)
     {
-        LoggedUserAccessor = loggedUserAccessor;
         Context = context;
         Mapper = mapper;
         ImageFileRepository = imageFileRepository;
@@ -73,16 +72,6 @@ internal class GetCardByIdHandler : IRequestHandler<GetCardByIdQuery, CardDto>
             throw new NotFoundException("Book does not exist by this id.");
 
         card = await SetFileUrls(card, cancellationToken);
-
-        card = await SetBattleStatus(card, cancellationToken);
-
-        if (LoggedUserAccessor.IsAuthenticated())
-        {
-            int currentUserId = LoggedUserAccessor.GetCurrentUserId();
-
-            card = await SetBasketStatus(card, currentUserId, cancellationToken);
-            card = await SetMarkStatus(card, currentUserId, cancellationToken);
-        }
 
         return card;
     }
@@ -108,33 +97,6 @@ internal class GetCardByIdHandler : IRequestHandler<GetCardByIdQuery, CardDto>
         }
 
         return card with { TitleImage = titleImage, NotTitleImages = notTitleImages.ToHashSet() };
-    }
-
-    private async Task<CardDto> SetBasketStatus(CardDto card, int currentUserId, CancellationToken cancellationToken)
-    {
-        bool isInBasket = await Context.BasketProducts
-            .AnyAsync(basketProduct => basketProduct.UserId == currentUserId
-                && basketProduct.ProductId == card.Id, cancellationToken);
-
-        return card with { IsInBasket = isInBasket };
-    }
-
-    private async Task<CardDto> SetMarkStatus(CardDto card, int currentUserId, CancellationToken cancellationToken)
-    {
-        bool isMarked = await Context.Set<Mark>()
-            .AnyAsync(mark => mark.UserId == currentUserId
-                && mark.ProductId == card.Id, cancellationToken);
-
-        return card with { IsMarked = isMarked };
-    }
-
-    private async Task<CardDto> SetBattleStatus(CardDto card, CancellationToken cancellationToken)
-    {
-        bool isInBattle = await Context.Set<BattleBook>()
-            .AnyAsync(battleBook => battleBook.Battle.State != BattleState.Finished
-                && battleBook.BookId == card.Id, cancellationToken);
-
-        return card with { IsInBattle = isInBattle };
     }
 }
 

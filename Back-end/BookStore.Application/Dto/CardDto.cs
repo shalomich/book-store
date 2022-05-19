@@ -15,9 +15,6 @@ namespace BookStore.Application.Dto
         public int Quantity { init; get; }
         public int? DiscountPercentage { init; get; }
         public string Description { init; get; }
-        public bool IsInBattle { init; get; }
-        public bool? IsInBasket { init; get; }
-        public bool? IsMarked { init; get; }
         public IEnumerable<ImageDto> NotTitleImages { init; get; }
         public string Isbn { init; get; }
         public int ReleaseYear { init; get; }

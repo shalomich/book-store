@@ -34,7 +34,6 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpGet]
-        [TypeFilter(typeof(OptionalAuthorizeFilter))]
         public async Task<ActionResult<PreviewSetDto>> Search([FromQuery] SearchParameters searchParameters,
             [FromServices] SearchSelection searchSelection)
         {
@@ -44,7 +43,6 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpGet("{id}")]
-        [TypeFilter(typeof(OptionalAuthorizeFilter))]
         public async Task<ActionResult<CardDto>> GetCardById(int id)
         {
             var bookCard = await Mediator.Send(new GetCardByIdQuery(id));
