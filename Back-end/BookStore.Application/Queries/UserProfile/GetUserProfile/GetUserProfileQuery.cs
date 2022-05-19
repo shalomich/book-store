@@ -30,6 +30,7 @@ internal class GetUserProfileQueryHandler : IRequestHandler<GetUserProfileQuery,
         var currentUserId = LoggedUserAccessor.GetCurrentUserId();
 
         var currentUser = await Context.Users
+            .Include(user => user.BasketProducts)
             .Include(user => user.TelegramBotContact)
             .SingleAsync(user => user.Id == currentUserId);
 

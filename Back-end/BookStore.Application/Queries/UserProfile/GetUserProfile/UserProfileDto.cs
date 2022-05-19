@@ -1,4 +1,7 @@
-﻿namespace BookStore.Application.Queries.UserProfile.GetUserProfile;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace BookStore.Application.Queries.UserProfile.GetUserProfile;
 
 public record UserProfileDto
 {
@@ -10,5 +13,6 @@ public record UserProfileDto
     public string Address { init; get; }
     public int VotingPointCount { init; get; }
     public bool IsTelegramBotLinked { init; get; }
+    public IEnumerable<int> BasketBookIds { init; get; } = Enumerable.Empty<int>();
 }
 
