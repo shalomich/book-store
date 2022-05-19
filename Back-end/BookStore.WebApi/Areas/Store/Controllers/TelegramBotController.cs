@@ -1,7 +1,9 @@
 ﻿using BookStore.Application.Commands.TelegramBot.CreateTelegramBotToken;
+using BookStore.Application.Commands.TelegramBot.RemoveTelegramBotContact;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BookStore.WebApi.Areas.Store.Controllers;
@@ -20,9 +22,15 @@ public class TelegramBotController : ControllerBase
     }
 
     [HttpPost("token")]
-    public async Task<TelegramBotTokenDto> TelegramBotRegistration()
+    public async Task<TelegramBotTokenDto> TelegramBotRegistration(CancellationToken cancellationToken)
     {
-        return await Mediator.Send(new CreateTelegramBotTokenCommand());
+        return await Mediator.Send(new CreateTelegramBotTokenCommand(), cancellationToken);
+    }
+
+    [HttpDelete]
+    public async Task RemoveTelegramBotContact(CancellationToken cancellationToken)
+    {
+        await Mediator.Send(new RemoveTelegramBotContactCommand(),cancellationToken);
     }
 }
 
