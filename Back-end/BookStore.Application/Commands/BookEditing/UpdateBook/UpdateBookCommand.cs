@@ -45,6 +45,7 @@ internal class UpdateBookCommandHandler : AsyncRequestHandler<UpdateBookCommand>
         var (id, bookForm) = request;
 
         var bookById = await Context.Books
+            .Include(book => book.GenresBooks)
             .Include(book => book.Discount)
             .Include(book => book.Album)
                 .ThenInclude(album => album.Images)
