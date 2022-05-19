@@ -109,7 +109,7 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
 
         var secondTitleImage = battleInfo.SecondBattleBook.TitleImage with
         {
-            FileUrl = await ImageFileRepository.GetPresignedUrlForViewing(battleInfo.SecondBattleBook.BookId, cancellationToken)
+            FileUrl = await ImageFileRepository.GetPresignedUrlForViewing(battleInfo.SecondBattleBook.TitleImage.Id, cancellationToken)
         };
 
         return battleInfo with
