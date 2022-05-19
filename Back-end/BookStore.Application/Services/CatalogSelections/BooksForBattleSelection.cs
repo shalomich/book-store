@@ -4,7 +4,7 @@ using BookStore.Persistance;
 using System.Linq;
 
 namespace BookStore.Application.Services.CatalogSelections;
-internal class BooksForBattleSelection : IBookSelection
+public class BooksForBattleSelection : IBookSelection
 {
     private ApplicationContext Context { get; }
     private BattleSettingsProvider BattleSettingsProvider { get; }

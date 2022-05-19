@@ -46,5 +46,12 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         {
             return await Mediator.Send(new GetCatalogSelectionQuery(lastViewedSelection, optionParameters));
         }
+
+        [HttpGet("battle")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<PreviewSetDto> FindBattleBooks([FromQuery] OptionParameters optionParameters, [FromServices] BooksForBattleSelection battleBookSelection)
+        {
+            return await Mediator.Send(new GetCatalogSelectionQuery(battleBookSelection, optionParameters));
+        }
     }
 }
