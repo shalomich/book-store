@@ -1,5 +1,6 @@
 ﻿using BookStore.Domain.Entities.Battles;
 using BookStore.Domain.Entities.Books;
+using BookStore.Domain.Enums;
 using BookStore.Persistance;
 using System.Linq;
 
@@ -25,13 +26,14 @@ public class BooksForBattleSelection : IBookSelection
         return Context.Books
             .Except(previousBooksForBattle)
             .Where(book => book.Cost >= battleSettings.LowerBoundBookCost)
+            .Where(book => book.OrderProducts
+                .Any(orderProduct => orderProduct.Order.State == OrderState.Delivered))
             .Select(book => new
             {
                 Book = book,
                 ViewCount = book.Views.Sum(view => view.Count),
                 OrderCount = book.OrderProducts.Sum(orderProduct => orderProduct.Quantity)
             })
-            .Where(bookInfo => bookInfo.OrderCount != 0)
             .OrderBy(bookInfo => bookInfo.ViewCount / bookInfo.OrderCount)
             .Select(bookInfo => bookInfo.Book);
     }
