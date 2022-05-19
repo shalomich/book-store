@@ -30,7 +30,6 @@ public class BattleController : ControllerBase
 
     [HttpGet]
     [AllowAnonymous]
-    [TypeFilter(typeof(OptionalAuthorizeFilter))]
     public async Task<BattleInfoDto> GetBattleInfo(CancellationToken cancellationToken)
     {
         return await Mediator.Send(new GetBattleInfoQuery(), cancellationToken);

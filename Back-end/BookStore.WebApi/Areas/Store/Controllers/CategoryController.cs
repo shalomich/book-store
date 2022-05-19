@@ -21,7 +21,6 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpGet("{category}")]
-        [TypeFilter(typeof(OptionalAuthorizeFilter))]
         public async Task<PreviewSetDto> FindBooksByCategory(Category category,
             [FromQuery] OptionParameters optionParameters, [FromServices] CategorySelection categorySelection)
         {

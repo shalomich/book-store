@@ -3,12 +3,10 @@ using AutoMapper.QueryableExtensions;
 using BookStore.Application.Commands.BookEditing.Common;
 using BookStore.Application.Exceptions;
 using BookStore.Application.Services;
-using BookStore.Domain.Entities.Battles;
 using BookStore.Domain.Enums;
 using BookStore.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,16 +18,17 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
 {
     private ApplicationContext Context { get; }
     private IMapper Mapper { get; }
-    private LoggedUserAccessor LoggedUserAccessor { get; }
     private BattleSettingsProvider BattleSettingsProvider { get; }
     private ImageFileRepository ImageFileRepository { get; }
 
-    public GetBattleInfoHandler(ApplicationContext context, IMapper mapper, LoggedUserAccessor loggedUserAccessor,
-        BattleSettingsProvider battleSettingsProvider, ImageFileRepository imageFileRepository)
+    public GetBattleInfoHandler(
+        ApplicationContext context, 
+        IMapper mapper, 
+        BattleSettingsProvider battleSettingsProvider, 
+        ImageFileRepository imageFileRepository)
     {
         Context = context;
         Mapper = mapper;
-        LoggedUserAccessor = loggedUserAccessor;
         BattleSettingsProvider = battleSettingsProvider;
         ImageFileRepository = imageFileRepository;
     }
@@ -41,13 +40,6 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
         battleInfo = CalucalateDiscountPercentage(battleInfo);
 
         battleInfo = await SetFileUrls(battleInfo, cancellationToken);
-
-        if (LoggedUserAccessor.IsAuthenticated())
-        {
-            var currentUserId = LoggedUserAccessor.GetCurrentUserId();
-
-            battleInfo = await SetCurrentUserBattleInfo(battleInfo, currentUserId, cancellationToken);
-        }
 
         var battleSettings = BattleSettingsProvider.GetBattleSettings();
 
@@ -117,27 +109,6 @@ internal class GetBattleInfoHandler : IRequestHandler<GetBattleInfoQuery, Battle
             FirstBattleBook = battleInfo.FirstBattleBook with { TitleImage = firstTitleImage },
             SecondBattleBook = battleInfo.SecondBattleBook with { TitleImage = secondTitleImage }
         };
-    }
-
-    private async Task<BattleInfoDto> SetCurrentUserBattleInfo(BattleInfoDto battleInfo, int currentUserId,
-        CancellationToken cancellationToken)
-    {
-        var currentUserVote = await Context
-            .Set<BattleBook>()
-            .Where(battleBook => battleBook.BattleId == battleInfo.Id)
-            .SelectMany(battle => battle.Votes)
-            .SingleOrDefaultAsync(vote => vote.UserId == currentUserId, cancellationToken);
-
-        if (currentUserVote != null)
-        {
-            return battleInfo with
-            {
-                VotedBattleBookId = currentUserVote.BattleBookId,
-                SpentVotingPointCount = currentUserVote.VotingPointCount
-            };
-        }
-
-        return battleInfo;
     }
 }
 

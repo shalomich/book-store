@@ -12,8 +12,6 @@ public record PreviewDto
     public int Cost { init; get; }
     public int? DiscountPercentage { init; get; }
     public ImageDto TitleImage { init; get; }
-    public bool IsInBattle { init; get; }
-    public bool? IsInBasket { init; get; }
     public string AuthorName { init; get; }
     public string PublisherName { init; get; }
 }
