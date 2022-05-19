@@ -17,7 +17,15 @@ internal class UserCabinetProfile : Profile
                     .Select(basketProduct => basketProduct.ProductId)))
             .ForMember(dto => dto.MarkBookIds, mapper => mapper.MapFrom
                 (user => user.Marks
-                    .Select(mark => mark.ProductId)));
+                    .Select(mark => mark.ProductId)))
+            .ForMember(dto => dto.CurrentVotedBattleBookId, mapper => mapper.MapFrom
+                (user => user.Votes
+                    .FirstOrDefault()
+                    .BattleBookId))
+            .ForMember(dto => dto.SpentCurrentVotingPointCount, mapper => mapper.MapFrom
+                (user => user.Votes
+                    .FirstOrDefault()
+                    .VotingPointCount));
 
         CreateMap<UserProfileForm, User>();
     }

@@ -13,6 +13,8 @@ public record UserProfileDto
     public string Address { init; get; }
     public int VotingPointCount { init; get; }
     public bool IsTelegramBotLinked { init; get; }
+    public int? CurrentVotedBattleBookId { get; init; }
+    public int? SpentCurrentVotingPointCount { get; init; }
     public IEnumerable<int> BasketBookIds { init; get; } = Enumerable.Empty<int>();
     public IEnumerable<int> MarkBookIds { init; get; } = Enumerable.Empty<int>();
 }
