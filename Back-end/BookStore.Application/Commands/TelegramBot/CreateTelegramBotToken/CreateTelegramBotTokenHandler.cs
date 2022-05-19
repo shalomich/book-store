@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookStore.Application.Commands.TelegramBot;
+namespace BookStore.Application.Commands.TelegramBot.CreateTelegramBotToken;
 
 public record CreateTelegramBotTokenCommand() : IRequest<TelegramBotTokenDto>;
 internal class CreateTelegramBotTokenHandler : IRequestHandler<CreateTelegramBotTokenCommand, TelegramBotTokenDto>
@@ -17,7 +17,7 @@ internal class CreateTelegramBotTokenHandler : IRequestHandler<CreateTelegramBot
     public ApplicationContext Context { get; }
 
     public CreateTelegramBotTokenHandler(
-        LoggedUserAccessor loggedUserAccessor, 
+        LoggedUserAccessor loggedUserAccessor,
         TelegramBotJwtParser jwtParser,
         ApplicationContext context)
     {
