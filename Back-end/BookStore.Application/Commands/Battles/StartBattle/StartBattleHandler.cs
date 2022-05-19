@@ -84,7 +84,7 @@ internal class StartBattleHandler : IRequestHandler<StartBattleCommand, StartBat
 
         if (currentBattleBooks == null)
         {
-            throw new InvalidOperationException("Can't pick up books for battle.");
+            throw new InvalidOperationException("There is no valid book pair for battle.");
         }
 
         return new Book[]
@@ -103,6 +103,33 @@ internal class StartBattleHandler : IRequestHandler<StartBattleCommand, StartBat
         if (hasNotFinishedBattles)
         {
             throw new BadRequestException("There is battle which not finished yet.");
+        }
+
+        var battleSettings = BattleSettingsProvider.GetBattleSettings();
+
+        var previousBooksForBattle = Context.Set<BattleBook>()
+            .Select(battleBook => battleBook.Book);
+
+        var notBattleBooks = Context.Books
+            .Except(previousBooksForBattle);
+
+        bool hasBooksWithCostMoreLowerBound = await notBattleBooks
+            .Where(book => book.Cost >= battleSettings.LowerBoundBookCost)
+            .AnyAsync(cancellationToken);
+
+        if (!hasBooksWithCostMoreLowerBound)
+        {
+            throw new InvalidOperationException("There are not book that have cost more that lower bound.");
+        }
+
+        bool hasBookWithOrderDelivered = await notBattleBooks
+            .Where(book => book.OrderProducts
+                .Any(orderProduct => orderProduct.Order.State == OrderState.Delivered))
+            .AnyAsync(cancellationToken);
+
+        if (!hasBookWithOrderDelivered)
+        {
+            throw new InvalidOperationException("There are not book that order delivered.");
         }
     }
 }
