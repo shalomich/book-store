@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using System.IO;
 
 namespace BookStore.Application.Services;
-internal class BattleSettingsProvider
+public class BattleSettingsProvider
 {
     private readonly string _battleSettingsFilePath;
     public BattleSettingsProvider(IConfiguration configuration)
