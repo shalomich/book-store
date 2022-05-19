@@ -7,8 +7,6 @@ import { map, switchMap, tap } from 'rxjs/operators';
 
 import { of, Subscription } from 'rxjs';
 
-import { AuthorizationDataProvider } from '../../core/services/authorization-data.provider';
-
 import { AuthorizationService } from '../../core/services/authorization.service';
 
 import { ProfileProviderService } from '../../core/services/profile-provider.service';
@@ -62,7 +60,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     )
       .subscribe(params => {
         if (params.openTelegramBotDialog) {
-          this.openTelegramDialog(this.user.phoneNumber);
+          this.openTelegramDialog();
         }
     }));
   }
@@ -81,10 +79,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authorizationService.logout();
   }
 
-  public openTelegramDialog(userPhoneNumber: string): void {
+  public openTelegramDialog(): void {
     if (this.isAuthorized) {
       this.dialog.open(TelegramAuthDialogComponent, {
-        data: { phoneNumber: userPhoneNumber },
+        data: { user: this.user },
         autoFocus: false,
         panelClass: 'telegram-dialog',
       });

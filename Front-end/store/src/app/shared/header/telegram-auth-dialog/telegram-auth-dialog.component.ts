@@ -6,9 +6,10 @@ import { Subscription } from 'rxjs';
 
 import { TelegramAuthService } from '../../../core/services/telegram-auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {UserProfile} from '../../../core/models/user-profile';
 
 interface DialogData {
-  phoneNumber: string;
+  user: UserProfile;
 }
 
 @Component({
@@ -32,7 +33,7 @@ export class TelegramAuthDialogComponent implements OnInit, OnDestroy {
   ) { }
 
   public ngOnInit(): void {
-    this.phoneNumberControl.setValue(this.data.phoneNumber);
+    this.phoneNumberControl.setValue(this.data.user.phoneNumber);
   }
 
   public ngOnDestroy() {
@@ -47,7 +48,7 @@ export class TelegramAuthDialogComponent implements OnInit, OnDestroy {
   }
 
   public onTelegramClick(): void {
-    this.subs.add(this.telegramAuthService.getTelegramToken(this.phoneNumberControl.value).subscribe(data => {
+    this.subs.add(this.telegramAuthService.getTelegramToken(this.phoneNumberControl.value, this.data.user).subscribe(data => {
       this.telegramAuthService.redirectToTelegram(data.botToken);
     }));
   }

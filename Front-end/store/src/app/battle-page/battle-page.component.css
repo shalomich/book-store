@@ -33,6 +33,11 @@
   margin-top: 3vh;
 }
 
+.battle-book-image-block {
+  display: flex;
+  justify-content: center;
+}
+
 .first-book img, .second-book img {
   width: 300px;
   height: 450px;
@@ -62,7 +67,7 @@
   white-space: normal;
   overflow: hidden;
   -webkit-line-clamp: 2;
-  height: 4vh;
+  height: 3.8vh;
   text-decoration: none;
 }
 

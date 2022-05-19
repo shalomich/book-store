@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+
+import { Route, Router } from '@angular/router';
 
 import { PROFILE_URL, TELEGRAM_AUTH_URL } from '../utils/values';
-import {AuthorizationService} from './authorization.service';
-import {Route, Router} from '@angular/router';
+
+import { UserProfile } from '../models/user-profile';
+
+import { AuthorizationService } from './authorization.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,16 +19,22 @@ export class TelegramAuthService {
 
   constructor(private readonly http: HttpClient, private readonly authorizationService: AuthorizationService) { }
 
-  public getTelegramToken(phoneNumber: string): Observable<any> {
+  public getTelegramToken(phoneNumber: string, user: UserProfile): Observable<{ botToken: string; }> {
     const headers = {
       Authorization: `Bearer ${this.authorizationService.accessToken}`,
     };
 
-    const body = {
-      phoneNumber,
-    };
+    return of(null).pipe(
+      switchMap(_ => {
+        if (phoneNumber !== user.phoneNumber) {
+          user.phoneNumber = phoneNumber;
+          return this.http.put<void>(PROFILE_URL, user, { headers });
+        }
 
-    return this.http.post<any>(TELEGRAM_AUTH_URL, {}, { headers });
+        return of(null);
+      }),
+      switchMap(_ => this.http.post<{ botToken: string; }>(TELEGRAM_AUTH_URL, {}, { headers })),
+    );
   }
 
   public redirectToTelegram(token: string): void {
