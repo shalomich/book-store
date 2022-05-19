@@ -78,7 +78,7 @@ internal class StartBattleHandler : IRequestHandler<StartBattleCommand, StartBat
                     Second = secondBook,
                     CostDifference = firstBook.Cost - secondBook.Cost
                 }))
-            .Where(books => (books.CostDifference > 0 && books.CostDifference <= battleSettings.MaxBookCostDifference)
+            .Where(books => (books.CostDifference >= 0 && books.CostDifference <= battleSettings.MaxBookCostDifference)
                 || (books.CostDifference < 0 && books.CostDifference >= -battleSettings.MaxBookCostDifference))
             .FirstOrDefaultAsync(cancellationToken);
 
