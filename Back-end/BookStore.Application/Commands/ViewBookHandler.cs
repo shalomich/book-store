@@ -28,11 +28,6 @@ internal class ViewBookHandler : AsyncRequestHandler<ViewBookCommand>
 
     protected async override Task Handle(ViewBookCommand request, CancellationToken cancellationToken)
     {
-        if (!LoggedUserAccessor.IsAuthenticated())
-        {
-            return;
-        }
-
         int currentUserId = LoggedUserAccessor.GetCurrentUserId();
 
         var view = await Context.Views
