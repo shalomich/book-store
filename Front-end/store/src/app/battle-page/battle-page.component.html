@@ -82,7 +82,7 @@
       <div class="battle-book-image-block">
         <img [alt]="battle.secondBattleBook.name" src="{{battle.secondBattleBook.titleImage.fileUrl}}">
       </div>
-      <app-battle-voting-block [votingBookId]="battle.firstBattleBook.battleBookId"
+      <app-battle-voting-block [votingBookId]="battle.secondBattleBook.battleBookId"
                                [canUserVote]="canUserVote(battle.secondBattleBook.battleBookId, battle)"
                                [userMaxPoints]="(userProfile$ | async)?.votingPointCount || 0"
                                [battleVotedBookId]="battle.votedBattleBookId"

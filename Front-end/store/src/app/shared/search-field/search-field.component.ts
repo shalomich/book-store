@@ -28,7 +28,6 @@ export class SearchFieldComponent implements OnInit {
   private readonly searchOptions: SearchOptions = {
     propertyName: 'name',
     value: '',
-    searchDepth: SEARCH_DEPTH,
   };
 
   public readonly searchTargetGroup = SEARCH_TARGET_GROUP;
@@ -65,13 +64,13 @@ export class SearchFieldComponent implements OnInit {
     return this.searchService.getHints(this.searchOptions, this.paginationOptions);
   }
 
-  public buildSearchUrl(target: string, searchValue: string): string {
+  public buildSearchUrl(target: string, searchValue: string, isHardSearch: boolean = false): string {
     if (!target || !searchValue) {
       return this.searchUrlTemplate;
     }
 
     return this.router
-      .createUrlTree([this.searchUrlTemplate], { queryParams: { target, searchValue } })
+      .createUrlTree([this.searchUrlTemplate], { queryParams: { target, searchValue: isHardSearch ? `(${searchValue})` : searchValue } })
       .toString();
   }
 
