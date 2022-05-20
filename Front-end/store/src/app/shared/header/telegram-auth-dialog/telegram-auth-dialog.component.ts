@@ -10,6 +10,7 @@ import {UserProfile} from '../../../core/models/user-profile';
 
 interface DialogData {
   user: UserProfile;
+  onTelegramUnlink: () => {};
 }
 
 @Component({
@@ -44,17 +45,28 @@ export class TelegramAuthDialogComponent implements OnInit, OnDestroy {
         relativeTo: this.activatedRoute,
         queryParams: {},
       });
+    sessionStorage.removeItem('openTelegramBotDialog');
+  }
 
+  public onAuthTelegramClick(): void {
+    this.subs.add(this.telegramAuthService.getTelegramToken(this.phoneNumberControl.value, this.data.user).subscribe(data => {
+      this.telegramAuthService.redirectToTelegramWithAuth(data.botToken);
+    }));
   }
 
   public onTelegramClick(): void {
-    this.subs.add(this.telegramAuthService.getTelegramToken(this.phoneNumberControl.value, this.data.user).subscribe(data => {
-      this.telegramAuthService.redirectToTelegram(data.botToken);
+    this.telegramAuthService.redirectToTelegram();
+  }
+
+  public onTelegramUnlink(): void {
+    this.subs.add(this.telegramAuthService.unlinkTelegramBot().subscribe(_ => {
+      this.onClose();
+      this.data.onTelegramUnlink();
     }));
   }
 
   public onClose(): void {
+    sessionStorage.removeItem('openTelegramBotDialog');
     this.dialogRef.close();
   }
-
 }

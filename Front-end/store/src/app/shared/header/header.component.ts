@@ -18,6 +18,7 @@ import { UserProfile } from '../../core/models/user-profile';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 
 import { TelegramAuthDialogComponent } from './telegram-auth-dialog/telegram-auth-dialog.component';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -59,7 +60,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }),
     )
       .subscribe(params => {
-        if (params.openTelegramBotDialog) {
+        if (params.openTelegramBotDialog || sessionStorage.getItem('openTelegramBotDialog')) {
           this.openTelegramDialog();
         }
     }));
@@ -80,11 +81,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   public openTelegramDialog(): void {
+    sessionStorage.setItem('openTelegramBotDialog', '1');
     if (this.isAuthorized) {
       this.dialog.open(TelegramAuthDialogComponent, {
-        data: { user: this.user },
+        data: { user: this.user, onTelegramUnlink: () => window.location.reload() },
         autoFocus: false,
         panelClass: 'telegram-dialog',
+        restoreFocus: false,
       });
     } else {
       this.openLoginDialog();

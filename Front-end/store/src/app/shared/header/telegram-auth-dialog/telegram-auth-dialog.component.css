@@ -49,7 +49,7 @@
   color: #2199e8 !important;
 }
 
-.telegram-button {
+.telegram-button, .telegram-unlink-button {
   display: flex;
   justify-content: center;
 }
@@ -62,6 +62,16 @@
 
 .telegram-button button:disabled {
   color: gray !important;
+}
+
+.telegram-unlink-button {
+  margin-top: 2vh;
+}
+
+.telegram-unlink-button button {
+  color: #f44336 !important;
+  font-size: 1.4em;
+  padding: 1vh 1vw;
 }
 
 

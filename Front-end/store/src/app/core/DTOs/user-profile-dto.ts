@@ -12,4 +12,6 @@ export interface UserProfileDto {
   address: string;
 
   votingPointCount: number;
+
+  isTelegramBotLinked: boolean;
 }

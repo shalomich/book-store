@@ -86,6 +86,7 @@ export class BattlePageComponent implements OnInit, OnDestroy {
     this.dialog.open(BattleInfoDialogComponent, {
       panelClass: 'battle-info-dialog',
       autoFocus: false,
+      restoreFocus: false,
     });
   }
 

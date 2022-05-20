@@ -6,7 +6,7 @@ import { map, switchMap } from 'rxjs/operators';
 
 import { Route, Router } from '@angular/router';
 
-import { PROFILE_URL, TELEGRAM_AUTH_URL } from '../utils/values';
+import { PROFILE_URL, TELEGRAM_URL } from '../utils/values';
 
 import { UserProfile } from '../models/user-profile';
 
@@ -33,11 +33,23 @@ export class TelegramAuthService {
 
         return of(null);
       }),
-      switchMap(_ => this.http.post<{ botToken: string; }>(TELEGRAM_AUTH_URL, {}, { headers })),
+      switchMap(_ => this.http.post<{ botToken: string; }>(`${TELEGRAM_URL}/token`, {}, { headers })),
     );
   }
 
-  public redirectToTelegram(token: string): void {
+  public redirectToTelegram(): void {
+    window.open(`https://t.me/Comic_Store_Bot`, '_blank');
+  }
+
+  public redirectToTelegramWithAuth(token: string): void {
     window.open(`https://t.me/Comic_Store_Bot?start=${token}`, '_self');
+  }
+
+  public unlinkTelegramBot(): Observable<void> {
+    const headers = {
+      Authorization: `Bearer ${this.authorizationService.accessToken}`,
+    };
+
+    return this.http.delete<void>(TELEGRAM_URL, { headers });
   }
 }
