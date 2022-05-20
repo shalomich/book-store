@@ -5,7 +5,7 @@ import { FormControl } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
-import {map, startWith, switchMap} from 'rxjs/operators';
+import {map, share, startWith, switchMap} from 'rxjs/operators';
 
 import { SearchService } from '../../core/services/search.service';
 import { HINT_SIZE, SEARCH_DEPTH, SEARCH_TARGET_GROUP } from '../../core/utils/values';
@@ -52,6 +52,7 @@ export class SearchFieldComponent implements OnInit {
     this.searchHints$ = this.input.valueChanges.pipe(
       startWith(''),
       switchMap(value => value ? this.uploadHints(value) : new Observable<SearchHintsDto>()),
+      share(),
     );
   }
 
@@ -64,7 +65,7 @@ export class SearchFieldComponent implements OnInit {
     return this.searchService.getHints(this.searchOptions, this.paginationOptions);
   }
 
-  public buildSearchUrl(target: string, searchValue: string, isHardSearch: boolean = false): string {
+  public buildSearchUrl(target: string, searchValue: string, isHardSearch = false): string {
     if (!target || !searchValue) {
       return this.searchUrlTemplate;
     }

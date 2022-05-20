@@ -41,7 +41,7 @@ export class SelectionComponent implements OnInit {
     }
 
     this.bookSet$ = this.selectionService.get(this.selectionName!, {
-      pagingOptions: paginationOptions
+      pagingOptions: paginationOptions,
     });
   }
 
