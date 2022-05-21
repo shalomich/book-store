@@ -55,7 +55,7 @@
   font-family: 'Skranji', sans-serif;
 }
 
-.book-name a {
+.battle-block .book-name a {
   display: -webkit-box;
   font-size: 1.6em;
   text-align: center;
@@ -67,11 +67,11 @@
   white-space: normal;
   overflow: hidden;
   -webkit-line-clamp: 2;
-  height: 3.8vh;
+  height: 41px;
   text-decoration: none;
 }
 
-.book-name a:hover {
+.battle-block .book-name a:hover {
   text-decoration: underline;
   cursor: pointer;
 }
