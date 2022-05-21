@@ -1,4 +1,4 @@
-<div *ngIf="(book$ | async) as book" class="book-card">
+<div *ngIf="book.id" class="book-card">
   <div class="book-name">
     {{book.name}}
   </div>

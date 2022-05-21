@@ -23,7 +23,7 @@ import { SearchOptions } from '../interfaces/search-options';
 
 import { ProductParamsBuilder } from './product-params.builder';
 import { AuthorizationDataProvider } from './authorization-data.provider';
-import {AuthorizationService} from './authorization.service';
+import { AuthorizationService } from './authorization.service';
 
 @Injectable({
   providedIn: 'root',
@@ -53,6 +53,14 @@ export class BookService {
     return book$.pipe(
       map(book => this.bookMapper.fromDto(book)),
     );
+  }
+
+  public addBookView(id: number): Observable<void> {
+    const headers = {
+      Authorization: `Bearer ${this.authorizationService.accessToken}`,
+    };
+
+    return this.http.post<void>(`${PRODUCT_URL}${this.type}/${id}/view`, {}, { headers });
   }
 
   public get(optionGroup: OptionGroup, searchOptions?: SearchOptions): Observable<ProductPreviewSet> {

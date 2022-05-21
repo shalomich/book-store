@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 
 import { ActivatedRoute } from '@angular/router';
+
+import { map, switchAll, switchMap } from 'rxjs/operators';
 
 import { Book } from '../../core/models/book';
 import { BookService } from '../../core/services/book.service';
@@ -15,7 +17,7 @@ import { ProfileProviderService } from '../../core/services/profile-provider.ser
 })
 export class BookCardComponent implements OnInit, OnDestroy {
 
-  public readonly book$: Observable<Book>;
+  public book: Book = {} as Book;
 
   public readonly currentBookId: number;
 
@@ -29,14 +31,25 @@ export class BookCardComponent implements OnInit, OnDestroy {
     private readonly profileProviderService: ProfileProviderService,
   ) {
     this.currentBookId = Number(activatedRoute.snapshot.params.id);
-
-    this.book$ = this.bookService.getById(this.currentBookId);
   }
 
   ngOnInit(): void {
     this.subs.add(this.profileProviderService.userProfile.subscribe(profile => {
       this.userProfile = profile;
     }));
+
+    this.subs.add(this.bookService.getById(this.currentBookId).pipe(
+      map(book => {
+        this.book = book;
+        if (this.userProfile.isAuthorized()) {
+          return this.bookService.addBookView(this.currentBookId);
+        }
+
+        return of(null);
+      }),
+      switchAll(),
+    )
+      .subscribe());
   }
 
   ngOnDestroy() {
