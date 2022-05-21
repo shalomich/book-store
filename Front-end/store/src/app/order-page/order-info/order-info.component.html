@@ -1,4 +1,4 @@
-<div class="{{placedOrder ? 'placed-order-info-block' : 'order-info-block'}}order-info-block">
+<div class="{{placedOrder ? 'placed-order-info-block' : 'order-info-block'}}">
   <h1 *ngIf="!placedOrder" class="order-info-title">Информация о заказе</h1>
   <div class="{{placedOrder ? 'centered-table-container' : 'table-container'}} mat-elevation-z1">
     <table mat-table [dataSource]="orderProducts" class="mat-elevation-z1">

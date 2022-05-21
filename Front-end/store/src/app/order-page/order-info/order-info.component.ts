@@ -20,5 +20,6 @@ export class OrderInfoComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log(this.placedOrder)
   }
 }

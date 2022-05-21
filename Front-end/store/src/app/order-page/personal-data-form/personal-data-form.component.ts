@@ -1,10 +1,11 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
 
 import { UserProfile } from '../../core/models/user-profile';
 import { SortingOptions } from '../../core/interfaces/sorting-options';
+import { AuthValidator } from '../../core/validators/auth-validator';
 
 @Component({
   selector: 'app-personal-data-form',
@@ -18,10 +19,10 @@ export class PersonalDataFormComponent implements OnInit, OnChanges {
   public userData: UserProfile = new UserProfile();
 
   public personalDataForm = new FormGroup({
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
-    phoneNumber: new FormControl(''),
-    email: new FormControl(''),
+    firstName: new FormControl('', { validators: Validators.required }),
+    lastName: new FormControl('', { validators: Validators.required }),
+    phoneNumber: new FormControl('', { validators: [Validators.required, AuthValidator.phoneNumberFormat()] }),
+    email: new FormControl('', { validators: Validators.required }),
   });
 
   constructor() { }

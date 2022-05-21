@@ -3,6 +3,10 @@
   margin: 0 5em;
 }
 
+.personal-data-block .fields {
+  display: flex;
+}
+
 .personal-data-form {
   margin: 0 5em;
 }
