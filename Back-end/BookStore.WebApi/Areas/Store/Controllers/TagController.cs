@@ -1,9 +1,11 @@
 ﻿using BookStore.Application.Commands.Tags.AddTagByUser;
 using BookStore.Application.Commands.Tags.Common;
 using BookStore.Application.Commands.Tags.RemoveTagByUser;
+using BookStore.Application.Queries.Tags.GetTagGroups;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,6 +21,12 @@ public class TagController : ControllerBase
     public TagController(IMediator mediator)
     {
         Mediator = mediator;
+    }
+
+    [HttpGet("group")]
+    public async Task<IEnumerable<TagGroupDto>> GetTagGroups(CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(new GetTagGroupsQuery(), cancellationToken);
     }
 
     [HttpPost]
