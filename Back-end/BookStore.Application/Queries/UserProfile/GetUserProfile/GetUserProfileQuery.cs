@@ -36,6 +36,7 @@ internal class GetUserProfileQueryHandler : IRequestHandler<GetUserProfileQuery,
             .Include(user => user.Marks)
             .Include(user => user.BasketProducts)
             .Include(user => user.TelegramBotContact)
+            .Include(user => user.Tags)
             .SingleAsync(user => user.Id == currentUserId);
 
         return Mapper.Map<UserProfileDto>(currentUser);

@@ -17,5 +17,6 @@ public record UserProfileDto
     public int? SpentCurrentVotingPointCount { get; init; }
     public IEnumerable<int> BasketBookIds { init; get; } = Enumerable.Empty<int>();
     public IEnumerable<int> MarkBookIds { init; get; } = Enumerable.Empty<int>();
+    public IEnumerable<int> TagIds { init; get; } = Enumerable.Empty<int>();
 }
 
