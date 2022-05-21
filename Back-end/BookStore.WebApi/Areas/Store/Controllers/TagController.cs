@@ -1,6 +1,4 @@
-﻿using BookStore.Application.Commands.Tags.AddTagByUser;
-using BookStore.Application.Commands.Tags.Common;
-using BookStore.Application.Commands.Tags.RemoveTagByUser;
+﻿using BookStore.Application.Commands.Tags.UpdateUserTags;
 using BookStore.Application.Queries.Tags.GetTagGroups;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -29,18 +27,11 @@ public class TagController : ControllerBase
         return await Mediator.Send(new GetTagGroupsQuery(), cancellationToken);
     }
 
-    [HttpPost]
+    [HttpPut]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public async Task AddTagByUser(UserTagDto tagDto, CancellationToken cancellationToken)
+    public async Task UpdateUserTags(UserTagsDto userTagsDto, CancellationToken cancellationToken)
     {
-        await Mediator.Send(new AddTagByUserCommand(tagDto), cancellationToken);
-    }
-
-    [HttpDelete]
-    [Authorize(AuthenticationSchemes = "Bearer")]
-    public async Task RemoveTagByUser(UserTagDto tagDto, CancellationToken cancellationToken)
-    {
-        await Mediator.Send(new RemoveTagByUserCommand(tagDto), cancellationToken);
+        await Mediator.Send(new UpdateUserTagsCommand(userTagsDto), cancellationToken);
     }
 }
 
