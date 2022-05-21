@@ -5,12 +5,20 @@
   <div class="telegram-dialog-title">
     Привязка аккаунта к Telegram
   </div>
-  <div class="telegram-dialog-field">
-    <mat-form-field appearance="outline">
-      <mat-label>Номер телефона</mat-label>
-      <input placeholder="8/+7 9XX XXX XX XX" [formControl]="phoneNumberControl" matInput/>
-      <mat-hint>Номер Telegram и аккаунта на сайте должны совпадать. При изменении номер обновится и в профиле. </mat-hint>
-    </mat-form-field>
+  <div class="requirement-text">Чтобы продолжить укажите номер телефона</div>
+  <div class="telegram-dialog-field-block">
+    <div class="telegram-dialog-field">
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Номер телефона</mat-label>
+          <input required placeholder="8/+7 9XX XXX XX XX" [formControl]="phoneNumberControl" matInput/>
+          <mat-hint *ngIf="!phoneNumberControl.hasError('error')">Номер Telegram и аккаунта на сайте должны совпадать. При изменении номер обновится и в профиле. </mat-hint>
+        </mat-form-field>
+      </div>
+      <mat-error *ngIf="phoneNumberControl.hasError('error')">
+        {{phoneNumberControl.errors?.error}}
+      </mat-error>
+    </div>
   </div>
   <div class="telegram-button">
     <button (click)="onAuthTelegramClick()" [disabled]="!phoneNumberControl.valid" type="submit" mat-stroked-button color="primary">Перейти в Telegram</button>

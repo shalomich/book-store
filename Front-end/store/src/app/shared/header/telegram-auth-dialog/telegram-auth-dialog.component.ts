@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { TelegramAuthService } from '../../../core/services/telegram-auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserProfile} from '../../../core/models/user-profile';
+import {AuthValidator} from '../../../core/validators/auth-validator';
 
 interface DialogData {
   user: UserProfile;
@@ -21,7 +22,7 @@ interface DialogData {
 })
 export class TelegramAuthDialogComponent implements OnInit, OnDestroy {
 
-  public phoneNumberControl: FormControl = new FormControl('', Validators.required);
+  public phoneNumberControl: FormControl = new FormControl('', { validators: [Validators.required, AuthValidator.phoneNumberFormat()], updateOn: 'blur' });
 
   private subs: Subscription = new Subscription();
 

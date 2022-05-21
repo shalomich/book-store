@@ -50,7 +50,7 @@ export class AuthValidator {
     return (control: AbstractControl): ValidationErrors | null => {
       const isFormatValid = String(control.value)
         .match(
-          /(^8|7|\+7)((\d{10})|(\s\(\d{3}\)\s\d{3}\s\d{2}\s\d{2}))/,
+          /(^8|7|\+7)((\d{10})|(\s\(\d{3}\)\s\d{3}\s\d{2}\s\d{2}))$/,
         );
 
       if (!isFormatValid && control.value) {
