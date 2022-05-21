@@ -40,4 +40,12 @@ export class UserProfile {
   public isAuthorized(): boolean {
     return !!this.id && !!this.email && !!this.firstName;
   }
+
+  public isEqual(profile: UserProfile): boolean {
+    return this.firstName === profile.firstName &&
+      this.lastName === profile.lastName &&
+      this.email === profile.email &&
+      this.phoneNumber === profile.phoneNumber &&
+      this.address === profile.address;
+  }
 }

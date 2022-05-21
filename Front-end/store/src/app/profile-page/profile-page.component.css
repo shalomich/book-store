@@ -65,3 +65,11 @@
   color: white;
 }
 
+.field-with-error {
+  display: block;
+}
+
+.field-with-error .mat-error {
+  font-size: 0.8em;
+}
+

@@ -13,7 +13,14 @@
       <div class="label">
         <label>Имя: </label>
       </div>
-      <input formControlName="firstName">
+      <div class="field-with-error">
+        <div>
+          <input required formControlName="firstName">
+        </div>
+        <mat-error *ngIf="profileForm.controls.firstName.hasError('required')">
+          Это поле необходимо заполнить
+        </mat-error>
+      </div>
     </div>
     <div class="profile-form-field">
       <div class="label">
@@ -25,7 +32,14 @@
       <div class="label">
         <label>Номер телефона: </label>
       </div>
-      <input formControlName="phoneNumber">
+      <div class="field-with-error">
+        <div>
+          <input formControlName="phoneNumber">
+        </div>
+        <mat-error *ngIf="profileForm.controls.phoneNumber.hasError('error')">
+          {{profileForm.controls.phoneNumber.errors?.error}}
+        </mat-error>
+      </div>
     </div>
     <div class="profile-form-field">
       <div class="label">
@@ -34,7 +48,7 @@
       <input formControlName="address">
     </div>
     <div class="save-changes-button-block">
-      <button mat-stroked-button type="submit">Сохранить изменения</button>
+      <button [disabled]="!allowSubmit" mat-stroked-button type="submit">Сохранить изменения</button>
     </div>
   </form>
 </div>
