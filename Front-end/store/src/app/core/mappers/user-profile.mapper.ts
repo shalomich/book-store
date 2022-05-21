@@ -28,6 +28,9 @@ export class UserProfileMapper extends Mapper<UserProfileDto, UserProfile> {
       address: data.address,
       votingPointCount: data.votingPointCount,
       isTelegramBotLinked: data.isTelegramBotLinked,
+      basketBookIds: data.basketBookIds,
+      spentCurrentVotingPointCount: data.spentCurrentVotingPointCount,
+      currentVotedBattleBookId: data.currentVotedBattleBookId,
     };
   }
 
@@ -42,6 +45,9 @@ export class UserProfileMapper extends Mapper<UserProfileDto, UserProfile> {
       address: dto.address,
       votingPointCount: dto.votingPointCount,
       isTelegramBotLinked: dto.isTelegramBotLinked,
+      basketBookIds: dto.basketBookIds,
+      spentCurrentVotingPointCount: dto.spentCurrentVotingPointCount,
+      currentVotedBattleBookId: dto.currentVotedBattleBookId,
     } as UserProfile);
   }
 }

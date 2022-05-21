@@ -14,4 +14,10 @@ export interface UserProfileDto {
   votingPointCount: number;
 
   isTelegramBotLinked: boolean;
+
+  basketBookIds: number[];
+
+  spentCurrentVotingPointCount: number;
+
+  currentVotedBattleBookId: number;
 }

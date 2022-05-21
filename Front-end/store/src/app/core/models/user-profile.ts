@@ -15,6 +15,12 @@ export class UserProfile {
 
   public isTelegramBotLinked: boolean;
 
+  public basketBookIds: number[];
+
+  public spentCurrentVotingPointCount: number;
+
+  public currentVotedBattleBookId: number;
+
   constructor(profile?: UserProfile) {
     if (profile !== undefined) {
       this.id = profile.id;
@@ -25,6 +31,9 @@ export class UserProfile {
       this.address = profile.address;
       this.votingPointCount = profile.votingPointCount;
       this.isTelegramBotLinked = profile.isTelegramBotLinked;
+      this.basketBookIds = profile.basketBookIds;
+      this.spentCurrentVotingPointCount = profile.spentCurrentVotingPointCount;
+      this.currentVotedBattleBookId = profile.currentVotedBattleBookId;
     } else {
       this.id = 0;
       this.email = '';
@@ -34,6 +43,9 @@ export class UserProfile {
       this.phoneNumber = '';
       this.votingPointCount = 0;
       this.isTelegramBotLinked = false;
+      this.basketBookIds = [];
+      this.spentCurrentVotingPointCount = 0;
+      this.currentVotedBattleBookId = 0;
     }
   }
 

@@ -6,7 +6,8 @@
       </a>
     </h3>
     <app-book-preview *ngFor="let book of (bookSet$ | async)?.previews"
-                           [item]="book">
+                      [item]="book"
+                      [userBasketBookIds]="userProfile.basketBookIds">
     </app-book-preview>
   </div>
 </ng-container>

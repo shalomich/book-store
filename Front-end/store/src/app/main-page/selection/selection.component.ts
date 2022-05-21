@@ -9,6 +9,7 @@ import { SELECTION_SIZE } from '../../core/utils/values';
 import { Selection } from '../../core/enums/selection';
 import {ProductPreviewSet} from "../../core/models/product-preview-set";
 import {PaginationOptions} from "../../core/interfaces/pagination-options";
+import {UserProfile} from '../../core/models/user-profile';
 
 @Component({
   selector: 'app-selection',
@@ -25,6 +26,9 @@ export class SelectionComponent implements OnInit {
   @Input() selectionName!: Selection;
 
   @Input() selectionHeader: string | undefined;
+
+  @Input()
+  public userProfile: UserProfile = new UserProfile();
 
   constructor(
     private readonly selectionService: SelectionService,

@@ -36,7 +36,7 @@ export class BattlePageComponent implements OnInit, OnDestroy {
 
   public battleInfo$: Observable<BookBattle>;
 
-  public userProfile$: Observable<UserProfile>;
+  public userProfile: UserProfile = new UserProfile();
 
   private currentTime = new Date();
 
@@ -53,11 +53,11 @@ export class BattlePageComponent implements OnInit, OnDestroy {
       this.openBattleInfoDialog();
       return battle;
     }));
-    this.userProfile$ = this.profileProviderService.userProfile;
   }
 
   ngOnInit(): void {
-    this.subs.add(this.userProfile$.subscribe(user => {
+    this.subs.add(this.profileProviderService.userProfile.subscribe(user => {
+      this.userProfile = new UserProfile(user);
       this.isAuthorized = user.isAuthorized();
     }));
   }
@@ -71,11 +71,11 @@ export class BattlePageComponent implements OnInit, OnDestroy {
       return false;
     }
 
-    if (!battle.votedBattleBookId) {
+    if (!this.userProfile.currentVotedBattleBookId) {
       return true;
     }
 
-    return battle.votedBattleBookId === bookId;
+    return this.userProfile.currentVotedBattleBookId === bookId;
   }
 
   public getRemainingTime(endDate: Date): number {

@@ -11,10 +11,6 @@ export class BookBattle {
 
   public readonly discountPercentage: number;
 
-  public readonly spentVotingPointCount: number;
-
-  public readonly votedBattleBookId: number;
-
   public readonly finalDiscount: number;
 
   constructor(battle: BookBattle) {
@@ -23,8 +19,6 @@ export class BookBattle {
     this.endDate = battle.endDate;
     this.state = battle.state;
     this.discountPercentage = battle.discountPercentage;
-    this.spentVotingPointCount = battle.spentVotingPointCount;
-    this.votedBattleBookId = battle.votedBattleBookId;
     this.finalDiscount = battle.finalDiscount;
   }
 }

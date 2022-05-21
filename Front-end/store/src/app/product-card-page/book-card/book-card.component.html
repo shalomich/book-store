@@ -58,6 +58,6 @@
         <p>{{book.description}}</p>
       </mat-expansion-panel>
     </div>
-    <app-add-to-cart [bookId]="currentBookId" [isInBasket]="book.isInBasket" [cost]="book.cost"></app-add-to-cart>
+    <app-add-to-cart [bookId]="currentBookId" [isInBasket]="userProfile.basketBookIds.includes(currentBookId)" [cost]="book.cost"></app-add-to-cart>
   </div>
 </div>
