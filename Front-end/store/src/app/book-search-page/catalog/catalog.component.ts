@@ -12,6 +12,7 @@ import { PaginationOptions } from '../../core/interfaces/pagination-options';
 import { PAGE_SIZE } from '../../core/utils/values';
 import { SortingOptions } from '../../core/interfaces/sorting-options';
 import { FilterOptions } from '../../core/interfaces/filter-options';
+import {UserProfile} from '../../core/models/user-profile';
 
 
 @Component({
@@ -29,6 +30,9 @@ export class CatalogComponent implements OnInit {
   @Input() optionsStorage: ProductOptionsStorage = new ProductOptionsStorage();
 
   @Input() disableFilters: Array<string> = [];
+
+  @Input()
+  public userProfile: UserProfile = new UserProfile();
 
   public books: ProductPreview[] = [];
 

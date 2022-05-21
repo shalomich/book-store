@@ -21,7 +21,6 @@ export class ProductPreviewMapper extends Mapper<ProductPreviewDto, ProductPrevi
       name: data.name,
       cost: data.cost,
       titleImage: data.titleImage,
-      isInBasket: data.isInBasket,
     };
   }
 
@@ -32,7 +31,6 @@ export class ProductPreviewMapper extends Mapper<ProductPreviewDto, ProductPrevi
       name: data.name,
       cost: data.cost,
       titleImage: data.titleImage,
-      isInBasket: data.isInBasket,
     });
   }
 }

@@ -14,6 +14,8 @@ import {PAGE_SIZE, SEARCH_DEPTH, SEARCH_TARGETS} from '../core/utils/values';
 import {ProductPreviewSet} from '../core/models/product-preview-set';
 import {SearchOptions} from '../core/interfaces/search-options';
 import {OptionGroup} from '../core/interfaces/option-group';
+import {UserProfile} from '../core/models/user-profile';
+import {ProfileProviderService} from '../core/services/profile-provider.service';
 
 @AutoUnsubscribe()
 @Component({
@@ -26,10 +28,15 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
 
   public bookSet$: Observable<ProductPreviewSet> = new Observable<ProductPreviewSet>();
 
+  public userProfile$: Observable<UserProfile> = new Observable<UserProfile>();
+
+  public emptyUser: UserProfile = new UserProfile();
+
   public constructor(
     private readonly bookService: BookService,
     private route: ActivatedRoute,
     public readonly optionsStorage: ProductOptionsStorage,
+    private readonly profileProviderService: ProfileProviderService,
   ) {
     this.bookSet$ = combineLatest([
       this.route.queryParams,
@@ -43,6 +50,8 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
           return this.findBookSet(searchValue, target, optionGroup);
     }),
       );
+
+    this.userProfile$ = this.profileProviderService.userProfile;
   }
 
   public ngOnInit(): void {

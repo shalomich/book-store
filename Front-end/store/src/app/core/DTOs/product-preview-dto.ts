@@ -8,6 +8,4 @@ export interface ProductPreviewDto {
   readonly titleImage: Image;
 
   readonly cost: number;
-
-  readonly isInBasket: boolean;
 }
