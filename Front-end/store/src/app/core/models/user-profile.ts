@@ -13,6 +13,7 @@ export class UserProfile {
 
   public votingPointCount: number;
 
+  public isTelegramBotLinked: boolean;
 
   constructor(profile?: UserProfile) {
     if (profile !== undefined) {
@@ -23,6 +24,7 @@ export class UserProfile {
       this.phoneNumber = profile.phoneNumber;
       this.address = profile.address;
       this.votingPointCount = profile.votingPointCount;
+      this.isTelegramBotLinked = profile.isTelegramBotLinked;
     } else {
       this.id = 0;
       this.email = '';
@@ -31,10 +33,19 @@ export class UserProfile {
       this.lastName = '';
       this.phoneNumber = '';
       this.votingPointCount = 0;
+      this.isTelegramBotLinked = false;
     }
   }
 
   public isAuthorized(): boolean {
     return !!this.id && !!this.email && !!this.firstName;
+  }
+
+  public isEqual(profile: UserProfile): boolean {
+    return this.firstName === profile.firstName &&
+      this.lastName === profile.lastName &&
+      this.email === profile.email &&
+      this.phoneNumber === profile.phoneNumber &&
+      this.address === profile.address;
   }
 }

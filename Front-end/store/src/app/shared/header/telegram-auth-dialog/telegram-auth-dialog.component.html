@@ -1,0 +1,41 @@
+<div class="close-button-block">
+  <button (click)="onClose()" mat-icon-button><mat-icon>close</mat-icon></button>
+</div>
+<div *ngIf="!data.user.isTelegramBotLinked; else linkedAccountModal" class="telegram-dialog-block">
+  <div class="telegram-dialog-title">
+    Привязка аккаунта к Telegram
+  </div>
+  <div class="requirement-text">Чтобы продолжить укажите номер телефона</div>
+  <div class="telegram-dialog-field-block">
+    <div class="telegram-dialog-field">
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Номер телефона</mat-label>
+          <input required placeholder="8/+7 9XX XXX XX XX" [formControl]="phoneNumberControl" matInput/>
+          <mat-hint *ngIf="!phoneNumberControl.hasError('error')">Номер Telegram и аккаунта на сайте должны совпадать. При изменении номер обновится и в профиле. </mat-hint>
+        </mat-form-field>
+      </div>
+      <mat-error *ngIf="phoneNumberControl.hasError('error')">
+        {{phoneNumberControl.errors?.error}}
+      </mat-error>
+    </div>
+  </div>
+  <div class="telegram-button">
+    <button (click)="onAuthTelegramClick()" [disabled]="!phoneNumberControl.valid" type="submit" mat-stroked-button color="primary">Перейти в Telegram</button>
+  </div>
+</div>
+
+
+<ng-template #linkedAccountModal>
+  <div class="telegram-dialog-block">
+    <div class="telegram-dialog-title">
+      Аккаунт уже привязан к Telegram
+    </div>
+    <div class="telegram-button">
+      <button (click)="onTelegramClick()" mat-stroked-button color="primary">Перейти в Telegram</button>
+    </div>
+    <div class="telegram-unlink-button">
+      <button (click)="onTelegramUnlink()" mat-stroked-button color="primary">Отвязать аккаунт</button>
+    </div>
+  </div>
+</ng-template>

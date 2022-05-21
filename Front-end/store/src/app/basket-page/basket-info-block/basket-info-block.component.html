@@ -2,7 +2,7 @@
   <div>
     <div class="total-amount">Всего товаров: <span>{{totalAmount}}</span></div>
     <hr color="black" noshade size="1"/>
-    <div class="total-cost">Итоговая сумма (без доставки): <span>{{totalCost}} &#8381;</span></div>
-    <button routerLink="/book-store/order" class="order-button" mat-flat-button>Оформить заказ</button>
+    <div class="total-cost">Итоговая сумма: <span>{{totalCost}} &#8381;</span></div>
+    <button *ngIf="(products | async)?.length" routerLink="/book-store/order" class="order-button" mat-flat-button>Оформить заказ</button>
   </div>
 </div>

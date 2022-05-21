@@ -25,6 +25,10 @@ import { RouterModule } from '@angular/router';
 
 import { MatDialogModule } from '@angular/material/dialog';
 
+import { MatMenuModule } from '@angular/material/menu';
+
+import { MatDividerModule } from '@angular/material/divider';
+
 import { CoreModule } from '../core/core.module';
 
 
@@ -47,9 +51,9 @@ import { SearchHintComponent } from './search-field/search-hint/search-hint.comp
 import { HeaderComponent } from './header/header.component';
 import { LoginDialogComponent } from './header/login-dialog/login-dialog.component';
 import { RegisterDialogComponent } from './header/register-dialog/register-dialog.component';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatDividerModule} from '@angular/material/divider';
+
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
+import { TelegramAuthDialogComponent } from './header/telegram-auth-dialog/telegram-auth-dialog.component';
 
 
 @NgModule({
@@ -69,6 +73,7 @@ import { ConfirmationModalComponent } from './confirmation-modal/confirmation-mo
     LoginDialogComponent,
     RegisterDialogComponent,
     ConfirmationModalComponent,
+    TelegramAuthDialogComponent,
   ],
   exports: [
     ProductImagesComponent,
@@ -84,24 +89,24 @@ import { ConfirmationModalComponent } from './confirmation-modal/confirmation-mo
     SearchHintComponent,
     HeaderComponent,
   ],
-    imports: [
-        CommonModule,
-        CoreModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        MatExpansionModule,
-        MatIconModule,
-        NgxPaginationModule,
-        MatOptionModule,
-        MatCheckboxModule,
-        MatDialogModule,
-        RouterModule,
-        MatMenuModule,
-        MatDividerModule,
-    ],
+  imports: [
+    CommonModule,
+    CoreModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatExpansionModule,
+    MatIconModule,
+    NgxPaginationModule,
+    MatOptionModule,
+    MatCheckboxModule,
+    MatDialogModule,
+    RouterModule,
+    MatMenuModule,
+    MatDividerModule,
+  ],
 })
 
 export class SharedModule { }

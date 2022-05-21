@@ -67,6 +67,8 @@ export class OrdersListPageComponent implements OnInit, OnDestroy {
   public onCancelOrder(orderId: number): void {
     this.dialog.open(ConfirmationModalComponent, {
       data: { onConfirm: this.cancelOrder(orderId), message: ORDER_CANCEL_MESSAGE },
+      autoFocus: false,
+      restoreFocus: false,
     });
   }
 

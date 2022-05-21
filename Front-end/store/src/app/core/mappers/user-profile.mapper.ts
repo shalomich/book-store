@@ -27,6 +27,7 @@ export class UserProfileMapper extends Mapper<UserProfileDto, UserProfile> {
       phoneNumber: data.phoneNumber,
       address: data.address,
       votingPointCount: data.votingPointCount,
+      isTelegramBotLinked: data.isTelegramBotLinked,
     };
   }
 
@@ -40,6 +41,7 @@ export class UserProfileMapper extends Mapper<UserProfileDto, UserProfile> {
       phoneNumber: dto.phoneNumber,
       address: dto.address,
       votingPointCount: dto.votingPointCount,
+      isTelegramBotLinked: dto.isTelegramBotLinked,
     } as UserProfile);
   }
 }

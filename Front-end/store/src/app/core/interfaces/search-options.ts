@@ -1,5 +1,5 @@
 export interface SearchOptions {
   readonly propertyName: string;
   value: string;
-  readonly searchDepth: number;
+  readonly searchDepth?: number;
 }

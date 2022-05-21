@@ -5,3 +5,5 @@ export const PASSWORD_FORMAT_ERROR = 'Пароль должен быть не м
 export const PASSWORD_MATCH_ERROR = 'Пароли не совпадают';
 
 export const LOGIN_ERROR = 'Неверный логин или пароль';
+
+export const PHONE_FORMAT_ERROR = 'Неверный формат номера телефона';

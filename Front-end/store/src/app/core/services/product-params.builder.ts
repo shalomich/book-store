@@ -59,10 +59,13 @@ export class ProductParamsBuilder {
   public addSearch(searchOptions: SearchOptions): ProductParamsBuilder {
     const { propertyName, value, searchDepth } = searchOptions;
 
-    if (propertyName && value && searchDepth) {
+    if (propertyName && value) {
       this.params = this.params.set('search.propertyName', propertyName);
       this.params = this.params.set(`search.comparedValue`, value);
-      this.params = this.params.set(`search.searchDepth`, searchDepth);
+
+      if (searchDepth) {
+        this.params = this.params.set(`search.searchDepth`, searchDepth);
+      }
     }
 
     return this;
