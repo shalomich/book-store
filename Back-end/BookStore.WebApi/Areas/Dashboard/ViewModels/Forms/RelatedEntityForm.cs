@@ -12,5 +12,6 @@ namespace BookStore.WebApi.Areas.Dashboard.ViewModels.Forms
 
         [Required]
         public string Name { init; get; }
+        public int? TagGroupId { init; get; }
     }
 }
