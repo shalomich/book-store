@@ -21,7 +21,8 @@ namespace BookStore.Application.Dto
         public string AuthorName { init; get; }
         public string PublisherName { init; get; }
         public string Type { init; get; }
-        public IEnumerable<string> Genres { init; get; }
+        public IEnumerable<string> Genres { init; get; } = Enumerable.Empty<string>();
+        public IEnumerable<string> Tags { init; get; } = Enumerable.Empty<string>();
         public string OriginalName { init; get; }
         public string AgeLimit { init; get; }
         public string CoverArt { init; get; }

@@ -28,6 +28,7 @@ public record BookForm
     public AlbumForm Album { init; get; }
 
     public DiscountForm Discount { init; get; }
+    public IEnumerable<int> TagIds { init; get; } = new List<int>();
 
     #endregion
 
@@ -62,7 +63,6 @@ public record BookForm
 
     [Range(1, int.MaxValue)]
     public int? PageQuantity { init; get; }
-    public IEnumerable<int> TagIds { init; get; } = new List<int>();
 
     #endregion
 }

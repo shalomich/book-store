@@ -46,7 +46,10 @@ internal class GetCardByIdHandler : IRequestHandler<GetCardByIdQuery, CardDto>
                     mapper.MapFrom(book => book.CoverArt.Name))
                 .ForMember(card => card.Genres, mapper =>
                     mapper.MapFrom(book => book.GenresBooks
-                        .Select(genreBook => genreBook.Genre.Name)));
+                        .Select(genreBook => genreBook.Genre.Name)))
+                .ForMember(card => card.Tags, mapper =>
+                    mapper.MapFrom(book => book.ProductTags
+                        .Select(productTag => productTag.Tag.Name)));
         }
     }
     private ApplicationContext Context { get; }
