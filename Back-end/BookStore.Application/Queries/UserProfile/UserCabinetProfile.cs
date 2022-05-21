@@ -18,6 +18,9 @@ internal class UserCabinetProfile : Profile
             .ForMember(dto => dto.MarkBookIds, mapper => mapper.MapFrom
                 (user => user.Marks
                     .Select(mark => mark.ProductId)))
+            .ForMember(dto => dto.TagIds, mapper => mapper.MapFrom
+                (user => user.Tags
+                    .Select(tag => tag.Id)))
             .ForMember(dto => dto.CurrentVotedBattleBookId, mapper => mapper.MapFrom
                 (user => user.Votes
                     .FirstOrDefault()
