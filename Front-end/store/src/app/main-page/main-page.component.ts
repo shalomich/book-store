@@ -20,8 +20,6 @@ export class MainPageComponent implements OnInit {
 
   public emptyUser: UserProfile = new UserProfile();
 
-  private readonly subs: Subscription = new Subscription();
-
   constructor(private readonly profileProviderService: ProfileProviderService) {
     this.userProfile$ = this.profileProviderService.userProfile;
   }
