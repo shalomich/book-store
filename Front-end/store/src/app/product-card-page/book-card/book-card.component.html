@@ -48,6 +48,11 @@
       <div class="field-name">Формат</div>
       <div class="field-value">{{book.bookFormat}}</div>
     </div>
+    <div class="info-field">
+      <mat-chip-list>
+        <mat-chip [disableRipple]="true" *ngFor="let tag of book.tags"># {{tag}}</mat-chip>
+      </mat-chip-list>
+    </div>
   </div>
   <div>
     <div class="description-block">

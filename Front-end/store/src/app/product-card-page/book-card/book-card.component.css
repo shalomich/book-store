@@ -5,7 +5,7 @@
   width: fit-content;
   border: 2px #2199e8 solid;
   border-radius: 5px;
-  padding: 3em 5em 3em 5em;
+  padding: 3em 0 3em 5em;
 }
 
 .book-name {
@@ -19,7 +19,7 @@
 }
 
 .info-block {
-  width: fit-content;
+  width: 15vw;
 }
 
 .info-field {
