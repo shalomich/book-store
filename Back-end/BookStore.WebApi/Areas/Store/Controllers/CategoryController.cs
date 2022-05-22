@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using BookStore.Domain.Enums;
 using BookStore.Application.Dto;
-using BookStore.WebApi.Attributes;
 using BookStore.Application.Services.CatalogSelections;
 using Microsoft.AspNetCore.Authorization;
 

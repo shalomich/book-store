@@ -11,7 +11,6 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
 using BookStore.Persistance;
-using BookStore.WebApi.Attributes.GenericController;
 using BookStore.WebApi.Middlewares;
 using Microsoft.AspNetCore.Identity;
 using BookStore.Application.Extensions;
@@ -39,9 +38,7 @@ namespace BookStore.WebApi
             services.AddApplicationCore(_configuration, currentAssemblyName);
 
             services.AddControllers()
-                .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
-                .ConfigureApplicationPartManager(options => options.FeatureProviders.Add(new GenericControllerFeatureProvider())); ;
-
+                .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Auth:Jwt:Web:TokenKey"]));
 
             services.Configure<DataProtectionTokenProviderOptions>(options =>

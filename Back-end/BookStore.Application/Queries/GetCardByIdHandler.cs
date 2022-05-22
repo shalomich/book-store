@@ -25,6 +25,10 @@ internal class GetCardByIdHandler : IRequestHandler<GetCardByIdQuery, CardDto>
     {
         public GetCardByIdProfile()
         {
+            CreateMap<Tag, BookCardTagDto>()
+                .ForMember(dto => dto.GroupName, mapper =>
+                    mapper.MapFrom(tag => tag.TagGroup.Name));
+
             CreateMap<Book, CardDto>()
                 .ForMember(card => card.TitleImage, mapper =>
                     mapper.MapFrom(product => product.Album.Images
@@ -49,7 +53,7 @@ internal class GetCardByIdHandler : IRequestHandler<GetCardByIdQuery, CardDto>
                         .Select(genreBook => genreBook.Genre.Name)))
                 .ForMember(card => card.Tags, mapper =>
                     mapper.MapFrom(book => book.ProductTags
-                        .Select(productTag => productTag.Tag.Name)));
+                        .Select(productTag => productTag.Tag)));
         }
     }
     private ApplicationContext Context { get; }

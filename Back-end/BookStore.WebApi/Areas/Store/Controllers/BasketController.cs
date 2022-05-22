@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authorization;
 using BookStore.Application.DbQueryConfigs.Specifications;
 using BookStore.Application.Exceptions;
 using BookStore.WebApi.Areas.Store.ViewModels.Basket;
+using BookStore.Application.Commands.RelatedEntityEditing.CreateRelatedEntity;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
 {
@@ -46,25 +47,29 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         [HttpPost]
         public async Task<ActionResult<BasketProductView>> AddBasketProduct([FromBody] BasketProductAddView addedBasketProduct, [FromServices] DbEntityQueryBuilder<Product> productQueryBuilder)
         {
+            /*
             var product = (Product) await Mediator.Send(new GetByIdQuery(addedBasketProduct.ProductId.Value, productQueryBuilder));
 
             var basketProduct = new BasketProduct { ProductId = product.Id, UserId = User.GetUserId()};
 
             await Mediator.Send(new CheckBasketProductQuantityQuery(basketProduct));
 
-            await Mediator.Send(new CreateCommand(basketProduct));
-
+            await Mediator.Send(new CreateRelatedEntityCommand(basketProduct));
+            */
             return NoContent();
         }
 
         private async Task<BasketProduct> GetBasketProductById(int id)
         {
+            /*
             var basketProduct = (BasketProduct) await Mediator.Send(new GetByIdQuery(id, BasketProductQueryBuilder));
 
             if (basketProduct.UserId != User.GetUserId())
                 throw new BadRequestException("This basket product does not belong to authorized user");
 
-            return basketProduct;
+            return basketProduct;*/
+
+            return null;
         }
 
         [HttpPut]
@@ -78,7 +83,7 @@ namespace BookStore.WebApi.Areas.Store.Controllers
 
             await Mediator.Send(new CheckBasketProductQuantityQuery(basketProduct));
             
-            await Mediator.Send(new UpdateCommand(id, basketProduct));
+            //await Mediator.Send(new UpdateCommand(id, basketProduct));
 
             return NoContent();
         }
