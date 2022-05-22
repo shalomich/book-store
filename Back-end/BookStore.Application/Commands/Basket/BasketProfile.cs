@@ -17,8 +17,7 @@ internal class BasketProfile : Profile
                 => mapper.MapFrom(basketProduct => basketProduct.Quantity))
             .ForMember(dto => dto.TitleImage, mapper
                 => mapper.MapFrom(basketProduct => basketProduct.Product.Album.Images
-                    .Single(image => image.Name == basketProduct.Product.Album.TitleImageName)))
-            .IncludeAllDerived();
+                  .Single(image => image.Name == basketProduct.Product.Album.TitleImageName)));
     }
 }
 

@@ -21,14 +21,12 @@ internal class StartBattleHandler : IRequestHandler<StartBattleCommand, StartBat
 {
     private ApplicationContext Context { get; }
     private BattleSettingsProvider BattleSettingsProvider { get; }
-    private BooksForBattleSelection BooksForBattleSelection { get; }
-
-    public StartBattleHandler(ApplicationContext context, BattleSettingsProvider battleSettingsProvider,
-        BooksForBattleSelection booksForBattleSelection)
+    public StartBattleHandler(
+        ApplicationContext context, 
+        BattleSettingsProvider battleSettingsProvider)
     {
         Context = context;
         BattleSettingsProvider = battleSettingsProvider;
-        BooksForBattleSelection = booksForBattleSelection;
     }
 
     public async Task<StartBattleResult> Handle(StartBattleCommand request, CancellationToken cancellationToken)
@@ -68,7 +66,7 @@ internal class StartBattleHandler : IRequestHandler<StartBattleCommand, StartBat
 
     private async Task<IEnumerable<Book>> FindBooksForBattleAsync(BattleSettings battleSettings, CancellationToken cancellationToken)
     { 
-        var booksForBattle = BooksForBattleSelection.Select();
+        var booksForBattle = BattleProvider.GetBattleBooks(Context, battleSettings);
 
         var currentBattleBooks = await booksForBattle
             .SelectMany(firstBook => booksForBattle
