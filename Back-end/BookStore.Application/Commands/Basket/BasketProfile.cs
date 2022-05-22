@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
-using BookStore.Application.Dto;
+using BookStore.Application.Commands.Basket.GetBasketProducts;
 using BookStore.Domain.Entities;
-using BookStore.WebApi.Areas.Store.ViewModels.Basket;
 
-namespace BookStore.WebApi.Areas.Store.Profiles;
-public class BasketProfile : Profile
+namespace BookStore.Application.Commands.Basket;
+internal class BasketProfile : Profile
 {
     public BasketProfile()
     {
-        CreateMap<BasketProduct, BasketProductView>()
+        CreateMap<BasketProduct, BasketProductDto>()
             .ForMember(dto => dto.Name, mapper
                 => mapper.MapFrom(basketProduct => basketProduct.Product.Name))
             .ForMember(dto => dto.Cost, mapper
@@ -20,3 +19,4 @@ public class BasketProfile : Profile
             .IncludeAllDerived();
     }
 }
+

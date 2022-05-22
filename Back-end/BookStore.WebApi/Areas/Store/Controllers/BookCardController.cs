@@ -9,8 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BookStore.Application.Services.DbQueryBuilders;
-using BookStore.Application.DbQueryConfigs.IncludeRequirements;
-using BookStore.WebApi.Areas.Store.ViewModels;
 using BookStore.Domain.Entities;
 using BookStore.Application.Dto;
 using System.ComponentModel.DataAnnotations;
