@@ -1,0 +1,82 @@
+.selection-settings-dialog .mat-dialog-container {
+  padding: 10px 0 10px 0;
+}
+
+.dialog-content-block {
+  margin: 2vh 3vw 0 3vw;
+}
+
+.dialog-header-buttons {
+  display: flex;
+  justify-content: flex-end;
+  color: #2199e8;
+  font-size: 1.4em;
+  margin-right: 10px;
+}
+
+.dialog-header-buttons .mat-icon:hover {
+  cursor: pointer;
+}
+
+.settings-dialog-title {
+  color: #2199e8;
+  text-align: center;
+  font-size: 2em;
+  margin-bottom: 3vh;
+}
+
+.selection-settings-message {
+  font-size: 1.4em;
+}
+
+.tags-groups-block {
+  margin-top: 2vh;
+}
+
+.tags-groups-block .panel-block {
+  margin-bottom: 5vh;
+}
+
+.tags-groups-block > :last-child {
+  margin-bottom: 3vh;
+}
+
+.tags-setting-panel {
+  box-shadow: none !important;
+  border: 2px solid;
+  border-radius: 10px !important;
+}
+
+.tags-setting-panel .mat-expansion-panel-header {
+  padding: 0 1vw;
+}
+
+.tags-setting-panel .mat-expansion-panel-header-title {
+  font-size: 1.4em;
+}
+
+.add-tags-button {
+  color: #2199e8;
+  font-size: 1.2em;
+  padding: 3px 3px;
+}
+
+.tags-setting-panel .mat-expansion-panel-body {
+  padding: 0 1vw 0 1vw;
+}
+
+.footer-divider {
+  background-color: #2199e8;
+  height: 1px;
+}
+
+.selected-tags-count {
+  margin-top: 1vh;
+  font-size: 1.4em;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.selected-tags-count span {
+  color: #2199e8;
+}

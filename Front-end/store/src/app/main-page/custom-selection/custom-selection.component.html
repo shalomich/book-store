@@ -7,10 +7,10 @@
     </h3>
     <div class="custom-selection-settings" *ngIf="(userProfile$ | async)?.isAuthorized()">
       &nbsp; &nbsp; &nbsp;
-      <mat-icon matTooltip="Настроить">settings</mat-icon>
+      <button mat-icon-button><mat-icon matTooltip="Настроить">settings</mat-icon></button>
     </div>
     &nbsp; &nbsp; &nbsp;
-    <mat-icon matTooltip="Информация">help_outline</mat-icon>
+    <button mat-icon-button><mat-icon matTooltip="Информация">help_outline</mat-icon></button>
     <div class="selection-books-list">
       <app-book-preview *ngFor="let book of bookSet.previews"
                         [item]="book"
@@ -25,9 +25,9 @@
     <span>{{selectionHeader}}</span>
     <div class="custom-selection-settings" *ngIf="(userProfile$ | async)?.isAuthorized()">
       &nbsp; &nbsp; &nbsp;
-      <mat-icon matTooltip="Настроить">settings</mat-icon>
+      <button mat-icon-button><mat-icon (click)="openSettingsDialog()" matTooltip="Настроить">settings</mat-icon></button>
     </div>
-    &nbsp; &nbsp; &nbsp;
-    <mat-icon matTooltip="Информация">help_outline</mat-icon>
+    &nbsp; &nbsp;
+    <button mat-icon-button><mat-icon matTooltip="Информация">help_outline</mat-icon></button>
   </div>
 </ng-template>

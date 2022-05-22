@@ -1,1 +1,70 @@
-<p>custom-selection-settings-dialog works!</p>
+<div class="dialog-header-buttons">
+  <button mat-icon-button><mat-icon matTooltip="Информация">help_outline</mat-icon></button>
+  <button mat-icon-button><mat-icon>close</mat-icon></button>
+</div>
+<div class="dialog-content-block">
+  <div class="settings-dialog-title">
+    Настройка подборки &laquo;Специально для вас&raquo;
+  </div>
+  <div class="tags-setting-block">
+    <span class="selection-settings-message">Выберите теги, по которым хотите составить подборку</span>
+    <div class="tags-groups-block">
+      <div class="panel-block">
+        <mat-expansion-panel class="tags-setting-panel" [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{tagsGroups[0].name}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div>
+            <div class="tags-setting-field">
+              <app-autocomplete-with-chips [allTags]="tagsGroups[0].tags"
+                                           [selectedTags]="universesGroupTags"
+                                           [onTagsListChanged]="onTagsListChanged()">
+              </app-autocomplete-with-chips>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </div>
+      <div class="panel-block">
+        <mat-expansion-panel class="tags-setting-panel" [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{tagsGroups[1].name}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div>
+            <div class="tags-setting-field">
+              <app-autocomplete-with-chips [allTags]="tagsGroups[1].tags"
+                                           [selectedTags]="charactersGroupTags"
+                                           [onTagsListChanged]="onTagsListChanged()">
+              </app-autocomplete-with-chips>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </div>
+      <div class="panel-block">
+        <mat-expansion-panel class="tags-setting-panel" [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{tagsGroups[2].name}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div>
+            <div class="tags-setting-field">
+              <app-autocomplete-with-chips [allTags]="tagsGroups[2].tags"
+                                           [selectedTags]="othersGroupTags"
+                                           [onTagsListChanged]="onTagsListChanged()">
+              </app-autocomplete-with-chips>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </div>
+    </div>
+  </div>
+  <mat-divider class="footer-divider"></mat-divider>
+  <div class="selected-tags-count">
+    <span>Тегов выбрано:</span> &nbsp; {{this.selectedTags.length}} / 5
+  </div>
+</div>
+

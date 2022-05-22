@@ -55,7 +55,6 @@ import { RegisterDialogComponent } from './header/register-dialog/register-dialo
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { TelegramAuthDialogComponent } from './header/telegram-auth-dialog/telegram-auth-dialog.component';
 
-
 @NgModule({
   declarations: [
     ProductImagesComponent,
