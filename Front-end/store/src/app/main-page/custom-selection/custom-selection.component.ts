@@ -11,6 +11,10 @@ import {Selection} from '../../core/enums/selection';
 import {ProductPreviewSet} from '../../core/models/product-preview-set';
 import {PaginationOptions} from '../../core/interfaces/pagination-options';
 import {UserProfile} from '../../core/models/user-profile';
+import {MatDialog} from '@angular/material/dialog';
+import {
+  CustomSelectionSettingsDialogComponent
+} from './custom-selection-settings-dialog/custom-selection-settings-dialog.component';
 
 @Component({
   selector: 'app-custom-selection',
@@ -36,6 +40,7 @@ export class CustomSelectionComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly selectionService: SelectionService,
+    private readonly dialog: MatDialog,
   ) {
 
   }
@@ -64,6 +69,14 @@ export class CustomSelectionComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.unsubscribe();
+  }
+
+  openSettingsDialog(): void {
+    this.dialog.open(CustomSelectionSettingsDialogComponent, {
+      panelClass: 'selection-settings-dialog',
+      restoreFocus: false,
+      autoFocus: false,
+    })
   }
 
 }
