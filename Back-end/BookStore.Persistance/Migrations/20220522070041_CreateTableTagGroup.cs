@@ -30,6 +30,7 @@ namespace App.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    ColorHex = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -47,6 +48,12 @@ namespace App.Migrations
                 name: "IX_Tags_TagGroupId",
                 table: "Tags",
                 column: "TagGroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TagGroup_ColorHex",
+                table: "TagGroup",
+                column: "ColorHex",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_TagGroup_Name",

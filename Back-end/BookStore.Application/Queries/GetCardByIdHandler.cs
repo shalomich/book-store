@@ -27,7 +27,9 @@ internal class GetCardByIdHandler : IRequestHandler<GetCardByIdQuery, CardDto>
         {
             CreateMap<Tag, BookCardTagDto>()
                 .ForMember(dto => dto.GroupName, mapper =>
-                    mapper.MapFrom(tag => tag.TagGroup.Name));
+                    mapper.MapFrom(tag => tag.TagGroup.Name))
+                .ForMember(dto => dto.ColorHex, mapper =>
+                    mapper.MapFrom(tag => tag.TagGroup.ColorHex));
 
             CreateMap<Book, CardDto>()
                 .ForMember(card => card.TitleImage, mapper =>

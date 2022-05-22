@@ -18,7 +18,7 @@ internal class RelatedEntityEditingProfile : Profile
         CreateMap<TagForm, Tag>()
             .ReverseMap();
 
-        CreateMap<RelatedEntityForm, TagGroup>()
+        CreateMap<TagGroupForm, TagGroup>()
             .ReverseMap();
 
         #endregion

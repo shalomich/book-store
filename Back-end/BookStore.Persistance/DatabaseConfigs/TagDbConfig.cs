@@ -16,6 +16,7 @@ namespace BookStore.Persistance.DatabaseConfigs
         public override void Configure(EntityTypeBuilder<Tag> builder)
         {
             base.Configure(builder);
+
             builder.HasIndex(tag => tag.Name).IsUnique();
         }
     }
