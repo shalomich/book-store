@@ -66,6 +66,8 @@ import { BattleInfoDialogComponent } from './battle-page/battle-info-dialog/batt
 
 import { BattleVotingBlockComponent } from './battle-page/battle-voting-block/battle-voting-block.component';
 import { OrdersListPageComponent } from './orders-list-page/orders-list-page.component';
+import {CustomSelectionComponent} from './main-page/custom-selection/custom-selection.component';
+import { CustomSelectionSettingsDialogComponent } from './main-page/custom-selection/custom-selection-settings-dialog/custom-selection-settings-dialog.component';
 
 
 @NgModule({
@@ -75,6 +77,7 @@ import { OrdersListPageComponent } from './orders-list-page/orders-list-page.com
     SelectionComponent,
     MainPageComponent,
     SelectionPageComponent,
+    CustomSelectionComponent,
     CatalogComponent,
     BasketPageComponent,
     BasketElementComponent,
@@ -87,6 +90,7 @@ import { OrdersListPageComponent } from './orders-list-page/orders-list-page.com
     BattlePageComponent,
     BattleInfoDialogComponent,
     BattleVotingBlockComponent,
+    CustomSelectionSettingsDialogComponent,
   ],
   imports: [
     BrowserModule,

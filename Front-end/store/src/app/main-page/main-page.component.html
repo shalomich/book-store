@@ -1,4 +1,5 @@
 <div class="main-page-selections">
+  <app-custom-selection [userProfile$]="userProfile$" [selectionName]="selectionEnum.SpecialForYou" selectionHeader="Специально для вас"></app-custom-selection>
   <app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.Novelty" selectionHeader="Новинки"></app-selection>
   <app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.GoneOnSale" selectionHeader="Уже в продаже"></app-selection>
   <app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.BackOnSale" selectionHeader="Снова в продаже"></app-selection>
