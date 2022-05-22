@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BookStore.Application.Commands.Basket.GetBasketProducts;
 using BookStore.Domain.Entities;
+using System.Linq;
 
 namespace BookStore.Application.Commands.Basket;
 internal class BasketProfile : Profile
@@ -15,7 +16,8 @@ internal class BasketProfile : Profile
             .ForMember(dto => dto.Quantity, mapper
                 => mapper.MapFrom(basketProduct => basketProduct.Quantity))
             .ForMember(dto => dto.TitleImage, mapper
-                => mapper.MapFrom(basketProduct => basketProduct.Product.Album.TitleImage))
+                => mapper.MapFrom(basketProduct => basketProduct.Product.Album.Images
+                    .Single(image => image.Name == basketProduct.Product.Album.TitleImageName)))
             .IncludeAllDerived();
     }
 }

@@ -42,6 +42,14 @@ internal class AddProductToBasketCommandHandler : AsyncRequestHandler<AddProduct
             throw new BadRequestException("Book quantity equal zero.");
         }
 
+        bool hasBookInBasket = await Context.BasketProducts
+            .AnyAsync(basketProduct => basketProduct.ProductId == bookById.Id, cancellationToken);
+
+        if (hasBookInBasket)
+        {
+            throw new BadRequestException("Product is already in basket.");
+        }
+
         var basketProduct = new BasketProduct
         {
             ProductId = bookById.Id,
