@@ -29,6 +29,8 @@ internal class AddProductToBasketCommandHandler : AsyncRequestHandler<AddProduct
     {
         var productDto = request.ProductDto;
 
+        var currentUserId = LoggedUserAccessor.GetCurrentUserId();
+
         var bookById = await Context.Books
             .SingleOrDefaultAsync(book => book.Id == productDto.ProductId, cancellationToken);
 
@@ -43,7 +45,8 @@ internal class AddProductToBasketCommandHandler : AsyncRequestHandler<AddProduct
         }
 
         bool hasBookInBasket = await Context.BasketProducts
-            .AnyAsync(basketProduct => basketProduct.ProductId == bookById.Id, cancellationToken);
+            .AnyAsync(basketProduct => basketProduct.ProductId == bookById.Id
+                && basketProduct.UserId == currentUserId, cancellationToken);
 
         if (hasBookInBasket)
         {
@@ -53,7 +56,7 @@ internal class AddProductToBasketCommandHandler : AsyncRequestHandler<AddProduct
         var basketProduct = new BasketProduct
         {
             ProductId = bookById.Id,
-            UserId = LoggedUserAccessor.GetCurrentUserId()
+            UserId = currentUserId
         };
 
         await Context.BasketProducts.AddAsync(basketProduct, cancellationToken);
