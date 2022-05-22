@@ -1,4 +1,4 @@
-export const PRODUCT_URL = 'https://localhost:44327/store/product/';
+export const PRODUCT_URL = 'https://localhost:44327/store/catalog/';
 export const SELECTION_URL = 'https://localhost:44327/store/selection/';
 export const LOGIN_URL = 'https://localhost:44327/store/account/login';
 export const REGISTER_URL = 'https://localhost:44327/store/account/registration';
