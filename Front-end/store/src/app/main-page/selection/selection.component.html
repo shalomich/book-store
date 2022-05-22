@@ -5,9 +5,11 @@
         {{selectionHeader}}
       </a>
     </h3>
-    <app-book-preview *ngFor="let book of (bookSet$ | async)?.previews"
-                      [item]="book"
-                      [userBasketBookIds]="userProfile.basketBookIds">
-    </app-book-preview>
+    <div class="selection-books-list">
+      <app-book-preview *ngFor="let book of (bookSet$ | async)?.previews"
+                        [item]="book"
+                        [userBasketBookIds]="userProfile.basketBookIds">
+      </app-book-preview>
+    </div>
   </div>
 </ng-container>
