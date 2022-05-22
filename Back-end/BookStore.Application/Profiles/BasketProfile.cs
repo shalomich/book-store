@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using BookStore.Application.Commands.Basket.GetBasketProducts;
 using BookStore.Application.Commands.Orders.PlaceOrder;
-using BookStore.Application.Dto;
 using BookStore.Application.Queries.Orders.GetOrders;
 using BookStore.Domain.Entities;
 using System.Linq;

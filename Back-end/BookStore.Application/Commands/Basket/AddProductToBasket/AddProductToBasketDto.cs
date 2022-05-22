@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-public record BasketProductAddView
+namespace BookStore.Application.Commands.Basket.AddProductToBasket;
+public record AddProductToBasketDto
 {
     [Required]
     public int? ProductId { init; get; }
 }
-
