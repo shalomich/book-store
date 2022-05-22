@@ -46,10 +46,10 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers
         }
 
         [HttpGet]
-        public async Task<BookForm[]> GetBooks([FromQuery] PaggingArgs paggingArgs, CancellationToken cancellationToken)
+        public async Task<BookForm[]> GetBooks([FromQuery] PaggingArgs pagging, CancellationToken cancellationToken)
         {
             QueryBuilder
-               .AddPagging(paggingArgs)
+               .AddPagging(pagging)
                .AddIncludeRequirements(new ProductAlbumIncludeRequirement<Book>());
 
             var products = await Mediator.Send(new GetQuery(QueryBuilder));
