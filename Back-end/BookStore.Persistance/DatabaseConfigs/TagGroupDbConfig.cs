@@ -16,7 +16,11 @@ namespace BookStore.Persistance.DatabaseConfigs
         public override void Configure(EntityTypeBuilder<TagGroup> builder)
         {
             base.Configure(builder);
+
+            builder.Property(tagGroup => tagGroup.ColorHex).IsRequired();
+
             builder.HasIndex(tagGroup => tagGroup.Name).IsUnique();
+            builder.HasIndex(tagGroup => tagGroup.ColorHex).IsUnique();
         }
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220521072416_CreateTableTagGroup")]
+    [Migration("20220522070041_CreateTableTagGroup")]
     partial class CreateTableTagGroup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -717,11 +717,18 @@ namespace App.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("ColorHex")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ColorHex")
+                        .IsUnique();
 
                     b.HasIndex("Name")
                         .IsUnique();
