@@ -1,10 +1,9 @@
-﻿using BookStore.Application.Commands;
-using BookStore.Application.Commands.BookEditing.RemoveDiscount;
+﻿using BookStore.Application.Commands.BookEditing.RemoveDiscount;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookStore.WebApi.BackgroundJobs;
+namespace BookStore.WebApi.BackgroundJobs.BookEditing;
 
 internal class RemoveDiscountJob
 {
