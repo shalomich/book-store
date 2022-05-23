@@ -6,5 +6,6 @@ public record TagGroupDto
 {
     public int Id { get; init; }
     public string Name { get; init; }
+    public string ColorHex { get; init; }
     public IEnumerable<TagDto> Tags { get; init; } = Enumerable.Empty<TagDto>();
 }
