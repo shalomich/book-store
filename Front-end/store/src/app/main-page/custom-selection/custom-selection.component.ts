@@ -1,19 +1,21 @@
-import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 
-import {Observable, of, Subscription} from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 
-import {switchMap} from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
-import {SelectionService} from '../../core/services/selection.service';
-import {ProductOptionsStorage} from '../../core/services/product-options.storage';
-import {SELECTION_SIZE} from '../../core/utils/values';
-import {Selection} from '../../core/enums/selection';
-import {ProductPreviewSet} from '../../core/models/product-preview-set';
-import {PaginationOptions} from '../../core/interfaces/pagination-options';
-import {UserProfile} from '../../core/models/user-profile';
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
+
+import { SelectionService } from '../../core/services/selection.service';
+import { ProductOptionsStorage } from '../../core/services/product-options.storage';
+import { SELECTION_SIZE } from '../../core/utils/values';
+import { Selection } from '../../core/enums/selection';
+import { ProductPreviewSet } from '../../core/models/product-preview-set';
+import { PaginationOptions } from '../../core/interfaces/pagination-options';
+import { UserProfile } from '../../core/models/user-profile';
+
 import {
-  CustomSelectionSettingsDialogComponent
+  CustomSelectionSettingsDialogComponent,
 } from './custom-selection-settings-dialog/custom-selection-settings-dialog.component';
 
 @Component({
@@ -23,9 +25,9 @@ import {
   providers: [ProductOptionsStorage],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CustomSelectionComponent implements OnInit, OnDestroy {
+export class CustomSelectionComponent implements OnInit, OnDestroy, OnChanges {
 
-  public bookSet: ProductPreviewSet = {} as ProductPreviewSet;
+  public bookSet$: Observable<ProductPreviewSet> = new Observable<ProductPreviewSet>();
 
   public selectionLink: string | undefined;
 
@@ -34,7 +36,7 @@ export class CustomSelectionComponent implements OnInit, OnDestroy {
   @Input() selectionHeader: string | undefined;
 
   @Input()
-  public userProfile$: Observable<UserProfile> = new Observable<UserProfile>();
+  public userProfile: UserProfile = new UserProfile();
 
   private readonly subs: Subscription = new Subscription();
 
@@ -47,24 +49,17 @@ export class CustomSelectionComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.selectionLink = `book-store/catalog/selection/${this.selectionName}`;
+  }
 
+  ngOnChanges(changes: SimpleChanges) {
     const paginationOptions: PaginationOptions = {
       pageSize: SELECTION_SIZE,
       pageNumber: 1,
     };
 
-    this.subs.add(this.userProfile$.pipe(
-      switchMap(profile => {
-        if (profile.isAuthorized()) {
-          return this.selectionService.get(this.selectionName!, { pagingOptions: paginationOptions });
-        }
-
-        return of({} as ProductPreviewSet);
-      }),
-    )
-      .subscribe(set => {
-        this.bookSet = set;
-      }));
+    this.bookSet$ = this.userProfile.isAuthorized() ?
+      this.selectionService.get(this.selectionName!, { pagingOptions: paginationOptions }) :
+      of({} as ProductPreviewSet);
   }
 
   ngOnDestroy() {
@@ -73,10 +68,11 @@ export class CustomSelectionComponent implements OnInit, OnDestroy {
 
   openSettingsDialog(): void {
     this.dialog.open(CustomSelectionSettingsDialogComponent, {
+      data: { userProfile: this.userProfile },
       panelClass: 'selection-settings-dialog',
       restoreFocus: false,
       autoFocus: false,
-    })
+    });
   }
 
 }

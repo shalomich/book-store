@@ -20,4 +20,6 @@ export interface UserProfileDto {
   spentCurrentVotingPointCount: number;
 
   currentVotedBattleBookId: number;
+
+  tagIds: number[];
 }
