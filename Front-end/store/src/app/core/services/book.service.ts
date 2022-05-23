@@ -48,7 +48,7 @@ export class BookService {
 
     const options = this.authorizationService.accessToken ? { headers } : {};
 
-    const book$ = this.http.get<BookDto>(`${PRODUCT_URL}${this.type}/${id}`, options);
+    const book$ = this.http.get<BookDto>(`${PRODUCT_URL}/${id}`, options);
 
     return book$.pipe(
       map(book => this.bookMapper.fromDto(book)),
@@ -60,10 +60,10 @@ export class BookService {
       Authorization: `Bearer ${this.authorizationService.accessToken}`,
     };
 
-    return this.http.post<void>(`${PRODUCT_URL}${this.type}/${id}/view`, {}, { headers });
+    return this.http.post<void>(`${PRODUCT_URL}/${id}/view`, {}, { headers });
   }
 
-  public get(optionGroup: OptionGroup, searchOptions?: SearchOptions): Observable<ProductPreviewSet> {
+  public get(optionGroup: OptionGroup): Observable<ProductPreviewSet> {
     const headers = {
       Authorization: `Bearer ${this.authorizationService.accessToken}`,
     };
@@ -80,15 +80,11 @@ export class BookService {
       this.paramsBuilder.addSortings(sortingOptions);
     }
 
-    if (searchOptions) {
-      this.paramsBuilder.addSearch(searchOptions);
-    }
-
     const params = this.paramsBuilder.build();
 
     const options = this.authorizationService.accessToken ? { headers, params } : { params };
 
-    return this.http.get<ProductPreviewSetDto>(`${PRODUCT_URL}${this.type}`, options).pipe(
+    return this.http.get<ProductPreviewSetDto>(`${PRODUCT_URL}`, options).pipe(
       map(setDto => this.productPreviewSetMapper.fromDto(setDto)),
     );
   }

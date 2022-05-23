@@ -13,7 +13,7 @@ using BookStore.Application.Commands.Catalog.GetBookFilters;
 
 namespace BookStore.WebApi.Areas.Store.Controllers;
 
-[Route("[area]/catalog")]
+[Route("[area]/[controller]")]
 public class CatalogController : StoreController
 {
     private IMediator Mediator { get; }
