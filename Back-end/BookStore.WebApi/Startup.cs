@@ -16,8 +16,9 @@ using Microsoft.AspNetCore.Identity;
 using BookStore.Application.Extensions;
 using Hangfire;
 using Newtonsoft.Json;
-using BookStore.WebApi.BackgroundJobs;
 using BookStore.Persistance.Extensions;
+using BookStore.WebApi.BackgroundJobs.BookEditing;
+using BookStore.WebApi.BackgroundJobs.Selection;
 
 namespace BookStore.WebApi
 {
@@ -134,11 +135,12 @@ namespace BookStore.WebApi
 
         private static void RunBackgroundJobs()
         {
-            var removeDiscountHour = 24;
+            var utcHour = 24;
             var hourDifference = 7;
-            removeDiscountHour -= hourDifference;
+            var localHour = utcHour - hourDifference;
 
-            RecurringJob.AddOrUpdate<RemoveDiscountJob>(job => job.RemoveDiscount(default), Cron.Daily(removeDiscountHour));
+            RecurringJob.AddOrUpdate<RemoveDiscountJob>(job => job.RemoveDiscount(default), Cron.Daily(localHour));
+            RecurringJob.AddOrUpdate<ChooseCurrentDayAuthorJob>(job => job.ChooseCurrentDayAuthor(default), Cron.Daily(localHour));
         }
     }
 }
