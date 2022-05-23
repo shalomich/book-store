@@ -47,15 +47,19 @@ internal class ViewBookCommandHandler : AsyncRequestHandler<ViewBookCommand>
         }
         else
         {
-            var timeWithOutView = DateTimeOffset.Now - view.LastTime;
+            var now = DateTimeOffset.Now;
+
+            view.LastViewDate = now;
+
+            var timeWithOutView = now - view.LastViewCountChangeDate;
 
             if (timeWithOutView.Minutes > ViewIntervalInMinutes)
             {
-                view.LastTime = DateTimeOffset.Now;
+                view.LastViewCountChangeDate = now;
                 view.Count++;
-
-                await Context.SaveChangesAsync(cancellationToken);
             }
+
+            await Context.SaveChangesAsync(cancellationToken);
         }
     }
 }
