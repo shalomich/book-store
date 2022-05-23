@@ -1,25 +1,29 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { map, startWith } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { FormControl } from '@angular/forms';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import {Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {MatChipInputEvent} from '@angular/material/chips';
+import {map, startWith} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {FormControl} from '@angular/forms';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
 
-import { Tag } from '../../../core/interfaces/tag';
+import {Tag} from '../../../core/interfaces/tag';
 
 @Component({
   selector: 'app-autocomplete-with-chips',
   templateUrl: './autocomplete-with-chips.component.html',
   styleUrls: ['./autocomplete-with-chips.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
-export class AutocompleteWithChipsComponent {
+export class AutocompleteWithChipsComponent implements OnInit{
 
   public separatorKeysCodes: number[] = [ENTER, COMMA];
 
   public tagsControl = new FormControl();
 
   public filteredTags: Observable<Tag[]>;
+
+  @Input()
+  public color= '';
 
   @Input()
   public selectedTags: Tag[] = [];
@@ -37,6 +41,10 @@ export class AutocompleteWithChipsComponent {
       startWith(null),
       map((tagValue: string | null) => (tagValue ? this._filter(tagValue) : this.allTags.filter(tag => !this.selectedTags.includes(tag)))),
     );
+  }
+
+  public ngOnInit() {
+    console.log(document.querySelector('.mat-form-field-appearance-outline'));
   }
 
   public add(event: MatChipInputEvent): void {

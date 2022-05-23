@@ -3,7 +3,7 @@ export interface Tag {
 
   readonly name: string;
 
-  readonly group?: string;
+  readonly groupName?: string;
 
-  readonly color?: string;
+  readonly colorHex?: string;
 }
