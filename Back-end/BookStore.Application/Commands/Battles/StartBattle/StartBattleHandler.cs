@@ -1,7 +1,6 @@
 ﻿using BookStore.Application.Exceptions;
 using BookStore.Application.Queries.Battle.GetBattleSettings;
 using BookStore.Application.Services;
-using BookStore.Application.Services.CatalogSelections;
 using BookStore.Domain.Entities.Battles;
 using BookStore.Domain.Entities.Books;
 using BookStore.Domain.Enums;
