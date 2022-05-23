@@ -5,7 +5,8 @@ public class View : IEntity
 {
     public int Id { get; set; }
     public int Count { get; set; } = 1;
-    public DateTimeOffset LastTime { get; set; } = DateTimeOffset.Now;
+    public DateTimeOffset LastViewDate { get; set; } = DateTimeOffset.Now;
+    public DateTimeOffset LastViewCountChangeDate { get; set; } = DateTimeOffset.Now;
     public Book Book { get; set; }
     public int BookId { get; set; }
     public User User { get; set; }

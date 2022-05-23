@@ -21,7 +21,7 @@ public class LastViewedSelection : IBookSelection
 
         return Context.Views
             .Where(view => view.UserId == currentUserId)
-            .OrderByDescending(view => view.LastTime)
+            .OrderByDescending(view => view.LastViewDate)
             .Select(view => view.Book);
     }
 }
