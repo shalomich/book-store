@@ -1,6 +1,6 @@
 <div class="dialog-header-buttons">
   <button mat-icon-button><mat-icon matTooltip="Информация">help_outline</mat-icon></button>
-  <button mat-icon-button><mat-icon>close</mat-icon></button>
+  <button (click)="onClose()" mat-icon-button><mat-icon>close</mat-icon></button>
 </div>
 <div class="dialog-content-block">
   <div class="settings-dialog-title">
@@ -22,7 +22,8 @@
                 <app-autocomplete-with-chips [allTags]="tagsGroups[0].tags"
                                              [selectedTags]="universesGroupTags"
                                              [onTagsListChanged]="onTagsListChanged()"
-                                             [color]="tagsGroups[0].colorHex">
+                                             [color]="tagsGroups[0].colorHex"
+                                             [usersTagsIds]="usersTagsIds">
                 </app-autocomplete-with-chips>
               </div>
             </div>
@@ -40,7 +41,8 @@
                 <app-autocomplete-with-chips [allTags]="tagsGroups[1].tags"
                                              [selectedTags]="charactersGroupTags"
                                              [onTagsListChanged]="onTagsListChanged()"
-                                             [color]="tagsGroups[1].colorHex">
+                                             [color]="tagsGroups[1].colorHex"
+                                             [usersTagsIds]="usersTagsIds">
                 </app-autocomplete-with-chips>
               </div>
             </div>
@@ -58,7 +60,8 @@
                 <app-autocomplete-with-chips [allTags]="tagsGroups[2].tags"
                                              [selectedTags]="othersGroupTags"
                                              [onTagsListChanged]="onTagsListChanged()"
-                                             [color]="tagsGroups[2].colorHex">
+                                             [color]="tagsGroups[2].colorHex"
+                                             [usersTagsIds]="usersTagsIds">
                 </app-autocomplete-with-chips>
               </div>
             </div>
@@ -69,7 +72,10 @@
   </div>
   <mat-divider class="footer-divider"></mat-divider>
   <div class="selected-tags-count">
-    <span>Тегов выбрано:</span> &nbsp; {{this.selectedTags.length}} / 5
+    <span>Тегов выбрано:</span> &nbsp; {{this.usersTagsIds.length ? this.usersTagsIds.length : this.selectedTags.length}} / 5
+  </div>
+  <div class="tags-apply-button-block">
+    <button mat-stroked-button (click)="onApply()">Сохранить</button>
   </div>
 </div>
 

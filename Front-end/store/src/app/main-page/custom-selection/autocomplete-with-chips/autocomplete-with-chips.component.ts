@@ -1,12 +1,12 @@
-import {Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {MatChipInputEvent} from '@angular/material/chips';
-import {map, startWith} from 'rxjs/operators';
-import {Observable} from 'rxjs';
-import {FormControl} from '@angular/forms';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { map, startWith } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
-import {Tag} from '../../../core/interfaces/tag';
+import { Tag } from '../../../core/interfaces/tag';
 
 @Component({
   selector: 'app-autocomplete-with-chips',
@@ -14,7 +14,7 @@ import {Tag} from '../../../core/interfaces/tag';
   styleUrls: ['./autocomplete-with-chips.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class AutocompleteWithChipsComponent implements OnInit{
+export class AutocompleteWithChipsComponent implements OnInit {
 
   public separatorKeysCodes: number[] = [ENTER, COMMA];
 
@@ -32,6 +32,9 @@ export class AutocompleteWithChipsComponent implements OnInit{
   public allTags: Tag[] = [];
 
   @Input()
+  public usersTagsIds: number[] = [];
+
+  @Input()
   onTagsListChanged: () => void = () => {};
 
   @ViewChild('tagInput') fruitInput!: ElementRef<HTMLInputElement>;
@@ -44,7 +47,7 @@ export class AutocompleteWithChipsComponent implements OnInit{
   }
 
   public ngOnInit() {
-    console.log(document.querySelector('.mat-form-field-appearance-outline'));
+    this.selectedTags = this.allTags.filter(tag => this.usersTagsIds.includes(tag.id));
   }
 
   public add(event: MatChipInputEvent): void {

@@ -31,6 +31,7 @@ export class UserProfileMapper extends Mapper<UserProfileDto, UserProfile> {
       basketBookIds: data.basketBookIds,
       spentCurrentVotingPointCount: data.spentCurrentVotingPointCount,
       currentVotedBattleBookId: data.currentVotedBattleBookId,
+      tagIds: data.tagIds,
     };
   }
 
@@ -48,6 +49,7 @@ export class UserProfileMapper extends Mapper<UserProfileDto, UserProfile> {
       basketBookIds: dto.basketBookIds,
       spentCurrentVotingPointCount: dto.spentCurrentVotingPointCount,
       currentVotedBattleBookId: dto.currentVotedBattleBookId,
+      tagIds: dto.tagIds,
     } as UserProfile);
   }
 }

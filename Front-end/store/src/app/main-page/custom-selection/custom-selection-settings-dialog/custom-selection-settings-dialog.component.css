@@ -80,3 +80,21 @@
 .selected-tags-count span {
   color: #2199e8;
 }
+
+.tags-apply-button-block {
+  margin-top: 3vh;
+  display: flex;
+  justify-content: center;
+}
+
+.tags-apply-button-block button {
+  font-size: 2em;
+  height: 50px;
+  color: #2199e8;
+  border-color: #2199e8 !important;
+}
+
+.tags-apply-button-block button:hover {
+  color: white;
+  background-color: #2199e8;
+}
