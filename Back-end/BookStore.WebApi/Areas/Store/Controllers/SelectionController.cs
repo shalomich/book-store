@@ -15,6 +15,7 @@ using BookStore.Application.Commands.Selection.GetSearchSelection;
 using System.ComponentModel.DataAnnotations;
 using BookStore.Application.Commands.Selection.GetSearchHints;
 using BookStore.Application.Commands.Selection.GetLastViewedSelection;
+using BookStore.Application.Commands.Selection.GetCurrentDayAuthorSelection;
 
 namespace BookStore.WebApi.Areas.Store.Controllers;
 
@@ -59,6 +60,19 @@ public class SelectionController : StoreController
         return await Mediator.Send(new GetBackOnSaleSelectionQuery(optionParameters), cancellationToken);
     }
 
+    [HttpGet("currentDayAuthor")]
+    public async Task<PreviewSetDto> GetCurrentDayAuthorSelection([FromQuery] OptionParameters optionParameters, CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(new GetCurrentDayAuthorSelectionQuery(optionParameters), cancellationToken);
+    }
+
+    [HttpGet("lastViewed")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    public async Task<PreviewSetDto> GetLastViewedSelection([FromQuery] OptionParameters optionParameters, CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(new GetLastViewedSelectionQuery(optionParameters), cancellationToken);
+    }
+
     [HttpGet("canBeInteresting")]
     [Authorize(AuthenticationSchemes = "Bearer")]
     public async Task<PreviewSetDto> GetCanBeInterestingSelection([FromQuery] int? tagCount,
@@ -72,13 +86,6 @@ public class SelectionController : StoreController
     public async Task<PreviewSetDto> GetBattleSelection([FromQuery] OptionParameters optionParameters, CancellationToken cancellationToken)
     {
         return await Mediator.Send(new GetBattleSelectionQuery(optionParameters), cancellationToken);
-    }
-
-    [HttpGet("lastViewed")]
-    [Authorize(AuthenticationSchemes = "Bearer")]
-    public async Task<PreviewSetDto> GetLastViewedSelection([FromQuery] OptionParameters optionParameters, CancellationToken cancellationToken)
-    {
-        return await Mediator.Send(new GetLastViewedSelectionQuery(optionParameters), cancellationToken);
     }
 }
 
