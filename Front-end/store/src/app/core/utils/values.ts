@@ -1,10 +1,12 @@
-export const PRODUCT_URL = 'https://localhost:44327/store/catalog/';
+export const PRODUCT_URL = 'https://localhost:44327/store/catalog';
 export const SELECTION_URL = 'https://localhost:44327/store/selection/';
 export const LOGIN_URL = 'https://localhost:44327/store/account/login';
 export const REGISTER_URL = 'https://localhost:44327/store/account/registration';
 export const REFRESH_URL = 'https://localhost:44327/store/account/refresh';
 export const BASKET_URL = 'https://localhost:44327/store/basket/product';
 export const PROFILE_URL = 'https://localhost:44327/store/profile';
+
+export const SEARCH_URL = 'https://localhost:44327/store/selection/search';
 
 export const ORDER_URL = 'https://localhost:44327/store/order';
 

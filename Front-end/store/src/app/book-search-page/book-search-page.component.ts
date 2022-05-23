@@ -16,6 +16,7 @@ import {SearchOptions} from '../core/interfaces/search-options';
 import {OptionGroup} from '../core/interfaces/option-group';
 import {UserProfile} from '../core/models/user-profile';
 import {ProfileProviderService} from '../core/services/profile-provider.service';
+import {SearchService} from "../core/services/search.service";
 
 @AutoUnsubscribe()
 @Component({
@@ -34,6 +35,7 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
 
   public constructor(
     private readonly bookService: BookService,
+    private readonly searchService: SearchService,
     private route: ActivatedRoute,
     public readonly optionsStorage: ProductOptionsStorage,
     private readonly profileProviderService: ProfileProviderService,
@@ -69,7 +71,7 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
         propertyName: target,
       };
 
-      return this.bookService.get(optionGroup, searchOptions);
+      return this.searchService.get(optionGroup, searchOptions);
     }
 
     return this.bookService.get(optionGroup);
