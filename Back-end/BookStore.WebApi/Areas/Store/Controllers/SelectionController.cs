@@ -66,6 +66,12 @@ public class SelectionController : StoreController
         return await Mediator.Send(new GetCurrentDayAuthorSelectionQuery(optionParameters), cancellationToken);
     }
 
+    [HttpGet("popular")]
+    public async Task<PreviewSetDto> GetPopularSelection([FromQuery] OptionParameters optionParameters, CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(new GetPopularSelectionQuery(optionParameters), cancellationToken);
+    }
+
     [HttpGet("lastViewed")]
     [Authorize(AuthenticationSchemes = "Bearer")]
     public async Task<PreviewSetDto> GetLastViewedSelection([FromQuery] OptionParameters optionParameters, CancellationToken cancellationToken)
