@@ -1,15 +1,16 @@
-<mat-form-field class="example-chip-list" appearance="outline">
-  <mat-label>Теги</mat-label>
+<mat-form-field [style]="{borderColor: color, color: color}" class="example-chip-list" appearance="outline">
+  <mat-label  [style]="{color: color}">Теги</mat-label>
   <mat-chip-list #chipList aria-label="Fruit selection">
-    <mat-chip
+    <mat-chip [style]="{background: color, color: 'white'}"
       *ngFor="let tag of selectedTags"
       (removed)="remove(tag.name)">
       {{tag.name}}
-      <button matChipRemove>
+      <button style="color: white" matChipRemove>
         <mat-icon>cancel</mat-icon>
       </button>
     </mat-chip>
     <input
+      [style]="{borderColor: color, color: color}"
       placeholder="Добавить тег..."
       #tagInput
       [formControl]="tagsControl"

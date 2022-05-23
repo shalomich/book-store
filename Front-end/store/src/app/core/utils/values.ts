@@ -14,6 +14,8 @@ export const BATTLE_URL = 'https://localhost:44327/store/battle';
 
 export const TELEGRAM_URL = 'https://localhost:44327/store/telegram-bot';
 
+export const TAGS_URL = 'https://localhost:44327/store/tag';
+
 export const PAGE_SIZE = 3;
 export const PAGE_NUMBER = 1;
 

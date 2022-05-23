@@ -8,7 +8,6 @@
                  [selectionName]="selectionEnum.LastViewed"
                  selectionHeader="Последнее, что вы смотрели"
   ></app-selection>
-  <app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.ForChildren" selectionHeader="Для детей"></app-selection>
   <app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.CurrentDayAuthor" selectionHeader="Автор этого дня"></app-selection>
 </div>
 

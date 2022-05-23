@@ -5,5 +5,7 @@ export interface TagsGroup {
 
   readonly name: string;
 
+  readonly colorHex: string;
+
   readonly tags: Tag[];
 }

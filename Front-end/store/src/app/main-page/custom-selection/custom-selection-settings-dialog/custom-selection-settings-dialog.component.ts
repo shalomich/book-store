@@ -35,6 +35,7 @@ export class CustomSelectionSettingsDialogComponent implements OnInit, OnDestroy
   ngOnInit(): void {
     this.subs.add(this.tagsService.getTagsGroups().subscribe(tagsGroups => {
       this.tagsGroups = tagsGroups;
+      console.log(this.tagsGroups)
     }));
   }
 
