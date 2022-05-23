@@ -1,7 +1,6 @@
 ﻿using BookStore.Application.Commands.BookEditing.Common;
 using BookStore.Application.Providers;
 using BookStore.Application.Services;
-using BookStore.Application.Services.CatalogSelections;
 using BookStore.Application.Services.DbQueryBuilders;
 using BookStore.Application.Services.Jwt;
 using MediatR;
@@ -25,9 +24,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<LoggedUserAccessor>();
         
         services.AddScoped<BattleSettingsProvider>();
-
-        services.AddScoped<LastViewedSelection>();
-        
+ 
         services.AddScoped<S3Storage>();
         services.Configure<S3Settings>(configuration.GetSection("S3"));
         services.AddScoped<ImageFileRepository>();
