@@ -12,7 +12,7 @@
 }
 
 .countdown .time {
-  font-family: 'Arcade', sans-serif;
+  font-family: 'Skranji', sans-serif;
   font-size: 2em;
   text-align: center;
   margin-top: 4vh;
@@ -33,6 +33,11 @@
   margin-top: 3vh;
 }
 
+.battle-book-image-block {
+  display: flex;
+  justify-content: center;
+}
+
 .first-book img, .second-book img {
   width: 300px;
   height: 450px;
@@ -47,10 +52,10 @@
 .versus {
   font-size: 20em;
   color: #2199e8;
-  font-family: 'Arcade', sans-serif;
+  font-family: 'Skranji', sans-serif;
 }
 
-.book-name a {
+.battle-block .book-name a {
   display: -webkit-box;
   font-size: 1.6em;
   text-align: center;
@@ -62,11 +67,11 @@
   white-space: normal;
   overflow: hidden;
   -webkit-line-clamp: 2;
-  height: 4vh;
+  height: 41px;
   text-decoration: none;
 }
 
-.book-name a:hover {
+.battle-block .book-name a:hover {
   text-decoration: underline;
   cursor: pointer;
 }
@@ -84,7 +89,7 @@
 }
 
 .votes-count, .discount {
-  font-family: 'Arcade', sans-serif;
+  font-family: 'Skranji', sans-serif;
   font-size: 2.6em;
   color: #2199e8;
   margin: 3vh 0;

@@ -17,7 +17,7 @@ namespace App.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "6.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -691,11 +691,47 @@ namespace App.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("TagGroupId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("TagGroupId");
+
                     b.ToTable("Tags");
+                });
+
+            modelBuilder.Entity("BookStore.Domain.Entities.Products.TagGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ColorHex")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ColorHex")
+                        .IsUnique();
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("TagGroup");
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.TelegramBotContact", b =>
@@ -1221,6 +1257,15 @@ namespace App.Migrations
                     b.Navigation("Tag");
                 });
 
+            modelBuilder.Entity("BookStore.Domain.Entities.Products.Tag", b =>
+                {
+                    b.HasOne("BookStore.Domain.Entities.Products.TagGroup", "TagGroup")
+                        .WithMany("Tags")
+                        .HasForeignKey("TagGroupId");
+
+                    b.Navigation("TagGroup");
+                });
+
             modelBuilder.Entity("BookStore.Domain.Entities.TelegramBotContact", b =>
                 {
                     b.HasOne("BookStore.Domain.Entities.User", "User")
@@ -1391,6 +1436,11 @@ namespace App.Migrations
             modelBuilder.Entity("BookStore.Domain.Entities.Products.Tag", b =>
                 {
                     b.Navigation("ProductTags");
+                });
+
+            modelBuilder.Entity("BookStore.Domain.Entities.Products.TagGroup", b =>
+                {
+                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.User", b =>

@@ -9,14 +9,10 @@ export class ProductPreview {
 
   public cost: number;
 
-  public isInBasket: boolean;
-
-
   public constructor(productPreview: ProductPreview) {
     this.id = productPreview.id;
     this.name = productPreview.name;
     this.titleImage = productPreview.titleImage;
     this.cost = productPreview.cost;
-    this.isInBasket = productPreview.isInBasket;
   }
 }

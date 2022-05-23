@@ -1,0 +1,23 @@
+﻿
+using BookStore.Domain.Entities;
+using BookStore.Domain.Entities.Books;
+using BookStore.Domain.Entities.Products;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace BookStore.Persistance.DatabaseConfigs
+{
+    public class TagDbConfig : RelatedEntityDbConfig<Tag>
+    {
+        public override void Configure(EntityTypeBuilder<Tag> builder)
+        {
+            base.Configure(builder);
+
+            builder.HasIndex(tag => tag.Name).IsUnique();
+        }
+    }
+}

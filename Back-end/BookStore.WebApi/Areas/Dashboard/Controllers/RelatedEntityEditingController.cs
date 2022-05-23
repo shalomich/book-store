@@ -7,103 +7,89 @@ using System.Linq;
 using System.Threading.Tasks;
 using BookStore.Application.Services.DbQueryBuilders;
 using BookStore.Application.Queries;
-using BookStore.WebApi.Attributes.GenericController;
-using BookStore.WebApi.Areas.Dashboard.ViewModels.Forms;
-using BookStore.Application.Commands;
 using BookStore.WebApi.Extensions;
+using BookStore.Application.Commands.RelatedEntityEditing.Common;
+using BookStore.Application.Commands.RelatedEntityEditing.CreateRelatedEntity;
+using System.Threading;
+using BookStore.Application.Commands.RelatedEntityEditing.UpdateRelatedEntity;
+using BookStore.Application.Commands.RelatedEntityEditing.DeleteRelatedEntity;
+using BookStore.Application.Commands.RelatedEntityEditing.GetEditRelatedEntity;
+using System.ComponentModel.DataAnnotations;
 
-namespace BookStore.WebApi.Areas.Dashboard.Controllers
+namespace BookStore.WebApi.Areas.Dashboard.Controllers;
+
+[ApiController]
+[Area("dashboard")]
+public abstract class RelatedEntityEditingController<TRelatedEntity, TRelatedEntityForm> : Controller where TRelatedEntity : RelatedEntity
+    where TRelatedEntityForm : RelatedEntityForm
 {
-    [Route("[area]/form-entity/[controller]")]
-    [ApiController]
-    [Area("dashboard")]
-    [GenericController()]
-    public class RelatedEntityEditingController<T> : Controller where T : RelatedEntity
+    public IMediator Mediator { get; }
+    public IMapper Mapper { get; }
+    public DbFormEntityQueryBuilder<TRelatedEntity> QueryBuilder { get; }
+
+    public RelatedEntityEditingController(
+        IMediator mediator, 
+        IMapper mapper, 
+        DbFormEntityQueryBuilder<TRelatedEntity> queryBuilder)
     {
-        public IMediator Mediator { get; }
-        public IMapper Mapper { get; }
-        public DbFormEntityQueryBuilder<T> QueryBuilder { get; }
+        Mediator = mediator;
+        Mapper = mapper;
+        QueryBuilder = queryBuilder;
+    }
 
-        public RelatedEntityEditingController(
-            IMediator mediator, 
-            IMapper mapper, 
-            DbFormEntityQueryBuilder<T> queryBuilder)
-        {
-            Mediator = mediator;
-            Mapper = mapper;
-            QueryBuilder = queryBuilder;
-        }
+    [HttpHead]
+    public async Task GetPaggingMetadata([FromQuery] PaggingArgs paggingArgs)
+    {
+        var metadata = await Mediator.Send(new GetMetadataQuery(paggingArgs, QueryBuilder));
 
-        [HttpHead]
-        public async Task GetPaggingMetadata([FromQuery] PaggingArgs paggingArgs)
-        {
-            var metadata = await Mediator.Send(new GetMetadataQuery(paggingArgs, QueryBuilder));
+        HttpContext.Response.Headers.Add(metadata);
+    }
 
-            HttpContext.Response.Headers.Add(metadata);
-        }
+    [HttpGet]
+    public async Task<ActionResult<TRelatedEntityForm[]>> GetRelatedEntities([FromQuery][Required] PaggingArgs pagging)
+    {
+        QueryBuilder
+            .AddPagging(pagging);
 
-        [HttpGet]
-        public async Task<ActionResult<RelatedEntityForm[]>> Read([FromQuery] PaggingArgs paggingArgs)
-        {
-            QueryBuilder
-                .AddPagging(paggingArgs);
+        var relatedEntities = await Mediator.Send(new GetQuery(QueryBuilder));
 
-            var relatedEntities = await Mediator.Send(new GetQuery(QueryBuilder));
+        return relatedEntities
+            .Select(relatedEntity => Mapper.Map<TRelatedEntityForm>(relatedEntity))
+            .ToArray();
+    }
 
-            return relatedEntities
-                .Select(relatedEntity => Mapper.Map<RelatedEntityForm>(relatedEntity))
-                .ToArray();
-        }
+    [HttpGet("{id}")]
+    public async Task<ActionResult<TRelatedEntityForm>> GetEditRelatedEntity(int id, CancellationToken cancellationToken)
+    {
+        return (TRelatedEntityForm) await Mediator.Send(new GetEditRelatedEntityQuery(id, typeof(TRelatedEntity)), cancellationToken);
+    }
 
-        protected async Task<T> ReadById(int id)
-        {
-            return (T) await Mediator.Send(new GetByIdQuery(id, QueryBuilder));
-        }
+    [HttpPost]
+    public async Task<int> CreateRelatedEntity(TRelatedEntityForm relatedEntityForm, CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(new CreateRelatedEntityCommand(typeof(TRelatedEntity), relatedEntityForm), cancellationToken);
+    }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<RelatedEntityForm>> Read(int id)
-        {
-            var formEntity = await ReadById(id);
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateRelatedEntity(int id, TRelatedEntityForm relatedEntityForm, CancellationToken cancellationToken)
+    {
+        await Mediator.Send(new UpdateRelatedEntityCommand(id, typeof(TRelatedEntity), relatedEntityForm), cancellationToken);
 
-            return Ok(Mapper.Map<RelatedEntityForm>(formEntity));
-        }
+        return NoContent();
+    }
 
-        [HttpPost]
-        public async Task<int> Create(RelatedEntityForm entityForm)
-        {
-            var formEntity = Mapper.Map<T>(entityForm);
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteRelatedEntity(int id, CancellationToken cancellationToken)
+    {     
+        await Mediator.Send(new DeleteRelatedEntityCommand(id, typeof(TRelatedEntity)), cancellationToken);
 
-            var createdEntity = await Mediator.Send(new CreateCommand(formEntity));
+        return NoContent();
+    }
 
-            return createdEntity.Id;
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, RelatedEntityForm entityForm)
-        {
-            var formEntity = await ReadById(id);
-
-            formEntity = Mapper.Map(entityForm, formEntity);
-
-            await Mediator.Send(new UpdateCommand(id, formEntity));
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var deletedFormEntity = await Mediator.Send(new GetByIdQuery(id, QueryBuilder));
-            
-            await Mediator.Send(new DeleteCommand(deletedFormEntity));
-
-            return NoContent();
-        }
-
-        [HttpGet("name-existed")]
-        public async Task<bool> CheckNameExisted([FromQuery] string name)
-        {
-            return await Mediator.Send(new CheckRelatedEntityNameQuery(name, QueryBuilder));
-        }
+    [HttpGet("name-existed")]
+    public async Task<bool> CheckNameExisted([FromQuery] string name)
+    {
+        return await Mediator.Send(new CheckRelatedEntityNameQuery(name, QueryBuilder));
     }
 }
+

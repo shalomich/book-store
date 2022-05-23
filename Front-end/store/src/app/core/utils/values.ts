@@ -1,4 +1,4 @@
-export const PRODUCT_URL = 'https://localhost:44327/store/product/';
+export const PRODUCT_URL = 'https://localhost:44327/store/catalog/';
 export const SELECTION_URL = 'https://localhost:44327/store/selection/';
 export const LOGIN_URL = 'https://localhost:44327/store/account/login';
 export const REGISTER_URL = 'https://localhost:44327/store/account/registration';
@@ -10,10 +10,12 @@ export const ORDER_URL = 'https://localhost:44327/store/order';
 
 export const BATTLE_URL = 'https://localhost:44327/store/battle';
 
+export const TELEGRAM_URL = 'https://localhost:44327/store/telegram-bot';
+
 export const PAGE_SIZE = 3;
 export const PAGE_NUMBER = 1;
 
-export const SEARCH_DEPTH = 1;
+export const SEARCH_DEPTH = 3;
 export const HINT_SIZE = 5;
 
 export const SELECTION_SIZE = 5;

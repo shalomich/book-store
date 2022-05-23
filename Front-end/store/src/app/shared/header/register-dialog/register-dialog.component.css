@@ -28,7 +28,7 @@
   margin-bottom: 1em;
 }
 
-.mat-error {
+.register-modal .mat-error {
   margin-bottom: 1em;
 }
 
@@ -47,10 +47,6 @@ input.mat-input-element {
 
 .mat-form-field-wrapper {
   padding-bottom: 0;
-}
-
-.register-modal .mat-error {
-  margin-top: -1em;
 }
 
 .mat-icon {

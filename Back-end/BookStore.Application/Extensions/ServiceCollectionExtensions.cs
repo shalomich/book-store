@@ -26,12 +26,8 @@ public static class ServiceCollectionExtensions
         
         services.AddScoped<BattleSettingsProvider>();
 
-        services.AddScoped<SearchSelection>();
-        services.AddScoped<CategorySelection>();
-        services.AddScoped<SpecialForYouCategorySelection>();
         services.AddScoped<LastViewedSelection>();
-        services.AddScoped<BooksForBattleSelection>();
-
+        
         services.AddScoped<S3Storage>();
         services.Configure<S3Settings>(configuration.GetSection("S3"));
         services.AddScoped<ImageFileRepository>();

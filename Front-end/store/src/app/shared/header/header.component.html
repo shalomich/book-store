@@ -14,6 +14,9 @@
     <button routerLink="/book-store/battle" mat-stroked-button class="battle-redirect">VS</button>
   </div>
   <div class="authorized-block" *ngIf="isAuthorized; else loginButton">
+    <button (click)="openTelegramDialog()" mat-stroked-button class="basket-button">
+      <span class="material-icons">telegram</span>
+    </button>
     <button mat-stroked-button class="basket-button" routerLink="/book-store/basket">
       <mat-icon>shopping_cart</mat-icon>
     </button>
@@ -41,6 +44,9 @@
 
 <ng-template #loginButton>
   <div class="unauthorized-block">
+    <button (click)="openTelegramDialog()" mat-stroked-button class="basket-button">
+      <span class="material-icons">telegram</span>
+    </button>
     <button class="login-button" mat-stroked-button (click)="openLoginDialog()">Войти</button>
   </div>
 </ng-template>

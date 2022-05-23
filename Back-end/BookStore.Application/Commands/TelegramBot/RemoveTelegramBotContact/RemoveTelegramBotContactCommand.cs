@@ -33,7 +33,15 @@ internal class RemoveTelegramBotContactCommandHandler : AsyncRequestHandler<Remo
 
     public async Task Handle(PhoneNumberUpdatedNotification notification, CancellationToken cancellationToken)
     {
-        await RemoveTelegramBotContact(notification.UserId, cancellationToken);
+        try
+        {
+            await RemoveTelegramBotContact(notification.UserId, cancellationToken);
+        } 
+        catch
+        {
+            return;
+        }
+        
     }
 
     private async Task RemoveTelegramBotContact(int userId, CancellationToken cancellationToken)

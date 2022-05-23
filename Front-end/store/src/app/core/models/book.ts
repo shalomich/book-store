@@ -39,6 +39,8 @@ export class Book {
 
   public isInBasket: boolean;
 
+  public tags: string[];
+
 
   public constructor(book: Book) {
     this.id = book.id;
@@ -60,5 +62,6 @@ export class Book {
     this.titleImage = book.titleImage;
     this.isbn = book.isbn;
     this.isInBasket = book.isInBasket;
+    this.tags = book.tags;
   }
 }

@@ -9,8 +9,6 @@ import { ProductPreview } from '../models/product-preview';
 import { BookBattleDto } from '../DTOs/book-battle-dto';
 import { BookBattle } from '../models/book-battle';
 
-import { Mapper } from './mapper/mapper';
-
 /**
  * Mapper for film entity.
  */
@@ -24,8 +22,6 @@ export class BookBattleMapper {
       endDate: new Date(data.endDate),
       state: data.state,
       discountPercentage: data.discountPercentage,
-      spentVotingPointCount: data.spentVotingPointCount,
-      votedBattleBookId: data.votedBattleBookId,
       finalDiscount: data.finalDiscount,
     });
   }

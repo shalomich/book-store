@@ -7,7 +7,7 @@
       <span class="total-cost">Итоговая сумма заказа: <span>{{totalCost}} &#8381;</span></span>
     </div>
     <div class="order-button-block">
-      <button (click)="onOrderApply()" class="order-apply-button" mat-flat-button>Подтвердить заказ</button>
+      <button [disabled]="!personalData.personalDataForm.valid || !basketProducts.length" (click)="onOrderApply()" class="order-apply-button" mat-flat-button>Подтвердить заказ</button>
     </div>
   </div>
 </div>

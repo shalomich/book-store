@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { map } from 'rxjs/operators';
+import {map, share} from 'rxjs/operators';
 
 import { Observable } from 'rxjs';
 
@@ -64,6 +64,7 @@ export class SelectionService {
 
     return this.http.get<ProductPreviewSetDto>(`${SELECTION_URL}${selection}`, options).pipe(
       map(setDto => this.productPreviewSetMapper.fromDto(setDto)),
+      share(),
     );
   }
 

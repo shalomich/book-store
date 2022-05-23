@@ -1,4 +1,4 @@
-<div *ngIf="(book$ | async) as book" class="book-card">
+<div *ngIf="book.id" class="book-card">
   <div class="book-name">
     {{book.name}}
   </div>
@@ -48,6 +48,11 @@
       <div class="field-name">Формат</div>
       <div class="field-value">{{book.bookFormat}}</div>
     </div>
+    <div class="info-field">
+      <mat-chip-list>
+        <mat-chip [disableRipple]="true" *ngFor="let tag of book.tags"># {{tag}}</mat-chip>
+      </mat-chip-list>
+    </div>
   </div>
   <div>
     <div class="description-block">
@@ -58,6 +63,6 @@
         <p>{{book.description}}</p>
       </mat-expansion-panel>
     </div>
-    <app-add-to-cart [bookId]="currentBookId" [isInBasket]="book.isInBasket" [cost]="book.cost"></app-add-to-cart>
+    <app-add-to-cart [bookId]="currentBookId" [isInBasket]="userProfile.basketBookIds.includes(currentBookId)" [cost]="book.cost"></app-add-to-cart>
   </div>
 </div>

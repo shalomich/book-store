@@ -7,11 +7,13 @@
           {{battle.firstBattleBook.name}}
         </a>
       </div>
-      <img [alt]="battle.firstBattleBook.name" src="{{battle.firstBattleBook.titleImage.fileUrl}}">
+      <div class="battle-book-image-block">
+        <img [alt]="battle.firstBattleBook.name" src="{{battle.firstBattleBook.titleImage.fileUrl}}">
+      </div>
       <app-battle-voting-block [votingBookId]="battle.firstBattleBook.battleBookId"
                                [canUserVote]="canUserVote(battle.firstBattleBook.battleBookId, battle)"
-                               [userMaxPoints]="(userProfile$ | async)?.votingPointCount || 0"
-                               [battleVotedBookId]="battle.votedBattleBookId"
+                               [userMaxPoints]="userProfile.votingPointCount"
+                               [battleVotedBookId]="userProfile.currentVotedBattleBookId"
                                [onVote]="handleVoting">
       </app-battle-voting-block>
     </div>
@@ -44,7 +46,7 @@
     <div class="discount-block">
       <div class="discount">
         <div class="winner-discount-text" *ngIf="battle.state === 'Finished'">Итоговая скидка</div>
-        <span>{{battle.discountPercentage}}%</span> <span *ngIf="battle.state !== 'Finished'">/ {{battle.finalDiscount}}%</span>
+        <span>{{battle.discountPercentage}}%</span> <span *ngIf="battle.state !== 'Finished'"> / {{battle.finalDiscount}}%</span>
       </div>
       <div class="prices-for-winner">
         <div class="book-price">
@@ -77,11 +79,13 @@
           {{battle.secondBattleBook.name}}
         </a>
       </div>
-      <img [alt]="battle.secondBattleBook.name" src="{{battle.secondBattleBook.titleImage.fileUrl}}">
-      <app-battle-voting-block [votingBookId]="battle.firstBattleBook.battleBookId"
+      <div class="battle-book-image-block">
+        <img [alt]="battle.secondBattleBook.name" src="{{battle.secondBattleBook.titleImage.fileUrl}}">
+      </div>
+      <app-battle-voting-block [votingBookId]="battle.secondBattleBook.battleBookId"
                                [canUserVote]="canUserVote(battle.secondBattleBook.battleBookId, battle)"
-                               [userMaxPoints]="(userProfile$ | async)?.votingPointCount || 0"
-                               [battleVotedBookId]="battle.votedBattleBookId"
+                               [userMaxPoints]="userProfile.votingPointCount"
+                               [battleVotedBookId]="userProfile.currentVotedBattleBookId"
                                [onVote]="handleVoting">
       </app-battle-voting-block>
     </div>

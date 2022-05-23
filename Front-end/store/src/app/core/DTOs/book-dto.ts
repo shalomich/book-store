@@ -38,4 +38,6 @@ export interface BookDto {
   readonly titleImage: Image;
 
   readonly isInBasket: boolean;
+
+  readonly tags: string[];
 }

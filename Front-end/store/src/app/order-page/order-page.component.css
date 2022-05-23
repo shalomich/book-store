@@ -11,6 +11,10 @@
   color: #ffffff;
 }
 
+.order-apply-button:disabled {
+  border: none;
+}
+
 .new-order-block {
   box-shadow: 0 0 10px 0 rgba(34, 60, 80, 0.2);
   width: 80vw;

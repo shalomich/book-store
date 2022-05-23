@@ -1,5 +1,11 @@
 import { AbstractControl, AsyncValidatorFn, FormControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import {EMAIL_FORMAT_ERROR, PASSWORD_FORMAT_ERROR, PASSWORD_MATCH_ERROR} from '../utils/validation-errors';
+
+import {
+  EMAIL_FORMAT_ERROR,
+  PASSWORD_FORMAT_ERROR,
+  PASSWORD_MATCH_ERROR,
+  PHONE_FORMAT_ERROR
+} from '../utils/validation-errors';
 export class AuthValidator {
 
   public static matchPassword(password: AbstractControl): ValidatorFn {
@@ -34,6 +40,21 @@ export class AuthValidator {
 
       if ((control.value.length < 8 || !isFormatValid) && control.value) {
         return { error: PASSWORD_FORMAT_ERROR };
+      }
+
+      return null;
+    };
+  }
+
+  public static phoneNumberFormat(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const isFormatValid = String(control.value)
+        .match(
+          /(^8|7|\+7)((\d{10})|(\s\(\d{3}\)\s\d{3}\s\d{2}\s\d{2}))$/,
+        );
+
+      if (!isFormatValid && control.value) {
+        return { error: PHONE_FORMAT_ERROR };
       }
 
       return null;
