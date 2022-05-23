@@ -1,9 +1,7 @@
-﻿using BookStore.Application.Queries;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using BookStore.Application.Dto;
-using BookStore.Application.Services.CatalogSelections;
 using Microsoft.AspNetCore.Authorization;
 using BookStore.Application.Commands.Selection.Common;
 using BookStore.Application.Commands.Selection.GetNoveltySelection;
@@ -16,6 +14,7 @@ using QueryWorker.Args;
 using BookStore.Application.Commands.Selection.GetSearchSelection;
 using System.ComponentModel.DataAnnotations;
 using BookStore.Application.Commands.Selection.GetSearchHints;
+using BookStore.Application.Commands.Selection.GetLastViewedSelection;
 
 namespace BookStore.WebApi.Areas.Store.Controllers;
 
@@ -77,10 +76,9 @@ public class SelectionController : StoreController
 
     [HttpGet("lastViewed")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public async Task<PreviewSetDto> FindLastViewed([FromQuery] OptionParameters optionParameters, [FromServices] LastViewedSelection lastViewedSelection)
+    public async Task<PreviewSetDto> GetLastViewedSelection([FromQuery] OptionParameters optionParameters, CancellationToken cancellationToken)
     {
-        return null;
-        //return await Mediator.Send(new GetCatalogSelectionQuery(lastViewedSelection, optionParameters));
+        return await Mediator.Send(new GetLastViewedSelectionQuery(optionParameters), cancellationToken);
     }
 }
 
