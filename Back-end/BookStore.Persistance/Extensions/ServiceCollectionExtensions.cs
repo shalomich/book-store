@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BookStore.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,6 +17,8 @@ public static class ServiceCollectionExtensions
             options.UseSqlServer(connectionString,
                 builder => builder.MigrationsAssembly(currentAssemblyName));
         });
+
+        services.AddAsyncInitializer<DatabaseInitializer>();
 
         return services;
     }
