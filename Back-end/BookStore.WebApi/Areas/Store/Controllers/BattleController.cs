@@ -34,6 +34,7 @@ public class BattleController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     public void StartBattle()
     {
         BackgroundJob.Enqueue<StartBattleJob>(job => job.StartBattle(default));
@@ -52,12 +53,14 @@ public class BattleController : ControllerBase
     }
 
     [HttpGet("settings")]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     public async Task<BattleSettings> GetBattlesSettings(CancellationToken cancellationToken)
     {
         return await Mediator.Send(new GetBattlesSettingsQuery(), cancellationToken);
     }
 
     [HttpPut("settings")]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     public async Task UpdateBattlesSettings(BattleSettings battleSettings, CancellationToken cancellationToken)
     {
         await Mediator.Send(new UpdateBattleSettingsCommand(battleSettings), cancellationToken);
