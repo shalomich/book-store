@@ -96,7 +96,7 @@ public class SelectionController : StoreController
     }
 
     [HttpGet("battle")]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     public async Task<PreviewSetDto> GetBattleSelection([FromQuery] OptionParameters optionParameters, CancellationToken cancellationToken)
     {
         return await Mediator.Send(new GetBattleSelectionQuery(optionParameters), cancellationToken);

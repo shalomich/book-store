@@ -15,11 +15,13 @@ using BookStore.Application.Commands.RelatedEntityEditing.UpdateRelatedEntity;
 using BookStore.Application.Commands.RelatedEntityEditing.DeleteRelatedEntity;
 using BookStore.Application.Commands.RelatedEntityEditing.GetEditRelatedEntity;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookStore.WebApi.Areas.Dashboard.Controllers;
 
 [ApiController]
 [Area("dashboard")]
+[Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
 public abstract class RelatedEntityEditingController<TRelatedEntity, TRelatedEntityForm> : Controller where TRelatedEntity : RelatedEntity
     where TRelatedEntityForm : RelatedEntityForm
 {
