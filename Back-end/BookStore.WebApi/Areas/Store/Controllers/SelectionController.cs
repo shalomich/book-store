@@ -87,6 +87,14 @@ public class SelectionController : StoreController
         return await Mediator.Send(new GetCanBeInterestingSelectionQuery(tagCount, optionParameters), cancellationToken);
     }
 
+    [HttpGet("specialForYou")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    public async Task<PreviewSetDto> GetSpecialForYouSelection(
+        [FromQuery] OptionParameters optionParameters, CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(new GetSpecialForYouSelectionQuery(optionParameters), cancellationToken);
+    }
+
     [HttpGet("battle")]
     [Authorize(AuthenticationSchemes = "Bearer")]
     public async Task<PreviewSetDto> GetBattleSelection([FromQuery] OptionParameters optionParameters, CancellationToken cancellationToken)
