@@ -50,7 +50,7 @@
     </div>
     <div class="info-field">
       <mat-chip-list>
-        <mat-chip [disableRipple]="true" *ngFor="let tag of book.tags"># {{tag}}</mat-chip>
+        <mat-chip [title]="tag.groupName" [style]="{backgroundColor: tag.colorHex, color: '#FFFFFF'}" [disableRipple]="true" *ngFor="let tag of book.tags"># {{tag.name}}</mat-chip>
       </mat-chip-list>
     </div>
   </div>

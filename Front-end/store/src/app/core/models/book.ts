@@ -1,4 +1,5 @@
 import { Image } from '../interfaces/image';
+import {CardTag} from '../interfaces/card-tag';
 
 export class Book {
   public id: number;
@@ -39,7 +40,7 @@ export class Book {
 
   public isInBasket: boolean;
 
-  public tags: string[];
+  public tags: CardTag[];
 
 
   public constructor(book: Book) {

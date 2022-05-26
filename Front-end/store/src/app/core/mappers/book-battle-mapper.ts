@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import { BookDto } from '../DTOs/book-dto';
-import { Book } from '../models/book';
-
-import { ProductPreviewDto } from '../DTOs/product-preview-dto';
-import { ProductPreview } from '../models/product-preview';
-
 import { BookBattleDto } from '../DTOs/book-battle-dto';
 import { BookBattle } from '../models/book-battle';
 
