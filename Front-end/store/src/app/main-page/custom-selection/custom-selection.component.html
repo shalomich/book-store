@@ -1,16 +1,18 @@
-<ng-container *ngIf="(bookSet$ | async)?.previews && (bookSet$ | async)!.previews.length != 0; else emptyCustomSelection">
+<ng-container *ngIf="(bookSet$ | async) && (bookSet$ | async)?.previews && (bookSet$ | async)!.previews.length != 0; else emptyCustomSelection">
   <div class="custom-selection-block">
-    <h3>
-      <a class="selection-link" [href]="selectionLink">
-        {{selectionHeader}}
-      </a>
-    </h3>
-    <div class="custom-selection-settings" *ngIf="userProfile.isAuthorized()">
-      &nbsp; &nbsp; &nbsp;
-      <button mat-icon-button><mat-icon matTooltip="Настроить">settings</mat-icon></button>
+    <div class="custom-selection-title">
+      <h3>
+        <a class="selection-link" [href]="selectionLink">
+          {{selectionHeader}}
+        </a>
+      </h3>
+      <div class="custom-selection-settings" *ngIf="userProfile.isAuthorized()">
+        &nbsp; &nbsp;
+        <button (click)="openSettingsDialog()" mat-icon-button><mat-icon matTooltip="Настроить">settings</mat-icon></button>
+      </div>
+      &nbsp;
+      <button (click)="openInfoDialog()" mat-icon-button><mat-icon matTooltip="Информация">help_outline</mat-icon></button>
     </div>
-    &nbsp; &nbsp; &nbsp;
-    <button mat-icon-button><mat-icon matTooltip="Информация">help_outline</mat-icon></button>
     <div class="selection-books-list">
       <app-book-preview *ngFor="let book of (bookSet$ | async)?.previews"
                         [item]="book"
@@ -25,9 +27,9 @@
     <span>{{selectionHeader}}</span>
     <div class="custom-selection-settings" *ngIf="userProfile.isAuthorized()">
       &nbsp; &nbsp; &nbsp;
-      <button mat-icon-button><mat-icon (click)="openSettingsDialog()" matTooltip="Настроить">settings</mat-icon></button>
+      <button (click)="openSettingsDialog()" mat-icon-button><mat-icon matTooltip="Настроить">settings</mat-icon></button>
     </div>
     &nbsp; &nbsp;
-    <button mat-icon-button><mat-icon matTooltip="Информация">help_outline</mat-icon></button>
+    <button (click)="openInfoDialog()" mat-icon-button><mat-icon matTooltip="Информация">help_outline</mat-icon></button>
   </div>
 </ng-template>

@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 
 import { Observable, of, Subscription } from 'rxjs';
 
@@ -17,6 +17,9 @@ import { UserProfile } from '../../core/models/user-profile';
 import {
   CustomSelectionSettingsDialogComponent,
 } from './custom-selection-settings-dialog/custom-selection-settings-dialog.component';
+import {
+  CustomSelectionInfoDialogComponent,
+} from './custom-selection-info-dialog/custom-selection-info-dialog.component';
 
 @Component({
   selector: 'app-custom-selection',
@@ -47,11 +50,11 @@ export class CustomSelectionComponent implements OnInit, OnDestroy, OnChanges {
 
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.selectionLink = `book-store/catalog/selection/${this.selectionName}`;
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  public ngOnChanges(changes: SimpleChanges) {
     const paginationOptions: PaginationOptions = {
       pageSize: SELECTION_SIZE,
       pageNumber: 1,
@@ -62,11 +65,11 @@ export class CustomSelectionComponent implements OnInit, OnDestroy, OnChanges {
       of({} as ProductPreviewSet);
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.subs.unsubscribe();
   }
 
-  openSettingsDialog(): void {
+  public openSettingsDialog(): void {
     this.dialog.open(CustomSelectionSettingsDialogComponent, {
       data: { userProfile: this.userProfile },
       panelClass: 'selection-settings-dialog',
@@ -75,4 +78,11 @@ export class CustomSelectionComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
+  public openInfoDialog(): void {
+    this.dialog.open(CustomSelectionInfoDialogComponent, {
+      panelClass: 'custom-selection-info-dialog',
+      restoreFocus: false,
+      autoFocus: false,
+    });
+  }
 }

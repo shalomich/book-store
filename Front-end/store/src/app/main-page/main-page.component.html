@@ -1,6 +1,7 @@
 <div class="main-page-selections">
   <app-custom-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.SpecialForYou" selectionHeader="Специально для вас"></app-custom-selection>
   <app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.Novelty" selectionHeader="Новинки"></app-selection>
+  <app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.Popular" selectionHeader="Популярное"></app-selection>
   <app-selection *ngIf="(userProfile$ | async)?.isAuthorized()"
                  [userProfile]="(userProfile$ | async) || emptyUser"
                  [selectionName]="selectionEnum.LastViewed"

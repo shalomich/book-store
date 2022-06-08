@@ -1,5 +1,6 @@
 export enum Selection {
   SpecialForYou = 'specialForYou',
+  Popular = 'popular',
   Novelty = 'novelty',
   GoneOnSale = 'goneOnSale',
   BackOnSale = 'backOnSale',

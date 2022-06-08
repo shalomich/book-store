@@ -3,6 +3,21 @@
   width: fit-content;
 }
 
+.custom-selection-title {
+  display: flex;
+  align-items: center;
+  color: #2199e8;
+  margin-bottom: 1vh;
+}
+
+.custom-selection-title h3 {
+  margin: 0;
+}
+
+.custom-selection-title .mat-icon {
+  font-size: 2em;
+}
+
 .selection-books-list > :last-child {
   margin-right: -3vw;
 }
@@ -34,10 +49,6 @@
   height: max-content;
   color: #2199e8;
   font-size: 2.4em;
-}
-
-.empty-custom-selection-block .mat-icon:hover {
-  cursor: pointer;
 }
 
 .custom-selection-settings {

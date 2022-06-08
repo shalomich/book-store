@@ -1,5 +1,5 @@
 <div class="dialog-header-buttons">
-  <button mat-icon-button><mat-icon matTooltip="Информация">help_outline</mat-icon></button>
+  <button mat-icon-button><mat-icon matTooltip="Выберите теги, комиксы с которыми вам наиболее интересны и будут в дальнейшнем отображаться в подборке">help_outline</mat-icon></button>
   <button (click)="onClose()" mat-icon-button><mat-icon>close</mat-icon></button>
 </div>
 <div class="dialog-content-block">
@@ -23,7 +23,8 @@
                                              [selectedTags]="universesGroupTags"
                                              [onTagsListChanged]="onTagsListChanged()"
                                              [color]="tagsGroups[0].colorHex"
-                                             [usersTagsIds]="usersTagsIds">
+                                             [usersTags]="getUsersTags(tagsGroups[0].tags, usersTagsIds)"
+                                             [disableInput]="selectedTags.length >= 5">
                 </app-autocomplete-with-chips>
               </div>
             </div>
@@ -42,7 +43,8 @@
                                              [selectedTags]="charactersGroupTags"
                                              [onTagsListChanged]="onTagsListChanged()"
                                              [color]="tagsGroups[1].colorHex"
-                                             [usersTagsIds]="usersTagsIds">
+                                             [usersTags]="getUsersTags(tagsGroups[1].tags, usersTagsIds)"
+                                             [disableInput]="selectedTags.length >= 5">
                 </app-autocomplete-with-chips>
               </div>
             </div>
@@ -61,7 +63,8 @@
                                              [selectedTags]="othersGroupTags"
                                              [onTagsListChanged]="onTagsListChanged()"
                                              [color]="tagsGroups[2].colorHex"
-                                             [usersTagsIds]="usersTagsIds">
+                                             [usersTags]="getUsersTags(tagsGroups[2].tags, usersTagsIds)"
+                                             [disableInput]="selectedTags.length >= 5">
                 </app-autocomplete-with-chips>
               </div>
             </div>
@@ -72,7 +75,7 @@
   </div>
   <mat-divider class="footer-divider"></mat-divider>
   <div class="selected-tags-count">
-    <span>Тегов выбрано:</span> &nbsp; {{this.usersTagsIds.length ? this.usersTagsIds.length : this.selectedTags.length}} / 5
+    <span>Тегов выбрано:</span> &nbsp; {{ selectedTagsAmount }} / 5
   </div>
   <div class="tags-apply-button-block">
     <button mat-stroked-button (click)="onApply()">Сохранить</button>

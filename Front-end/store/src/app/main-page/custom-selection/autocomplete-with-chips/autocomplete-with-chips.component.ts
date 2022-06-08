@@ -1,17 +1,26 @@
-import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { map, startWith } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { FormControl } from '@angular/forms';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges, OnInit,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {MatChipInputEvent} from '@angular/material/chips';
+import {map, startWith} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {FormControl} from '@angular/forms';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
 
-import { Tag } from '../../../core/interfaces/tag';
+import {Tag} from '../../../core/interfaces/tag';
 
 @Component({
   selector: 'app-autocomplete-with-chips',
   templateUrl: './autocomplete-with-chips.component.html',
   styleUrls: ['./autocomplete-with-chips.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
 export class AutocompleteWithChipsComponent implements OnInit {
@@ -32,12 +41,15 @@ export class AutocompleteWithChipsComponent implements OnInit {
   public allTags: Tag[] = [];
 
   @Input()
-  public usersTagsIds: number[] = [];
+  public usersTags: Tag[] = [];
 
   @Input()
   onTagsListChanged: () => void = () => {};
 
   @ViewChild('tagInput') fruitInput!: ElementRef<HTMLInputElement>;
+
+  @Input()
+  public disableInput = false;
 
   constructor() {
     this.filteredTags = this.tagsControl.valueChanges.pipe(
@@ -47,7 +59,7 @@ export class AutocompleteWithChipsComponent implements OnInit {
   }
 
   public ngOnInit() {
-    this.selectedTags = this.allTags.filter(tag => this.usersTagsIds.includes(tag.id));
+    this.selectedTags.push(...this.usersTags);
   }
 
   public add(event: MatChipInputEvent): void {
@@ -62,7 +74,7 @@ export class AutocompleteWithChipsComponent implements OnInit {
     // Clear the input value
     event.chipInput!.clear();
 
-    this.tagsControl.setValue(null);
+    this.tagsControl.reset();
   }
 
   public remove(tagToRemove: string): void {
@@ -71,13 +83,14 @@ export class AutocompleteWithChipsComponent implements OnInit {
     if (index >= 0) {
       this.selectedTags.splice(index, 1);
     }
+    this.tagsControl.reset();
     this.onTagsListChanged();
   }
 
   public selected(event: MatAutocompleteSelectedEvent): void {
     this.selectedTags.push(this.allTags.filter(tag => tag.name === event.option.viewValue)[0]);
     this.fruitInput.nativeElement.value = '';
-    this.tagsControl.setValue(null);
+    this.tagsControl.reset();
     this.onTagsListChanged();
   }
 

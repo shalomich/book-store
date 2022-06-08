@@ -77,6 +77,9 @@ import {
 } from './main-page/custom-selection/autocomplete-with-chips/autocomplete-with-chips.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatDividerModule} from '@angular/material/divider';
+import {
+  CustomSelectionInfoDialogComponent
+} from './main-page/custom-selection/custom-selection-info-dialog/custom-selection-info-dialog.component';
 
 
 @NgModule({
@@ -100,6 +103,7 @@ import {MatDividerModule} from '@angular/material/divider';
     BattleInfoDialogComponent,
     BattleVotingBlockComponent,
     CustomSelectionSettingsDialogComponent,
+    CustomSelectionInfoDialogComponent,
     AutocompleteWithChipsComponent,
   ],
   imports: [

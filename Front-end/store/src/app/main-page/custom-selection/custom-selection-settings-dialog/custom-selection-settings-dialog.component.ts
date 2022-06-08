@@ -9,6 +9,9 @@ import { TagsGroup } from '../../../core/interfaces/tags-group';
 import { TagsService } from '../../../core/services/tags.service';
 import { Tag } from '../../../core/interfaces/tag';
 import { UserProfile } from '../../../core/models/user-profile';
+import {
+  CustomSelectionInfoDialogComponent
+} from '../custom-selection-info-dialog/custom-selection-info-dialog.component';
 
 interface DialogData {
   userProfile: UserProfile;
@@ -34,6 +37,8 @@ export class CustomSelectionSettingsDialogComponent implements OnInit, OnDestroy
 
   public usersTagsIds: number[] = [];
 
+  public selectedTagsAmount = 0;
+
   private subs: Subscription = new Subscription();
 
   constructor(
@@ -42,29 +47,35 @@ export class CustomSelectionSettingsDialogComponent implements OnInit, OnDestroy
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.subs.add(this.tagsService.getTagsGroups().subscribe(tagsGroups => {
       this.tagsGroups = tagsGroups;
     }));
 
     this.usersTagsIds = this.data.userProfile.tagIds;
+    this.selectedTagsAmount = this.usersTagsIds.length;
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.subs.unsubscribe();
   }
 
-  onTagsListChanged(): () => void {
+  public onTagsListChanged(): () => void {
     return () => {
       this.selectedTags = this.universesGroupTags.concat(this.charactersGroupTags).concat(this.othersGroupTags);
+      this.selectedTagsAmount = this.selectedTags.length;
     };
   }
 
   public onApply(): void {
-    this.subs.add(this.tagsService.updateUsersTags(this.selectedTags.map(tag => tag.id)).subscribe(_ => this.onClose()));
+    this.subs.add(this.tagsService.updateUsersTags(this.selectedTags.map(tag => tag.id)).subscribe(_ => window.location.reload()));
   }
 
-  onClose(): void {
+  public onClose(): void {
     this.dialogRef.close();
+  }
+
+  public getUsersTags(tags: Tag[], ids: number[]): Tag[] {
+    return tags.filter(tag => ids.includes(tag.id));
   }
 }

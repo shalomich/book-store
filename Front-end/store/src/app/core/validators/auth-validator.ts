@@ -58,6 +58,6 @@ export class AuthValidator {
       }
 
       return null;
-    };
+    }
   }
 }

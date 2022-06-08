@@ -55,7 +55,7 @@
           </div>
           &nbsp; &nbsp;
           <div *ngIf="(battle.state !== 'Finished') || isWinner(1, battle)" class="new-price">
-            {{battle.firstBattleBook.cost * (1 - battle.discountPercentage / 100)}} &#8381;
+            {{getWinnerCost(battle.firstBattleBook.cost, battle.discountPercentage)}} &#8381;
           </div>
         </div>
         <mat-icon (click)="openBattleInfoDialog()" matTooltip="Информация о баттле">help_outline</mat-icon>
@@ -65,7 +65,7 @@
           </div>
           &nbsp; &nbsp;
           <div *ngIf="(battle.state !== 'Finished') || isWinner(2, battle)" class="new-price">
-            {{battle.secondBattleBook.cost * (1 - battle.discountPercentage / 100)}} &#8381;
+            {{getWinnerCost(battle.secondBattleBook.cost, battle.discountPercentage)}} &#8381;
           </div>
         </div>
       </div>
