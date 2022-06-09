@@ -5,6 +5,6 @@ export enum Selection {
   GoneOnSale = 'goneOnSale',
   BackOnSale = 'backOnSale',
   CurrentDayAuthor = 'currentDayAuthor',
-  ForChildren = 'forChildren',
+  CanBeInteresting = 'canBeInteresting',
   LastViewed = 'lastViewed',
 }

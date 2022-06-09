@@ -27,11 +27,11 @@ export class CustomSelectionSettingsDialogComponent implements OnInit, OnDestroy
 
   public tagsGroups: TagsGroup[] = [];
 
-  public universesGroupTags: Tag[] = [];
+  public universesGroupSelectedTags: Tag[] = [];
 
-  public charactersGroupTags: Tag[] = [];
+  public charactersGroupSelectedTags: Tag[] = [];
 
-  public othersGroupTags: Tag[] = [];
+  public othersGroupSelectedTags: Tag[] = [];
 
   public selectedTags: Tag[] = [];
 
@@ -62,7 +62,7 @@ export class CustomSelectionSettingsDialogComponent implements OnInit, OnDestroy
 
   public onTagsListChanged(): () => void {
     return () => {
-      this.selectedTags = this.universesGroupTags.concat(this.charactersGroupTags).concat(this.othersGroupTags);
+      this.selectedTags = this.universesGroupSelectedTags.concat(this.charactersGroupSelectedTags).concat(this.othersGroupSelectedTags);
       this.selectedTagsAmount = this.selectedTags.length;
     };
   }

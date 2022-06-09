@@ -20,7 +20,7 @@
             <div>
               <div class="tags-setting-field">
                 <app-autocomplete-with-chips [allTags]="tagsGroups[0].tags"
-                                             [selectedTags]="universesGroupTags"
+                                             [selectedTags]="universesGroupSelectedTags"
                                              [onTagsListChanged]="onTagsListChanged()"
                                              [color]="tagsGroups[0].colorHex"
                                              [usersTags]="getUsersTags(tagsGroups[0].tags, usersTagsIds)"
@@ -40,7 +40,7 @@
             <div>
               <div class="tags-setting-field">
                 <app-autocomplete-with-chips [allTags]="tagsGroups[1].tags"
-                                             [selectedTags]="charactersGroupTags"
+                                             [selectedTags]="charactersGroupSelectedTags"
                                              [onTagsListChanged]="onTagsListChanged()"
                                              [color]="tagsGroups[1].colorHex"
                                              [usersTags]="getUsersTags(tagsGroups[1].tags, usersTagsIds)"
@@ -60,7 +60,7 @@
             <div>
               <div class="tags-setting-field">
                 <app-autocomplete-with-chips [allTags]="tagsGroups[2].tags"
-                                             [selectedTags]="othersGroupTags"
+                                             [selectedTags]="othersGroupSelectedTags"
                                              [onTagsListChanged]="onTagsListChanged()"
                                              [color]="tagsGroups[2].colorHex"
                                              [usersTags]="getUsersTags(tagsGroups[2].tags, usersTagsIds)"

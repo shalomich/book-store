@@ -46,7 +46,7 @@ export class AutocompleteWithChipsComponent implements OnInit {
   @Input()
   onTagsListChanged: () => void = () => {};
 
-  @ViewChild('tagInput') fruitInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('tagInput') tagInput!: ElementRef<HTMLInputElement>;
 
   @Input()
   public disableInput = false;
@@ -89,7 +89,7 @@ export class AutocompleteWithChipsComponent implements OnInit {
 
   public selected(event: MatAutocompleteSelectedEvent): void {
     this.selectedTags.push(this.allTags.filter(tag => tag.name === event.option.viewValue)[0]);
-    this.fruitInput.nativeElement.value = '';
+    this.tagInput.nativeElement.value = '';
     this.tagsControl.reset();
     this.onTagsListChanged();
   }
