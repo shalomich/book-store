@@ -1,10 +1,19 @@
-<app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.Novelty" selectionHeader="Новинки"></app-selection>
-<app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.GoneOnSale" selectionHeader="Уже в продаже"></app-selection>
-<app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.BackOnSale" selectionHeader="Снова в продаже"></app-selection>
-<app-selection *ngIf="(userProfile$ | async)?.isAuthorized()"
-  [userProfile]="(userProfile$ | async) || emptyUser"
-  [selectionName]="selectionEnum.LastViewed"
-  selectionHeader="Последнее, что вы смотрели"
-></app-selection>
-<app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.ForChildren" selectionHeader="Для детей"></app-selection>
-<app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.CurrentDayAuthor" selectionHeader="Автор этого дня"></app-selection>
+<div class="main-page-selections">
+  <app-custom-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.SpecialForYou" selectionHeader="Специально для вас"></app-custom-selection>
+  <app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.Novelty" selectionHeader="Новинки"></app-selection>
+  <app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.Popular" selectionHeader="Популярное"></app-selection>
+  <app-selection *ngIf="(userProfile$ | async)?.isAuthorized()"
+                 [userProfile]="(userProfile$ | async) || emptyUser"
+                 [selectionName]="selectionEnum.LastViewed"
+                 selectionHeader="Последнее, что вы смотрели"
+  ></app-selection>
+  <app-selection *ngIf="(userProfile$ | async)?.isAuthorized()"
+                 [userProfile]="(userProfile$ | async) || emptyUser"
+                 [selectionName]="selectionEnum.CanBeInteresting"
+                 selectionHeader="Вам может быть интересно"
+  ></app-selection>
+  <app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.GoneOnSale" selectionHeader="Уже в продаже"></app-selection>
+  <app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.BackOnSale" selectionHeader="Снова в продаже"></app-selection>
+  <app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.CurrentDayAuthor" selectionHeader="Автор этого дня"></app-selection>
+</div>
+

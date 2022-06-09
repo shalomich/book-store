@@ -35,6 +35,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { MatDialogModule } from '@angular/material/dialog';
 
+import { MatChipsModule } from '@angular/material/chips';
+
+import { MatSelectModule } from '@angular/material/select';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -66,6 +70,16 @@ import { BattleInfoDialogComponent } from './battle-page/battle-info-dialog/batt
 
 import { BattleVotingBlockComponent } from './battle-page/battle-voting-block/battle-voting-block.component';
 import { OrdersListPageComponent } from './orders-list-page/orders-list-page.component';
+import { CustomSelectionComponent } from './main-page/custom-selection/custom-selection.component';
+import { CustomSelectionSettingsDialogComponent } from './main-page/custom-selection/custom-selection-settings-dialog/custom-selection-settings-dialog.component';
+import {
+  AutocompleteWithChipsComponent,
+} from './main-page/custom-selection/autocomplete-with-chips/autocomplete-with-chips.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatDividerModule} from '@angular/material/divider';
+import {
+  CustomSelectionInfoDialogComponent
+} from './main-page/custom-selection/custom-selection-info-dialog/custom-selection-info-dialog.component';
 
 
 @NgModule({
@@ -75,6 +89,7 @@ import { OrdersListPageComponent } from './orders-list-page/orders-list-page.com
     SelectionComponent,
     MainPageComponent,
     SelectionPageComponent,
+    CustomSelectionComponent,
     CatalogComponent,
     BasketPageComponent,
     BasketElementComponent,
@@ -87,6 +102,9 @@ import { OrdersListPageComponent } from './orders-list-page/orders-list-page.com
     BattlePageComponent,
     BattleInfoDialogComponent,
     BattleVotingBlockComponent,
+    CustomSelectionSettingsDialogComponent,
+    CustomSelectionInfoDialogComponent,
+    AutocompleteWithChipsComponent,
   ],
   imports: [
     BrowserModule,
@@ -112,6 +130,10 @@ import { OrdersListPageComponent } from './orders-list-page/orders-list-page.com
     CdTimerModule,
     MatTooltipModule,
     MatDialogModule,
+    MatChipsModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatDividerModule,
   ],
   providers: [ProductOptionsStorage, ProfileProviderService],
   bootstrap: [AppComponent],

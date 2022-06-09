@@ -1,4 +1,5 @@
 import { Image } from '../interfaces/image';
+import {CardTag} from '../interfaces/card-tag';
 
 export interface BookDto {
   readonly id: number;
@@ -39,5 +40,5 @@ export interface BookDto {
 
   readonly isInBasket: boolean;
 
-  readonly tags: string[];
+  readonly tags: CardTag[];
 }

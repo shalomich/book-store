@@ -1,0 +1,84 @@
+<div class="dialog-header-buttons">
+  <button mat-icon-button><mat-icon matTooltip="Выберите теги, комиксы с которыми вам наиболее интересны и будут в дальнейшнем отображаться в подборке">help_outline</mat-icon></button>
+  <button (click)="onClose()" mat-icon-button><mat-icon>close</mat-icon></button>
+</div>
+<div class="dialog-content-block">
+  <div class="settings-dialog-title">
+    Настройка подборки &laquo;Специально для вас&raquo;
+  </div>
+  <div *ngIf="tagsGroups.length">
+    <div class="tags-setting-block">
+      <span class="selection-settings-message">Выберите теги, по которым хотите составить подборку</span>
+      <div class="tags-groups-block">
+        <div class="panel-block">
+          <mat-expansion-panel class="tags-setting-panel" [style]="{borderColor: tagsGroups[0].colorHex}" [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title [style]="{color: tagsGroups[0].colorHex}">
+                {{tagsGroups[0].name}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+              <div class="tags-setting-field">
+                <app-autocomplete-with-chips [allTags]="tagsGroups[0].tags"
+                                             [selectedTags]="universesGroupSelectedTags"
+                                             [onTagsListChanged]="onTagsListChanged()"
+                                             [color]="tagsGroups[0].colorHex"
+                                             [usersTags]="getUsersTags(tagsGroups[0].tags, usersTagsIds)"
+                                             [disableInput]="selectedTags.length >= 5">
+                </app-autocomplete-with-chips>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </div>
+        <div class="panel-block">
+          <mat-expansion-panel class="tags-setting-panel" [style]="{borderColor: tagsGroups[1].colorHex}" [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title [style]="{color: tagsGroups[1].colorHex}">
+                {{tagsGroups[1].name}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+              <div class="tags-setting-field">
+                <app-autocomplete-with-chips [allTags]="tagsGroups[1].tags"
+                                             [selectedTags]="charactersGroupSelectedTags"
+                                             [onTagsListChanged]="onTagsListChanged()"
+                                             [color]="tagsGroups[1].colorHex"
+                                             [usersTags]="getUsersTags(tagsGroups[1].tags, usersTagsIds)"
+                                             [disableInput]="selectedTags.length >= 5">
+                </app-autocomplete-with-chips>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </div>
+        <div class="panel-block">
+          <mat-expansion-panel class="tags-setting-panel" [style]="{borderColor: tagsGroups[2].colorHex}" [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title [style]="{color: tagsGroups[2].colorHex}">
+                {{tagsGroups[2].name}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+              <div class="tags-setting-field">
+                <app-autocomplete-with-chips [allTags]="tagsGroups[2].tags"
+                                             [selectedTags]="othersGroupSelectedTags"
+                                             [onTagsListChanged]="onTagsListChanged()"
+                                             [color]="tagsGroups[2].colorHex"
+                                             [usersTags]="getUsersTags(tagsGroups[2].tags, usersTagsIds)"
+                                             [disableInput]="selectedTags.length >= 5">
+                </app-autocomplete-with-chips>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </div>
+      </div>
+    </div>
+  </div>
+  <mat-divider class="footer-divider"></mat-divider>
+  <div class="selected-tags-count">
+    <span>Тегов выбрано:</span> &nbsp; {{ selectedTagsAmount }} / 5
+  </div>
+  <div class="tags-apply-button-block">
+    <button mat-stroked-button (click)="onApply()">Сохранить</button>
+  </div>
+</div>
+

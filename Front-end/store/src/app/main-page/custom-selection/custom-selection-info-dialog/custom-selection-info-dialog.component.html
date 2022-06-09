@@ -1,0 +1,20 @@
+<div class="custom-selection-info-dialog">
+  <div class="close-button-block">
+    <button (click)="onClose()" mat-icon-button><mat-icon>close</mat-icon></button>
+  </div>
+  <mat-dialog-content class="custom-selection-info-dialog-content">
+    <div class="custom-selection-info-dialog-title">Подборка &laquo;Специально для вас&raquo;</div>
+    <div>
+      &laquo;Специально для вас&raquo; - это подборка, которую вы можете настраивать самостоятельно.
+      Чтобы она стала вам доступна, необходимо сперва авторизоваться на сайте. Далее после нажатия на кнопку <mat-icon>settings</mat-icon>
+      вам откроется окно редактирования, где вы сможете выбрать теги, комиксы с которыми вам наиболее интересны, после чего они будут отображаться в этой подборке.
+    </div>
+    <p></p>
+    <div>
+      Однако будьте внимательны - максимум можно выбрать 5 тегов.
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="custom-selection-info-dialog-actions">
+    <button (click)="onClose()" class="custom-selection-info-ok-button" color="primary" mat-flat-button>Ок</button>
+  </mat-dialog-actions>
+</div>

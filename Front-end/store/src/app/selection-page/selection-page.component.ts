@@ -31,8 +31,6 @@ export class SelectionPageComponent implements OnInit {
     switch (selectionName) {
       case Selection.Novelty:
         return ['releaseYear'];
-      case Selection.ForChildren:
-        return ['type', 'genre', 'ageLimit'];
       default: return [];
     }
   }

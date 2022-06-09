@@ -1,0 +1,58 @@
+.custom-selection-block {
+  margin-top: 1em;
+  width: fit-content;
+}
+
+.custom-selection-title {
+  display: flex;
+  align-items: center;
+  color: #2199e8;
+  margin-bottom: 1vh;
+}
+
+.custom-selection-title h3 {
+  margin: 0;
+}
+
+.custom-selection-title .mat-icon {
+  font-size: 2em;
+}
+
+.selection-books-list > :last-child {
+  margin-right: -3vw;
+}
+
+.selection-link {
+  text-decoration: none;
+  color: #2199e8 !important;
+  font-size: 1.6em;
+}
+
+.selection-link:hover {
+  text-decoration: underline;
+}
+
+.empty-custom-selection-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2vh;
+}
+
+.empty-custom-selection-block span {
+  color: #2199e8;
+  font-size: 2em;
+}
+
+.empty-custom-selection-block .mat-icon {
+  width: max-content;
+  height: max-content;
+  color: #2199e8;
+  font-size: 2.4em;
+}
+
+.custom-selection-settings {
+  display: flex;
+  justify-content: center;
+}
+

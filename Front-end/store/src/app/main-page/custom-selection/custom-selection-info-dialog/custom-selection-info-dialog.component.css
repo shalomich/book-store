@@ -1,0 +1,51 @@
+.close-button-block {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.close-button-block button {
+  color: #2199e8;
+}
+
+.custom-selection-info-dialog .mat-dialog-container {
+  padding: 5px 20px 20px 20px;
+  width: 30vw;
+  overflow: hidden;
+  height: max-content;
+}
+
+.custom-selection-info-dialog-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+  color: #2199e8;
+  margin-bottom: 2vh;
+  height: 4vh;
+}
+
+.custom-selection-info-dialog-content {
+  font-size: 1.4em;
+  overflow: hidden;
+  text-align: justify;
+  line-height: 1.5;
+}
+
+.custom-selection-info-dialog-content .mat-icon {
+  color: #2199e8;
+}
+
+.custom-selection-info-dialog-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1vh;
+}
+
+.custom-selection-info-ok-button {
+  font-size: 1.6em;
+  padding: 5px 30px;
+}
+
+.custom-selection-info-dialog-actions .mat-flat-button.mat-primary {
+  background-color: #2199e8;
+}

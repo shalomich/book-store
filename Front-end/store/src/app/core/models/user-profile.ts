@@ -21,6 +21,8 @@ export class UserProfile {
 
   public currentVotedBattleBookId: number;
 
+  public tagIds: number[];
+
   constructor(profile?: UserProfile) {
     if (profile !== undefined) {
       this.id = profile.id;
@@ -34,6 +36,7 @@ export class UserProfile {
       this.basketBookIds = profile.basketBookIds;
       this.spentCurrentVotingPointCount = profile.spentCurrentVotingPointCount;
       this.currentVotedBattleBookId = profile.currentVotedBattleBookId;
+      this.tagIds = profile.tagIds;
     } else {
       this.id = 0;
       this.email = '';
@@ -46,6 +49,7 @@ export class UserProfile {
       this.basketBookIds = [];
       this.spentCurrentVotingPointCount = 0;
       this.currentVotedBattleBookId = 0;
+      this.tagIds = [];
     }
   }
 
