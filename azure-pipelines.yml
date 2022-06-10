@@ -12,6 +12,10 @@ pool:
 variables:
   buildConfiguration: 'Release'
 
-steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+jobs:
+  build:
+    name: Build
+    steps:
+       - name: Install dependencies
+         run: dotnet build --configuration $(buildConfiguration)
+         working-directory: Back-end
