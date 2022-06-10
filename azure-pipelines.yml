@@ -15,3 +15,10 @@ variables:
 steps:
   - script: dotnet build ./Back-end --configuration $(buildConfiguration)
     displayName: 'dotnet build $(buildConfiguration)'
+  - task: DotNetCoreCLI@2
+    displayName: 'Publish the project - $(buildConfiguration)'
+    inputs:
+      command: 'publish'
+      projects: '**/*.csproj'
+      publishWebProjects: false
+      arguments: '--no-build --configuration $(buildConfiguration) --output project'
