@@ -2,10 +2,10 @@
   <filter-group [setFiltersCallback]="onFilterChanged" [disabledFilters]="disableFilters">
     <app-range-filter label="Цена" class="filter-elem" propertyName="cost"></app-range-filter>
     <app-range-filter label="Год издания" class="filter-elem" propertyName="releaseYear"></app-range-filter>
-    <app-plenty-filter label="Жанры" class="filter-elem" propertyName="genre"></app-plenty-filter>
-    <app-plenty-filter label="Тип книги" class="filter-elem" propertyName="type"></app-plenty-filter>
-    <app-plenty-filter label="Возрастное ограничение" class="filter-elem" propertyName="ageLimit"></app-plenty-filter>
-    <app-plenty-filter label="Тип обложки" class="filter-elem" propertyName="coverArt"></app-plenty-filter>
+    <app-plenty-filter [filterData]="(bookFilters$ | async)!" label="Жанры" class="filter-elem" propertyName="genres"></app-plenty-filter>
+    <app-plenty-filter [filterData]="(bookFilters$ | async)!" label="Тип книги" class="filter-elem" propertyName="bookTypes"></app-plenty-filter>
+    <app-plenty-filter [filterData]="(bookFilters$ | async)!" label="Возрастное ограничение" class="filter-elem" propertyName="ageLimits"></app-plenty-filter>
+    <app-plenty-filter [filterData]="(bookFilters$ | async)!" label="Тип обложки" class="filter-elem" propertyName="coverArts"></app-plenty-filter>
     <app-status-filter label="В наличии" class="filter-elem" propertyName="quantity"></app-status-filter>
   </filter-group>
   <div class="list-block">

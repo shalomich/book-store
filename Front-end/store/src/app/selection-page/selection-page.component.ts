@@ -21,7 +21,7 @@ export class SelectionPageComponent implements OnInit {
 
   public bookSet$: Observable<ProductPreviewSet> = new Observable<ProductPreviewSet>();
 
-  public loading = false;
+  public loading = true;
 
   public disabledFilters: Array<string> = [];
 

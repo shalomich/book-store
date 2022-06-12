@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 
 import { map } from 'rxjs/operators';
 
@@ -12,7 +12,9 @@ import { PaginationOptions } from '../../core/interfaces/pagination-options';
 import { PAGE_SIZE } from '../../core/utils/values';
 import { SortingOptions } from '../../core/interfaces/sorting-options';
 import { FilterOptions } from '../../core/interfaces/filter-options';
-import {UserProfile} from '../../core/models/user-profile';
+import { UserProfile } from '../../core/models/user-profile';
+import { BookFilters } from '../../core/interfaces/book-filters';
+import { BookService } from '../../core/services/book.service';
 
 
 @Component({
@@ -21,9 +23,11 @@ import {UserProfile} from '../../core/models/user-profile';
   styleUrls: ['./catalog.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class CatalogComponent implements OnInit {
+export class CatalogComponent implements OnInit, OnDestroy {
 
   public readonly propertyNamesWithText: Array<[string, string]> = [['По имени', 'name'], ['По цене', 'cost'], ['По дате добавления', 'addingDate']];
+
+  public readonly bookFilters$: Observable<BookFilters> = new Observable<BookFilters>();
 
   @Input() bookSet$: Observable<ProductPreviewSet> = new Observable<ProductPreviewSet>();
 
@@ -39,7 +43,10 @@ export class CatalogComponent implements OnInit {
 
   public books: ProductPreview[] = [];
 
-  public constructor() {
+  private readonly subs: Subscription = new Subscription();
+
+  public constructor(private readonly bookService: BookService) {
+    this.bookFilters$ = this.bookService.getFilters();
   }
 
   public config: PaginationInstance = {
@@ -78,13 +85,17 @@ export class CatalogComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.bookSet$.subscribe(data => {
+  public ngOnInit(): void {
+    this.subs.add(this.bookSet$.subscribe(data => {
       this.books = data.previews;
       this.config = {
         ...this.config,
         totalItems: data.totalCount,
       };
-    });
+    }));
+  }
+
+  public ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

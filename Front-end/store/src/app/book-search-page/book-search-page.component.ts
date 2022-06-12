@@ -29,7 +29,7 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
 
   public bookSet$: Observable<ProductPreviewSet> = new Observable<ProductPreviewSet>();
 
-  public loading = false;
+  public loading = true;
 
   public userProfile$: Observable<UserProfile> = new Observable<UserProfile>();
 

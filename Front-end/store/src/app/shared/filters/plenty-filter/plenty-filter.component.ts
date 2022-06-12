@@ -1,12 +1,13 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 
-import {FormControl} from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
-import {RelatedEntity} from '../../../core/models/related-entity';
-import {FilterComponent} from '../filter-component';
-import {BookService} from "../../../core/services/book.service";
+import { RelatedEntity } from '../../../core/models/related-entity';
+import { FilterComponent } from '../filter-component';
+import { BookService } from '../../../core/services/book.service';
+import { BookFilters } from '../../../core/interfaces/book-filters';
 
 @Component({
   selector: 'app-plenty-filter',
@@ -14,11 +15,12 @@ import {BookService} from "../../../core/services/book.service";
   styleUrls: ['./plenty-filter.component.css'],
   providers: [{ provide: FilterComponent, useExisting: PlentyFilterComponent }],
 })
-export class PlentyFilterComponent extends FilterComponent implements OnInit {
+export class PlentyFilterComponent extends FilterComponent implements OnChanges {
 
   public readonly idsControl: FormControl = new FormControl();
 
-  public relatedEntities$: Observable<RelatedEntity[]> = new Observable<[]>();
+  @Input()
+  public filterData: BookFilters = {} as BookFilters;
 
   @Input()
   public label = '';
@@ -26,7 +28,9 @@ export class PlentyFilterComponent extends FilterComponent implements OnInit {
   @Input()
   public propertyName = '';
 
-  public constructor(private readonly bookService: BookService) {
+  public filterValues: RelatedEntity[] = [];
+
+  public constructor() {
     super();
   }
 
@@ -49,12 +53,9 @@ export class PlentyFilterComponent extends FilterComponent implements OnInit {
     this.idsControl.reset();
   }
 
-
-  public ngOnInit(): void {
-    if (!this.propertyName || !this.relatedEntities$) {
-      throw 'Attribute property name is empty';
+  public ngOnChanges(changes: SimpleChanges) {
+    if (this.filterData) {
+      this.filterValues = this.filterData[this.propertyName as keyof BookFilters];
     }
-
-    this.relatedEntities$ = this.bookService.getRelatedEntity(this.propertyName);
   }
 }

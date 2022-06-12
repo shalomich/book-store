@@ -1,8 +1,8 @@
 <mat-form-field [title]="label" class="plenty-filter" appearance="outline">
   <mat-label>{{label}}</mat-label>
   <mat-select [formControl]="idsControl" multiple>
-    <mat-option *ngFor="let relatedEntity of relatedEntities$ | async" [value]="relatedEntity.id">
-      {{relatedEntity.name}}
+    <mat-option *ngFor="let value of filterValues" [value]="value.id">
+      {{value.name}}
     </mat-option>
   </mat-select>
 </mat-form-field>
