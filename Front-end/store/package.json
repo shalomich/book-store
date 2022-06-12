@@ -39,6 +39,7 @@
     "ngx-countdown-timer": "^0.2.0",
     "ngx-pagination": "^5.1.1",
     "ngx-simple-countdown": "^1.2.3",
+    "ngx-skeleton-loader": "^5.0.0",
     "object-hash": "^2.2.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",

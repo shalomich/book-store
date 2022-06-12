@@ -1,4 +1,4 @@
-<div *ngIf="(battleInfo$ | async) as battle" class="battle-block">
+<div *ngIf="(battleInfo$ | async) as battle; else loadingBlock" class="battle-block">
   <div class="first-book">
     <div class="battle-winner-text" *ngIf="isWinner(1, battle)">Победитель</div>
     <div class="{{isWinner(1, battle) ? 'battle-winner' : ''}}">
@@ -91,3 +91,9 @@
     </div>
   </div>
 </div>
+
+<ng-template #loadingBlock>
+  <div class="loading-block">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>

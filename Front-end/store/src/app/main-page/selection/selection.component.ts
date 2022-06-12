@@ -1,15 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+
+import { tap } from 'rxjs/operators';
 
 import { SelectionService } from '../../core/services/selection.service';
 import { ProductOptionsStorage } from '../../core/services/product-options.storage';
 import { ProductPreview } from '../../core/models/product-preview';
 import { SELECTION_SIZE } from '../../core/utils/values';
 import { Selection } from '../../core/enums/selection';
-import {ProductPreviewSet} from "../../core/models/product-preview-set";
-import {PaginationOptions} from "../../core/interfaces/pagination-options";
-import {UserProfile} from '../../core/models/user-profile';
+import { ProductPreviewSet } from '../../core/models/product-preview-set';
+import { PaginationOptions } from '../../core/interfaces/pagination-options';
+import { UserProfile } from '../../core/models/user-profile';
 
 @Component({
   selector: 'app-selection',
@@ -17,9 +19,9 @@ import {UserProfile} from '../../core/models/user-profile';
   styleUrls: ['./selection.component.css'],
   providers: [ProductOptionsStorage],
 })
-export class SelectionComponent implements OnInit {
+export class SelectionComponent implements OnInit, OnDestroy {
 
-  public bookSet$: Observable<ProductPreviewSet> = new Observable<ProductPreviewSet>();
+  public bookSet: ProductPreviewSet = {} as ProductPreviewSet;
 
   public selectionLink: string | undefined;
 
@@ -30,23 +32,43 @@ export class SelectionComponent implements OnInit {
   @Input()
   public userProfile: UserProfile = new UserProfile();
 
+  @Input()
+  public hasPageLoaded = false;
+
+  @Output()
+  public selectionLoadingStarted: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  @Output()
+  public selectionLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  private subs: Subscription = new Subscription();
+
   constructor(
     private readonly selectionService: SelectionService,
   ) {
 
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.selectionLink = `book-store/catalog/selection/${this.selectionName}`;
 
-    const paginationOptions : PaginationOptions = {
+    const paginationOptions: PaginationOptions = {
       pageSize: SELECTION_SIZE,
       pageNumber: 1,
-    }
+    };
 
-    this.bookSet$ = this.selectionService.get(this.selectionName!, {
+    this.selectionLoadingStarted.emit();
+
+    this.subs.add(this.selectionService.get(this.selectionName!, {
       pagingOptions: paginationOptions,
-    });
+    }).subscribe(bookSet => {
+      this.bookSet = bookSet;
+      this.selectionLoaded.emit();
+    }));
+  }
+
+  public ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

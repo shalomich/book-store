@@ -9,6 +9,7 @@ import { BookCardComponent } from './book-card/book-card.component';
 import { BookInfoComponent } from './book-card/book-info/book-info.component';
 import {MatInputModule} from '@angular/material/input';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -16,12 +17,13 @@ import {MatChipsModule} from '@angular/material/chips';
     BookCardComponent,
     BookInfoComponent,
   ],
-  imports: [
-    CommonModule,
-    MatExpansionModule,
-    SharedModule,
-    MatInputModule,
-    MatChipsModule,
-  ],
+    imports: [
+        CommonModule,
+        MatExpansionModule,
+        SharedModule,
+        MatInputModule,
+        MatChipsModule,
+        MatProgressSpinnerModule,
+    ],
 })
 export class ProductCardPageModule { }

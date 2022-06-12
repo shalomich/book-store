@@ -23,6 +23,8 @@ export class BookCardComponent implements OnInit, OnDestroy {
 
   public userProfile: UserProfile = new UserProfile();
 
+  public loading = false;
+
   private subs: Subscription = new Subscription();
 
   public constructor(
@@ -34,6 +36,8 @@ export class BookCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loading = true;
+
     this.subs.add(this.profileProviderService.userProfile.subscribe(profile => {
       this.userProfile = profile;
     }));
@@ -41,6 +45,7 @@ export class BookCardComponent implements OnInit, OnDestroy {
     this.subs.add(this.bookService.getById(this.currentBookId).pipe(
       map(book => {
         this.book = book;
+        this.loading = false;
         if (this.userProfile.isAuthorized()) {
           return this.bookService.addBookView(this.currentBookId);
         }

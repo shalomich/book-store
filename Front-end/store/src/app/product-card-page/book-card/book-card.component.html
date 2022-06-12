@@ -1,4 +1,4 @@
-<div *ngIf="book.id" class="book-card">
+<div *ngIf="!loading; else loadingBlock" class="book-card">
   <div class="book-name">
     {{book.name}}
   </div>
@@ -66,3 +66,9 @@
     <app-add-to-cart [bookId]="currentBookId" [isInBasket]="userProfile.basketBookIds.includes(currentBookId)" [cost]="book.cost"></app-add-to-cart>
   </div>
 </div>
+
+<ng-template #loadingBlock>
+  <div class="loading-block">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>

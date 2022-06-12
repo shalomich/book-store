@@ -3,6 +3,8 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 
+import { tap } from 'rxjs/operators';
+
 import { BASKET_URL } from '../utils/values';
 
 import { BasketProductMapper } from '../mappers/basket-product.mapper';
@@ -20,6 +22,8 @@ export class BasketService {
 
   private _basketProducts: BehaviorSubject<BasketProduct[]> = new BehaviorSubject<BasketProduct[]>([]);
 
+  public loadingBasket = true;
+
   constructor(
     private readonly http: HttpClient,
     private readonly authorizationService: AuthorizationService,
@@ -32,7 +36,15 @@ export class BasketService {
     };
 
     this.http.get<BasketProductDto[]>(BASKET_URL, { headers })
-      .subscribe(data => this._basketProducts.next(data.map(item => this.basketProductMapper.fromDto(item))));
+      .pipe(
+        tap(() => {
+          this.loadingBasket = true;
+        }),
+      )
+      .subscribe(data => {
+        this.loadingBasket = false;
+        return this._basketProducts.next(data.map(item => this.basketProductMapper.fromDto(item)));
+      });
   }
 
   public get basketProducts(): Observable<BasketProduct[]> {
@@ -76,6 +88,8 @@ export class BasketService {
     const headers = {
       Authorization: `Bearer ${this.authorizationService.accessToken}`,
     };
+
+    this.loadingBasket = true;
 
     this._basketProducts.value.forEach(product => {
       const body = { id: product.id, quantity: product.quantity };

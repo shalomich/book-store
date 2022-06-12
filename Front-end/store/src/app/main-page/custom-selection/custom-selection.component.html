@@ -1,4 +1,4 @@
-<ng-container *ngIf="(bookSet$ | async) && (bookSet$ | async)?.previews && (bookSet$ | async)!.previews.length != 0; else emptyCustomSelection">
+<ng-container *ngIf="hasPageLoaded; else emptyCustomSelection">
   <div class="custom-selection-block">
     <div class="custom-selection-title">
       <h3>
@@ -14,7 +14,7 @@
       <button (click)="openInfoDialog()" mat-icon-button><mat-icon matTooltip="Информация">help_outline</mat-icon></button>
     </div>
     <div class="selection-books-list">
-      <app-book-preview *ngFor="let book of (bookSet$ | async)?.previews"
+      <app-book-preview *ngFor="let book of bookSet.previews"
                         [item]="book"
                         [userBasketBookIds]="userProfile.basketBookIds || []">
       </app-book-preview>

@@ -54,6 +54,8 @@ import { RegisterDialogComponent } from './header/register-dialog/register-dialo
 
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { TelegramAuthDialogComponent } from './header/telegram-auth-dialog/telegram-auth-dialog.component';
+import { PreviewSkeletonComponent } from './preview-skeleton/preview-skeleton.component';
+import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
 
 @NgModule({
   declarations: [
@@ -73,6 +75,7 @@ import { TelegramAuthDialogComponent } from './header/telegram-auth-dialog/teleg
     RegisterDialogComponent,
     ConfirmationModalComponent,
     TelegramAuthDialogComponent,
+    PreviewSkeletonComponent,
   ],
   exports: [
     ProductImagesComponent,
@@ -87,6 +90,7 @@ import { TelegramAuthDialogComponent } from './header/telegram-auth-dialog/teleg
     SearchFieldComponent,
     SearchHintComponent,
     HeaderComponent,
+    PreviewSkeletonComponent,
   ],
   imports: [
     CommonModule,
@@ -105,6 +109,7 @@ import { TelegramAuthDialogComponent } from './header/telegram-auth-dialog/teleg
     RouterModule,
     MatMenuModule,
     MatDividerModule,
+    NgxSkeletonLoaderModule,
   ],
 })
 

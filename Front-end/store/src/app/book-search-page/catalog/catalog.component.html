@@ -10,8 +10,10 @@
   </filter-group>
   <div class="list-block">
     <sorting [propertyNamesWithText]="propertyNamesWithText" [setSortingsCallback]="onSortChanged"></sorting>
-    <div *ngIf="books.length !== 0; else emptyResult" class="books-list">
-      <app-book-preview *ngFor="let book of books | paginate: config" [item]="book" [userBasketBookIds]="userProfile.basketBookIds"></app-book-preview>
+    <div *ngIf="!loading; else loadingBlock">
+      <div *ngIf="books.length !== 0; else emptyResult" class="books-list">
+        <app-book-preview *ngFor="let book of books | paginate: config" [item]="book" [userBasketBookIds]="userProfile.basketBookIds"></app-book-preview>
+      </div>
     </div>
   </div>
 </div>
@@ -28,6 +30,12 @@
 
 <ng-template #emptyResult>
   <div class="empty-result-block">Ничего не найдено.</div>
+</ng-template>
+
+<ng-template #loadingBlock>
+  <div class="loading-block">
+    <mat-spinner></mat-spinner>
+  </div>
 </ng-template>
 
 

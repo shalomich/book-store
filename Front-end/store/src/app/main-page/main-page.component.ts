@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 
 import { ProductOptionsStorage } from '../core/services/product-options.storage';
 import { Selection } from '../core/enums/selection';
@@ -20,11 +20,27 @@ export class MainPageComponent implements OnInit {
 
   public emptyUser: UserProfile = new UserProfile();
 
+  public loadingSelectionsCount = 0;
+
+  public hasPageLoaded$: Subject<boolean> = new Subject<boolean>();
+
   constructor(private readonly profileProviderService: ProfileProviderService) {
     this.userProfile$ = this.profileProviderService.userProfile;
   }
 
   ngOnInit(): void {
+    this.hasPageLoaded$.next(false);
   }
 
+  public onSelectionLoadingStart(): void {
+    this.loadingSelectionsCount += 1;
+  }
+
+  public onSelectionLoaded(): void {
+    this.loadingSelectionsCount -= 1;
+
+    if (this.loadingSelectionsCount === 0) {
+      this.hasPageLoaded$.next(true);
+    }
+  }
 }

@@ -34,6 +34,9 @@ export class CatalogComponent implements OnInit {
   @Input()
   public userProfile: UserProfile = new UserProfile();
 
+  @Input()
+  public loading = true;
+
   public books: ProductPreview[] = [];
 
   public constructor() {
