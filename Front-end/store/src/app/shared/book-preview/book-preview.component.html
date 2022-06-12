@@ -7,7 +7,12 @@
   </div>
   <div class="buy-block">
     <span>{{item.cost}} &#8381;</span>
-    <button *ngIf="!inBasketFlag; else inBasket" (click)="handleAddToBasketClick()" class="add-to-basket-button" mat-stroked-button>Купить</button>
+    <button *ngIf="!inBasketFlag; else inBasket"
+            (click)="isUserAuthorized ? handleAddToBasketClick() : openLoginDialog()"
+            class="add-to-basket-button"
+            mat-stroked-button>
+      Купить
+    </button>
   </div>
 </div>
 

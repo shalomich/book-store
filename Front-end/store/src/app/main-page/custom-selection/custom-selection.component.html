@@ -1,5 +1,5 @@
-<ng-container *ngIf="hasPageLoaded; else emptyCustomSelection">
-  <div class="custom-selection-block">
+<ng-container *ngIf="userProfile.isAuthorized(); else emptyCustomSelection">
+  <div *ngIf="hasPageLoaded; else emptyCustomSelection" class="custom-selection-block">
     <div class="custom-selection-title">
       <h3>
         <a class="selection-link" [href]="selectionLink">

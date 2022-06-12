@@ -79,7 +79,7 @@ export class CustomSelectionComponent implements OnInit, OnDestroy, OnChanges {
       pageNumber: 1,
     };
 
-    if (!('hasPageLoaded' in changes)) {
+    if (!this.hasPageLoaded) {
       if (this.userProfile.isAuthorized()) {
         this.subs.add(this.selectionService.get(this.selectionName!, {
           pagingOptions: paginationOptions,
@@ -90,6 +90,7 @@ export class CustomSelectionComponent implements OnInit, OnDestroy, OnChanges {
         }));
       } else {
         this.bookSet = {} as ProductPreviewSet;
+        this.selectionLoaded.emit();
       }
     }
   }
