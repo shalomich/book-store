@@ -336,6 +336,7 @@ ASALocalRun/
 .localhistory/
 
 battlesettings.json
+appsettings.Product.json
 
 # BeatPulse healthcheck temp database
 healthchecksdb
