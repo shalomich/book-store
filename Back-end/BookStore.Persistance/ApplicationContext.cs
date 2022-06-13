@@ -22,7 +22,7 @@ public class ApplicationContext : IdentityDbContext<User, IdentityRole<int>,int>
     public DbSet<CoverArt> CoverArts { set; get; }
     public DbSet<Genre> Genres { set; get; }
     public DbSet<GenreBook> BookGenreLinks { set; get; }
-    public DbSet<Tag> TagGroups { set; get; }
+    public DbSet<TagGroup> TagGroups { set; get; }
     public DbSet<Tag> Tags { set; get; }
     public DbSet<ProductTag> BookTagLinks { set; get; }
         

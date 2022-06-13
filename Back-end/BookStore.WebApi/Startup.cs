@@ -19,35 +19,38 @@ using Newtonsoft.Json;
 using BookStore.Persistance.Extensions;
 using BookStore.WebApi.BackgroundJobs.BookEditing;
 using BookStore.WebApi.BackgroundJobs.Selection;
+using Hangfire.PostgreSql;
 
 namespace BookStore.WebApi
 {
     public class Startup
     {
-        private IConfiguration _configuration;
+        private IConfiguration Configuration { get; }
+        private IWebHostEnvironment Environment { get; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
-            _configuration = configuration;
+            Configuration = configuration;
+            Environment = environment;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
             var currentAssemblyName = typeof(Startup).Assembly;
 
-            services.AddPersistance(_configuration);
-            services.AddApplicationCore(_configuration, currentAssemblyName);
+            services.AddPersistance(Configuration, Environment.IsDevelopment());
+            services.AddApplicationCore(Configuration, currentAssemblyName);
 
             services.AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Auth:Jwt:Web:TokenKey"]));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Auth:Jwt:Web:TokenKey"]));
 
             services.Configure<DataProtectionTokenProviderOptions>(options =>
-                options.TokenLifespan = TimeSpan.FromMinutes(_configuration.GetSection("Auth:RefreshTokenExpiredMinutes").Get<int>()));
+                options.TokenLifespan = TimeSpan.FromMinutes(Configuration.GetSection("Auth:RefreshTokenExpiredMinutes").Get<int>()));
 
             services.AddIdentity<User, IdentityRole<int>>()
                 .AddEntityFrameworkStores<ApplicationContext>()
-                .AddTokenProvider(_configuration["Auth:AppTokenProvider"], typeof(DataProtectorTokenProvider<User>));
+                .AddTokenProvider(Configuration["Auth:AppTokenProvider"], typeof(DataProtectorTokenProvider<User>));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
                 opt =>
@@ -83,21 +86,35 @@ namespace BookStore.WebApi
 
         private void ConfigureHangfire(IServiceCollection services)
         {
-            var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
             services.AddHangfire(configuration => configuration
                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                .UseSimpleAssemblyNameTypeSerializer()
                .UseRecommendedSerializerSettings()
-               .UseSerializerSettings(new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })
-               .UseSqlServerStorage(connectionString));
+               .UseSerializerSettings(new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+               
+
+            if (Environment.IsDevelopment())
+            {
+                GlobalConfiguration.Configuration
+                    .UseSqlServerStorage(connectionString);
+            }
+            else
+            {
+                GlobalConfiguration.Configuration
+                    .UsePostgreSqlStorage(connectionString, new PostgreSqlStorageOptions
+                    {
+                        InvisibilityTimeout = TimeSpan.FromDays(1)
+                    });
+            }
 
             services.AddHangfireServer();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            _configuration[nameof(env.ContentRootPath)] = env.ContentRootPath;
+            Configuration[nameof(env.ContentRootPath)] = env.ContentRootPath;
 
             if (env.IsDevelopment())
             {
