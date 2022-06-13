@@ -3,65 +3,132 @@ using System;
 using BookStore.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace App.Migrations
+namespace BookStore.Persistance.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220329130108_AddFirstNameAndLastName")]
-    partial class AddFirstNameAndLastName
+    [Migration("20220613161206_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("ProductVersion", "6.0.5")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("BookStore.Domain.Entities.BasketProduct", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("UserId", "ProductId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("BasketProducts");
+                });
+
+            modelBuilder.Entity("BookStore.Domain.Entities.Battles.Battle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("State")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Battles");
+                });
+
+            modelBuilder.Entity("BookStore.Domain.Entities.Battles.BattleBook", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BattleId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("BookId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BattleId");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("BattleBookLinks");
+                });
+
+            modelBuilder.Entity("BookStore.Domain.Entities.Battles.Vote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BattleBookId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("VotingPointCount")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BattleBookId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.AgeLimit", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -69,41 +136,19 @@ namespace App.Migrations
                         .IsUnique();
 
                     b.ToTable("AgeLimits");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "0+"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "6+"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "12+"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "18+"
-                        });
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.Author", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -117,35 +162,35 @@ namespace App.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AuthorId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("SelectionDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId")
                         .IsUnique();
 
-                    b.ToTable("AuthorSelectionOrder");
+                    b.ToTable("AuthorSelectionOrders");
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.BookType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -153,46 +198,19 @@ namespace App.Migrations
                         .IsUnique();
 
                     b.ToTable("BookTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Художественная литература"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Манга"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Ранобэ"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Графический роман"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Артбук"
-                        });
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.CoverArt", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -200,31 +218,19 @@ namespace App.Migrations
                         .IsUnique();
 
                     b.ToTable("CoverArts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Мягкая"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Твердая"
-                        });
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.Genre", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -232,63 +238,21 @@ namespace App.Migrations
                         .IsUnique();
 
                     b.ToTable("Genres");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Драма"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Ужасы"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Научная фантастика"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Наука"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Боевик"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Детектив"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Фэнтези"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "Сказка"
-                        });
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.GenreBook", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BookId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("GenreId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -296,20 +260,20 @@ namespace App.Migrations
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("GenreBook");
+                    b.ToTable("BookGenreLinks");
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.Publisher", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -319,45 +283,80 @@ namespace App.Migrations
                     b.ToTable("Publishers");
                 });
 
+            modelBuilder.Entity("BookStore.Domain.Entities.Books.View", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("LastViewCountChangeDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("LastViewDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Views");
+                });
+
             modelBuilder.Entity("BookStore.Domain.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeliveredDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("OrderReceiptMethod")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("PaymentMethod")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("PlacedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("State")
+                        .HasColumnType("integer");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.HasIndex("UserId");
 
@@ -368,24 +367,24 @@ namespace App.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Cost")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("OrderId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -393,59 +392,83 @@ namespace App.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderProduct");
+                    b.ToTable("OrderProducts");
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Products.Album", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("TitleImageName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("Albums", (string)null);
+                    b.ToTable("Albums");
+                });
+
+            modelBuilder.Entity("BookStore.Domain.Entities.Products.Discount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Percentage")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
+                    b.ToTable("Discounts");
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Products.Image", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AlbumId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Data")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("Format")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Height")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<int>("Width")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -454,22 +477,22 @@ namespace App.Migrations
                     b.HasIndex("Name", "AlbumId")
                         .IsUnique();
 
-                    b.ToTable("Images", (string)null);
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Products.Mark", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -477,32 +500,32 @@ namespace App.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Marks", (string)null);
+                    b.ToTable("Marks");
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Products.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("AddingDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Cost")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -513,40 +536,40 @@ namespace App.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("ReplenishmentDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("ProductCloseout");
+                    b.ToTable("Closeouts");
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Products.ProductTag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("TagId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -554,89 +577,149 @@ namespace App.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("ProductTag");
+                    b.ToTable("BookTagLinks");
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Products.Tag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("TagGroupId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tags");
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("TagGroupId");
+
+                    b.ToTable("Tags", (string)null);
+                });
+
+            modelBuilder.Entity("BookStore.Domain.Entities.Products.TagGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ColorHex")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("TagGroups", (string)null);
+                });
+
+            modelBuilder.Entity("BookStore.Domain.Entities.TelegramBotContact", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsAuthenticated")
+                        .HasColumnType("boolean");
+
+                    b.Property<long>("TelegramUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("TelegramBotContacts");
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<int>("VotingPointCount")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -645,8 +728,7 @@ namespace App.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -655,28 +737,27 @@ namespace App.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
                 });
@@ -685,18 +766,18 @@ namespace App.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -709,18 +790,18 @@ namespace App.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -732,16 +813,16 @@ namespace App.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -753,10 +834,10 @@ namespace App.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -768,20 +849,35 @@ namespace App.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("TagUser", b =>
+                {
+                    b.Property<int>("TagsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("TagsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("UserTagLinks", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.Book", b =>
@@ -789,35 +885,35 @@ namespace App.Migrations
                     b.HasBaseType("BookStore.Domain.Entities.Products.Product");
 
                     b.Property<int?>("AgeLimitId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("AuthorId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("BookFormat")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int?>("CoverArtId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Isbn")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("OriginalName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int?>("PageQuantity")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("PublisherId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("ReleaseYear")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("TypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasIndex("AgeLimitId");
 
@@ -826,8 +922,7 @@ namespace App.Migrations
                     b.HasIndex("CoverArtId");
 
                     b.HasIndex("Isbn")
-                        .IsUnique()
-                        .HasFilter("[Isbn] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("PublisherId");
 
@@ -854,6 +949,40 @@ namespace App.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BookStore.Domain.Entities.Battles.BattleBook", b =>
+                {
+                    b.HasOne("BookStore.Domain.Entities.Battles.Battle", "Battle")
+                        .WithMany("BattleBooks")
+                        .HasForeignKey("BattleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookStore.Domain.Entities.Books.Book", "Book")
+                        .WithMany("BattleBooks")
+                        .HasForeignKey("BookId");
+
+                    b.Navigation("Battle");
+
+                    b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("BookStore.Domain.Entities.Battles.Vote", b =>
+                {
+                    b.HasOne("BookStore.Domain.Entities.Battles.BattleBook", "BattleBook")
+                        .WithMany("Votes")
+                        .HasForeignKey("BattleBookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookStore.Domain.Entities.User", "User")
+                        .WithMany("Votes")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("BattleBook");
 
                     b.Navigation("User");
                 });
@@ -888,12 +1017,27 @@ namespace App.Migrations
                     b.Navigation("Genre");
                 });
 
+            modelBuilder.Entity("BookStore.Domain.Entities.Books.View", b =>
+                {
+                    b.HasOne("BookStore.Domain.Entities.Books.Book", "Book")
+                        .WithMany("Views")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookStore.Domain.Entities.User", "User")
+                        .WithMany("Views")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("BookStore.Domain.Entities.Order", b =>
                 {
-                    b.HasOne("BookStore.Domain.Entities.Products.Product", null)
-                        .WithMany("OrderProducts")
-                        .HasForeignKey("ProductId");
-
                     b.HasOne("BookStore.Domain.Entities.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
@@ -912,7 +1056,7 @@ namespace App.Migrations
                         .IsRequired();
 
                     b.HasOne("BookStore.Domain.Entities.Products.Product", "Product")
-                        .WithMany()
+                        .WithMany("OrderProducts")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -927,6 +1071,17 @@ namespace App.Migrations
                     b.HasOne("BookStore.Domain.Entities.Products.Product", "Product")
                         .WithOne("Album")
                         .HasForeignKey("BookStore.Domain.Entities.Products.Album", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("BookStore.Domain.Entities.Products.Discount", b =>
+                {
+                    b.HasOne("BookStore.Domain.Entities.Products.Product", "Product")
+                        .WithOne("Discount")
+                        .HasForeignKey("BookStore.Domain.Entities.Products.Discount", "ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -993,6 +1148,26 @@ namespace App.Migrations
                     b.Navigation("Tag");
                 });
 
+            modelBuilder.Entity("BookStore.Domain.Entities.Products.Tag", b =>
+                {
+                    b.HasOne("BookStore.Domain.Entities.Products.TagGroup", "TagGroup")
+                        .WithMany("Tags")
+                        .HasForeignKey("TagGroupId");
+
+                    b.Navigation("TagGroup");
+                });
+
+            modelBuilder.Entity("BookStore.Domain.Entities.TelegramBotContact", b =>
+                {
+                    b.HasOne("BookStore.Domain.Entities.User", "User")
+                        .WithOne("TelegramBotContact")
+                        .HasForeignKey("BookStore.Domain.Entities.TelegramBotContact", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
@@ -1044,6 +1219,21 @@ namespace App.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TagUser", b =>
+                {
+                    b.HasOne("BookStore.Domain.Entities.Products.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookStore.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("BookStore.Domain.Entities.Books.Book", b =>
                 {
                     b.HasOne("BookStore.Domain.Entities.Books.AgeLimit", "AgeLimit")
@@ -1063,7 +1253,7 @@ namespace App.Migrations
                     b.HasOne("BookStore.Domain.Entities.Products.Product", null)
                         .WithOne()
                         .HasForeignKey("BookStore.Domain.Entities.Books.Book", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BookStore.Domain.Entities.Books.Publisher", "Publisher")
@@ -1085,6 +1275,16 @@ namespace App.Migrations
                     b.Navigation("Publisher");
 
                     b.Navigation("Type");
+                });
+
+            modelBuilder.Entity("BookStore.Domain.Entities.Battles.Battle", b =>
+                {
+                    b.Navigation("BattleBooks");
+                });
+
+            modelBuilder.Entity("BookStore.Domain.Entities.Battles.BattleBook", b =>
+                {
+                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.Author", b =>
@@ -1113,6 +1313,8 @@ namespace App.Migrations
 
                     b.Navigation("BasketProducts");
 
+                    b.Navigation("Discount");
+
                     b.Navigation("Marks");
 
                     b.Navigation("OrderProducts");
@@ -1127,6 +1329,11 @@ namespace App.Migrations
                     b.Navigation("ProductTags");
                 });
 
+            modelBuilder.Entity("BookStore.Domain.Entities.Products.TagGroup", b =>
+                {
+                    b.Navigation("Tags");
+                });
+
             modelBuilder.Entity("BookStore.Domain.Entities.User", b =>
                 {
                     b.Navigation("BasketProducts");
@@ -1134,11 +1341,21 @@ namespace App.Migrations
                     b.Navigation("Marks");
 
                     b.Navigation("Orders");
+
+                    b.Navigation("TelegramBotContact");
+
+                    b.Navigation("Views");
+
+                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.Book", b =>
                 {
+                    b.Navigation("BattleBooks");
+
                     b.Navigation("GenresBooks");
+
+                    b.Navigation("Views");
                 });
 #pragma warning restore 612, 618
         }

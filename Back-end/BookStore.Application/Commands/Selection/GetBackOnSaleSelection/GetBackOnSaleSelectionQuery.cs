@@ -37,7 +37,7 @@ internal class GetBackOnSaleSelectionQueryHandler : GetSelectionQueryHandler<Get
             .Where(book => book.ProductCloseout != null 
                 && book.ProductCloseout.ReplenishmentDate != null
                 && book.AddingDate >= lastBackOnSaledate)
-            .OrderByDescending(book => EF.Functions.DateDiffDay(book.ProductCloseout.Date, book.ProductCloseout.ReplenishmentDate));
+            .OrderByDescending(book => book.ProductCloseout.ReplenishmentDate);
     }
 }
 

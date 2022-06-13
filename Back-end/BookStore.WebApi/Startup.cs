@@ -26,19 +26,17 @@ namespace BookStore.WebApi
     public class Startup
     {
         private IConfiguration Configuration { get; }
-        private IWebHostEnvironment Environment { get; }
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            Environment = environment;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
             var currentAssemblyName = typeof(Startup).Assembly;
 
-            services.AddPersistance(Configuration, Environment.IsDevelopment());
+            services.AddPersistance(Configuration);
             services.AddApplicationCore(Configuration, currentAssemblyName);
 
             services.AddControllers()
@@ -92,22 +90,11 @@ namespace BookStore.WebApi
                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                .UseSimpleAssemblyNameTypeSerializer()
                .UseRecommendedSerializerSettings()
-               .UseSerializerSettings(new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
-               
-
-            if (Environment.IsDevelopment())
-            {
-                GlobalConfiguration.Configuration
-                    .UseSqlServerStorage(connectionString);
-            }
-            else
-            {
-                GlobalConfiguration.Configuration
-                    .UsePostgreSqlStorage(connectionString, new PostgreSqlStorageOptions
-                    {
-                        InvisibilityTimeout = TimeSpan.FromDays(1)
-                    });
-            }
+               .UseSerializerSettings(new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })
+               .UsePostgreSqlStorage(connectionString, new PostgreSqlStorageOptions
+                {
+                    InvisibilityTimeout = TimeSpan.FromDays(1)
+                }));
 
             services.AddHangfireServer();
         }
