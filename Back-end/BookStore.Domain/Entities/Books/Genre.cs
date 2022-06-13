@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BookStore.Domain.Entities.Books
+﻿using System.Collections.Generic;
+namespace BookStore.Domain.Entities.Books;
+public class Genre : RelatedEntity
 {
-    public class Genre : RelatedEntity
-    {
-        public ISet<GenreBook> Books { set; get; } 
-    }
+    public IEnumerable<GenreBook> Books { set; get; } = new List<GenreBook>();
 }
+

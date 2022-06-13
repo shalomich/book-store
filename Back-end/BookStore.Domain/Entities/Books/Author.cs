@@ -1,37 +1,9 @@
-﻿using System;
-using System.Text.RegularExpressions;
-
-
-namespace BookStore.Domain.Entities.Books
+﻿namespace BookStore.Domain.Entities.Books;
+public class Author : RelatedEntity
 {
-    public class Author : RelatedEntity
-    {
         
-        public const string NameMask = "^[А-ЯЁ][а-яё]* [А-ЯЁ][а-яё]*( [А-ЯЁ][а-яё]*)?$";
-        public const string NameSchema = "Surname Firstname Patronymic?";
-
-        private readonly string WrongNameMessage = $"Name must has template {NameSchema}";
-
-        public override string Name
-        {
-            set
-            {
-                if (Regex.IsMatch(value, NameMask) == false)
-                    throw new ArgumentException(WrongNameMessage);
-                base.Name = value;
-            }
-            get
-            {
-                return base.Name;
-            }
-        }
-
-        public AuthorSelectionOrder SelectionOrder { set; get; }
-
-        private string[] FIO => Name.Split(' ');
-
-        public string Surname => FIO[0];
-        public string FirstName => FIO[1];
-        public string Patronymic => FIO[2];
-    }
+    public const string NameMask = "^[А-ЯЁ][а-яё]* [А-ЯЁ][а-яё]*( [А-ЯЁ][а-яё]*)?$";
+    public const string NameSchema = "Surname Firstname Patronymic?";
+    public AuthorSelectionOrder SelectionOrder { set; get; }
 }
+

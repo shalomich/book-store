@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BookStore.Domain.Entities.Books
+﻿namespace BookStore.Domain.Entities.Books;
+public class CoverArt : RelatedEntity
 {
-    public class CoverArt : RelatedEntity
-    {
-    }
 }
+
