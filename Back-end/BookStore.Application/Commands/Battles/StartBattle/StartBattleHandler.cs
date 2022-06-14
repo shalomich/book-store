@@ -47,7 +47,7 @@ internal class StartBattleHandler : IRequestHandler<StartBattleCommand, StartBat
     {
         var booksForBattle = await FindBooksForBattleAsync(battleSettings, cancellationToken);
 
-        var endDate = DateTimeOffset.Now.AddDays(battleSettings.BattleDurationInDays);
+        var endDate = DateTimeOffset.UtcNow.AddDays(battleSettings.BattleDurationInDays);
 
         var newBattle = new Battle()
         {

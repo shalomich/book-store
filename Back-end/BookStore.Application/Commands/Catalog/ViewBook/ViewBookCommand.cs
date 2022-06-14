@@ -47,7 +47,7 @@ internal class ViewBookCommandHandler : AsyncRequestHandler<ViewBookCommand>
         }
         else
         {
-            var now = DateTimeOffset.Now;
+            var now = DateTimeOffset.UtcNow;
 
             view.LastViewDate = now;
 

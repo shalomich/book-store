@@ -42,7 +42,7 @@ internal class PlaceOrderHandler : IRequestHandler<PlaceOrderCommand, int>
 
         order.UserId = currentUserId;
         order.Products = orderProducts.ToHashSet();
-        order.PlacedDate = DateTimeOffset.Now;
+        order.PlacedDate = DateTimeOffset.UtcNow;
 
         Context.Add(order);
         await Context.SaveChangesAsync(cancellationToken);

@@ -21,7 +21,7 @@ internal class RemoveDiscountHandler : AsyncRequestHandler<RemoveDiscountCommand
 
     protected override async Task Handle(RemoveDiscountCommand request, CancellationToken cancellationToken)
     {
-        var now = DateTimeOffset.Now;
+        var now = DateTimeOffset.UtcNow;
 
         var expiredDiscounts = await Context.Discounts
             .Where(discount => discount.EndDate < now)

@@ -31,7 +31,7 @@ internal class MarkAsDeliveredHandler : AsyncRequestHandler<MarkAsDeliveredComma
             .SingleAsync(order => order.Id == request.OrderId, cancellationToken);
 
         orderById.State = OrderState.Delivered;
-        orderById.DeliveredDate = DateTimeOffset.Now;
+        orderById.DeliveredDate = DateTimeOffset.UtcNow;
 
         await Context.SaveChangesAsync(cancellationToken);
     }

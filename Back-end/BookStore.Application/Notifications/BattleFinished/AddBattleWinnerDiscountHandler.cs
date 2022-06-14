@@ -47,7 +47,7 @@ internal class AddBattleWinnerDiscountHandler : INotificationHandler<BattleFinis
 
         int currentDiscountPercentage = BattleCalculator.CalculateDiscount(totalVotingPointCount, battleSettings);
 
-        var endDate = DateTimeOffset.Now.AddDays(battleSettings.BattleDurationInDays);
+        var endDate = DateTimeOffset.UtcNow.AddDays(battleSettings.BattleDurationInDays);
 
         battleWinner.Discount = new Discount
         {

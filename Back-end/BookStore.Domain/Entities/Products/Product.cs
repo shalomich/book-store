@@ -16,7 +16,7 @@ public abstract class Product : IFormEntity
     public int Cost { set; get; }
     public int Quantity { set; get; }
     public string Description { set; get; }
-    public DateTimeOffset AddingDate { private set; get; } = DateTimeOffset.Now;
+    public DateTimeOffset AddingDate { private set; get; } = DateTimeOffset.UtcNow;
 
     public Album Album { set; get; }
     public Discount Discount { set; get; }

@@ -29,7 +29,7 @@ internal class GetBackOnSaleSelectionQueryHandler : GetSelectionQueryHandler<Get
     {
         const int backOnSaleDaysCount = 7;
 
-        var now = DateTimeOffset.Now;
+        var now = DateTimeOffset.UtcNow;
 
         var lastBackOnSaledate = now.AddDays(-backOnSaleDaysCount);
 
