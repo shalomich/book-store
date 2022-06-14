@@ -1,4 +1,4 @@
-<div class="main-block">
+<div *ngIf="!basketService.loadingBasket; else loadingBlock" class="main-block">
   <div *ngIf="(basketService.basketProducts | async)?.length; else emptyBasket">
     <div class="remove-all-button">
       <button mat-stroked-button (click)="basketService.removeAll()">Очистить корзину</button>
@@ -12,4 +12,10 @@
 
 <ng-template #emptyBasket>
   <div class="empty-basket">Ваша корзина пуста.</div>
+</ng-template>
+
+<ng-template #loadingBlock>
+  <div class="loading-block">
+    <mat-spinner></mat-spinner>
+  </div>
 </ng-template>

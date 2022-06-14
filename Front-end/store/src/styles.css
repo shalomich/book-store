@@ -10,3 +10,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-error {
   margin-top: -1em;
 }
+
+.loading-block {
+  display: flex;
+  color: #2199e8;
+  justify-content: center;
+  padding-top: 100px;
+}
+
+.loading-block .mat-spinner circle {
+  stroke: #2199e8;
+}

@@ -1,7 +1,12 @@
 <div class="add-to-cart-block">
   <div class="add-to-cart">
     <span>Цена: {{cost}} &#8381;</span>
-    <button class="add-to-basket-button" *ngIf="!isInBasket; else inBasket" mat-stroked-button (click)="handleAddToBasketClick()">Добавить в корзину</button>
+    <button class="add-to-basket-button"
+            *ngIf="!isInBasket; else inBasket"
+            mat-stroked-button
+            (click)="isUserAuthorized ? handleAddToBasketClick() : openLoginDialog()">
+      Добавить в корзину
+    </button>
   </div>
 </div>
 

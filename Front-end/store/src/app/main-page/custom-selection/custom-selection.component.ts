@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component, EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 
 import { Observable, of, Subscription } from 'rxjs';
 
@@ -30,7 +39,7 @@ import {
 })
 export class CustomSelectionComponent implements OnInit, OnDestroy, OnChanges {
 
-  public bookSet$: Observable<ProductPreviewSet> = new Observable<ProductPreviewSet>();
+  public bookSet: ProductPreviewSet = {} as ProductPreviewSet;
 
   public selectionLink: string | undefined;
 
@@ -41,17 +50,27 @@ export class CustomSelectionComponent implements OnInit, OnDestroy, OnChanges {
   @Input()
   public userProfile: UserProfile = new UserProfile();
 
+  @Input()
+  public hasPageLoaded = false;
+
+  @Output()
+  public selectionLoadingStarted: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  @Output()
+  public selectionLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   private readonly subs: Subscription = new Subscription();
 
   constructor(
     private readonly selectionService: SelectionService,
     private readonly dialog: MatDialog,
   ) {
-
   }
 
   public ngOnInit(): void {
     this.selectionLink = `book-store/catalog/selection/${this.selectionName}`;
+
+    this.selectionLoadingStarted.emit();
   }
 
   public ngOnChanges(changes: SimpleChanges) {
@@ -60,9 +79,20 @@ export class CustomSelectionComponent implements OnInit, OnDestroy, OnChanges {
       pageNumber: 1,
     };
 
-    this.bookSet$ = this.userProfile.isAuthorized() ?
-      this.selectionService.get(this.selectionName!, { pagingOptions: paginationOptions }) :
-      of({} as ProductPreviewSet);
+    if (!this.hasPageLoaded) {
+      if (this.userProfile.isAuthorized()) {
+        this.subs.add(this.selectionService.get(this.selectionName!, {
+          pagingOptions: paginationOptions,
+        }).subscribe(bookSet => {
+          this.bookSet = bookSet;
+
+          this.selectionLoaded.emit();
+        }));
+      } else {
+        this.bookSet = {} as ProductPreviewSet;
+        this.selectionLoaded.emit();
+      }
+    }
   }
 
   public ngOnDestroy() {

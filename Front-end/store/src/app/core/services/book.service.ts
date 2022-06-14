@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { map } from 'rxjs/operators';
+import {map, share, shareReplay} from 'rxjs/operators';
 
 import { Observable } from 'rxjs';
 
 import { BookDto } from '../DTOs/book-dto';
-import { PRODUCT_URL } from '../utils/values';
+import { FILTERS_URL, PRODUCT_URL } from '../utils/values';
 import { BookMapper } from '../mappers/book.mapper';
 import { ProductPreview } from '../models/product-preview';
 import { ProductPreviewDto } from '../DTOs/product-preview-dto';
@@ -20,6 +20,8 @@ import { ProductPreviewSetDto } from '../DTOs/product-preview-set-dto';
 import { OptionGroup } from '../interfaces/option-group';
 
 import { SearchOptions } from '../interfaces/search-options';
+
+import { BookFilters } from '../interfaces/book-filters';
 
 import { ProductParamsBuilder } from './product-params.builder';
 import { AuthorizationDataProvider } from './authorization-data.provider';
@@ -89,8 +91,7 @@ export class BookService {
     );
   }
 
-  public getRelatedEntity(entityName: string): Observable<RelatedEntity[]> {
-    return this.http.get<RelatedEntityDto[]>(`${PRODUCT_URL}${this.type}/${entityName}`)
-      .pipe(map(items => items.map(item => this.relatedEntityMapper.fromDto(item))));
+  public getFilters(): Observable<BookFilters> {
+    return this.http.get<BookFilters>(`${FILTERS_URL}`).pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 }

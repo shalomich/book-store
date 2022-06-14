@@ -1,0 +1,66 @@
+.skeleton-block {
+  width: 200px;
+  height: 370px;
+  outline: 1px solid #2199e8;
+  display: inline-block;
+  margin-bottom: 30px;
+  margin-right: 3vw;
+  text-align: center;
+
+  .item {
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding: 0;
+  }
+
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 5px 10px 2px rgba(34, 60, 80, 0.2);
+  }
+
+  .title-image {
+    margin-top: 1em;
+    height: 12em;
+    width: 8em;
+  }
+
+  .name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    width: 200px;
+    height: 40px;
+    font-size: 0.8em;
+    text-overflow: ellipsis;
+    white-space: normal;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    margin-top: 1em;
+  }
+
+  .add-to-basket-button {
+    height: min-content;
+    font-size: 1em;
+    color: #2199e8;
+    padding-right: 1em;
+    padding-left: 1em;
+    margin-bottom: 1em;
+  }
+
+  .in-basket-button {
+    height: min-content;
+    background-color: #2199e8;
+    color: white;
+    padding-right: 1em;
+    padding-left: 1em;
+    margin-bottom: 1em;
+  }
+
+  .buy-block span {
+    font-size: 1.4em;
+    margin-right: 1.4em;
+    font-family: Trebuchet MS, serif;
+  }
+}
+

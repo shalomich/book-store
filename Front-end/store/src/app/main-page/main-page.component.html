@@ -1,19 +1,61 @@
 <div class="main-page-selections">
-  <app-custom-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.SpecialForYou" selectionHeader="Специально для вас"></app-custom-selection>
-  <app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.Novelty" selectionHeader="Новинки"></app-selection>
-  <app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.Popular" selectionHeader="Популярное"></app-selection>
-  <app-selection *ngIf="(userProfile$ | async)?.isAuthorized()"
+  <app-custom-selection [userProfile]="(userProfile$ | async) || emptyUser"
+                        [hasPageLoaded]="(hasPageLoaded$ | async) || false"
+                        [selectionName]="selectionEnum.SpecialForYou"
+                        (selectionLoadingStarted)="onSelectionLoadingStart()"
+                        (selectionLoaded)="onSelectionLoaded()"
+                        selectionHeader="Специально для вас">
+  </app-custom-selection>
+  <app-selection [hasPageLoaded]="(hasPageLoaded$ | async) || false"
                  [userProfile]="(userProfile$ | async) || emptyUser"
-                 [selectionName]="selectionEnum.LastViewed"
-                 selectionHeader="Последнее, что вы смотрели"
-  ></app-selection>
+                 [selectionName]="selectionEnum.Novelty"
+                 (selectionLoadingStarted)="onSelectionLoadingStart()"
+                 (selectionLoaded)="onSelectionLoaded()"
+                 selectionHeader="Новинки">
+  </app-selection>
+  <app-selection [hasPageLoaded]="(hasPageLoaded$ | async) || false"
+                 [userProfile]="(userProfile$ | async) || emptyUser"
+                 [selectionName]="selectionEnum.Popular"
+                 (selectionLoadingStarted)="onSelectionLoadingStart()"
+                 (selectionLoaded)="onSelectionLoaded()"
+                 selectionHeader="Популярное">
+  </app-selection>
   <app-selection *ngIf="(userProfile$ | async)?.isAuthorized()"
+                 [hasPageLoaded]="(hasPageLoaded$ | async) || false"
                  [userProfile]="(userProfile$ | async) || emptyUser"
                  [selectionName]="selectionEnum.CanBeInteresting"
-                 selectionHeader="Вам может быть интересно"
-  ></app-selection>
-  <app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.GoneOnSale" selectionHeader="Уже в продаже"></app-selection>
-  <app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.BackOnSale" selectionHeader="Снова в продаже"></app-selection>
-  <app-selection [userProfile]="(userProfile$ | async) || emptyUser" [selectionName]="selectionEnum.CurrentDayAuthor" selectionHeader="Автор этого дня"></app-selection>
+                 (selectionLoadingStarted)="onSelectionLoadingStart()"
+                 (selectionLoaded)="onSelectionLoaded()"
+                 selectionHeader="Вам может быть интересно">
+  </app-selection>
+<!--  <app-selection [hasPageLoaded]="!loadingSelectionsCount"-->
+<!--                 [userProfile]="(userProfile$ | async) || emptyUser"-->
+<!--                 [selectionName]="selectionEnum.GoneOnSale"-->
+<!--                 (selectionLoadingStarted)="onSelectionLoadingStart()"-->
+<!--                 (selectionLoaded)="onSelectionLoaded()"-->
+<!--                 selectionHeader="Уже в продаже">-->
+<!--  </app-selection>-->
+<!--  <app-selection [hasPageLoaded]="!loadingSelectionsCount"-->
+<!--                 [userProfile]="(userProfile$ | async) || emptyUser"-->
+<!--                 [selectionName]="selectionEnum.BackOnSale"-->
+<!--                 (selectionLoadingStarted)="onSelectionLoadingStart()"-->
+<!--                 (selectionLoaded)="onSelectionLoaded()"-->
+<!--                 selectionHeader="Снова в продаже">-->
+<!--  </app-selection>-->
+  <app-selection [hasPageLoaded]="(hasPageLoaded$ | async) || false"
+                 [userProfile]="(userProfile$ | async) || emptyUser"
+                 [selectionName]="selectionEnum.CurrentDayAuthor"
+                 (selectionLoadingStarted)="onSelectionLoadingStart()"
+                 (selectionLoaded)="onSelectionLoaded()"
+                 selectionHeader="Автор этого дня">
+  </app-selection>
+  <app-selection *ngIf="(userProfile$ | async)?.isAuthorized()"
+                 [hasPageLoaded]="(hasPageLoaded$ | async) || false"
+                 [userProfile]="(userProfile$ | async) || emptyUser"
+                 [selectionName]="selectionEnum.LastViewed"
+                 (selectionLoadingStarted)="onSelectionLoadingStart()"
+                 (selectionLoaded)="onSelectionLoaded()"
+                 selectionHeader="Последнее, что вы смотрели">
+  </app-selection>
 </div>
 

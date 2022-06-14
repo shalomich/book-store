@@ -1,22 +1,22 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 
-import {combineLatest, Observable} from 'rxjs';
+import { combineLatest, Observable, Subject } from 'rxjs';
 
-import {switchMap} from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
-import {AutoUnsubscribe} from 'ngx-auto-unsubscribe';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
-import {BookService} from '../core/services/book.service';
-import {ProductOptionsStorage} from '../core/services/product-options.storage';
-import {PAGE_SIZE, SEARCH_DEPTH, SEARCH_TARGETS} from '../core/utils/values';
-import {ProductPreviewSet} from '../core/models/product-preview-set';
-import {SearchOptions} from '../core/interfaces/search-options';
-import {OptionGroup} from '../core/interfaces/option-group';
-import {UserProfile} from '../core/models/user-profile';
-import {ProfileProviderService} from '../core/services/profile-provider.service';
-import {SearchService} from "../core/services/search.service";
+import { BookService } from '../core/services/book.service';
+import { ProductOptionsStorage } from '../core/services/product-options.storage';
+import { PAGE_SIZE, SEARCH_DEPTH, SEARCH_TARGETS } from '../core/utils/values';
+import { ProductPreviewSet } from '../core/models/product-preview-set';
+import { SearchOptions } from '../core/interfaces/search-options';
+import { OptionGroup } from '../core/interfaces/option-group';
+import { UserProfile } from '../core/models/user-profile';
+import { ProfileProviderService } from '../core/services/profile-provider.service';
+import { SearchService } from '../core/services/search.service';
 
 @AutoUnsubscribe()
 @Component({
@@ -28,6 +28,8 @@ import {SearchService} from "../core/services/search.service";
 export class BookSearchPageComponent implements OnInit, OnDestroy {
 
   public bookSet$: Observable<ProductPreviewSet> = new Observable<ProductPreviewSet>();
+
+  public loading = true;
 
   public userProfile$: Observable<UserProfile> = new Observable<UserProfile>();
 
@@ -45,12 +47,18 @@ export class BookSearchPageComponent implements OnInit, OnDestroy {
       this.optionsStorage.optionGroup$,
     ])
       .pipe(
+        tap(() => {
+          this.loading = true;
+        }),
         switchMap(([params, optionGroup]) => {
           const searchValue = params.searchValue as string;
           const target = params.target as string;
 
           return this.findBookSet(searchValue, target, optionGroup);
-    }),
+         }),
+        tap(() => {
+          this.loading = false;
+        }),
       );
 
     this.userProfile$ = this.profileProviderService.userProfile;

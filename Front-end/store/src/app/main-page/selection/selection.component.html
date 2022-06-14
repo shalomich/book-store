@@ -1,15 +1,23 @@
-<ng-container *ngIf="(bookSet$ | async)?.previews?.length! != 0">
+<ng-container>
   <div class="selection-block">
     <h3>
       <a class="selection-link" [href]="selectionLink">
         {{selectionHeader}}
       </a>
     </h3>
-    <div class="selection-books-list">
-      <app-book-preview *ngFor="let book of (bookSet$ | async)?.previews"
-                        [item]="book"
-                        [userBasketBookIds]="userProfile.basketBookIds">
-      </app-book-preview>
+    <div *ngIf="hasPageLoaded; else skeletonList">
+      <div class="selection-books-list">
+        <app-book-preview *ngFor="let book of bookSet.previews"
+                          [item]="book"
+                          [userBasketBookIds]="userProfile.basketBookIds">
+        </app-book-preview>
+      </div>
     </div>
   </div>
 </ng-container>
+
+<ng-template #skeletonList>
+  <div class="selection-books-list">
+    <app-preview-skeleton *ngFor="let element of [0, 1, 2, 3, 4]"></app-preview-skeleton>
+  </div>
+</ng-template>
