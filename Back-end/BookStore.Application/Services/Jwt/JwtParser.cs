@@ -11,7 +11,7 @@ namespace BookStore.Application.Services.Jwt;
 
 public static class JwtParser
 {
-    public static int FromToken(string token, JwtSettings jwtSettings, bool checkExpiration = true)
+    public static ClaimsPrincipal FromToken(string token, JwtSettings jwtSettings, bool checkExpiration = true)
     {
         string tokenKey = jwtSettings.TokenKey;
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
@@ -35,25 +35,17 @@ public static class JwtParser
         if (jwtSecurityToken == null)
             throw new SecurityTokenException();
 
-        int userId = int.Parse(principal.Claims
-            .Single(claim => claim.Type == nameof(userId))
-            .Value);
-
-        return userId;
+        return principal;
     }
 
-    public static string ToToken(int userId, JwtSettings jwtSettings)
+    public static string ToToken(ClaimsPrincipal principal, JwtSettings jwtSettings)
     {
-        var claims = new List<Claim> {
-            new Claim(nameof(userId), userId.ToString())
-        };
-
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.TokenKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(claims),
+            Subject = new ClaimsIdentity(principal.Claims),
             Expires = DateTime.Now.AddMinutes(jwtSettings.ExpiredMinutes),
             SigningCredentials = credentials
         };

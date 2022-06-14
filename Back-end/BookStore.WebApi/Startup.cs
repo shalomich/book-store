@@ -20,6 +20,7 @@ using BookStore.Persistance.Extensions;
 using BookStore.WebApi.BackgroundJobs.BookEditing;
 using BookStore.WebApi.BackgroundJobs.Selection;
 using Hangfire.PostgreSql;
+using BookStore.Application.Commands.Account.Common;
 
 namespace BookStore.WebApi
 {
@@ -48,7 +49,8 @@ namespace BookStore.WebApi
 
             services.AddIdentity<User, IdentityRole<int>>()
                 .AddEntityFrameworkStores<ApplicationContext>()
-                .AddTokenProvider(Configuration["Auth:AppTokenProvider"], typeof(DataProtectorTokenProvider<User>));
+                .AddTokenProvider(Configuration["Auth:AppTokenProvider"], typeof(DataProtectorTokenProvider<User>))
+                .AddClaimsPrincipalFactory<ApplicationPrincipalFactory>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
                 opt =>

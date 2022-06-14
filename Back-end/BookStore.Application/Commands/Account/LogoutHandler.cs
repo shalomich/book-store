@@ -16,7 +16,9 @@ internal class LogoutHandler : IRequestHandler<LogoutCommand, Unit>
 	private RefreshTokenRepository RefreshTokenRepository { get; }
 	private LoggedUserAccessor LoggedUserAccessor { get; }
 	private UserManager<User> UserManager { get; }
-	public LogoutHandler(RefreshTokenRepository refreshTokenRepository, UserManager<User> userManager, 
+	public LogoutHandler(
+		RefreshTokenRepository refreshTokenRepository, 
+		UserManager<User> userManager, 
 		LoggedUserAccessor loggedUserAccessor)
     {
 		RefreshTokenRepository = refreshTokenRepository;

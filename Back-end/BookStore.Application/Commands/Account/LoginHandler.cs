@@ -1,44 +1,38 @@
-﻿
-using BookStore.Domain.Entities;
+﻿using BookStore.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using BookStore.Application.ViewModels.Account;
 using BookStore.Application.Services;
 using BookStore.Application.Exceptions;
 using BookStore.Application.Dto;
-using BookStore.Domain.Enums;
 
-namespace BookStore.Application.Commands.Account
+namespace BookStore.Application.Commands.Account;
+public record LoginCommand(User User, string Password) : IRequest<TokensDto>;
+internal class LoginHandler : IRequestHandler<LoginCommand, TokensDto>
 {
-	public record LoginCommand(User User, string Password) : IRequest<TokensDto>;
-	internal class LoginHandler : IRequestHandler<LoginCommand, TokensDto>
+	private const string WrongPasswordMessage = "Wrong password";
+	private SignInManager<User> SignInManager { get; }
+	private TokensFactory TokensFactory { get; }
+
+    public LoginHandler(
+		SignInManager<User> signInManager, 
+		TokensFactory tokensFactory)
+    {
+        SignInManager = signInManager;
+        TokensFactory = tokensFactory;
+    }
+
+    public async Task<TokensDto> Handle(LoginCommand request, CancellationToken cancellationToken)
 	{
-		private const string WrongPasswordMessage = "Wrong password";
-		private SignInManager<User> SignInManager { get; }
-		private TokensFactory TokensFactory { get; }
+		var (user, password) = request;
 
-        public LoginHandler(SignInManager<User> signInManager, TokensFactory tokensFactory)
-        {
-            SignInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
-            TokensFactory = tokensFactory ?? throw new ArgumentNullException(nameof(tokensFactory));
-        }
+		var result = await SignInManager.CheckPasswordSignInAsync(user, password, false);
 
-        public async Task<TokensDto> Handle(LoginCommand request, CancellationToken cancellationToken)
-		{
-			var (user, password) = request;
+		if (!result.Succeeded)
+            throw new BadRequestException(WrongPasswordMessage);
 
-			var result = await SignInManager.CheckPasswordSignInAsync(user, password, false);
-
-			if (!result.Succeeded)
-                throw new BadRequestException(WrongPasswordMessage);
-
-			return await TokensFactory.GenerateTokens(user);
-        }
-	}
+		return await TokensFactory.GenerateTokens(user);
+    }
 }
+

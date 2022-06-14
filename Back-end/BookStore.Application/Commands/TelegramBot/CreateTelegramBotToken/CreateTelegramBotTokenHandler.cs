@@ -4,6 +4,8 @@ using BookStore.Application.Services.Jwt;
 using BookStore.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,11 +32,21 @@ internal class CreateTelegramBotTokenHandler : IRequestHandler<CreateTelegramBot
     {
         await Validate(request, cancellationToken);
 
-        var currentUserId = LoggedUserAccessor.GetCurrentUserId();
+        var userId = LoggedUserAccessor.GetCurrentUserId();
+
+        var claimIdentities = new List<ClaimsIdentity>()
+        {
+            new ClaimsIdentity(new List<Claim>()
+            {
+                new Claim(nameof(userId), userId.ToString())
+            })
+        };
+
+        var principal = new ClaimsPrincipal(claimIdentities);
 
         return new TelegramBotTokenDto
         {
-            BotToken = JwtParser.ToToken(currentUserId)
+            BotToken = JwtParser.ToToken(principal)
         };
     }
 

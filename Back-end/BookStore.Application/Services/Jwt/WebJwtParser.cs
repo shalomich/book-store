@@ -1,5 +1,6 @@
 ﻿using BookStore.Application.Providers;
 using Microsoft.Extensions.Configuration;
+using System.Security.Claims;
 
 namespace BookStore.Application.Services.Jwt;
 public class WebJwtParser
@@ -10,13 +11,13 @@ public class WebJwtParser
         JwtSettings = configuration.GetSection("Auth:Jwt:Web").Get<JwtSettings>();
     }
 
-    public int FromToken(string token, bool checkExpiration = true)
+    public ClaimsPrincipal FromToken(string token, bool checkExpiration = true)
     {
         return JwtParser.FromToken(token, JwtSettings, checkExpiration);
     }
 
-    public string ToToken(int userId)
+    public string ToToken(ClaimsPrincipal principal)
     {
-        return JwtParser.ToToken(userId, JwtSettings);
+        return JwtParser.ToToken(principal, JwtSettings);
     }
 }

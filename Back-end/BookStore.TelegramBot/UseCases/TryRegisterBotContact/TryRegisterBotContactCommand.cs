@@ -1,4 +1,5 @@
-﻿using BookStore.Application.Services.Jwt;
+﻿using BookStore.Application.Extensions;
+using BookStore.Application.Services.Jwt;
 using BookStore.Domain.Entities;
 using BookStore.Persistance;
 using BookStore.TelegramBot.UseCases.Common;
@@ -48,7 +49,7 @@ internal class TryRegisterBotContactCommandHandler : IRequestHandler<TryRegister
         {
             var telegramBotAccessToken = message.Text?.Split(" ")[1];
 
-            userId = JwtParser.FromToken(telegramBotAccessToken);
+            userId = JwtParser.FromToken(telegramBotAccessToken).GetCurrentUserId();
         }
         catch (Exception exception)
         {
