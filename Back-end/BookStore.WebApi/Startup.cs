@@ -124,11 +124,24 @@ namespace BookStore.WebApi
             app.UseAuthentication();
             app.UseAuthorization();
             
-            app.UseCors(builder => builder
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .WithExposedHeaders("dataCount"));
+            if (env.IsDevelopment())
+            {
+                app.UseCors(builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .WithExposedHeaders("dataCount"));
+            }
+            else
+            {
+                app.UseCors(builder => builder
+                    .WithOrigins(
+                        Configuration["Front-end:DashboardUrl"],
+                        Configuration["Front-end:StoreUrl"])
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .WithExposedHeaders("dataCount"));
+            }
 
             RunBackgroundJobs();
 
