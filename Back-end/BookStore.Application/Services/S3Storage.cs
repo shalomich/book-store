@@ -24,9 +24,13 @@ public class S3Storage : IDisposable
         var config = new AmazonS3Config
         {
             RegionEndpoint = Amazon.RegionEndpoint.GetBySystemName(settings.RegionName),
-            ServiceURL = settings.ServiceUrl,
             ForcePathStyle = true
         };
+
+        if (!string.IsNullOrEmpty(settings.ServiceUrl))
+        {
+            config.ServiceURL = settings.ServiceUrl;
+        }
 
         s3Client = new AmazonS3Client(credentials, config);
     }
