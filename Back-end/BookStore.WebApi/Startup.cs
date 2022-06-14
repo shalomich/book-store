@@ -21,6 +21,7 @@ using BookStore.WebApi.BackgroundJobs.BookEditing;
 using BookStore.WebApi.BackgroundJobs.Selection;
 using Hangfire.PostgreSql;
 using BookStore.Application.Commands.Account.Common;
+using Microsoft.Extensions.Logging;
 
 namespace BookStore.WebApi
 {
@@ -75,6 +76,12 @@ namespace BookStore.WebApi
                 options.Password.RequiredLength = 8;
                 options.Password.RequireDigit = true;
                 options.User.RequireUniqueEmail = true;
+            });
+
+            services.AddLogging(builder =>
+            {
+                builder.AddConsole();
+                builder.AddConfiguration(Configuration);
             });
 
             services.AddCors();

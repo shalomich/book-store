@@ -6,6 +6,7 @@ using BookStore.Application.Notifications.BookCreated;
 using BookStore.Domain.Entities.Books;
 using BookStore.Persistance;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,19 +18,22 @@ internal class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, int
 {
     private ApplicationContext Context { get; }
     private ImageFileRepository ImageFileRepository { get; }
-    public IMapper Mapper { get; }
-    public IMediator Mediator { get; }
+    private IMapper Mapper { get; }
+    private IMediator Mediator { get; }
+    private ILogger<CreateBookCommand> Logger { get; }
 
     public CreateBookCommandHandler(
         ApplicationContext context,
         ImageFileRepository imageFileRepository,
         IMapper mapper,
-        IMediator mediator)
+        IMediator mediator,
+        ILogger<CreateBookCommand> logger)
     {
         Context = context;
         ImageFileRepository = imageFileRepository;
         Mapper = mapper;
         Mediator = mediator;
+        Logger = logger;
     }
 
     public async Task<int> Handle(CreateBookCommand request, CancellationToken cancellationToken)
@@ -43,10 +47,25 @@ internal class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, int
             await Context.AddAsync(book);
             await Context.SaveChangesAsync(cancellationToken);
 
-            await ImageFileRepository.AddImageFiles(book.Album.Images, cancellationToken);
+            Logger.LogInformation("Adding to database book {BookName} is successful.", book.Name); 
         }
         catch (Exception exception)
         {
+            Logger.LogError(exception, "Fail of adding to database book {BookName}", book.Name);
+
+            throw new BadRequestException(exception.GetFullMessage());
+        }
+
+        try
+        {
+            await ImageFileRepository.AddImageFiles(book.Album.Images, cancellationToken);
+
+            Logger.LogInformation("Adding to s3 book {BookName} is successful.", book.Name);
+        }
+        catch (Exception exception)
+        {
+            Logger.LogError(exception, "Fail of adding to s3 book {BookName}", book.Name);
+
             throw new BadRequestException(exception.GetFullMessage());
         }
 
