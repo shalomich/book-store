@@ -27,7 +27,7 @@ internal class GetCurrentDayAuthorSelectionQueryHandler : GetSelectionQueryHandl
     protected override IQueryable<Book> GetSelectionQuery(GetCurrentDayAuthorSelectionQuery request)
     {
         return Context.Books
-            .Where(book => book.Author.SelectionOrder.SelectionDate.Date == DateTime.Now.Date)
+            .Where(book => book.Author.SelectionOrder.SelectionDate.Date == DateTimeOffset.Now.Date)
             .OrderByDescending(book => book.AddingDate);
     }
 }

@@ -52,7 +52,7 @@ internal class ChooseCurrentDayAuthorCommandHandler : AsyncRequestHandler<Choose
     private async Task Validate(ChooseCurrentDayAuthorCommand request, CancellationToken cancellation)
     {
         var hasCurrentDayAuthor = await Context.Authors
-            .AnyAsync(author => author.SelectionOrder.SelectionDate.Date == DateTime.Now.Date, cancellation);
+            .AnyAsync(author => author.SelectionOrder.SelectionDate.Date == DateTimeOffset.Now.Date, cancellation);
 
         if (hasCurrentDayAuthor)
         {

@@ -45,7 +45,7 @@ namespace BookStore.Persistance.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BasketProducts");
+                    b.ToTable("BasketProducts", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Battles.Battle", b =>
@@ -64,7 +64,7 @@ namespace BookStore.Persistance.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Battles");
+                    b.ToTable("Battles", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Battles.BattleBook", b =>
@@ -87,7 +87,7 @@ namespace BookStore.Persistance.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("BattleBookLinks");
+                    b.ToTable("BattleBookLinks", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Battles.Vote", b =>
@@ -113,7 +113,7 @@ namespace BookStore.Persistance.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Votes");
+                    b.ToTable("Votes", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.AgeLimit", b =>
@@ -133,7 +133,7 @@ namespace BookStore.Persistance.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("AgeLimits");
+                    b.ToTable("AgeLimits", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.Author", b =>
@@ -153,7 +153,7 @@ namespace BookStore.Persistance.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Authors");
+                    b.ToTable("Authors", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.AuthorSelectionOrder", b =>
@@ -175,7 +175,7 @@ namespace BookStore.Persistance.Migrations
                     b.HasIndex("AuthorId")
                         .IsUnique();
 
-                    b.ToTable("AuthorSelectionOrders");
+                    b.ToTable("AuthorSelectionOrders", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.BookType", b =>
@@ -195,7 +195,7 @@ namespace BookStore.Persistance.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("BookTypes");
+                    b.ToTable("BookTypes", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.CoverArt", b =>
@@ -215,7 +215,7 @@ namespace BookStore.Persistance.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("CoverArts");
+                    b.ToTable("CoverArts", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.Genre", b =>
@@ -235,7 +235,7 @@ namespace BookStore.Persistance.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.GenreBook", b =>
@@ -258,7 +258,7 @@ namespace BookStore.Persistance.Migrations
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("BookGenreLinks");
+                    b.ToTable("BookGenreLinks", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.Publisher", b =>
@@ -278,7 +278,7 @@ namespace BookStore.Persistance.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Publishers");
+                    b.ToTable("Publishers", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Books.View", b =>
@@ -310,7 +310,7 @@ namespace BookStore.Persistance.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Views");
+                    b.ToTable("Views", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Order", b =>
@@ -358,7 +358,7 @@ namespace BookStore.Persistance.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.OrderProduct", b =>
@@ -390,7 +390,7 @@ namespace BookStore.Persistance.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderProducts");
+                    b.ToTable("OrderProducts", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Products.Album", b =>
@@ -412,7 +412,7 @@ namespace BookStore.Persistance.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("Albums");
+                    b.ToTable("Albums", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Products.Discount", b =>
@@ -437,7 +437,7 @@ namespace BookStore.Persistance.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("Discounts");
+                    b.ToTable("Discounts", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Products.Image", b =>
@@ -475,7 +475,7 @@ namespace BookStore.Persistance.Migrations
                     b.HasIndex("Name", "AlbumId")
                         .IsUnique();
 
-                    b.ToTable("Images");
+                    b.ToTable("Images", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Products.Mark", b =>
@@ -498,7 +498,7 @@ namespace BookStore.Persistance.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Marks");
+                    b.ToTable("Marks", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Products.Product", b =>
@@ -552,7 +552,7 @@ namespace BookStore.Persistance.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("Closeouts");
+                    b.ToTable("Closeouts", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Products.ProductTag", b =>
@@ -575,7 +575,7 @@ namespace BookStore.Persistance.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("BookTagLinks");
+                    b.ToTable("BookTagLinks", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.Products.Tag", b =>
@@ -648,7 +648,7 @@ namespace BookStore.Persistance.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("TelegramBotContacts");
+                    b.ToTable("TelegramBotContacts", (string)null);
                 });
 
             modelBuilder.Entity("BookStore.Domain.Entities.User", b =>

@@ -27,7 +27,7 @@ internal class GetNoveltySelectionQueryHandler : GetSelectionQueryHandler<GetNov
     protected override IQueryable<Book> GetSelectionQuery(GetNoveltySelectionQuery request)
     {
         return Context.Books
-            .Where(book => book.ReleaseYear == DateTime.Now.Year)
+            .Where(book => book.ReleaseYear == DateTimeOffset.Now.Year)
             .OrderByDescending(book => book.AddingDate);
     }
 }

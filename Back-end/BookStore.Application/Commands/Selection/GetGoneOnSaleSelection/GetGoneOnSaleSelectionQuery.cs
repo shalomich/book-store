@@ -28,7 +28,7 @@ internal class GetGoneOnSaleSelectionQueryHandler : GetSelectionQueryHandler<Get
     {
         const int goneOnSaleDaysCount = 7;
 
-        var lastGoneOnSaledate = DateTime.Now.AddDays(-goneOnSaleDaysCount);
+        var lastGoneOnSaledate = DateTimeOffset.Now.AddDays(-goneOnSaleDaysCount);
   
         return Context.Books
             .Where(book => book.AddingDate >= lastGoneOnSaledate)

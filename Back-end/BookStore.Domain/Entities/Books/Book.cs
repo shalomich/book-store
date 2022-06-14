@@ -9,7 +9,7 @@ namespace BookStore.Domain.Entities.Books;
 public class Book : Product
 {
     public const int MinReleaseYear = 2000;
-    public static readonly int MaxReleaseYear = DateTime.Today.Year;
+    public static readonly int MaxReleaseYear = DateTimeOffset.Now.Year;
 
     public const string IsbnTemplate = @"^978-5-\d{6}-\d{2}-\d{1}$";
     public const string FormatTemplate = @"^[1-9]\d{1}x[1-9]\d{1}x[1-9]$";
