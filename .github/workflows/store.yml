@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@front-end-release
+        uses: actions/checkout@main
       - name: Install dependencies
         run: npm ci
         working-directory: Front-end/store
@@ -21,7 +21,7 @@ jobs:
         run: npm run build
         working-directory: Front-end/store
       - name: Archive production artifact
-        uses: actions/upload-artifact@front-end-release
+        uses: actions/upload-artifact@main
         with:
           name: dist
           path: Front-end/store/dist/store
@@ -31,9 +31,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@front-end-release
+        uses: actions/checkout@main
       - name: Download artifact
-        uses: actions/download-artifact@front-end-release
+        uses: actions/download-artifact@main
         with:
           name: dist
           path: Front-end/store/dist/store
