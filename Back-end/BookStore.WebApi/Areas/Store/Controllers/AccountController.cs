@@ -3,6 +3,7 @@ using BookStore.Application.Commands.Account;
 using BookStore.Application.Commands.Account.ResetPassword;
 using BookStore.Application.Commands.Account.SendResetPasswordMessage;
 using BookStore.Application.Commands.Account.SendTwoFactorAuthenticateMessage;
+using BookStore.Application.Commands.Account.TwoFactorAuthenticate;
 using BookStore.Application.Commands.TelegramBot.CreateTelegramBotToken;
 using BookStore.Application.Dto;
 using BookStore.Application.Queries;
@@ -72,6 +73,12 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         public async Task SendTwoFactorAuthenticateMessage(CancellationToken cancellationToken)
         {
             await _mediator.Send(new SendTwoFactorAuthenticateMessageCommand(), cancellationToken);
+        }
+
+        [HttpPost("two-factor-auth")]
+        public async Task TwoFactorAuthenticate(TwoFactorAuthenticateDto twoFactorAuthenticateDto, CancellationToken cancellationToken)
+        {
+            await _mediator.Send(new TwoFactorAuthenticateCommand(twoFactorAuthenticateDto), cancellationToken);
         }
 
         [HttpGet("email-existence/{email}")]
