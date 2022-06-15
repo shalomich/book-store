@@ -25,10 +25,6 @@ import { MatTableModule } from '@angular/material/table';
 
 import { MatPaginatorModule } from '@angular/material/paginator';
 
-import { NgxSimpleCountdownModule } from 'ngx-simple-countdown';
-
-import { CountdownModule } from 'ngx-countdown';
-
 import { CdTimerModule } from 'angular-cd-timer';
 
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -38,6 +34,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
 
 import { MatSelectModule } from '@angular/material/select';
+
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
+import { MatDividerModule } from '@angular/material/divider';
+
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -75,12 +77,10 @@ import { CustomSelectionSettingsDialogComponent } from './main-page/custom-selec
 import {
   AutocompleteWithChipsComponent,
 } from './main-page/custom-selection/autocomplete-with-chips/autocomplete-with-chips.component';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {MatDividerModule} from '@angular/material/divider';
+
 import {
-  CustomSelectionInfoDialogComponent
+  CustomSelectionInfoDialogComponent,
 } from './main-page/custom-selection/custom-selection-info-dialog/custom-selection-info-dialog.component';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -107,36 +107,34 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     CustomSelectionInfoDialogComponent,
     AutocompleteWithChipsComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        ProductCardPageModule,
-        CommonModule,
-        CoreModule,
-        SharedModule,
-        HttpClientModule,
-        NgxPaginationModule,
-        MatExpansionModule,
-        MatIconModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatTableModule,
-        MatPaginatorModule,
-        NgxSimpleCountdownModule,
-        CountdownModule,
-        CdTimerModule,
-        MatTooltipModule,
-        MatDialogModule,
-        MatChipsModule,
-        MatSelectModule,
-        MatAutocompleteModule,
-        MatDividerModule,
-        MatProgressSpinnerModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    ProductCardPageModule,
+    CommonModule,
+    CoreModule,
+    SharedModule,
+    HttpClientModule,
+    NgxPaginationModule,
+    MatExpansionModule,
+    MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    CdTimerModule,
+    MatTooltipModule,
+    MatDialogModule,
+    MatChipsModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatDividerModule,
+    MatProgressSpinnerModule,
+  ],
   providers: [ProductOptionsStorage, ProfileProviderService],
   bootstrap: [AppComponent],
 })
