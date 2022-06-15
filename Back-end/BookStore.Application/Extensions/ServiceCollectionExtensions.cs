@@ -18,7 +18,6 @@ public static class ServiceCollectionExtensions
         var currentAssembly = typeof(ServiceCollectionExtensions).Assembly;
 
         services.Configure<S3Settings>(configuration.GetSection("S3"));
-        services.Configure<FrontEndSettings>(configuration.GetSection("Front-end"));
         services.Configure<MailSettings>(configuration.GetSection("Mail"));
 
         services.AddScoped<WebJwtParser>();

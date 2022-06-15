@@ -15,19 +15,15 @@ namespace BookStore.Application.Commands.Account.SendResetPasswordMessage;
 public record SendResetPasswordMessageCommand(ForgotPasswordDto ForgotPasswordDto) : IRequest;
 internal class SendResetPasswordMessageCommandHandler : AsyncRequestHandler<SendResetPasswordMessageCommand>
 {
-    private FrontEndSettings FrontEndSettings { get; }
     private UserManager<User> UserManager { get; }
     private EmailService EmailService { get; }
     private ILogger<SendResetPasswordMessageCommandHandler> Logger { get; }
 
     public SendResetPasswordMessageCommandHandler(
         UserManager<User> userManager,
-        IOptions<FrontEndSettings> settingOption,
         EmailService emailService,
         ILogger<SendResetPasswordMessageCommandHandler> logger)
     {
-        FrontEndSettings = settingOption.Value;
-
         UserManager = userManager;
         EmailService = emailService;
         Logger = logger;
@@ -43,13 +39,9 @@ internal class SendResetPasswordMessageCommandHandler : AsyncRequestHandler<Send
 
         var code = await UserManager.GeneratePasswordResetTokenAsync(user);
 
-        var callbackUrl = $"{FrontEndSettings.StoreUrl}{FrontEndSettings.ResetPasswordPath}?code={code}";
-
-        var message = $"Для сброса пароля пройдите по ссылке: <a href='{callbackUrl}'>link</a>";
-
         try
         {
-            await EmailService.SendEmailAsync(email, "Reset password", message, cancellationToken);
+            await EmailService.SendEmailAsync(email, "Reset password", code, cancellationToken);
         }
         catch (Exception exception)
         {
