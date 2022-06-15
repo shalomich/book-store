@@ -17,6 +17,10 @@ public static class ServiceCollectionExtensions
     {
         var currentAssembly = typeof(ServiceCollectionExtensions).Assembly;
 
+        services.Configure<S3Settings>(configuration.GetSection("S3"));
+        services.Configure<FrontEndSettings>(configuration.GetSection("Front-end"));
+        services.Configure<MailSettings>(configuration.GetSection("Mail"));
+
         services.AddScoped<WebJwtParser>();
         services.AddScoped<TelegramBotJwtParser>();
         services.AddScoped<TokensFactory>();
@@ -26,8 +30,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<BattleSettingsProvider>();
  
         services.AddScoped<S3Storage>();
-        services.Configure<S3Settings>(configuration.GetSection("S3"));
         services.AddScoped<ImageFileRepository>();
+
+        services.AddScoped<EmailService>();
 
         services.AddDataTransformerBuildFacade(currentAssembly);
         services.AddScoped(typeof(DbEntityQueryBuilder<>));

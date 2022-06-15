@@ -47,8 +47,9 @@ namespace BookStore.WebApi
 
             services.AddIdentity<User, IdentityRole<int>>()
                 .AddEntityFrameworkStores<ApplicationContext>()
+                .AddDefaultTokenProviders()
                 .AddTokenProvider(_configuration["Auth:AppTokenProvider"], typeof(DataProtectorTokenProvider<User>));
-
+            
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
                 opt =>
                 {
