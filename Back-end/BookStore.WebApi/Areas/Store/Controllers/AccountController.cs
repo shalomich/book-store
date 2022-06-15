@@ -1,5 +1,6 @@
 ﻿
 using BookStore.Application.Commands.Account;
+using BookStore.Application.Commands.Account.ResetPassword;
 using BookStore.Application.Commands.Account.SendResetPasswordMessage;
 using BookStore.Application.Commands.TelegramBot.CreateTelegramBotToken;
 using BookStore.Application.Dto;
@@ -57,6 +58,12 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         public async Task ForgotPassword(ForgotPasswordDto forgotPasswordDto)
         {
             await _mediator.Send(new SendResetPasswordMessageCommand(forgotPasswordDto));
+        }
+
+        [HttpPost("reset-password")]
+        public async Task ResetPassword(ResetPasswordDto resetPasswordDto)
+        {
+            await _mediator.Send(new ResetPasswordCommand(resetPasswordDto));
         }
 
         [HttpGet("email-existence/{email}")]
