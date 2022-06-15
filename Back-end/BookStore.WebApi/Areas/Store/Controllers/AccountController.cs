@@ -2,6 +2,7 @@
 using BookStore.Application.Commands.Account;
 using BookStore.Application.Commands.Account.ResetPassword;
 using BookStore.Application.Commands.Account.SendResetPasswordMessage;
+using BookStore.Application.Commands.Account.SendTwoFactorAuthenticateMessage;
 using BookStore.Application.Commands.TelegramBot.CreateTelegramBotToken;
 using BookStore.Application.Dto;
 using BookStore.Application.Queries;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BookStore.WebApi.Areas.Store.Controllers
@@ -55,15 +57,21 @@ namespace BookStore.WebApi.Areas.Store.Controllers
         }
 
         [HttpPost("forgot-password")]
-        public async Task ForgotPassword(ForgotPasswordDto forgotPasswordDto)
+        public async Task ForgotPassword(ForgotPasswordDto forgotPasswordDto, CancellationToken cancellationToken)
         {
-            await _mediator.Send(new SendResetPasswordMessageCommand(forgotPasswordDto));
+            await _mediator.Send(new SendResetPasswordMessageCommand(forgotPasswordDto), cancellationToken);
         }
 
         [HttpPost("reset-password")]
-        public async Task ResetPassword(ResetPasswordDto resetPasswordDto)
+        public async Task ResetPassword(ResetPasswordDto resetPasswordDto, CancellationToken cancellationToken)
         {
-            await _mediator.Send(new ResetPasswordCommand(resetPasswordDto));
+            await _mediator.Send(new ResetPasswordCommand(resetPasswordDto), cancellationToken);
+        }
+
+        [HttpPost("two-factor-auth-code")]
+        public async Task SendTwoFactorAuthenticateMessage(CancellationToken cancellationToken)
+        {
+            await _mediator.Send(new SendTwoFactorAuthenticateMessageCommand(), cancellationToken);
         }
 
         [HttpGet("email-existence/{email}")]
