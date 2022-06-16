@@ -1,22 +1,22 @@
-export const PRODUCT_URL = 'https://localhost:44327/store/catalog';
-export const SELECTION_URL = 'https://localhost:44327/store/selection/';
-export const LOGIN_URL = 'https://localhost:44327/store/account/login';
-export const REGISTER_URL = 'https://localhost:44327/store/account/registration';
-export const REFRESH_URL = 'https://localhost:44327/store/account/refresh';
-export const BASKET_URL = 'https://localhost:44327/store/basket/product';
-export const PROFILE_URL = 'https://localhost:44327/store/profile';
+export const PRODUCT_URL = 'https://comic-store-server.herokuapp.com/store/catalog';
+export const SELECTION_URL = 'https://comic-store-server.herokuapp.com/store/selection/';
+export const LOGIN_URL = 'https://comic-store-server.herokuapp.com/store/account/login';
+export const REGISTER_URL = 'https://comic-store-server.herokuapp.com/store/account/registration';
+export const REFRESH_URL = 'https://comic-store-server.herokuapp.com/store/account/refresh';
+export const BASKET_URL = 'https://comic-store-server.herokuapp.com/store/basket/product';
+export const PROFILE_URL = 'https://comic-store-server.herokuapp.com/store/profile';
 
-export const SEARCH_URL = 'https://localhost:44327/store/selection/search';
+export const SEARCH_URL = 'https://comic-store-server.herokuapp.com/store/selection/search';
 
-export const ORDER_URL = 'https://localhost:44327/store/order';
+export const ORDER_URL = 'https://comic-store-server.herokuapp.com/store/order';
 
-export const BATTLE_URL = 'https://localhost:44327/store/battle';
+export const BATTLE_URL = 'https://comic-store-server.herokuapp.com/store/battle';
 
-export const TELEGRAM_URL = 'https://localhost:44327/store/telegram-bot';
+export const TELEGRAM_URL = 'https://comic-store-server.herokuapp.com/store/telegram-bot';
 
-export const TAGS_URL = 'https://localhost:44327/store/tag';
+export const TAGS_URL = 'https://comic-store-server.herokuapp.com/store/tag';
 
-export const FILTERS_URL = 'https://localhost:44327/store/catalog/filter';
+export const FILTERS_URL = 'https://comic-store-server.herokuapp.com/store/catalog/filter';
 
 export const PAGE_SIZE = 3;
 export const PAGE_NUMBER = 1;
