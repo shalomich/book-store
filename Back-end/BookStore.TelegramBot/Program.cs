@@ -22,17 +22,17 @@ class Program
 
     static void Main(string[] args)
     {
-        //ServiceProvider = ConfigureServices();
+        ServiceProvider = ConfigureServices();
 
-        //var botClient = ServiceProvider.GetRequiredService<ITelegramBotClient>();
+        var botClient = ServiceProvider.GetRequiredService<ITelegramBotClient>();
 
-        //botClient.StartReceiving(
-        //    HandleUpdateAsync,
-        //    HandleErrorAsync,
-        //    new ReceiverOptions(),
-        //    new CancellationTokenSource().Token
-        //);
-        //Console.ReadLine();
+        botClient.StartReceiving(
+            HandleUpdateAsync,
+            HandleErrorAsync,
+            new ReceiverOptions(),
+            new CancellationTokenSource().Token
+        );
+        Console.ReadLine();
     }
 
     public static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
