@@ -175,6 +175,9 @@
   .sidenav-header {
     display: flex;
     justify-content: space-between;
+    padding-left: 2px;
+    padding-right: 5px;
+    overflow: hidden;
   }
 
   .header {
