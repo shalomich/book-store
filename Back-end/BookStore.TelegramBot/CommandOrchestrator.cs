@@ -1,8 +1,7 @@
-﻿using AutoMapper;
-using BookStore.TelegramBot.Commands.Help;
-using BookStore.TelegramBot.Commands.Selection;
+﻿using BookStore.TelegramBot.Commands.Help;
 using BookStore.TelegramBot.Extensions;
 using BookStore.TelegramBot.UseCases.Common;
+using BookStore.TelegramBot.UseCases.ViewSelection;
 using MediatR;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -11,14 +10,10 @@ namespace BookStore.TelegramBot.Controllers;
 internal class CommandOrchestrator
 {
     private IMediator Mediator { get; set; }
-    private IMapper Mapper { get; }
-
     public CommandOrchestrator(
-        IMediator mediator,
-        IMapper mapper)
+        IMediator mediator)
     {
         Mediator = mediator;
-        Mapper = mapper;
     }
 
     public async Task Run(Update update, ITelegramBotClient botClient,
@@ -32,22 +27,22 @@ internal class CommandOrchestrator
             return;
         }
 
-        if (command == CommandNames.Start)
+        TelegramBotCommand telegramBotCommand = null;
+        
+        if (command == CommandNames.Start || command == CommandNames.Help)
         {
-            command = CommandNames.Help;
+            telegramBotCommand = new HelpCommand(update);
+        }
+        else if (command.StartsWith(CommandNames.SelectionGroup))
+        {
+            telegramBotCommand = new ViewSelectionCommand(update);
+        }
+        else
+        {
+            throw new InvalidOperationException();
         }
 
-        Func<Update, CancellationToken, Task> commandExpression = command switch
-        {
-            CommandNames.Help => new HelpCommand(botClient).Help,
-            CommandNames.Novelties => new SelectionCommandGroup(Mediator, botClient, Mapper).GetNoveltySelection,
-            CommandNames.GoneOnSale => new SelectionCommandGroup(Mediator, botClient, Mapper).GetGoneOnSaleSelection,
-            CommandNames.BackOnSale => new SelectionCommandGroup(Mediator, botClient, Mapper).GetBackOnSaleSelection,
-            CommandNames.CurrentDayAuthor => new SelectionCommandGroup(Mediator, botClient, Mapper).GetCurrentDayAuthorSelection,
-            CommandNames.Popular => new SelectionCommandGroup(Mediator, botClient, Mapper).GetPopularSelection
-        };
-
-        await commandExpression(update, cancellationToken);
+        await Mediator.Send(telegramBotCommand, cancellationToken);
     }
 
     private async Task<bool> CommandNotExistAsync(string command, ITelegramBotClient botClient, long chatId, CancellationToken cancellationToken)

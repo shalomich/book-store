@@ -4,15 +4,18 @@ using Telegram.Bot.Types;
 using BookStore.TelegramBot.UseCases.Common;
 
 namespace BookStore.TelegramBot.Commands.Help;
-internal class HelpCommand
+
+internal record HelpCommand(Update Update) : TelegramBotCommand(Update);
+internal class HelpCommandHandler : TelegramBotCommandHandler<HelpCommand>
 {
     private ITelegramBotClient BotClient { get; }
 
-    public HelpCommand(ITelegramBotClient botClient)
+    public HelpCommandHandler(ITelegramBotClient botClient)
     {
         BotClient = botClient;
     }
-    public async Task Help(Update update, CancellationToken cancellationToken)
+
+    protected async override Task Handle(HelpCommand request, CancellationToken cancellationToken)
     {
         var commandList = CommandNames.All
                 .Except(new string[] { CommandNames.Start })
@@ -21,7 +24,7 @@ internal class HelpCommand
         var commandsMessage = "Команды:\n" + commandList;
 
         await BotClient.SendTextMessageAsync(
-           chatId: update.GetChatId(),
+           chatId: request.Update.GetChatId(),
            text: commandsMessage,
            cancellationToken: cancellationToken
         );

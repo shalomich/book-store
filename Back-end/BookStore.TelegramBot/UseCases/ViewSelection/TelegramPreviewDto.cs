@@ -1,4 +1,4 @@
-﻿namespace BookStore.TelegramBot.Commands.Selection;
+﻿namespace BookStore.TelegramBot.UseCases.ViewSelection;
 public record TelegramPreviewDto
 {
     public string Name { init; get; }

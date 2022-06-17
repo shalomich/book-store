@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BookStore.Application.Commands.Selection.Common;
 
-namespace BookStore.TelegramBot.Commands.Selection;
+namespace BookStore.TelegramBot.UseCases.ViewSelection;
 public class SelectionMapperProfile : Profile
 {
     public SelectionMapperProfile()

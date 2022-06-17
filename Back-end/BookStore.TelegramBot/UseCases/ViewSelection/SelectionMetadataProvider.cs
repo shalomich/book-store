@@ -1,19 +1,34 @@
 ﻿using BookStore.Application.Dto;
+using BookStore.Application.Providers;
 using BookStore.TelegramBot.Extensions;
+using BookStore.TelegramBot.UseCases.Common;
 using QueryWorker.Args;
 using System.Text;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 
-namespace BookStore.TelegramBot.Commands.Selection;
+namespace BookStore.TelegramBot.UseCases.ViewSelection;
 internal class SelectionMetadataProvider
 {
-    private readonly string _previewHtmlTemplate;
     private Update Update { get; }
 
     public SelectionMetadataProvider(Update update)
     {
         Update = update;
+    }
+
+    public string GetSelectionName()
+    {
+        var command = Update.TryGetCommand().Command;
+
+        return command switch
+        {
+            CommandNames.Novelties => SelectionNames.Novelties,
+            CommandNames.GoneOnSale => SelectionNames.GoneOnSale,
+            CommandNames.BackOnSale => SelectionNames.BackOnSale,
+            CommandNames.CurrentDayAuthor => SelectionNames.CurrentDayAuthor,
+            CommandNames.Popular => SelectionNames.Popular
+        };
     }
 
     public OptionParameters BuildPagging()
