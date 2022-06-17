@@ -1,9 +1,11 @@
 ﻿using BookStore.TelegramBot.Controllers;
 using BookStore.TelegramBot.Notifications;
+using BookStore.TelegramBot.Providers;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using RestSharp;
 using Telegram.Bot;
 
 namespace BookStore.TelegramBot;
@@ -30,6 +32,9 @@ internal static class ServiceConfigurator
         services.AddScoped<CommandOrchestrator>();
 
         services.Configure<TelegramBotMessages>(configuration.GetSection("Messages"));
+        services.Configure<BackEndSettings>(configuration.GetSection("BackEnd"));
+
+        services.AddSingleton(new RestClient(configuration["BackEnd:ApiUri"]));
 
         return services.BuildServiceProvider();
     }
