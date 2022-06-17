@@ -1,20 +1,10 @@
-﻿using BookStore.Application.Extensions;
-using BookStore.Persistance.Extensions;
-using BookStore.TelegramBot.Controllers;
+﻿using BookStore.TelegramBot.Controllers;
 using BookStore.TelegramBot.Extensions;
-using BookStore.TelegramBot.Notifications;
-using BookStore.TelegramBot.UseCases.Common;
-using BookStore.TelegramBot.UseCases.TryAuthenticateTelegramUser;
-using BookStore.TelegramBot.UseCases.TryRegisterBotContact;
-using MediatR;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
 
 namespace BookStore.TelegramBot;
 
@@ -24,7 +14,7 @@ class Program
 
     static void Main(string[] args)
     {
-        ServiceProvider = ConfigureServices();
+        ServiceProvider = ServiceConfigurator.ConfigureServices();
 
         var botClient = ServiceProvider.GetRequiredService<ITelegramBotClient>();
 
@@ -50,89 +40,6 @@ class Program
     public static async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
     {
         Console.WriteLine(JsonConvert.SerializeObject(exception));
-    }
-
-    private static IServiceProvider ConfigureServices()
-    {
-        var settingsPath = Path.GetFullPath(Path.Combine(@"../../../../BookStore.WebApi/appsettings.json"));
-
-        IConfiguration configuration = new ConfigurationBuilder()
-            .AddJsonFile(settingsPath, optional: true, reloadOnChange: true)
-            .Build();
-
-        var currentAssembly = typeof(Program).Assembly;
-
-        var services = new ServiceCollection()
-            .AddPersistance(configuration)
-            .AddApplicationCore(configuration, currentAssembly)
-            .AddSingleton(configuration)
-            .AddLogging(builder => builder.AddConsole());
-
-        services.AddSingleton<ITelegramBotClient>(new TelegramBotClient(configuration["TelegramBot:Token"]));
-        
-        services.AddScoped<CommandOrchestrator>();
-
-        services.Configure<TelegramBotMessages>(configuration.GetSection("TelegramBot:Messages"));
-
-        return services.BuildServiceProvider();
-    }
-
-    private async static Task<bool> TryConnectToStoreCommand(Message message, bool isStartCommand, ITelegramBotClient botClient, 
-        CancellationToken cancellationToken)
-    {
-        var mediator = ServiceProvider.GetRequiredService<IMediator>();
-
-        var authenticationUrl = ServiceProvider.GetRequiredService<IConfiguration>()["TelegramBot:AuthenticationUrl"];
-
-        var registerStatus = await mediator.Send(new TryRegisterBotContactCommand(message, isStartCommand), cancellationToken);
-
-        switch ((isStartCommand, registerStatus))
-        {
-            case (isStartCommand: true, registerStatus: RegisterBotContactStatus.Ready):
-
-                await botClient.SendTextMessageAsync(message.Chat.Id, "Бот уже связан с онлайн магазином.");
-                break;
-
-            case (isStartCommand: true, registerStatus: RegisterBotContactStatus.Invalid):
-
-                await botClient.SendTextMessageAsync(message.Chat.Id, "Необходимо залогиниться через сайт по ссылке: " + authenticationUrl);
-                return false;
-
-            case (isStartCommand: true, registerStatus: RegisterBotContactStatus.Success):
-
-                await botClient.SendTextMessageAsync(message.Chat.Id, "Бот теперь связан с вашем аккаунтом на нашем сайте. Для аутентификации вашего телеграм аккаунта предоставьте номер телефона.");
-                return false;
-
-            case (isStartCommand: false, registerStatus: RegisterBotContactStatus.Invalid):
-
-                await botClient.SendTextMessageAsync(message.Chat.Id, "Необходимо залогиниться через сайт по ссылке: " + authenticationUrl);
-                return false;
-        }
-
-        var authenticateStatus = await mediator.Send(new TryAuthenticateTelegramUserCommand(message), cancellationToken);
-
-        switch (authenticateStatus)
-        {
-            case AuthenticateTelegramUserStatus.Ready:
-                break;
-
-            case AuthenticateTelegramUserStatus.HasNoPhone:
-
-                await botClient.SendTextMessageAsync(message.Chat.Id, "Для подтверждения аккаунта предоставьте номер телефона.");
-                return false;
-
-            case AuthenticateTelegramUserStatus.DifferentPhones:
-
-                await botClient.SendTextMessageAsync(message.Chat.Id, "Номер в телеграм и в личном кабинете сайта отличаются.");
-                return false;
-
-            case AuthenticateTelegramUserStatus.Success:
-
-                await botClient.SendTextMessageAsync(message.Chat.Id, "Телеграм аккаунт успешно аутентифицирован.");
-                break;
-        }
-
-        return true;
     }
 }
  
