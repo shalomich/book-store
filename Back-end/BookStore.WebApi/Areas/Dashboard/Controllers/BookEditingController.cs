@@ -22,7 +22,6 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers;
 [Route("[area]/form-entity/book")]
 [ApiController]
 [Area("dashboard")]
-[Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
 public class BookEditingController : Controller
 {
     public IMediator Mediator { get; }
