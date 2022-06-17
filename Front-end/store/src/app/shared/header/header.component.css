@@ -4,6 +4,11 @@
   border-bottom: 1px #2199e8 dashed;
 }
 
+.mat-drawer-content, .mat-drawer-container {
+  z-index: 0 !important;
+  position: initial !important;
+}
+
 .sidenav-header {
   display: none;
 }
@@ -162,6 +167,11 @@
 }
 
 @media (max-width: 1200px) {
+  .logo {
+    font-size: 1.6em;
+    margin-right: 10px;
+  }
+
   .sidenav-header {
     display: flex;
     justify-content: space-between;
@@ -210,6 +220,10 @@
   .login-button-block {
     display: flex;
     justify-content: center;
+  }
+
+  .user-bonus-block {
+   justify-content: center;
   }
 }
 

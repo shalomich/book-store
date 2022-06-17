@@ -4,7 +4,7 @@
 
 <ul class="list" *ngIf="hints.length != 0; else emptyResult">
   <li class="list-item" *ngFor="let hint of hints">
-    <a [href]="searchInput.buildSearchUrl(target!, hint,true)">
+    <a [title]="hint" [href]="searchInput.buildSearchUrl(target!, hint,true)">
       {{hint}}
     </a>
   </li>

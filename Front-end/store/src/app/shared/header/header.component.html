@@ -50,6 +50,14 @@
       <div class="catalog-button">
         <button (click)="drawer.close()" mat-stroked-button routerLink="/book-store/catalog/book">Каталог</button>
       </div>
+      <div class="battle-redirect-block">
+        <button (click)="drawer.close()" routerLink="/book-store/battle" mat-stroked-button class="battle-redirect">VS</button>
+      </div>
+      <div class="telegram-button-block">
+        <button (click)="openTelegramDialog()" mat-stroked-button class="basket-button">
+          <span class="material-icons">telegram</span> Telegram
+        </button>
+      </div>
       <div>
         <button class="profile-menu-button" mat-button [matMenuTriggerFor]="profileMenu">
           {{user.firstName}}
@@ -72,14 +80,6 @@
           <mat-icon>shopping_cart</mat-icon> Корзина
         </button>
       </div>
-      <div class="telegram-button-block">
-        <button (click)="openTelegramDialog()" mat-stroked-button class="basket-button">
-          <span class="material-icons">telegram</span> Telegram
-        </button>
-      </div>
-      <div class="battle-redirect-block">
-        <button (click)="drawer.close()" routerLink="/book-store/battle" mat-stroked-button class="battle-redirect">VS</button>
-      </div>
     </div>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -87,10 +87,8 @@
       <div routerLink="/book-store" class="logo">
         ComicStore
       </div>
-      <div class="header-search-block">
-        <div class="search-field-block">
-          <app-search-field></app-search-field>
-        </div>
+      <div class="search-field-block">
+        <app-search-field></app-search-field>
       </div>
       <button class="sidenav-open-button" mat-icon-button (click)="drawer.toggle()"><mat-icon>menu</mat-icon></button>
     </div>
@@ -113,16 +111,16 @@
     <div class="catalog-button">
       <button (click)="drawer.close()" mat-stroked-button routerLink="/book-store/catalog/book">Каталог</button>
     </div>
-    <div class="login-button-block">
-      <button class="login-button" mat-stroked-button (click)="openLoginDialog()">Войти</button>
+    <div class="battle-redirect-block">
+      <button (click)="drawer.close()" routerLink="/book-store/battle" mat-stroked-button class="battle-redirect">VS</button>
     </div>
     <div class="telegram-button-block">
       <button (click)="openTelegramDialog()" mat-stroked-button class="basket-button">
         <span class="material-icons">telegram</span> Telegram
       </button>
     </div>
-    <div class="battle-redirect-block">
-      <button (click)="drawer.close()" routerLink="/book-store/battle" mat-stroked-button class="battle-redirect">VS</button>
+    <div class="login-button-block">
+      <button class="login-button" mat-stroked-button (click)="openLoginDialog()">Войти</button>
     </div>
   </div>
 </ng-template>

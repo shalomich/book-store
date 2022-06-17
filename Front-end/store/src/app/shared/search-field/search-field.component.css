@@ -49,3 +49,23 @@
 .hidden {
   display: none;
 }
+
+@media (max-width: 1200px) {
+  .search-field input {
+    width: 150px;
+  }
+
+  .search-result {
+    width: fit-content;
+    margin-right: 65px;
+    padding: 0 10px 10px 10px;
+  }
+
+  .result-data {
+    display: block;
+  }
+
+  .result-data div {
+    width: 300px;
+   }
+}
