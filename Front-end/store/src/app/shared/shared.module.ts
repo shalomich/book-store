@@ -56,6 +56,7 @@ import { ConfirmationModalComponent } from './confirmation-modal/confirmation-mo
 import { TelegramAuthDialogComponent } from './header/telegram-auth-dialog/telegram-auth-dialog.component';
 import { PreviewSkeletonComponent } from './preview-skeleton/preview-skeleton.component';
 import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -92,25 +93,26 @@ import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
     HeaderComponent,
     PreviewSkeletonComponent,
   ],
-  imports: [
-    CommonModule,
-    CoreModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatExpansionModule,
-    MatIconModule,
-    NgxPaginationModule,
-    MatOptionModule,
-    MatCheckboxModule,
-    MatDialogModule,
-    RouterModule,
-    MatMenuModule,
-    MatDividerModule,
-    NgxSkeletonLoaderModule,
-  ],
+    imports: [
+        CommonModule,
+        CoreModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatExpansionModule,
+        MatIconModule,
+        NgxPaginationModule,
+        MatOptionModule,
+        MatCheckboxModule,
+        MatDialogModule,
+        RouterModule,
+        MatMenuModule,
+        MatDividerModule,
+        NgxSkeletonLoaderModule,
+        MatSidenavModule,
+    ],
 })
 
 export class SharedModule { }
