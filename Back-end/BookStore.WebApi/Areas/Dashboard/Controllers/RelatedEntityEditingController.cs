@@ -21,7 +21,6 @@ namespace BookStore.WebApi.Areas.Dashboard.Controllers;
 
 [ApiController]
 [Area("dashboard")]
-[Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
 public abstract class RelatedEntityEditingController<TRelatedEntity, TRelatedEntityForm> : Controller where TRelatedEntity : RelatedEntity
     where TRelatedEntityForm : RelatedEntityForm
 {

@@ -137,7 +137,8 @@ namespace BookStore.WebApi
                 app.UseCors(builder => builder
                     .WithOrigins(
                         Configuration["Front-end:DashboardUrl"],
-                        Configuration["Front-end:StoreUrl"])
+                        Configuration["Front-end:StoreUrl"],
+                        "http://localhost:4200")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .WithExposedHeaders("dataCount"));
