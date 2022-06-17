@@ -1,5 +1,7 @@
 ﻿using BookStore.Application.Extensions;
 using BookStore.Persistance.Extensions;
+using BookStore.TelegramBot.Controllers;
+using BookStore.TelegramBot.Extensions;
 using BookStore.TelegramBot.Notifications;
 using BookStore.TelegramBot.UseCases.Common;
 using BookStore.TelegramBot.UseCases.TryAuthenticateTelegramUser;
@@ -37,34 +39,11 @@ class Program
 
     public static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
-        if (update.Type == UpdateType.Message)
+        if (update.IsCommand())
         {
-            var message = update.Message;
+            var orchestrator = ServiceProvider.GetRequiredService<CommandOrchestrator>();
 
-            string command = null;
-
-            bool isCommand = message.Text?.StartsWith("/") ?? false;
-
-            if (isCommand)
-            {
-                var commandEndIndex = message.Text.IndexOf(" ");
-
-                command = commandEndIndex == -1
-                    ? message.Text.Substring(1)
-                    : message.Text.Substring(1, commandEndIndex - 1);
-
-            }
-
-            bool isStartCommand = isCommand && command == Commands.Start;
-
-            bool isConnectionSuccess = await TryConnectToStoreCommand(message, isStartCommand, botClient, cancellationToken);
-
-            if (isConnectionSuccess == false || isCommand == false)
-            {
-                return;
-            }
-
-            await botClient.SendTextMessageAsync(message.Chat.Id, "Рандомная команда выполнена.");
+            await orchestrator.Run(update, botClient, cancellationToken);
         }
     }
 
@@ -90,6 +69,8 @@ class Program
             .AddLogging(builder => builder.AddConsole());
 
         services.AddSingleton<ITelegramBotClient>(new TelegramBotClient(configuration["TelegramBot:Token"]));
+        
+        services.AddScoped<CommandOrchestrator>();
 
         services.Configure<TelegramBotMessages>(configuration.GetSection("TelegramBot:Messages"));
 
