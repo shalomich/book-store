@@ -19,6 +19,7 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 
 import { TelegramAuthDialogComponent } from './telegram-auth-dialog/telegram-auth-dialog.component';
 import {Location} from '@angular/common';
+import {TelegramAuthService} from '../../core/services/telegram-auth.service';
 
 @Component({
   selector: 'app-header',
@@ -41,6 +42,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private readonly activatedRoute: ActivatedRoute,
     private readonly profileService: ProfileProviderService,
     private readonly tokenValidationService: TokenValidationService,
+    private readonly telegramAuthService: TelegramAuthService,
   ) { }
 
   public ngOnInit(): void {
@@ -93,5 +95,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     } else {
       this.openLoginDialog();
     }
+  }
+
+  public onTelegramClick(): void {
+    this.telegramAuthService.redirectToTelegram();
   }
 }
