@@ -5,6 +5,8 @@ internal static class CommandNames
 
     public const string Help = "help";
 
+    public const string Authenticate = "auth";
+
     public const string SelectionGroup = "selection_";
 
     public const string Novelties = SelectionGroup + "novelties";
@@ -19,7 +21,7 @@ internal static class CommandNames
 
     public static string[] All => new string[]
     {
-        Start, Help, Novelties, GoneOnSale, BackOnSale, CurrentDayAuthor, Popular
+        Start, Help, Authenticate, Novelties, GoneOnSale, BackOnSale, CurrentDayAuthor, Popular
     };
 
 }
