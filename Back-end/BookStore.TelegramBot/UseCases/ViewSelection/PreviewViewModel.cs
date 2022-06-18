@@ -1,5 +1,5 @@
 ﻿namespace BookStore.TelegramBot.UseCases.ViewSelection;
-public record TelegramPreviewDto
+public record PreviewViewModel
 {
     public string Name { init; get; }
     public string AuthorName { init; get; }

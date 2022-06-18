@@ -60,7 +60,7 @@ internal class ViewSelectionCommandHandler : TelegramBotCommandHandler<ViewSelec
         }
 
         var telegramBookPreviews = previewSet.Previews
-            .Select(preview => Mapper.Map<TelegramPreviewDto>(preview))
+            .Select(preview => Mapper.Map<PreviewViewModel>(preview))
             .ToList();
 
         foreach (var preview in telegramBookPreviews)
