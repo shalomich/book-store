@@ -56,7 +56,9 @@ export class TokenValidationService {
         return true;
       }),
       catchError(() => {
-        this.router.navigate(['/book-store']);
+        if (redirectNeeded) {
+          this.router.navigate(['/book-store']);
+        }
         return of(false);
       }),
     );

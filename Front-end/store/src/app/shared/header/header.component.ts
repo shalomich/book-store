@@ -73,6 +73,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public openLoginDialog(): void {
     this.dialog.open(LoginDialogComponent, {
       width: 'min-content',
+      panelClass: 'auth-dialog',
     });
   }
 
