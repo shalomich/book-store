@@ -12,3 +12,10 @@
   background-color: #2199e8;
   color: white;
 }
+
+@media (max-width: 585px) {
+  .confirmation-message {
+    font-size: 1em;
+    margin: 4vh 0;
+  }
+}

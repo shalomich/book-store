@@ -52,3 +52,43 @@
   margin-right: 2em;
   align-items: center;
 }
+
+@media (max-width: 830px) {
+  .new-order-block {
+    box-shadow: none;
+  }
+
+  .order-bottom-block {
+    margin-left: 0;
+    display: block;
+  }
+
+  .order-button-block {
+    justify-content: center;
+    margin-right: 0;
+    margin-top: 20px;
+  }
+
+  .total-info {
+    text-align: center;
+    font-size: 0.8em;
+  }
+
+  .total-cost {
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 585px) {
+  .new-order-block {
+    width: fit-content;
+    padding: 0;
+  }
+}
+
+@media (max-width: 375px) {
+  .new-order-block {
+    margin: 10px 5px;
+  }
+}

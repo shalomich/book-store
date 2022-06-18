@@ -1,9 +1,9 @@
-.mat-expansion-panel-body {
+.filters-block .mat-expansion-panel-body {
   overflow: auto;
   max-height: 30vh;
 }
 
-.mat-expansion-panel {
+.filters-block .mat-expansion-panel {
   box-shadow: none !important;
   border: 0.1em gray solid;
 }
@@ -17,16 +17,16 @@
   margin-top: 6vh;
 }
 
-.mat-expansion-panel-header {
+.filters-block .mat-expansion-panel-header {
   border-bottom: 0.1em gray solid;
   margin-bottom: 0;
 }
 
-.mat-expanded {
+.filters-block .mat-expanded {
   margin-bottom: 1em;
 }
 
-.mat-action-row {
+.filters-block .mat-action-row {
   justify-content: center !important;
   padding-left: 0 !important;
 }
@@ -34,4 +34,19 @@
 .apply-button {
   color: #2199e8 !important;
   margin-right: 1em !important;
+}
+
+@media (max-width: 830px) {
+  .filters-block {
+    width: 280px;
+    margin-left: 20px;
+  }
+}
+
+@media (max-width: 585px) {
+  .filters-block {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }

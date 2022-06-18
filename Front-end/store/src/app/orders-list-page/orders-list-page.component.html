@@ -1,45 +1,59 @@
-<div class="orders-list">
-  <div class="order" *ngFor="let order of orders">
-    <mat-expansion-panel [expanded]="!!newOrderId && newOrderId === order.id">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Заказ №{{order.id}}
-        </mat-panel-title>
-        <mat-panel-description>
-          <div class="order-date">Создан: {{order.placedDate}}</div>
-<!--          <div class="order-date">Завершен: {{order.deliveredDate}}</div>-->
-          <div class="placed-order-state" *ngIf="order.state === 'Placed'">Ожидает получения &nbsp; <mat-icon>query_builder</mat-icon></div>
-          <div class="delivered-order-state" *ngIf="order.state === 'Delivered'">Завершен &nbsp; <mat-icon>done</mat-icon></div>
-          <div class="cancelled-order-state" *ngIf="order.state === 'Cancelled'">Отменен &nbsp; <mat-icon>close</mat-icon></div>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <div class="order-personal-info">
-        <div>
-          <span>Заказчик:</span> {{order.userName}}
+<div *ngIf="!loading; else loadingBlock" class="orders-list">
+  <div *ngIf="orders.length !== 0; else emptyOrderList">
+    <div class="order" *ngFor="let order of orders">
+      <mat-expansion-panel [expanded]="!!newOrderId && newOrderId === order.id">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Заказ №{{order.id}}
+          </mat-panel-title>
+          <mat-panel-description>
+            <div class="order-date">Создан: {{order.placedDate}}</div>
+            <!--          <div class="order-date">Завершен: {{order.deliveredDate}}</div>-->
+            <div class="placed-order-state" *ngIf="order.state === 'Placed'"><span>Ожидает получения &nbsp;</span> <mat-icon>query_builder</mat-icon></div>
+            <div class="delivered-order-state" *ngIf="order.state === 'Delivered'"><span>Завершен &nbsp;</span> <mat-icon>done</mat-icon></div>
+            <div class="cancelled-order-state" *ngIf="order.state === 'Cancelled'"><span>Отменен &nbsp;</span> <mat-icon>close</mat-icon></div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="order-personal-info">
+          <div>
+            <span>Заказчик:</span> {{order.userName}}
+          </div>
+          <div>
+            <span>Номер телефона:</span> {{order.phoneNumber}}
+          </div>
+          <div>
+            <span>Эл. почта:</span> {{order.email}}
+          </div>
         </div>
-        <div>
-          <span>Номер телефона:</span> {{order.phoneNumber}}
+        <app-order-info [placedOrder]="true" [orderProducts]="order.products"></app-order-info>
+        <div class="order-total-info-block">
+          <div>
+            <span>Итоговая сумма заказа:</span> {{getOrderTotalCost(order)}} &#8381;
+          </div>
+          <div>
+            <span>Адрес самовывоза:</span> ул. Уличная 1
+          </div>
         </div>
-        <div>
-          <span>Эл. почта:</span> {{order.email}}
-        </div>
-      </div>
-      <app-order-info [placedOrder]="true" [orderProducts]="order.products"></app-order-info>
-      <div class="order-total-info-block">
-        <div>
-          <span>Итоговая сумма заказа:</span> {{getOrderTotalCost(order)}} &#8381;
-        </div>
-        <div>
-          <span>Адрес самовывоза:</span> ул. Уличная 1
-        </div>
-      </div>
 
-      <mat-action-row *ngIf="order.state === 'Placed'">
-        <button (click)="onCancelOrder(order.id)" class="cancel-order-button" mat-stroked-button>Отменить заказ</button>
-      </mat-action-row>
-    </mat-expansion-panel>
-  </div>
-  <div *ngIf="!isLastPage" class="fetch-more-block">
-    <button (click)="showMoreOrders()" mat-button><mat-icon>sync</mat-icon> Показать еще</button>
+        <mat-action-row *ngIf="order.state === 'Placed'">
+          <button (click)="onCancelOrder(order.id)" class="cancel-order-button" mat-stroked-button>Отменить заказ</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </div>
+    <div *ngIf="!isLastPage && orders.length >= 4" class="fetch-more-block">
+      <button (click)="showMoreOrders()" mat-button><mat-icon>sync</mat-icon> Показать еще</button>
+    </div>
   </div>
 </div>
+
+<ng-template #emptyOrderList>
+  <div class="empty-order-list">
+    У вас нет заказов.
+  </div>
+</ng-template>
+
+<ng-template #loadingBlock>
+  <div class="loading-block">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
