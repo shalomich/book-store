@@ -1,6 +1,6 @@
 .basket-info-block {
   position: fixed;
-  margin-left: 3em;
+  margin-left: 10px;
   margin-top: 1.7em;
   padding: 0 1em;
 }
@@ -41,4 +41,13 @@
 .total-cost span {
   color: #000000;
   font-family: Trebuchet MS, serif;
+}
+
+@media (max-width: 1200px) {
+  .basket-info-block {
+    position: inherit;
+    width: 95vw;
+    margin-right: auto;
+    margin-left: auto;
+  }
 }
