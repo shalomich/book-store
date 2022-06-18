@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace BookStore.Application.Commands.Account.Common;
+namespace BookStore.Application.Services;
 public class ApplicationPrincipalFactory : UserClaimsPrincipalFactory<User, IdentityRole<int>>
 {
     /// <inheritdoc />

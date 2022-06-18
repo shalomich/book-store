@@ -4,16 +4,18 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
 
-namespace BookStore.Application.Services;
+namespace BookStore.Application.Commands.Account.Common;
 internal class RefreshTokenRepository
 {
     private const string refreshTokenName = "RefreshToken";
-    private string AppTokenProvider { get; } 
+    private string AppTokenProvider { get; }
     private UserManager<User> UserManager { get; }
 
-    public RefreshTokenRepository(UserManager<User> userManager, IConfiguration configuration)
+    public RefreshTokenRepository(
+        UserManager<User> userManager, 
+        IConfiguration configuration)
     {
-        UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+        UserManager = userManager;
         AppTokenProvider = configuration["Auth:AppTokenProvider"];
     }
 
@@ -24,7 +26,7 @@ internal class RefreshTokenRepository
 
         return refreshToken;
     }
-   
+
     public Task<bool> IsValid(string refreshToken, User user)
     {
         return UserManager.VerifyUserTokenAsync(user, AppTokenProvider, refreshTokenName, refreshToken);

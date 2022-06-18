@@ -1,11 +1,9 @@
-﻿using BookStore.Application.Dto;
-using BookStore.Application.Services.Jwt;
+﻿using BookStore.Application.Services.Jwt;
 using BookStore.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
-using System;
 using System.Threading.Tasks;
 
-namespace BookStore.Application.Services;
+namespace BookStore.Application.Commands.Account.Common;
 internal class TokensFactory
 {
     private WebJwtParser JwtParser { get; }
@@ -13,7 +11,7 @@ internal class TokensFactory
     private SignInManager<User> SignInManager { get; }
 
     public TokensFactory(
-        WebJwtParser jwtParser, 
+        WebJwtParser jwtParser,
         RefreshTokenRepository refreshTokenRepository,
         SignInManager<User> signInManager)
     {
@@ -26,9 +24,11 @@ internal class TokensFactory
     {
         var principal = await SignInManager.CreateUserPrincipalAsync(user);
 
-        return new TokensDto(
-            AccessToken: JwtParser.ToToken(principal),
-            RefreshToken: await RefreshTokenRepository.Create(user));
+        return new TokensDto
+        {
+            AccessToken = JwtParser.ToToken(principal),
+            RefreshToken = await RefreshTokenRepository.Create(user)
+        };
     }
 }
 

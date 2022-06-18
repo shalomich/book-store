@@ -1,9 +1,9 @@
 ﻿using DataAnnotationsExtensions;
 using System.ComponentModel.DataAnnotations;
 
-namespace BookStore.Application.ViewModels.Account;
+namespace BookStore.Application.Commands.Account.Login;
 
-public record LoginForm
+public record LoginDto
 {
     [Required]
     [Email]
