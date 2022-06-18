@@ -45,6 +45,7 @@
 
 @media (max-width: 1200px) {
   .basket-info-block {
+    margin-top: 50px;
     position: inherit;
     width: 95vw;
     margin-right: auto;
