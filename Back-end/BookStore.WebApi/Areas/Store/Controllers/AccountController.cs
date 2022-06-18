@@ -1,70 +1,56 @@
 ﻿
-using BookStore.Application.Commands.Account;
-using BookStore.Application.Commands.TelegramBot.CreateTelegramBotToken;
-using BookStore.Application.Dto;
-using BookStore.Application.Queries;
-using BookStore.Application.ViewModels.Account;
+using BookStore.Application.Commands.Account.CheckEmailExistence;
+using BookStore.Application.Commands.Account.Common;
+using BookStore.Application.Commands.Account.Login;
+using BookStore.Application.Commands.Account.Logout;
+using BookStore.Application.Commands.Account.Registration;
+using BookStore.Application.Commands.Account.ResfreshToken;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookStore.WebApi.Areas.Store.Controllers
+namespace BookStore.WebApi.Areas.Store.Controllers;
+[ApiController]
+[Area("store")]
+[Route("[area]/[controller]")]
+public class AccountController : ControllerBase
 {
-    [ApiController]
-    [Area("store")]
-    [Route("[area]/[controller]")]
-    public class AccountController : ControllerBase
+    private IMediator Mediator { get; }
+
+    public AccountController(IMediator mediator)
     {
-        private IMediator _mediator;
+        Mediator = mediator;
+    }
 
-        public AccountController(IMediator mediator)
-        {
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-        }
+    [HttpPost("login")]
+    public async Task<TokensDto> Login(LoginDto loginForm, CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(new LoginCommand(loginForm), cancellationToken);
+    }
 
-        [HttpPost("login")]
-        public async Task<TokensDto> Login(LoginForm authForm)
-        {
-            var user = await _mediator.Send(new FindUserByEmailQuery(authForm.Email));
+    [HttpPost("registration")]
+    public Task<TokensDto> Registration(RegistrationDto registrationForm, CancellationToken cancellationToken)
+    {
+        return Mediator.Send(new RegistrationCommand(registrationForm), cancellationToken);
+    }
 
-            return await _mediator.Send(new LoginCommand(user, authForm.Password));
-        }
+    [HttpPost("logout")]
+    public async Task Logout(TokensDto tokens, CancellationToken cancellationToken)
+    {
+        await Mediator.Send(new LogoutCommand(tokens), cancellationToken);
+    }
 
-        [HttpPost("registration")]
-        public Task<TokensDto> Registration(RegistrationForm authForm)
-        {
-            return _mediator.Send(new RegistrationCommand(authForm.Email, authForm.FirstName, authForm.Password));
-        }
+    [HttpPost("refresh")]
+    public async Task<TokensDto> RefreshToken(TokensDto tokens, CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(new RefreshTokenCommand(tokens), cancellationToken);
+    }
 
-        [HttpPost("logout")]
-        public async Task<Unit> Logout(TokensDto tokens)
-        {
-            return await _mediator.Send(new LogoutCommand(tokens.RefreshToken));
-        }
-
-        [HttpPost("refresh")]
-        public async Task<TokensDto> RefreshToken(TokensDto tokens)
-        {
-            return await _mediator.Send(new RefreshTokenCommand(tokens));
-        }
-
-        [HttpGet("email-existence/{email}")]
-        public async Task<bool> CheckEmailExistence(string email)
-        {
-            try
-            {
-                await _mediator.Send(new FindUserByEmailQuery(email));
-
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
+    [HttpGet("email-existence/{email}")]
+    public async Task<bool> CheckEmailExistence(string email, CancellationToken cancellationToken)
+    {
+        return await Mediator.Send(new CheckEmailExistenceQuery(email), cancellationToken);
     }
 }
+

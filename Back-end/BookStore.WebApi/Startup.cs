@@ -20,8 +20,8 @@ using BookStore.Persistance.Extensions;
 using BookStore.WebApi.BackgroundJobs.BookEditing;
 using BookStore.WebApi.BackgroundJobs.Selection;
 using Hangfire.PostgreSql;
-using BookStore.Application.Commands.Account.Common;
 using Microsoft.Extensions.Logging;
+using BookStore.Application.Services;
 
 namespace BookStore.WebApi
 {
