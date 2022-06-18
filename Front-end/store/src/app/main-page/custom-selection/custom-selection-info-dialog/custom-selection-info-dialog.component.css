@@ -9,23 +9,21 @@
 
 .custom-selection-info-dialog .mat-dialog-container {
   padding: 5px 20px 20px 20px;
-  width: 30vw;
+  width: 600px;
   overflow: hidden;
   height: max-content;
 }
 
 .custom-selection-info-dialog-title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2em;
+  text-align: center;
+  font-size: 1.6em;
   color: #2199e8;
-  margin-bottom: 2vh;
+  margin-bottom: 20px;
   height: 4vh;
 }
 
 .custom-selection-info-dialog-content {
-  font-size: 1.4em;
+  font-size: 1.2em;
   overflow: hidden;
   text-align: justify;
   line-height: 1.5;
@@ -42,10 +40,49 @@
 }
 
 .custom-selection-info-ok-button {
-  font-size: 1.6em;
-  padding: 5px 30px;
+  font-size: 1.4em;
+  padding: 5px 25px;
 }
 
 .custom-selection-info-dialog-actions .mat-flat-button.mat-primary {
   background-color: #2199e8;
 }
+
+@media (max-width: 585px) {
+  .custom-selection-info-dialog .mat-dialog-container {
+    width: 400px;
+  }
+
+  .custom-selection-info-dialog-title {
+    font-size: 1.4em;
+  }
+
+  .custom-selection-info-dialog-content {
+    font-size: 1em;
+  }
+
+  .custom-selection-info-ok-button {
+    font-size: 1.2em;
+    padding: 2px 20px;
+  }
+}
+
+@media (max-width: 375px) {
+  .custom-selection-info-dialog .mat-dialog-container {
+    width: 300px;
+  }
+
+  .custom-selection-info-dialog-title {
+    font-size: 1.3em;
+  }
+
+  .custom-selection-info-dialog-content {
+    font-size: 0.9em;
+  }
+
+  .custom-selection-info-ok-button {
+    font-size: 1.2em;
+    padding: 2px 20px;
+  }
+}
+

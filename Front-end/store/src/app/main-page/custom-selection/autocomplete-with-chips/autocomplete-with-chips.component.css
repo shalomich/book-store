@@ -5,3 +5,9 @@
 .example-chip-list .mat-form-field-outline-thick {
   color: inherit !important;
 }
+
+@media (max-width: 585px) {
+  .example-chip-list .mat-chip {
+    font-size: 0.8em;
+  }
+}
