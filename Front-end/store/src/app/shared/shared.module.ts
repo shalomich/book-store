@@ -29,6 +29,10 @@ import { MatMenuModule } from '@angular/material/menu';
 
 import { MatDividerModule } from '@angular/material/divider';
 
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+
+import { MatSidenavModule } from '@angular/material/sidenav';
+
 import { CoreModule } from '../core/core.module';
 
 
@@ -55,8 +59,8 @@ import { RegisterDialogComponent } from './header/register-dialog/register-dialo
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { TelegramAuthDialogComponent } from './header/telegram-auth-dialog/telegram-auth-dialog.component';
 import { PreviewSkeletonComponent } from './preview-skeleton/preview-skeleton.component';
-import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
-import {MatSidenavModule} from '@angular/material/sidenav';
+
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +81,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     ConfirmationModalComponent,
     TelegramAuthDialogComponent,
     PreviewSkeletonComponent,
+    FooterComponent,
   ],
   exports: [
     ProductImagesComponent,
@@ -92,27 +97,28 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     SearchHintComponent,
     HeaderComponent,
     PreviewSkeletonComponent,
+    FooterComponent,
   ],
-    imports: [
-        CommonModule,
-        CoreModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        MatExpansionModule,
-        MatIconModule,
-        NgxPaginationModule,
-        MatOptionModule,
-        MatCheckboxModule,
-        MatDialogModule,
-        RouterModule,
-        MatMenuModule,
-        MatDividerModule,
-        NgxSkeletonLoaderModule,
-        MatSidenavModule,
-    ],
+  imports: [
+    CommonModule,
+    CoreModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatExpansionModule,
+    MatIconModule,
+    NgxPaginationModule,
+    MatOptionModule,
+    MatCheckboxModule,
+    MatDialogModule,
+    RouterModule,
+    MatMenuModule,
+    MatDividerModule,
+    NgxSkeletonLoaderModule,
+    MatSidenavModule,
+  ],
 })
 
 export class SharedModule { }

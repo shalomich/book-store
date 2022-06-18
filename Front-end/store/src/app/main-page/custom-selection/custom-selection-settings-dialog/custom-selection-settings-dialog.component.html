@@ -1,5 +1,5 @@
 <div class="dialog-header-buttons">
-  <button mat-icon-button><mat-icon matTooltip="Выберите теги, комиксы с которыми вам наиболее интересны и будут в дальнейшнем отображаться в подборке">help_outline</mat-icon></button>
+  <button mat-icon-button><mat-icon #tooltip="matTooltip" (click)="tooltip.show()" matTooltip="Выберите теги, комиксы с которыми вам наиболее интересны и будут в дальнейшнем отображаться в подборке">help_outline</mat-icon></button>
   <button (click)="onClose()" mat-icon-button><mat-icon>close</mat-icon></button>
 </div>
 <div class="dialog-content-block">

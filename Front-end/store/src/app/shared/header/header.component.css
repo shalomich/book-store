@@ -150,6 +150,11 @@
   color: #2199e8;
 }
 
+.sidenav-open-button .mat-icon {
+  line-height: 0 !important;
+  margin-top: 3px;
+}
+
 .sidenav-close-button {
   color: #2199e8;
   margin: 10px;
@@ -168,8 +173,9 @@
 
 @media (max-width: 1200px) {
   .logo {
-    font-size: 1.6em;
-    margin-right: 10px;
+    font-size: 1.2em;
+    margin-left: 5px !important;
+    margin-right: 1px;
   }
 
   .sidenav-header {
@@ -178,6 +184,7 @@
     padding-left: 2px;
     padding-right: 5px;
     overflow: hidden;
+    height: 20px;
   }
 
   .header {
