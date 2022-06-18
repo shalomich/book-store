@@ -31,7 +31,7 @@ class Program
     {
         var orchestrator = ServiceProvider.GetRequiredService<CommandOrchestrator>();
 
-        await orchestrator.Run(update, botClient, cancellationToken);
+        await orchestrator.Run(update, cancellationToken);
     }
 
     public static async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)

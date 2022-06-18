@@ -35,6 +35,6 @@ internal static class CommandNames
 
     public static string[] NotForUser => new string[]
     {
-        Start, CastVote, SpendVotingPoints
+        Start, CastVote
     };
 }
