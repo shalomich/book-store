@@ -1,6 +1,7 @@
 ﻿using BookStore.TelegramBot.Commands.Help;
 using BookStore.TelegramBot.Extensions;
 using BookStore.TelegramBot.UseCases.Authenticate;
+using BookStore.TelegramBot.UseCases.Battle;
 using BookStore.TelegramBot.UseCases.Common;
 using BookStore.TelegramBot.UseCases.ViewSelection;
 using MediatR;
@@ -37,6 +38,10 @@ internal class CommandOrchestrator
         else if (command == CommandNames.Authenticate)
         {
             telegramBotCommand = new AuthenticateCommand(update);
+        }
+        else if (command == CommandNames.ShowBattle)
+        {
+            telegramBotCommand = new ViewBattleCommand(update);
         }
         else if (command.StartsWith(CommandNames.SelectionGroup))
         {

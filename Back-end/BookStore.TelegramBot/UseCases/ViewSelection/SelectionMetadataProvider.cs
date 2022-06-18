@@ -61,7 +61,7 @@ internal class SelectionMetadataProvider
         return Update.GetChatId();
     }
 
-    public string GetPreviewHtml(TelegramPreviewDto preview)
+    public string GetPreviewHtml(PreviewViewModel preview)
     {
         var builder = new StringBuilder();
 
