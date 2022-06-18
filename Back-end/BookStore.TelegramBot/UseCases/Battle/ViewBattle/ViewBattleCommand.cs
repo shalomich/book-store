@@ -8,7 +8,7 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
-namespace BookStore.TelegramBot.UseCases.Battle;
+namespace BookStore.TelegramBot.UseCases.Battle.ViewBattle;
 
 internal record ViewBattleCommand(Update Update) : TelegramBotCommand(Update);
 
@@ -36,7 +36,7 @@ internal class ViewBattleCommandHandler : TelegramBotCommandHandler<ViewBattleCo
         var update = request.Update;
         var chatId = update.Message.Chat.Id;
 
-        var provider = new BattleMetadataProvider(request.Update);
+        var provider = new ViewBattleCommandProvider(request.Update);
 
         var battleInfoDto = await RestClient.GetAsync<BattleInfoDto>(new RestRequest(Settings.BattleInfoPath), cancellationToken);
 
@@ -60,6 +60,12 @@ internal class ViewBattleCommandHandler : TelegramBotCommandHandler<ViewBattleCo
             photo: battleInfoViewModel.SecondBattleBook.FileUrl,
             caption: provider.GetBattleBookHtml(battleInfoViewModel.SecondBattleBook, battleInfoViewModel),
             parseMode: ParseMode.Html,
+            cancellationToken: cancellationToken);
+
+        await BotClient.SendTextMessageAsync(
+            chatId: chatId,
+            text: "Выберите комикс.",
+            replyMarkup: provider.GetBattleBookToChoiceButtons(battleInfoViewModel),
             cancellationToken: cancellationToken);
     }
 }

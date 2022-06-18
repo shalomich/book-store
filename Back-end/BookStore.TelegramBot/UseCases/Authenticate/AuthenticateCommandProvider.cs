@@ -3,11 +3,11 @@ using BookStore.TelegramBot.Extensions;
 using Telegram.Bot.Types;
 
 namespace BookStore.TelegramBot.UseCases.Authenticate;
-internal class AuthenticateMetadataProvider
+internal class AuthenticateCommandProvider
 {
     private Update Update { get; }
 
-    public AuthenticateMetadataProvider(
+    public AuthenticateCommandProvider(
         Update update)
     {
         Update = update;
@@ -16,7 +16,7 @@ internal class AuthenticateMetadataProvider
     public LoginDto GetLoginData()
     {
         var tryGetCommandResult = Update.TryGetCommand();
-        
+
         if (!tryGetCommandResult.HasCommandArgs)
         {
             throw new ArgumentException("Введите email и пароль от своего аккаунта");

@@ -1,6 +1,6 @@
 ﻿using BookStore.Domain.Enums;
 
-namespace BookStore.TelegramBot.UseCases.Battle;
+namespace BookStore.TelegramBot.UseCases.Battle.ViewBattle;
 internal record BattleInfoViewModel
 {
     public BattleBookViewModel FirstBattleBook { get; init; }

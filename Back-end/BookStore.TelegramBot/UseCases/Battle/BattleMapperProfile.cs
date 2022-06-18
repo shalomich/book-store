@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using BookStore.Application.Queries.Battle.GetBattleInfo;
+using BookStore.Application.Queries.UserProfile.GetUserProfile;
 using BookStore.Domain.Enums;
+using BookStore.TelegramBot.UseCases.Battle.CastVote;
+using BookStore.TelegramBot.UseCases.Battle.ViewBattle;
 
 namespace BookStore.TelegramBot.UseCases.Battle;
 internal class BattleMapperProfile : Profile
@@ -28,6 +31,8 @@ internal class BattleMapperProfile : Profile
                 dto => dto.TitleImage.FileUrl))
             .ForMember(view => view.StoreUrl, mapper => mapper.MapFrom(
                 dto => $"https://comicstore-de688.web.app/book-store/catalog/book/{dto.BookId}"));
+
+        CreateMap<UserProfileDto, UserBattleInfoViewModel>();
     }
 }
 

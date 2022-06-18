@@ -1,12 +1,14 @@
 ﻿using BookStore.Domain.Enums;
+using BookStore.TelegramBot.UseCases.Common;
 using System.Text;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.ReplyMarkups;
 
-namespace BookStore.TelegramBot.UseCases.Battle;
-internal class BattleMetadataProvider
+namespace BookStore.TelegramBot.UseCases.Battle.ViewBattle;
+internal class ViewBattleCommandProvider
 {
     private Update Update { get; }
-    public BattleMetadataProvider(
+    public ViewBattleCommandProvider(
         Update update)
     {
         Update = update;
@@ -18,7 +20,7 @@ internal class BattleMetadataProvider
 
         var lefTime = battleInfo.LeftTime;
         var leftTimeString = $"дней - {lefTime.Days}, часов - {lefTime.Hours}, минут - {lefTime.Minutes}.";
-        
+
         var battleStateMessage = battleInfo.State switch
         {
             BattleState.Started => $"Баттл комиксов закончится через: {leftTimeString}",
@@ -33,14 +35,14 @@ internal class BattleMetadataProvider
         {
             builder.Append($"<b>Лидер: </b> {battleInfo.LeaderBattleBookName}");
         }
-        
+
         return builder.ToString();
     }
 
     public string GetBattleBookHtml(BattleBookViewModel battleBook, BattleInfoViewModel battleInfo)
     {
         var builder = new StringBuilder();
-        
+
         var discountCost = battleInfo.CurrentDiscount / 100.0 * battleBook.Cost;
 
         builder.Append($"<b>Название: </b>" +
@@ -52,6 +54,17 @@ internal class BattleMetadataProvider
         builder.Append($"<u><b>Количество голосов: </b>{battleBook.TotalVotingPointCount}</u>\n");
 
         return builder.ToString();
+    }
+
+    public InlineKeyboardMarkup GetBattleBookToChoiceButtons(BattleInfoViewModel battleInfo)
+    {
+        var navigationButtons = new List<InlineKeyboardButton>
+        {
+            InlineKeyboardButton.WithCallbackData(text: "Голосовать за первый комикс", callbackData: $"/{CommandNames.CastVote} {battleInfo.FirstBattleBook.BattleBookId}"),
+            InlineKeyboardButton.WithCallbackData(text: "Голосовать за второй комикс", callbackData: $"/{CommandNames.CastVote} {battleInfo.SecondBattleBook.BattleBookId}")
+        };
+
+        return new InlineKeyboardMarkup(navigationButtons);
     }
 }
 

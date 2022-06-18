@@ -1,6 +1,7 @@
 ﻿using BookStore.TelegramBot.Controllers;
 using BookStore.TelegramBot.Notifications;
 using BookStore.TelegramBot.Providers;
+using BookStore.TelegramBot.UseCases.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -46,6 +47,8 @@ internal static class ServiceConfigurator
         services.AddSingleton(new RestClient(configuration["BackEnd:ApiUri"])
             .UseNewtonsoftJson());
 
+        services.AddScoped<AuthorizedRestClient>();
+        
         return services.BuildServiceProvider();
     }
 }

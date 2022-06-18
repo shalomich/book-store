@@ -39,7 +39,7 @@ internal class AuthenticateCommandHandler : TelegramBotCommandHandler<Authentica
         var update = request.Update;
         var chatId = update.Message.Chat.Id;
 
-        var provider = new AuthenticateMetadataProvider(update);
+        var provider = new AuthenticateCommandProvider(update);
 
         LoginDto loginData;
 

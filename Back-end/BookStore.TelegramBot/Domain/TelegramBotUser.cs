@@ -14,5 +14,6 @@ internal class TelegramBotUser
 
     public DateTimeOffset AccessTokenExpiration { get; set; }
     public DateTimeOffset RefreshTokenExpiration { get; set; }
+    public Command CurrentCommand { get; set; }
 }
 
