@@ -1,4 +1,4 @@
-﻿namespace BookStore.TelegramBot.UseCases.Battle;
+﻿namespace BookStore.TelegramBot.UseCases.Battle.ViewBattle;
 internal record BattleBookViewModel
 {
     public string Name { init; get; }

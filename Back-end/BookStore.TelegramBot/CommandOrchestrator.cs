@@ -2,6 +2,8 @@
 using BookStore.TelegramBot.Extensions;
 using BookStore.TelegramBot.UseCases.Authenticate;
 using BookStore.TelegramBot.UseCases.Battle;
+using BookStore.TelegramBot.UseCases.Battle.CastVote;
+using BookStore.TelegramBot.UseCases.Battle.ViewBattle;
 using BookStore.TelegramBot.UseCases.Common;
 using BookStore.TelegramBot.UseCases.ViewSelection;
 using MediatR;
@@ -21,35 +23,31 @@ internal class CommandOrchestrator
     public async Task Run(Update update, ITelegramBotClient botClient,
         CancellationToken cancellationToken)
     {
-        var command = update.TryGetCommand().Command;
+        var commandName = update.TryGetCommand().Command;
         var chatId = update.GetChatId();
 
-        if (await CommandNotExistAsync(command, botClient, chatId, cancellationToken))
+        if (await CommandNotExistAsync(commandName, botClient, chatId, cancellationToken))
         {
             return;
         }
 
         TelegramBotCommand telegramBotCommand = null;
-        
-        if (command == CommandNames.Start || command == CommandNames.Help)
-        {
-            telegramBotCommand = new HelpCommand(update);
-        }
-        else if (command == CommandNames.Authenticate)
-        {
-            telegramBotCommand = new AuthenticateCommand(update);
-        }
-        else if (command == CommandNames.ShowBattle)
-        {
-            telegramBotCommand = new ViewBattleCommand(update);
-        }
-        else if (command.StartsWith(CommandNames.SelectionGroup))
+
+        if (commandName.StartsWith(CommandNames.SelectionGroup))
         {
             telegramBotCommand = new ViewSelectionCommand(update);
         }
         else
         {
-            throw new InvalidOperationException();
+            telegramBotCommand = commandName switch
+            {
+                CommandNames.Start => new HelpCommand(update),
+                CommandNames.Help => new HelpCommand(update),
+                CommandNames.Authenticate => new AuthenticateCommand(update),
+                CommandNames.ShowBattle => new ViewBattleCommand(update),
+                CommandNames.CastVote => new CastVoteCommand(update),
+                _ => throw new ArgumentOutOfRangeException(nameof(commandName))
+            };
         }
 
         await Mediator.Send(telegramBotCommand, cancellationToken);
