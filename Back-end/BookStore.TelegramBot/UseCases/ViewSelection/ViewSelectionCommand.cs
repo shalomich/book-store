@@ -44,13 +44,11 @@ internal class ViewSelectionCommandHandler : TelegramBotCommandHandler<ViewSelec
 
         var optionsParameters = provider.BuildPagging();
 
-        var response = await RestClient.GetAsync(new RestRequest(selectionPath)
+        var previewSet = await RestClient.GetAsync<PreviewSetDto>(new RestRequest(selectionPath)
             .AddParameter("Pagging.PageSize", optionsParameters.Pagging.PageSize)
             .AddParameter("Pagging.PageNumber", optionsParameters.Pagging.PageNumber), 
-        cancellationToken);
+            cancellationToken);
 
-        var previewSet = JsonConvert.DeserializeObject<PreviewSetDto>(response.Content);
-        
         if (previewSet.TotalCount == 0)
         {
             await BotClient.SendTextMessageAsync(
