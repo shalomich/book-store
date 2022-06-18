@@ -16,7 +16,8 @@
     <div class="selection-books-list">
       <app-book-preview *ngFor="let book of bookSet.previews"
                         [item]="book"
-                        [userBasketBookIds]="userProfile.basketBookIds || []">
+                        [userBasketBookIds]="userProfile.basketBookIds || []"
+                        [isUserAuthorized]="userProfile.isAuthorized()">
       </app-book-preview>
     </div>
   </div>

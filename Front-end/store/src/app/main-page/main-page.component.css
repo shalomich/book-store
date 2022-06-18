@@ -4,3 +4,24 @@
   display: flex;
   flex-direction: column;
 }
+
+@media (max-width: 1200px) {
+  .main-page-selections {
+    padding-left: 20px;
+  }
+}
+
+@media (max-width: 585px) {
+  .main-page-selections {
+    margin: 5vh auto 0 auto;
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 375px) {
+  .main-page-selections {
+    padding-left: 0;
+    margin-left: 5px;
+    margin-right: 0;
+  }
+}

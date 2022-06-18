@@ -51,19 +51,24 @@
 }
 
 @media (max-width: 1200px) {
+  .search-field {
+    align-items: center;
+  }
+
   .search-field input {
     width: 150px;
-    height: 1.6em;
+    height: 1.2em;
   }
 
   .search-field button {
     color: #2199e8 !important;
-    line-height: 1.6em;
+    line-height: 1.2em;
+    border: none;
   }
 
   .search-field .mat-stroked-button {
     min-width: min-content !important;
-    padding: 0 10px !important;
+    padding: 0 5px 0 10px !important;
   }
 
   .search-result {
