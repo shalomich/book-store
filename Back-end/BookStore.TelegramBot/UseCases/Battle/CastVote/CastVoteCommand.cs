@@ -2,7 +2,6 @@
 using BookStore.Application.Queries.UserProfile.GetUserProfile;
 using BookStore.TelegramBot.Providers;
 using BookStore.TelegramBot.UseCases.Common;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using RestSharp;
 using Telegram.Bot;
@@ -17,17 +16,19 @@ internal class CastVoteCommandHandler : TelegramBotCommandHandler<CastVoteComman
     private AuthorizedRestClient RestClient { get; }
     private ITelegramBotClient BotClient { get; }
     private IMapper Mapper { get; }
+    private UserProfileRestClient UserProfileRestClient { get; }
     private BackEndSettings Settings { get; }
     public CastVoteCommandHandler(
         AuthorizedRestClient restClient,
         IOptions<BackEndSettings> settingsOption,
         ITelegramBotClient botClient,
-        IMapper mapper)
+        IMapper mapper,
+        UserProfileRestClient userProfileRestClient)
     {
         RestClient = restClient;
         BotClient = botClient;
         Mapper = mapper;
-        
+        UserProfileRestClient = userProfileRestClient;
         Settings = settingsOption.Value;
     }
 
@@ -63,11 +64,8 @@ internal class CastVoteCommandHandler : TelegramBotCommandHandler<CastVoteComman
 
         try
         {
-            profile = await RestClient.SendRequestAsync<UserProfileDto>(
-                telegramId: chatId,
-                requestFunction: (client, cancellationToken)
-                    => client.GetAsync(new RestRequest(Settings.UserProfilePath), cancellationToken),
-                cancellationToken: cancellationToken);
+            profile = await UserProfileRestClient.GetUserProfileAsync(
+                telegramId: chatId, cancellationToken);
         }
         catch (InvalidOperationException exception)
         {

@@ -127,8 +127,7 @@ internal class AuthorizedRestClient
             throw new InvalidOperationException(NeedAuthenticateMessage);
         }
 
-        user.AccessToken = tokens.AccessToken;
-        user.RefreshToken = newTokens.RefreshToken;
+        user.SetUserInfo(tokens, Settings);
 
         await DbContext.SaveChangesAsync(cancellationToken);
 
