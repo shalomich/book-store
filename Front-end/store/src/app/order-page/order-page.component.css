@@ -84,6 +84,11 @@
   .new-order-block {
     width: fit-content;
     padding: 0;
+  }
+}
+
+@media (max-width: 375px) {
+  .new-order-block {
     margin: 10px 5px;
   }
 }
