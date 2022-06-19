@@ -56,7 +56,7 @@ internal class ViewBasketProductsCommandProvider
         var navigationButtons = new List<InlineKeyboardButton>()
         {
             InlineKeyboardButton.WithCallbackData(
-                text: "Удалить все товары",
+                text: "Очистить корзину",
                 callbackData: CommandLineParser.ToCommandLine(
                     CommandNames.DeleteAll)),
         };
