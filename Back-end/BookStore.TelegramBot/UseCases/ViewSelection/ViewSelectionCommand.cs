@@ -122,7 +122,7 @@ internal class ViewSelectionCommandHandler : TelegramBotCommandHandler<ViewSelec
                 cancellationToken: cancellationToken);
         }
 
-        if (provider.TryGetNavigationButtons(previewSet.TotalCount, out InlineKeyboardMarkup navigationKeyboard))
+        if (provider.TryGetNotEmptyNavigation(previewSet.TotalCount, out InlineKeyboardMarkup navigationKeyboard))
         {
             await BotClient.SendTextMessageAsync(
                chatId: chatId,

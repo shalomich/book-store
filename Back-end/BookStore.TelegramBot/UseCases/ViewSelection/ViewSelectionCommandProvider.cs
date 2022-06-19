@@ -3,6 +3,7 @@ using BookStore.Application.Providers;
 using BookStore.TelegramBot.Extensions;
 using BookStore.TelegramBot.UseCases.Common;
 using QueryWorker.Args;
+using QueryWorker.DataTransformers.Paggings;
 using System.Text;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -81,41 +82,40 @@ internal class ViewSelectionCommandProvider
         return builder.ToString();
     }
 
-    public bool TryGetNavigationButtons(int totalCount, out InlineKeyboardMarkup keyboard)
+    public bool TryGetNotEmptyNavigation(int totalDataCount, out InlineKeyboardMarkup keyboard)
     {
-        keyboard = null;
         var pagging = BuildPagging().Pagging;
-        var pageNumber = pagging.PageNumber;
-        var maxPageNumber = (int)Math.Ceiling(totalCount / (double)pagging.PageSize);
 
-        var command = Update.TryGetCommand().Command;
+        var currentCommand = Update.TryGetCommand().Command;
 
-        int previousPage = pageNumber - 1;
-        int nextPage = pageNumber + 1;
-
-        var navigationButtons = new List<InlineKeyboardButton>
-        {
-            InlineKeyboardButton.WithCallbackData(text: "Предыдущая страница", callbackData: $"/{command} {previousPage}"),
-            InlineKeyboardButton.WithCallbackData(text: "Следующая страница", callbackData: $"/{command} {nextPage}")
-        };
-
-        if (pageNumber == 1)
-        {
-            navigationButtons.Remove(navigationButtons.First());
-        }
+        keyboard = BuildNavigation(
+            commandLine: $"/{currentCommand}",
+            pagging: pagging,
+            totalDataCount: totalDataCount);        
         
-        if (pageNumber == maxPageNumber)
+        return keyboard.InlineKeyboard
+            .First()
+            .Any();
+    }
+
+    private static InlineKeyboardMarkup BuildNavigation(string commandLine, PaggingArgs pagging, int totalDataCount)
+    {
+        var navigationButtons = new List<InlineKeyboardButton>();
+
+        if (PaggingCalculator.HasPreviousPage(pagging, totalDataCount))
         {
-            navigationButtons.Remove(navigationButtons.Last());
+            navigationButtons.Add(InlineKeyboardButton.WithCallbackData(
+                text: "Предыдущая страница",
+                callbackData: $"{commandLine} {pagging.PageNumber - 1}"));
         }
 
-        if (!navigationButtons.Any())
+        if (PaggingCalculator.HasNextPage(pagging, totalDataCount))
         {
-            return false;
+            navigationButtons.Add(InlineKeyboardButton.WithCallbackData(
+                text: "Следующая страница",
+                callbackData: $"{commandLine} {pagging.PageNumber + 1}"));
         }
 
-        keyboard = new InlineKeyboardMarkup(navigationButtons);
-
-        return true;
+        return new InlineKeyboardMarkup(navigationButtons);
     }
 }
