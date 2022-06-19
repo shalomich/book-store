@@ -86,10 +86,10 @@ internal class ViewSelectionCommandProvider
     {
         var pagging = BuildPagging().Pagging;
 
-        var currentCommand = Update.TryGetCommand().Command;
+        var commandName = Update.TryGetCommand().Command;
 
         keyboard = BuildNavigation(
-            commandLine: $"/{currentCommand}",
+            commandName: commandName,
             pagging: pagging,
             totalDataCount: totalDataCount);        
         
@@ -98,7 +98,7 @@ internal class ViewSelectionCommandProvider
             .Any();
     }
 
-    private InlineKeyboardMarkup BuildNavigation(string commandLine, PaggingArgs pagging, int totalDataCount)
+    private InlineKeyboardMarkup BuildNavigation(string commandName, PaggingArgs pagging, int totalDataCount)
     {
         var navigationButtons = new List<InlineKeyboardButton>();
 
@@ -106,14 +106,14 @@ internal class ViewSelectionCommandProvider
         {
             navigationButtons.Add(InlineKeyboardButton.WithCallbackData(
                 text: "Предыдущая страница",
-                callbackData: $"{commandLine} {pagging.PageNumber - 1}"));
+                callbackData: CommandLineParser.ToCommandLine(commandName, pagging.PageNumber - 1)));
         }
 
         if (PaggingCalculator.HasNextPage(pagging, totalDataCount))
         {
             navigationButtons.Add(InlineKeyboardButton.WithCallbackData(
                 text: "Следующая страница",
-                callbackData: $"{commandLine} {pagging.PageNumber + 1}"));
+                callbackData: CommandLineParser.ToCommandLine(commandName, pagging.PageNumber + 1)));
         }
 
         return new InlineKeyboardMarkup(navigationButtons);

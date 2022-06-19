@@ -1,7 +1,11 @@
-﻿using BookStore.TelegramBot.Controllers;
+﻿using AutoMapperBuilder.Extensions.DependencyInjection;
+using BookStore.TelegramBot.Controllers;
 using BookStore.TelegramBot.Notifications;
 using BookStore.TelegramBot.Providers;
+using BookStore.TelegramBot.UseCases.Basket;
+using BookStore.TelegramBot.UseCases.Battle;
 using BookStore.TelegramBot.UseCases.Common;
+using BookStore.TelegramBot.UseCases.ViewSelection;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,6 +39,12 @@ internal static class ServiceConfigurator
         });
 
         services.AddAutoMapper(currentAssembly);
+        services.AddAutoMapperBuilder(builder =>
+        {
+            builder.Profiles.Add(new SelectionMapperProfile(configuration));
+            builder.Profiles.Add(new BasketMapperProfile(configuration));
+            builder.Profiles.Add(new BattleMapperProfile(configuration));
+        });
         services.AddMediatR(currentAssembly);
 
         services.AddSingleton<ITelegramBotClient>(new TelegramBotClient(configuration["Token"]));

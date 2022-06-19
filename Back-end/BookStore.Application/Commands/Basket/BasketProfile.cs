@@ -15,7 +15,7 @@ internal class BasketProfile : Profile
                 => mapper.MapFrom(basketProduct => basketProduct.Product.Cost))
             .ForMember(dto => dto.Quantity, mapper
                 => mapper.MapFrom(basketProduct => basketProduct.Quantity))
-             .ForMember(dto => dto.MaxQuantity, mapper
+             .ForMember(dto => dto.ProductQuantity, mapper
                 => mapper.MapFrom(basketProduct => basketProduct.Product.Quantity))
             .ForMember(dto => dto.TitleImage, mapper
                 => mapper.MapFrom(basketProduct => basketProduct.Product.Album.Images
