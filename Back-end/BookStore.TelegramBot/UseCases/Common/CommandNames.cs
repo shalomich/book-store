@@ -19,6 +19,12 @@ internal static class CommandNames
 
     public const string Popular = SelectionGroup + "popular";
 
+    public const string LastViewed = SelectionGroup + "last_viewed";
+
+    public const string CanBeInteresting = SelectionGroup + "can_be_interesting";
+
+    public const string SpecialForYou = SelectionGroup + "special_for_you";
+
     public const string BattleGroup = "battle_";
 
     public const string ShowBattle = BattleGroup + "show";
@@ -29,7 +35,7 @@ internal static class CommandNames
     public static string[] All => new string[]
     {
         Start, Help, Authenticate,
-        Novelties, GoneOnSale, BackOnSale, CurrentDayAuthor, Popular,
+        Novelties, GoneOnSale, BackOnSale, CurrentDayAuthor, Popular, LastViewed, CanBeInteresting, SpecialForYou,
         ShowBattle, CastVote, SpendVotingPoints
     };
 
