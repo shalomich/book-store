@@ -1,4 +1,5 @@
 ﻿using BookStore.Application.Commands.Basket.AddProductToBasket;
+using BookStore.TelegramBot.Exceptions;
 using BookStore.TelegramBot.Providers;
 using BookStore.TelegramBot.UseCases.Common;
 using Microsoft.Extensions.Options;
@@ -46,28 +47,23 @@ internal class AddProductToBasketCommandHandler : TelegramBotCommandHandler<AddP
                     .AddBody(addToBasketDto), cancellationToken),
                 cancellationToken: cancellationToken);
         }
-        catch (InvalidOperationException exception)
+        catch (Exception exception)
         {
-            await BotClient.SendTextMessageAsync(chatId, exception.Message, cancellationToken: cancellationToken);
-
-            return;
-        }
-        catch (HttpRequestException exception)
-        {
-            if (exception.StatusCode == HttpStatusCode.BadRequest)
+            string errorMessage = exception switch
             {
-                await BotClient.SendTextMessageAsync(
-                    chatId: chatId,
-                    text: "Комикс уже добавлен в корзину.",
-                    cancellationToken: cancellationToken);
-            }
+                UnauthorizedException => exception.Message,
+                HttpRequestException httpException
+                    when httpException.StatusCode == HttpStatusCode.BadRequest => "Комикс уже добавлен в корзину."
+            };
+
+            await BotClient.SendTextMessageAsync(chatId, errorMessage, cancellationToken: cancellationToken);
 
             return;
         }
-
+        
         await BotClient.SendTextMessageAsync(
             chatId: chatId,
-            text: "Добавление в корзину прошло успешно",
+            text: "Добавление в корзину прошло успешно.",
             cancellationToken: cancellationToken);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BookStore.Application.Commands.Account.Common;
 using BookStore.TelegramBot.Domain;
+using BookStore.TelegramBot.Exceptions;
 using BookStore.TelegramBot.Providers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -55,7 +56,7 @@ internal class AuthorizedRestClient
         if (validationTokensResult == TokenValidationResult.RefreshTokenExpired)
         {
             Logger.LogError("Fail with refresh token expiration.");
-            throw new InvalidOperationException(NeedAuthenticateMessage);
+            throw new UnauthorizedException(NeedAuthenticateMessage);
         }
 
         string accessToken = null;
@@ -83,7 +84,7 @@ internal class AuthorizedRestClient
         if (user == null)
         {
             Logger.LogError("Fail to get user from database (never login).");
-            throw new InvalidOperationException(NeedAuthenticateMessage);
+            throw new UnauthorizedException(NeedAuthenticateMessage);
         }
 
         return user;
@@ -124,7 +125,7 @@ internal class AuthorizedRestClient
         {
             Logger.LogError(exception, "Fail to refresh token");
 
-            throw new InvalidOperationException(NeedAuthenticateMessage);
+            throw new UnauthorizedException(NeedAuthenticateMessage);
         }
 
         user.SetUserInfo(tokens, Settings);

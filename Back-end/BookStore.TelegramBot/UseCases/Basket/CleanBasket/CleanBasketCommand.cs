@@ -1,8 +1,10 @@
-﻿using BookStore.TelegramBot.Extensions;
+﻿using BookStore.TelegramBot.Exceptions;
+using BookStore.TelegramBot.Extensions;
 using BookStore.TelegramBot.Providers;
 using BookStore.TelegramBot.UseCases.Common;
 using Microsoft.Extensions.Options;
 using RestSharp;
+using System.Net;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
@@ -37,18 +39,16 @@ internal class CleanBasketCommandHandler : TelegramBotCommandHandler<CleanBasket
                 requestFunction: (client, cancellationToken) => client.DeleteAsync(new RestRequest(Settings.BasketPath), cancellationToken),
                 cancellationToken);
         }
-        catch (InvalidOperationException exception)
+        catch (Exception exception)
         {
-            await BotClient.SendTextMessageAsync(chatId, exception.Message, cancellationToken: cancellationToken);
+            string errorMessage = exception switch
+            {
+                UnauthorizedException => exception.Message,
+                HttpRequestException httpException
+                    when httpException.StatusCode == HttpStatusCode.BadRequest => "Корзина пуста."
+            };
 
-            return;
-        }
-        catch (Exception)
-        {
-            await BotClient.SendTextMessageAsync(
-                chatId: chatId,
-                text: "Корзина пуста.",
-                cancellationToken: cancellationToken);
+            await BotClient.SendTextMessageAsync(chatId, errorMessage, cancellationToken: cancellationToken);
 
             return;
         }

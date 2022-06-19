@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookStore.Application.Queries.UserProfile.GetUserProfile;
+using BookStore.TelegramBot.Exceptions;
 using BookStore.TelegramBot.Providers;
 using BookStore.TelegramBot.UseCases.Battle.CastVote;
 using BookStore.TelegramBot.UseCases.Common;
@@ -83,11 +84,9 @@ internal class SpendVotingPointsCommandHandler : TelegramBotCommandHandler<Spend
             profile = await UserProfileRestClient.GetUserProfileAsync(
                 telegramId: chatId, cancellationToken);
         }
-        catch (InvalidOperationException exception)
+        catch (UnauthorizedException exception)
         {
-            await BotClient.SendTextMessageAsync(
-               chatId: chatId,
-               text: exception.Message);
+            await BotClient.SendTextMessageAsync(chatId, exception.Message, cancellationToken: cancellationToken);
 
             return (userBattleInfo, false);
         }
@@ -165,11 +164,9 @@ internal class SpendVotingPointsCommandHandler : TelegramBotCommandHandler<Spend
                         .AddBody(votingPointCount)),
                 cancellationToken: cancellationToken);
         }
-        catch (InvalidOperationException exception)
+        catch (UnauthorizedException exception)
         {
-            await BotClient.SendTextMessageAsync(
-               chatId: chatId,
-               text: exception.Message);
+            await BotClient.SendTextMessageAsync(chatId, exception.Message, cancellationToken: cancellationToken);
 
             return;
         }
