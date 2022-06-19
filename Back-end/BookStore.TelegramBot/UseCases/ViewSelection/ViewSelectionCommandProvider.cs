@@ -16,18 +16,25 @@ internal class ViewSelectionCommandProvider
     {
         Update = update;
     }
+    public long GetChatId()
+    {
+        return Update.GetChatId();
+    }
 
-    public string GetSelectionName()
+    public (string SelectionName, bool NeedToAuthorize) GetSelectionName()
     {
         var command = Update.TryGetCommand().Command;
 
         return command switch
         {
-            CommandNames.Novelties => SelectionNames.Novelties,
-            CommandNames.GoneOnSale => SelectionNames.GoneOnSale,
-            CommandNames.BackOnSale => SelectionNames.BackOnSale,
-            CommandNames.CurrentDayAuthor => SelectionNames.CurrentDayAuthor,
-            CommandNames.Popular => SelectionNames.Popular
+            CommandNames.Novelties => (SelectionNames.Novelties, false),
+            CommandNames.GoneOnSale => (SelectionNames.GoneOnSale, false),
+            CommandNames.BackOnSale => (SelectionNames.BackOnSale, false),
+            CommandNames.CurrentDayAuthor => (SelectionNames.CurrentDayAuthor, false),
+            CommandNames.Popular => (SelectionNames.Popular, false),
+            CommandNames.LastViewed => (SelectionNames.LastViewed, true),
+            CommandNames.CanBeInteresting => (SelectionNames.CanBeInteresting, true),
+            CommandNames.SpecialForYou => (SelectionNames.SpecialForYou, true)
         };
     }
 
@@ -74,8 +81,9 @@ internal class ViewSelectionCommandProvider
         return builder.ToString();
     }
 
-    public InlineKeyboardMarkup BuildNavigationButtons(int totalCount)
+    public bool TryGetNavigationButtons(int totalCount, out InlineKeyboardMarkup keyboard)
     {
+        keyboard = null;
         var pagging = BuildPagging().Pagging;
         var pageNumber = pagging.PageNumber;
         var maxPageNumber = (int)Math.Ceiling(totalCount / (double)pagging.PageSize);
@@ -95,11 +103,19 @@ internal class ViewSelectionCommandProvider
         {
             navigationButtons.Remove(navigationButtons.First());
         }
-        else if (pageNumber == maxPageNumber)
+        
+        if (pageNumber == maxPageNumber)
         {
             navigationButtons.Remove(navigationButtons.Last());
         }
 
-        return new InlineKeyboardMarkup(navigationButtons);
+        if (!navigationButtons.Any())
+        {
+            return false;
+        }
+
+        keyboard = new InlineKeyboardMarkup(navigationButtons);
+
+        return true;
     }
 }

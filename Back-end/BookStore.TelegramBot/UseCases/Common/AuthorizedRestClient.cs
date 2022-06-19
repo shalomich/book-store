@@ -12,10 +12,10 @@ namespace BookStore.TelegramBot.UseCases.Common;
 internal class AuthorizedRestClient
 {
     private const string NeedAuthenticateMessage = "Вам необходимо авторизоваться.";
-    private RestClient RestClient { get; }
     private TelegramBotDbContext DbContext { get; }
     private ILogger<AuthorizedRestClient> Logger { get; }
     private BackEndSettings Settings { get; }
+    public RestClient RestClient { get; }
 
     public AuthorizedRestClient(
         RestClient restClient,

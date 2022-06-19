@@ -6,6 +6,8 @@ public class SelectionMapperProfile : Profile
 {
     public SelectionMapperProfile()
     {
+        CreateMap<PreviewSetDto, PreviewSetViewModel>();
+
         CreateMap<PreviewDto, PreviewViewModel>()
             .ForMember(view => view.FileUrl, mapper => mapper.MapFrom(
                 dto => dto.TitleImage.FileUrl))
