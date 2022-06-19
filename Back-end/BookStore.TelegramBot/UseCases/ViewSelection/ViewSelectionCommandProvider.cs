@@ -118,4 +118,24 @@ internal class ViewSelectionCommandProvider
 
         return new InlineKeyboardMarkup(navigationButtons);
     }
+
+    public InlineKeyboardMarkup BuildBasketButton(PreviewViewModel preview, IEnumerable<int> basketIds)
+    {
+        var basketButtons = new List<InlineKeyboardButton>();
+
+        if (!basketIds.Contains(preview.Id))
+        {
+            basketButtons.Add(InlineKeyboardButton.WithCallbackData(
+                text: "Добавить в корзину",
+                callbackData: CommandLineParser.ToCommandLine(CommandNames.AddToBasket, preview.Id)));
+        }
+        else
+        {
+            basketButtons.Add(InlineKeyboardButton.WithCallbackData(
+                text: "Перейти в корзину",
+                callbackData: CommandLineParser.ToCommandLine(CommandNames.ShowBasket)));
+        }
+
+        return new InlineKeyboardMarkup(basketButtons);
+    }
 }

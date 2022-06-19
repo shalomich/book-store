@@ -17,17 +17,20 @@ internal class ViewSelectionCommandHandler : TelegramBotCommandHandler<ViewSelec
     private ITelegramBotClient BotClient { get; }
     private IMapper Mapper { get; }
     private AuthorizedRestClient AuthorizedRestClient { get; }
+    private UserProfileRestClient UserProfileRestClient { get; }
     private BackEndSettings Settings { get; }
 
     public ViewSelectionCommandHandler(
         ITelegramBotClient botClient,
         IMapper mapper,
         IOptions<BackEndSettings> settingsOption,
-        AuthorizedRestClient authorizedRestClient)
+        AuthorizedRestClient authorizedRestClient,
+        UserProfileRestClient userProfileRestClient)
     {
         BotClient = botClient;
         Mapper = mapper;
         AuthorizedRestClient = authorizedRestClient;
+        UserProfileRestClient = userProfileRestClient;
         Settings = settingsOption.Value;
     }
 
@@ -112,6 +115,26 @@ internal class ViewSelectionCommandHandler : TelegramBotCommandHandler<ViewSelec
     {
         var chatId = provider.GetChatId();
 
+        IEnumerable<int> basketBookIds = Enumerable.Empty<int>();
+        bool authorized;
+
+        try
+        {
+            var userProfile = await UserProfileRestClient.GetUserProfileAsync(chatId, cancellationToken);
+            basketBookIds = userProfile.BasketBookIds;
+            authorized = true;
+        }
+        catch(InvalidOperationException)
+        {
+            await BotClient.SendTextMessageAsync(
+                chatId: chatId,
+                text: "Если хотите иметь возможность добавить товар в корзину, " +
+                $"то вам нужно авторизоваться {CommandLineParser.ToCommandLine(CommandNames.Authenticate)}",
+                cancellationToken: cancellationToken);
+            
+            authorized = false;
+        }
+
         foreach (var preview in previewSet.Previews)
         {
             await BotClient.SendPhotoAsync(
@@ -120,6 +143,15 @@ internal class ViewSelectionCommandHandler : TelegramBotCommandHandler<ViewSelec
                 caption: provider.GetPreviewHtml(preview),
                 parseMode: ParseMode.Html,
                 cancellationToken: cancellationToken);
+
+            if (authorized)
+            {
+               await BotClient.SendTextMessageAsync(
+                   chatId: chatId,
+                   text: "Действие с корзиной",
+                   replyMarkup: provider.BuildBasketButton(preview, basketBookIds),
+                   cancellationToken: cancellationToken);
+            }
         }
 
         if (provider.TryGetNotEmptyNavigation(previewSet.TotalCount, out InlineKeyboardMarkup navigationKeyboard))
