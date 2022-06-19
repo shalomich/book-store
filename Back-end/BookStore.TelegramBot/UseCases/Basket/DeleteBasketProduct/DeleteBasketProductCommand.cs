@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using BookStore.Application.Commands.Basket.ChangeBasketProductQuantity;
+using BookStore.TelegramBot.Exceptions;
 using BookStore.TelegramBot.Providers;
 using BookStore.TelegramBot.UseCases.Basket.ChangeBasketProductQuantity;
 using BookStore.TelegramBot.UseCases.Common;
 using Microsoft.Extensions.Options;
 using RestSharp;
+using System.Net;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
@@ -44,18 +46,16 @@ internal class DeleteBasketProductCommandHandler : TelegramBotCommandHandler<Del
                 requestFunction: (client, cancellationToken) => client.DeleteAsync(new RestRequest(deletionPath), cancellationToken),
                 cancellationToken);
         }
-        catch (InvalidOperationException exception)
+        catch (Exception exception)
         {
-            await BotClient.SendTextMessageAsync(chatId, exception.Message, cancellationToken: cancellationToken);
+            string errorMessage = exception switch
+            {
+                UnauthorizedException => exception.Message,
+                HttpRequestException httpException
+                    when httpException.StatusCode == HttpStatusCode.NotFound => "Комикс уже удалён из корзины."
+            };
 
-            return;
-        }
-        catch (Exception)
-        {
-            await BotClient.SendTextMessageAsync(
-                chatId: chatId, 
-                text: "Комикс уже удален из корзины.", 
-                cancellationToken: cancellationToken);
+            await BotClient.SendTextMessageAsync(chatId, errorMessage, cancellationToken: cancellationToken);
 
             return;
         }

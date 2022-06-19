@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookStore.Application.Commands.Selection.Common;
+using BookStore.TelegramBot.Exceptions;
 using BookStore.TelegramBot.Providers;
 using BookStore.TelegramBot.UseCases.Common;
 using Microsoft.Extensions.Options;
@@ -79,12 +80,9 @@ internal class ViewSelectionCommandHandler : TelegramBotCommandHandler<ViewSelec
                     requestFunction: (client, cancellationToken) => client.GetAsync(getSelectionRequest, cancellationToken),
                     cancellationToken: cancellationToken);
             }
-            catch (InvalidOperationException exception)
+            catch (UnauthorizedException exception)
             {
-                await BotClient.SendTextMessageAsync(
-                    chatId: chatId,
-                    text: exception.Message,
-                    cancellationToken: cancellationToken);
+                await BotClient.SendTextMessageAsync(chatId, exception.Message, cancellationToken: cancellationToken);
 
                 return (previewSetViewModel, false);
             }
@@ -122,9 +120,10 @@ internal class ViewSelectionCommandHandler : TelegramBotCommandHandler<ViewSelec
         {
             var userProfile = await UserProfileRestClient.GetUserProfileAsync(chatId, cancellationToken);
             basketBookIds = userProfile.BasketBookIds;
+            
             authorized = true;
         }
-        catch(InvalidOperationException)
+        catch(UnauthorizedException)
         {
             await BotClient.SendTextMessageAsync(
                 chatId: chatId,

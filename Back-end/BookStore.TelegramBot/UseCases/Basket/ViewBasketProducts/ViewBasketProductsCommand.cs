@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookStore.Application.Commands.Basket.GetBasketProducts;
+using BookStore.TelegramBot.Exceptions;
 using BookStore.TelegramBot.Providers;
 using BookStore.TelegramBot.UseCases.Common;
 using Microsoft.Extensions.Options;
@@ -66,12 +67,9 @@ internal class ViewBasketProductsCommandHandler : TelegramBotCommandHandler<View
                     cancellationToken),
                 cancellationToken: cancellationToken);
         }
-        catch (InvalidOperationException exception)
+        catch (UnauthorizedException exception)
         {
-            await BotClient.SendTextMessageAsync(
-                chatId: chatId,
-                text: exception.Message,
-                cancellationToken: cancellationToken);
+            await BotClient.SendTextMessageAsync(chatId, exception.Message, cancellationToken: cancellationToken);
 
             return (basketProductViewModels, false);
         }
