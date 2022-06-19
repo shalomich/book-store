@@ -1,6 +1,7 @@
 ﻿using BookStore.TelegramBot.Commands.Help;
 using BookStore.TelegramBot.Extensions;
 using BookStore.TelegramBot.UseCases.Authenticate;
+using BookStore.TelegramBot.UseCases.Basket.ChangeBasketProductQuantity;
 using BookStore.TelegramBot.UseCases.Basket.ViewBasketProducts;
 using BookStore.TelegramBot.UseCases.Battle;
 using BookStore.TelegramBot.UseCases.Battle.CastVote;
@@ -56,6 +57,7 @@ internal class CommandOrchestrator
                 CommandNames.CastVote => new CastVoteCommand(update),
                 CommandNames.SpendVotingPoints => new SpendVotingPointsCommand(update),
                 CommandNames.ShowBasket => new ViewBasketProductsCommand(update),
+                CommandNames.ChangeBasketProductQuantity => new ChangeBasketProductQuantityCommand(update),
                 _ => throw new ArgumentOutOfRangeException(nameof(commandName))
             };
         }
@@ -78,7 +80,7 @@ internal class CommandOrchestrator
 
         if (commandLine != null)
         {
-            commandName = CommandParser.TryGetCommand(commandLine).Command;
+            commandName = CommandLineParser.FromCommandLine(commandLine).Command;
 
             return (commandName, true);
         }

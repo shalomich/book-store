@@ -7,7 +7,7 @@ public record BasketProductDto
     public string Name { init; get; }
     public int Cost { init; get; }
     public int Quantity { init; get; }
-    public int MaxQuantity { init; get; }
+    public int ProductQuantity { init; get; }
     public int ProductId { init; get; }
     public ImageDto TitleImage { init; get; }
 }

@@ -4,11 +4,13 @@ using BookStore.Application.Queries.UserProfile.GetUserProfile;
 using BookStore.Domain.Enums;
 using BookStore.TelegramBot.UseCases.Battle.CastVote;
 using BookStore.TelegramBot.UseCases.Battle.ViewBattle;
+using BookStore.TelegramBot.UseCases.Common;
+using Microsoft.Extensions.Configuration;
 
 namespace BookStore.TelegramBot.UseCases.Battle;
 internal class BattleMapperProfile : Profile
 {
-    public BattleMapperProfile()
+    public BattleMapperProfile(IConfiguration configuration)
     {
         CreateMap<BattleInfoDto, BattleInfoViewModel>()
             .ForMember(view => view.State, mapper => mapper.MapFrom(
@@ -30,7 +32,7 @@ internal class BattleMapperProfile : Profile
             .ForMember(view => view.FileUrl, mapper => mapper.MapFrom(
                 dto => dto.TitleImage.FileUrl))
             .ForMember(view => view.StoreUrl, mapper => mapper.MapFrom(
-                dto => $"https://comicstore-de688.web.app/book-store/catalog/book/{dto.BookId}"));
+                dto =>  StoreUrlBuilder.BuildBookСardUrl(dto.BookId, configuration)));
 
         CreateMap<UserProfileDto, UserBattleInfoViewModel>();
     }

@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using BookStore.Application.Queries.UserProfile.GetUserProfile;
-using BookStore.TelegramBot.Domain;
 using BookStore.TelegramBot.Providers;
 using BookStore.TelegramBot.UseCases.Battle.CastVote;
 using BookStore.TelegramBot.UseCases.Common;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using RestSharp;
 using Telegram.Bot;
@@ -117,9 +115,11 @@ internal class SpendVotingPointsCommandHandler : TelegramBotCommandHandler<Spend
 
         if (!userBattleInfo.CurrentVotedBattleBookId.HasValue)
         {
+            string showBattleCommandLine = CommandLineParser.ToCommandLine(CommandNames.ShowBattle);
+
             await BotClient.SendTextMessageAsync(
                 chatId: chatId,
-                text: $"Выберите комикс, за который вы хотите голосовать /{CommandNames.ShowBattle}.");
+                text: $"Выберите комикс, за который вы хотите голосовать {showBattleCommandLine}.");
 
             return (votingPointCount, false);
         }
@@ -128,7 +128,9 @@ internal class SpendVotingPointsCommandHandler : TelegramBotCommandHandler<Spend
 
         if (!votingPointCount.HasValue)
         {
-            await CallbackCommandRepository.AddAsync(CommandNames.SpendVotingPoints, chatId, cancellationToken);
+            await CallbackCommandRepository.UpdateAsync(
+                commandLine: CommandLineParser.ToCommandLine(CommandNames.SpendVotingPoints), 
+                telegramId: chatId, cancellationToken);
             
             await BotClient.SendTextMessageAsync(
                 chatId: chatId,
@@ -173,9 +175,8 @@ internal class SpendVotingPointsCommandHandler : TelegramBotCommandHandler<Spend
         }
 
         await BotClient.SendTextMessageAsync(
-               chatId: chatId,
-               text: "Очки голосования потрачены успешно.");
-
+            chatId: chatId,
+            text: "Очки голосования потрачены успешно.");
     }
 }
 

@@ -36,11 +36,16 @@ internal class ViewBasketProductsCommandProvider
         {
             InlineKeyboardButton.WithCallbackData(
                 text: "Поменять количество",
-                callbackData: $"{CommandNames.ChangeBasketProductQuantity} {basketProduct.Id} " +
-                $"{basketProduct.MaxQuantity} {basketProduct.Quantity}"),
+                callbackData: CommandLineParser.ToCommandLine(
+                    commandName: CommandNames.ChangeBasketProductQuantity,
+                    commandArgs: new object[]
+                    {
+                        basketProduct.Id, basketProduct.MaxQuantity, basketProduct.Quantity
+                    })),
             InlineKeyboardButton.WithCallbackData(
                 text: "Удалить из корзины",
-                callbackData: $"{CommandNames.DeleteChoosen} {basketProduct.Id}")
+                callbackData: CommandLineParser.ToCommandLine(
+                    CommandNames.DeleteChoosen, basketProduct.Id))
         };
 
         return new InlineKeyboardMarkup(navigationButtons);
@@ -52,7 +57,8 @@ internal class ViewBasketProductsCommandProvider
         {
             InlineKeyboardButton.WithCallbackData(
                 text: "Удалить все товары",
-                callbackData: $"{CommandNames.DeleteAll}"),
+                callbackData: CommandLineParser.ToCommandLine(
+                    CommandNames.DeleteAll)),
         };
 
         return new InlineKeyboardMarkup(navigationButtons);

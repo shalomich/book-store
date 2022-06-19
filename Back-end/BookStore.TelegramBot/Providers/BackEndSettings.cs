@@ -11,5 +11,6 @@ internal record BackEndSettings
     public string BasketPath { get; init; }
     public int AccessTokenExpiredMinutes { get; init; }
     public int RefreshTokenExpiredMinutes { get; init; }
+    public int MaxQuantityForChoosenProduct { get; init; }
 }
 

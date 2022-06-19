@@ -27,13 +27,13 @@ internal class CallbackCommandRepository
             .AnyAsync(command => command.CommandLine.Contains(commandName), cancellationToken);
     }
 
-    public async Task AddAsync(string commandLine, long telegramId, CancellationToken cancellationToken)
+    public async Task UpdateAsync(string commandLine, long telegramId, CancellationToken cancellationToken)
     {
         var user = await GetUserAsync(telegramId, cancellationToken);
 
         user.CallbackCommand = new CallbackCommand
         {
-            CommandLine = $"/{commandLine}",
+            CommandLine = commandLine,
             UserId = user.Id
         };
 
