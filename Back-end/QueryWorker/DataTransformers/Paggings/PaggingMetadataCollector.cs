@@ -19,16 +19,12 @@ namespace QueryWorker.DataTransformers.Paggings
 
             int dataCount = query.Count();
 
-            int currentPageDataCount = pagging.Transform(query).Count();
-
-            int pageCount = (int)Math.Ceiling(dataCount / (double)pageSize);
-
             return new PaggingMetadata(
                 PageSize: pageSize,
                 PageNumber: pageNumber,
                 DataCount: dataCount,
-                CurrentPageDataCount: currentPageDataCount,
-                PageCount: pageCount
+                CurrentPageDataCount: PaggingCalculator.CalculateCurrentPageDataCount(args, dataCount),
+                PageCount: PaggingCalculator.CalculatePageCount(args, dataCount)
             );
         }
     }
