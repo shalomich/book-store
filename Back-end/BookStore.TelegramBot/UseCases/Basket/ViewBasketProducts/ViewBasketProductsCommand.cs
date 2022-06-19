@@ -76,6 +76,16 @@ internal class ViewBasketProductsCommandHandler : TelegramBotCommandHandler<View
             return (basketProductViewModels, false);
         }
 
+        if (!basketProductDtos.Any())
+        {
+            await BotClient.SendTextMessageAsync(
+               chatId: chatId,
+               text: "Корзина пуста.",
+               cancellationToken: cancellationToken);
+
+            return (basketProductViewModels, false);
+        }
+
         basketProductViewModels = basketProductDtos
             .Select(dto => Mapper.Map<BasketProductViewModel>(dto))
             .ToList();
