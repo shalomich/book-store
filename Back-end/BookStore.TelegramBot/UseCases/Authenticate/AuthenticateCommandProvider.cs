@@ -1,11 +1,13 @@
 ﻿using BookStore.Application.Commands.Account.Login;
 using BookStore.TelegramBot.Extensions;
+using BookStore.TelegramBot.UseCases.Common;
 using Telegram.Bot.Types;
 
 namespace BookStore.TelegramBot.UseCases.Authenticate;
 internal class AuthenticateCommandProvider
 {
     private Update Update { get; }
+    public bool IsCallback { get; set; }
 
     public AuthenticateCommandProvider(
         Update update)
@@ -13,20 +15,39 @@ internal class AuthenticateCommandProvider
         Update = update;
     }
 
-    public LoginDto GetLoginData()
+    public long GetChatId()
     {
-        var tryGetCommandResult = Update.TryGetCommand();
+        return Update.Message.Chat.Id;
+    }
 
+    public LoginDto GetLoginData(string commandLine = null)
+    {
+        TryGetCommandResult tryGetCommandResult;
+        
+        if (commandLine == null)
+        {
+            tryGetCommandResult = Update.TryGetCommand();
+        }
+        else
+        {
+            var commandArg = Update.Message.Text.Split(' ')[0];
+            commandLine += " " + commandArg;
+            tryGetCommandResult = CommandLineParser.FromCommandLine(commandLine);
+        }
+        
         if (!tryGetCommandResult.HasCommandArgs)
         {
-            throw new ArgumentException("Введите email и пароль от своего аккаунта");
+            return new LoginDto();
         }
 
         var commandArgs = tryGetCommandResult.CommandArgs;
 
         if (commandArgs.Length == 1)
         {
-            throw new ArgumentException("Введите пароль от своего аккаунта");
+            return new LoginDto
+            {
+                Email = commandArgs[0]
+            };
         }
 
         return new LoginDto

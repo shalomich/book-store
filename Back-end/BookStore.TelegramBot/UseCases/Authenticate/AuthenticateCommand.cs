@@ -19,6 +19,7 @@ internal class AuthenticateCommandHandler : TelegramBotCommandHandler<Authentica
     private ITelegramBotClient BotClient { get; }
     private RestClient RestClient { get; }
     private ILogger<AuthenticateCommandHandler> Logger { get; }
+    private CallbackCommandRepository CallbackCommandRepository { get; }
     private BackEndSettings Settings { get; }
 
     public AuthenticateCommandHandler(
@@ -26,39 +27,95 @@ internal class AuthenticateCommandHandler : TelegramBotCommandHandler<Authentica
         ITelegramBotClient botClient,
         RestClient restClient,
         IOptions<BackEndSettings> settingsOption,
-        ILogger<AuthenticateCommandHandler> logger)
+        ILogger<AuthenticateCommandHandler> logger,
+        CallbackCommandRepository callbackCommandRepository)
     {
         DbContext = dbContext;
         BotClient = botClient;
         RestClient = restClient;
         Logger = logger;
+        CallbackCommandRepository = callbackCommandRepository;
         Settings = settingsOption.Value;
     }
 
     protected override async Task Handle(AuthenticateCommand request, CancellationToken cancellationToken)
     {
-        var update = request.Update;
-        var chatId = update.Message.Chat.Id;
+        var provider = new AuthenticateCommandProvider(request.Update);
 
-        var provider = new AuthenticateCommandProvider(update);
+        var chatId = provider.GetChatId();
+        bool isCallback = await CallbackCommandRepository.HasAsync(CommandNames.Authenticate, telegramId: chatId,
+            cancellationToken);
+        
+        provider.IsCallback = isCallback;
 
-        LoginDto loginData;
+        var (loginData, successToGetLoginData) = await TryGetLoginDataAsync(provider, cancellationToken);
 
-        try
+        if (!successToGetLoginData)
         {
-            loginData = provider.GetLoginData();
-        }
-        catch (ArgumentException exception)
-        {
-            await BotClient.SendTextMessageAsync(
-                chatId: chatId,
-                text: exception.Message
-            );
-
             return;
         }
 
+        var (tokens, successToAuthenticate) = await TryAuthenticateAsync(loginData, provider, cancellationToken);
+        
+        if (!successToAuthenticate)
+        {
+            return;
+        }
+
+        await UpdateTokensAsync(tokens, provider, cancellationToken);
+    }
+
+    private async Task<(LoginDto LoginData, bool Success)> TryGetLoginDataAsync(AuthenticateCommandProvider provider,
+        CancellationToken cancellationToken)
+    {
+        LoginDto loginData = null;
+        var chatId = provider.GetChatId();
+
+        if (provider.IsCallback)
+        {
+            var commandLine = await CallbackCommandRepository.GetAsync(telegramId: chatId, cancellationToken);
+            loginData = provider.GetLoginData(commandLine);
+        }
+        else
+        {
+            loginData = provider.GetLoginData();
+        }
+
+        bool hasEmail = loginData.Email != null;
+        bool hasPassword = loginData.Password!= null;
+
+        if (hasEmail && hasPassword)
+        {
+            return (loginData, true);
+        }
+
+        string message = null;
+        string callbackCommandLine = null;
+
+        if (!hasEmail)
+        {
+            message = "Введите email.";
+            callbackCommandLine = CommandLineParser.ToCommandLine(CommandNames.Authenticate);
+        }
+
+        if (hasEmail && !hasPassword)
+        {
+            message = "Введите пароль.";
+            callbackCommandLine = CommandLineParser.ToCommandLine(CommandNames.Authenticate, loginData.Email);
+        }
+
+        await BotClient.SendTextMessageAsync(chatId, message, cancellationToken: cancellationToken);
+
+        await CallbackCommandRepository.UpdateAsync(callbackCommandLine, telegramId: chatId, cancellationToken);
+
+        return (loginData, false);
+    }
+
+    private async Task<(TokensDto Tokens, bool Success)> TryAuthenticateAsync(LoginDto loginData,
+        AuthenticateCommandProvider provider, CancellationToken cancellationToken)
+    {
         TokensDto tokens = null;
+        var chatId = provider.GetChatId();
 
         try
         {
@@ -68,14 +125,24 @@ internal class AuthenticateCommandHandler : TelegramBotCommandHandler<Authentica
         catch (Exception exception)
         {
             Logger.LogError(exception, "Fail to authenticate telegram bot with store.");
-            
+
             await BotClient.SendTextMessageAsync(
                chatId: chatId,
                text: "Авторизация провалена. Проверьте свой логин и пароль."
             );
 
-            return;
+            await CallbackCommandRepository.RemoveAsync(CommandNames.Authenticate, telegramId: chatId, cancellationToken);
+            
+            return (tokens, false);
         }
+
+        return (tokens, true);
+    }
+
+    private async Task UpdateTokensAsync(TokensDto tokens, AuthenticateCommandProvider provider, 
+        CancellationToken cancellationToken)
+    {
+        var chatId = provider.GetChatId();
 
         var user = await DbContext.TelegramBotUsers
             .SingleOrDefaultAsync(user => user.TelegramId == chatId, cancellationToken);
@@ -93,7 +160,12 @@ internal class AuthenticateCommandHandler : TelegramBotCommandHandler<Authentica
         user.SetUserInfo(tokens, Settings);
 
         await DbContext.SaveChangesAsync(cancellationToken);
-        
+
+        if (provider.IsCallback)
+        {
+            await CallbackCommandRepository.RemoveAsync(CommandNames.Authenticate, telegramId: chatId, cancellationToken);
+        }
+
         await BotClient.SendTextMessageAsync(
             chatId: chatId,
             text: "Авторизация прошла успешна."
