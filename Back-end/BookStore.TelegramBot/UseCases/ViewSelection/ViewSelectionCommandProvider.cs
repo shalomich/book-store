@@ -8,11 +8,11 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace BookStore.TelegramBot.UseCases.ViewSelection;
-internal class SelectionMetadataProvider
+internal class ViewSelectionCommandProvider
 {
     private Update Update { get; }
 
-    public SelectionMetadataProvider(Update update)
+    public ViewSelectionCommandProvider(Update update)
     {
         Update = update;
     }
@@ -56,12 +56,7 @@ internal class SelectionMetadataProvider
         };
     }
 
-    public long GetChatId()
-    {
-        return Update.GetChatId();
-    }
-
-    public string GetPreviewHtml(TelegramPreviewDto preview)
+    public string GetPreviewHtml(PreviewViewModel preview)
     {
         var builder = new StringBuilder();
 

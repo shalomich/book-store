@@ -28,14 +28,14 @@
                  (selectionLoaded)="onSelectionLoaded()"
                  selectionHeader="Вам может быть интересно">
   </app-selection>
-  <app-selection [hasPageLoaded]="!loadingSelectionsCount"
+  <app-selection [hasPageLoaded]="(hasPageLoaded$ | async) || false"
                  [userProfile]="(userProfile$ | async) || emptyUser"
                  [selectionName]="selectionEnum.GoneOnSale"
                  (selectionLoadingStarted)="onSelectionLoadingStart()"
                  (selectionLoaded)="onSelectionLoaded()"
                  selectionHeader="Уже в продаже">
   </app-selection>
-  <app-selection [hasPageLoaded]="!loadingSelectionsCount"
+  <app-selection [hasPageLoaded]="(hasPageLoaded$ | async) || false"
                  [userProfile]="(userProfile$ | async) || emptyUser"
                  [selectionName]="selectionEnum.BackOnSale"
                  (selectionLoadingStarted)="onSelectionLoadingStart()"

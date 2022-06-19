@@ -6,16 +6,14 @@ public class SelectionMapperProfile : Profile
 {
     public SelectionMapperProfile()
     {
-        CreateMap<PreviewDto, TelegramPreviewDto>()
-            .ForMember(dto => dto.FileUrl, mapper => mapper.MapFrom(
-                preview => preview.TitleImage.FileUrl))
-            .ForMember(dto => dto.FileUrl, mapper => mapper.MapFrom(
-                preview => preview.TitleImage.FileUrl))
-            .ForMember(dto => dto.DiscountCost, mapper => mapper.MapFrom(
-                preview => preview.DiscountPercentage.HasValue
-                    ? preview.DiscountPercentage / 100.0 * preview.Cost
+        CreateMap<PreviewDto, PreviewViewModel>()
+            .ForMember(view => view.FileUrl, mapper => mapper.MapFrom(
+                dto => dto.TitleImage.FileUrl))
+            .ForMember(view => view.DiscountCost, mapper => mapper.MapFrom(
+                dto => dto.DiscountPercentage.HasValue
+                    ? dto.DiscountPercentage / 100.0 * dto.Cost
                     : null))
-            .ForMember(dto => dto.StoreUrl, mapper => mapper.MapFrom(
-                preview => $"https://comicstore-de688.web.app/book-store/catalog/book/{preview.Id}"));
+            .ForMember(view => view.StoreUrl, mapper => mapper.MapFrom(
+                dto => $"https://comicstore-de688.web.app/book-store/catalog/book/{dto.Id}"));
     }
 }

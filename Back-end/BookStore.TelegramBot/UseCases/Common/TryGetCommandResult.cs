@@ -1,4 +1,4 @@
-﻿namespace BookStore.TelegramBot.Extensions;
+﻿namespace BookStore.TelegramBot.UseCases.Common;
 internal record TryGetCommandResult
 {
     public string Command { get; private set; }

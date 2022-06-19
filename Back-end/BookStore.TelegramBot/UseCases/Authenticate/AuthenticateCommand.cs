@@ -3,6 +3,7 @@ using BookStore.Application.Commands.Account.Login;
 using BookStore.TelegramBot.Domain;
 using BookStore.TelegramBot.Providers;
 using BookStore.TelegramBot.UseCases.Common;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RestSharp;
@@ -39,7 +40,7 @@ internal class AuthenticateCommandHandler : TelegramBotCommandHandler<Authentica
         var update = request.Update;
         var chatId = update.Message.Chat.Id;
 
-        var provider = new AuthenticateMetadataProvider(update);
+        var provider = new AuthenticateCommandProvider(update);
 
         LoginDto loginData;
 
@@ -76,20 +77,23 @@ internal class AuthenticateCommandHandler : TelegramBotCommandHandler<Authentica
             return;
         }
 
-        var user = new TelegramBotUser
+        var user = await DbContext.TelegramBotUsers
+            .SingleOrDefaultAsync(user => user.TelegramId == chatId, cancellationToken);
+
+        if (user == null)
         {
-            TelegramId = chatId,
-            AccessToken = tokens.AccessToken,
-            RefreshToken = tokens.RefreshToken,
-            AccessTokenExpiration = DateTimeOffset.UtcNow
-                .AddMinutes(Settings.AccessTokenExpiredMinutes),
-            RefreshTokenExpiration = DateTimeOffset.UtcNow
-                .AddMinutes(Settings.RefreshTokenExpiredMinutes)
-        };
+            user = new TelegramBotUser()
+            {
+                TelegramId = chatId
+            };
 
-        await DbContext.TelegramBotUsers.AddAsync(user);
+            DbContext.TelegramBotUsers.Add(user);
+        }
+
+        user.SetUserInfo(tokens, Settings);
+
         await DbContext.SaveChangesAsync(cancellationToken);
-
+        
         await BotClient.SendTextMessageAsync(
             chatId: chatId,
             text: "Авторизация прошла успешна."
