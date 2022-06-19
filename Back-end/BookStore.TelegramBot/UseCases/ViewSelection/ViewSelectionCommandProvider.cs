@@ -98,7 +98,7 @@ internal class ViewSelectionCommandProvider
             .Any();
     }
 
-    private static InlineKeyboardMarkup BuildNavigation(string commandLine, PaggingArgs pagging, int totalDataCount)
+    private InlineKeyboardMarkup BuildNavigation(string commandLine, PaggingArgs pagging, int totalDataCount)
     {
         var navigationButtons = new List<InlineKeyboardButton>();
 
