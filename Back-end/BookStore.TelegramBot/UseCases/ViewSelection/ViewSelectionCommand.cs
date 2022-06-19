@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookStore.Application.Commands.Selection.Common;
+using BookStore.TelegramBot.Extensions;
 using BookStore.TelegramBot.Providers;
 using BookStore.TelegramBot.UseCases.Common;
 using Microsoft.Extensions.Options;
@@ -33,12 +34,14 @@ internal class ViewSelectionCommandHandler : TelegramBotCommandHandler<ViewSelec
 
     protected async override Task Handle(ViewSelectionCommand request, CancellationToken cancellationToken)
     {
-        var provider = new SelectionMetadataProvider(request.Update);
+        var update = request.Update;
+        var chatId = update.GetChatId();
 
+        var provider = new ViewSelectionCommandProvider(update);
         var selectionPath = $"{Settings.SelectionPath}{provider.GetSelectionName()}";
 
         await BotClient.SendTextMessageAsync(
-            chatId: provider.GetChatId(),
+            chatId: chatId,
             text: "Ищем комиксы по данной подборке...",
             cancellationToken: cancellationToken);
 
@@ -52,7 +55,7 @@ internal class ViewSelectionCommandHandler : TelegramBotCommandHandler<ViewSelec
         if (previewSet.TotalCount == 0)
         {
             await BotClient.SendTextMessageAsync(
-                chatId: provider.GetChatId(),
+                chatId: chatId,
                 text: "К сожалению в данный момент нет комиксов по данной подборке.",
                 cancellationToken: cancellationToken);
 
@@ -60,13 +63,13 @@ internal class ViewSelectionCommandHandler : TelegramBotCommandHandler<ViewSelec
         }
 
         var telegramBookPreviews = previewSet.Previews
-            .Select(preview => Mapper.Map<TelegramPreviewDto>(preview))
+            .Select(preview => Mapper.Map<PreviewViewModel>(preview))
             .ToList();
 
         foreach (var preview in telegramBookPreviews)
         {
             await BotClient.SendPhotoAsync(
-                chatId: provider.GetChatId(),
+                chatId: chatId,
                 photo: preview.FileUrl,
                 caption: provider.GetPreviewHtml(preview),
                 parseMode: ParseMode.Html,
@@ -74,7 +77,7 @@ internal class ViewSelectionCommandHandler : TelegramBotCommandHandler<ViewSelec
         }
 
         await BotClient.SendTextMessageAsync(
-            chatId: provider.GetChatId(),
+            chatId: chatId,
             text: "Ещё?",
             replyMarkup: provider.BuildNavigationButtons(previewSet.TotalCount),
             cancellationToken: cancellationToken);

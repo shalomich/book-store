@@ -9,7 +9,7 @@
 
 .battle-info-dialog .mat-dialog-container {
   padding: 5px 20px 20px 20px;
-  width: 30vw;
+  width: 40vw;
   overflow: hidden;
   height: max-content;
 }
@@ -44,4 +44,25 @@
 
 .battle-info-dialog-actions .mat-flat-button.mat-primary {
   background-color: #2199e8;
+}
+
+@media (max-width: 1200px) {
+  .battle-info-dialog .mat-dialog-container {
+    width: 600px;
+  }
+}
+
+@media (max-width: 600px) {
+  .battle-info-dialog .mat-dialog-container {
+    width: 400px;
+  }
+
+  .battle-info-dialog-title {
+    font-size: 1.4em;
+    margin-bottom: 5px;
+  }
+
+  .battle-info-dialog-content {
+    font-size: 0.9em;
+  }
 }

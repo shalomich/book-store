@@ -25,6 +25,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
   public allowSubmit = false;
 
+  public loading = true;
+
   private currentProfile: UserProfile = new UserProfile();
 
   private subs: Subscription = new Subscription();
@@ -43,6 +45,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         phoneNumber: profile.phoneNumber,
         address: profile.address,
       });
+
+      this.loading = false;
     }));
 
     this.subs.add(this.profileForm.valueChanges.subscribe(value => {

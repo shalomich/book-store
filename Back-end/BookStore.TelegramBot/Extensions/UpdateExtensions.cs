@@ -1,4 +1,5 @@
-﻿using Telegram.Bot.Types;
+﻿using BookStore.TelegramBot.UseCases.Common;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
 namespace BookStore.TelegramBot.Extensions;
@@ -20,49 +21,16 @@ internal static class UpdateExtensions
     }
 
     public static bool IsCommand(this Update update)
-    {
-        var commandLine = GetCommandLine(update);
-
-        if (commandLine == null)
-        {
-            return false;
-        }
-
-        return commandLine.StartsWith('/');
+    {  
+        return CommandParser.IsCommand(GetCommandLine(update));
     }
 
     public static TryGetCommandResult TryGetCommand(this Update update)
     {
-        if (!IsCommand(update))
-        { 
-            return TryGetCommandResult.NotCommand();
-        }
-
-        var commandLine = GetCommandLine(update);
-
-        var commandEndIndex = commandLine.IndexOf(" ");
-
-        bool hasCommandArgs = commandEndIndex != -1;
-
-        string command;
-
-        if (hasCommandArgs)
-        {
-            command = commandLine.Substring(1, commandEndIndex - 1);
-            var commandArgs = commandLine.Substring(commandEndIndex + 1)
-                .Split(' ');
-
-            return TryGetCommandResult.IsCommand(command, commandArgs);
-        }
-        else
-        {
-            command = commandLine.Substring(1);
-
-            return TryGetCommandResult.IsCommand(command);
-        }
+        return CommandParser.TryGetCommand(GetCommandLine(update));
     }
 
-    private static string GetCommandLine(Update update)
+    public static string GetCommandLine(Update update)
     {
         if (update.Type == UpdateType.Message)
         {

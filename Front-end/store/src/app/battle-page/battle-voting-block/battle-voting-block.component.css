@@ -10,6 +10,7 @@
   color: #2199e8 !important;
   opacity: 1 !important;
 }
+
 /* Font color */
 .voting-filed input.mat-input-element {
   color: #2199e8 !important;
@@ -25,7 +26,7 @@
 }
 
 .voting-filed {
-  width: 15vw;
+  width: 300px;
 }
 
 .voting-button-block button {
@@ -38,4 +39,33 @@
 .voting-button-block button:hover {
   color: white;
   background-color: #2199e8;
+}
+
+@media (max-width: 1200px) {
+  .voting-filed {
+    width: 250px;
+  }
+
+  /* Font color */
+  .voting-filed input.mat-input-element {
+    font-size: 1.2em;
+  }
+
+  .voting-block {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 830px) {
+  /* Font color */
+  .voting-filed input.mat-input-element {
+    font-size: 1em;
+  }
+
+  .voting-button-block button {
+    width: 150px;
+    height: 40px;
+    color: #2199e8;
+    font-size: 1em;
+  }
 }

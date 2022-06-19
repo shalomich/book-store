@@ -4,7 +4,7 @@
   <div class="order-bottom-block">
     <div class="total-info">
       <div class="address-info">Заказ будет ожидать вас по адресу: ул. Уличная 1</div>
-      <span class="total-cost">Итоговая сумма заказа: <span>{{totalCost}} &#8381;</span></span>
+      <div class="total-cost">Итоговая сумма заказа: <span>{{totalCost}} &#8381;</span></div>
     </div>
     <div class="order-button-block">
       <button [disabled]="!personalData.personalDataForm.valid || !basketProducts.length" (click)="onOrderApply()" class="order-apply-button" mat-flat-button>Подтвердить заказ</button>

@@ -34,6 +34,7 @@ export class LoginDialogComponent implements OnInit {
     this.dialog.closeAll();
     const dialogRef = this.dialog.open(RegisterDialogComponent, {
       width: 'min-content',
+      panelClass: 'auth-dialog',
     });
   }
 

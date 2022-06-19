@@ -19,7 +19,7 @@
 }
 
 .info-block {
-  width: 15vw;
+  width: 20vw;
 }
 
 .info-field {
@@ -35,7 +35,6 @@
 .field-value {
   width: 15em;
 }
-
 
 .field-name, .field-value {
   font-size: 1em;
@@ -58,4 +57,128 @@
 
 .description .mat-expansion-panel-header.mat-expanded {
   position: sticky;
+}
+
+@media (max-width: 1200px) {
+  .book-card {
+    padding: 10px 0 10px 10px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .info-block {
+    width: 200px;
+  }
+
+  .field-name, .field-value {
+    font-size: 0.8em;
+  }
+
+  .book-name {
+    font-size: 1.2em;
+  }
+
+  .info-field {
+    margin-bottom: 5px;
+  }
+
+  .description {
+    width: 300px;
+  }
+
+  .description p {
+    font-size: 0.8em;
+  }
+
+  .description-block {
+    height: 250px;
+    width: 300px;
+  }
+
+  .right-block {
+    margin-right: -60px;
+  }
+}
+
+@media (max-width: 830px) {
+  .book-card {
+    display: block;
+    padding-right: 50px;
+    padding-left: 50px;
+  }
+
+  .book-name {
+    width: 400px;
+    text-decoration: underline;
+  }
+
+  .right-block {
+    margin-right: 0;
+  }
+
+  .description-block {
+    display: flex;
+    width: 400px;
+    justify-content: center;
+  }
+
+  .description {
+    width: 350px;
+  }
+
+  .info-block {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .field-name, .field-value {
+    font-size: 0.8em;
+  }
+
+  .info-field {
+    margin-bottom: 10px;
+  }
+
+  .field-name {
+    width: 100px;
+  }
+
+  .field-value {
+    width: 150px;
+    text-align: end;
+  }
+}
+
+@media (max-width: 585px) {
+  .book-card {
+    margin-top: 50px;
+    padding: 10px 20px;
+  }
+
+  .book-name {
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    width: 300px;
+    font-size: 1em;
+  }
+
+  .description-block {
+    display: flex;
+    width: 300px;
+    justify-content: center;
+  }
+
+  .description {
+    width: 300px;
+  }
+
+}
+
+@media (max-width: 375px) {
+  .book-card {
+    padding: 0 0 10px 0;
+    border: none;
+  }
 }

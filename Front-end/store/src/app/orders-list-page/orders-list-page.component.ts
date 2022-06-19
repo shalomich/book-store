@@ -1,6 +1,6 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 
-import {BehaviorSubject, combineLatest, Observable, of, Subject, Subscription} from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, of, Subject, Subscription } from 'rxjs';
 
 import { map, scan, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
@@ -26,6 +26,8 @@ export class OrdersListPageComponent implements OnInit, OnDestroy {
 
   public isLastPage = false;
 
+  public loading = true;
+
   public pageNumber$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   private subs: Subscription = new Subscription();
@@ -46,8 +48,11 @@ export class OrdersListPageComponent implements OnInit, OnDestroy {
           this.isLastPage = true;
         }
         this.orders = this.orders.concat(loadedOrders);
+
+        this.loading = false;
       }),
-    ).subscribe());
+    )
+      .subscribe());
 
     this.pageNumber$.next(1);
   }

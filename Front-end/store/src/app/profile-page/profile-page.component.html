@@ -1,4 +1,4 @@
-<div class="profile-block">
+<div *ngIf="!loading; else loadingBlock" class="profile-block">
   <div class="profile-title">
     <span>Профиль</span>
   </div>
@@ -52,3 +52,10 @@
     </div>
   </form>
 </div>
+
+<ng-template #loadingBlock>
+  <div class="loading-block">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
+
