@@ -1,4 +1,5 @@
-﻿using BookStore.TelegramBot.UseCases.Common;
+﻿using BookStore.TelegramBot.Extensions;
+using BookStore.TelegramBot.UseCases.Common;
 using System.Text;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -15,7 +16,7 @@ internal class ViewBasketProductsCommandProvider
 
     public long GetChatId()
     {
-        return Update.Message.Chat.Id;
+        return Update.GetChatId();
     }
 
     public string GetBasketProductHtml(BasketProductViewModel basketProduct)

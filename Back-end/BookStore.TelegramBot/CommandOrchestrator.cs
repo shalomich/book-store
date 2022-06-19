@@ -1,6 +1,7 @@
 ﻿using BookStore.TelegramBot.Commands.Help;
 using BookStore.TelegramBot.Extensions;
 using BookStore.TelegramBot.UseCases.Authenticate;
+using BookStore.TelegramBot.UseCases.Basket.AddProductToBasket;
 using BookStore.TelegramBot.UseCases.Basket.ChangeBasketProductQuantity;
 using BookStore.TelegramBot.UseCases.Basket.CleanBasket;
 using BookStore.TelegramBot.UseCases.Basket.DeleteBasketProduct;
@@ -58,6 +59,7 @@ internal class CommandOrchestrator
                 CommandNames.CastVote => new CastVoteCommand(update),
                 CommandNames.SpendVotingPoints => new SpendVotingPointsCommand(update),
                 CommandNames.ShowBasket => new ViewBasketProductsCommand(update),
+                CommandNames.AddToBasket => new AddProductToBasketCommand(update),
                 CommandNames.ChangeBasketProductQuantity => new ChangeBasketProductQuantityCommand(update),
                 CommandNames.DeleteChoosen => new DeleteBasketProductCommand(update),
                 CommandNames.DeleteAll => new CleanBasketCommand(update),
