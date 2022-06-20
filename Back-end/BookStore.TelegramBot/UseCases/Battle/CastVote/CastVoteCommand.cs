@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using BookStore.Application.Queries.UserProfile.GetUserProfile;
+using BookStore.TelegramBot.Exceptions;
 using BookStore.TelegramBot.Providers;
 using BookStore.TelegramBot.UseCases.Common;
 using Microsoft.Extensions.Options;
 using RestSharp;
+using System.Net;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
@@ -64,15 +66,12 @@ internal class CastVoteCommandHandler : TelegramBotCommandHandler<CastVoteComman
 
         try
         {
-            profile = await UserProfileRestClient.GetUserProfileAsync(
-                telegramId: chatId, cancellationToken);
+            profile = await UserProfileRestClient.GetUserProfileAsync(telegramId: chatId, cancellationToken);
         }
-        catch (InvalidOperationException exception)
+        catch (UnauthorizedException exception)
         {
-            await BotClient.SendTextMessageAsync(
-               chatId: chatId,
-               text: exception.Message);
-
+            await BotClient.SendTextMessageAsync(chatId, exception.Message, cancellationToken: cancellationToken);
+            
             return (userBattleInfo, false);
         }
 
@@ -118,11 +117,9 @@ internal class CastVoteCommandHandler : TelegramBotCommandHandler<CastVoteComman
                             .AddBody(battleBookToVoteId), cancellationToken),
                 cancellationToken: cancellationToken);
             }
-            catch (InvalidOperationException exception)
+            catch (UnauthorizedException exception)
             {
-                await BotClient.SendTextMessageAsync(
-                   chatId: chatId,
-                   text: exception.Message);
+                await BotClient.SendTextMessageAsync(chatId, exception.Message, cancellationToken: cancellationToken);
 
                 return false;
             }

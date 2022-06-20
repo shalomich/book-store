@@ -17,6 +17,7 @@
    </ItemGroup>
 	
   <ItemGroup>
+    <PackageReference Include="AutoMapperBuilder" Version="1.1.0" />
     <PackageReference Include="MediatR" Version="10.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1" />

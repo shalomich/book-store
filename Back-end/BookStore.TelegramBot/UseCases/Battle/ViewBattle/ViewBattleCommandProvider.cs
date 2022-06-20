@@ -60,8 +60,14 @@ internal class ViewBattleCommandProvider
     {
         var navigationButtons = new List<InlineKeyboardButton>
         {
-            InlineKeyboardButton.WithCallbackData(text: "Голосовать за первый комикс", callbackData: $"/{CommandNames.CastVote} {battleInfo.FirstBattleBook.BattleBookId}"),
-            InlineKeyboardButton.WithCallbackData(text: "Голосовать за второй комикс", callbackData: $"/{CommandNames.CastVote} {battleInfo.SecondBattleBook.BattleBookId}")
+            InlineKeyboardButton.WithCallbackData(
+                text: "Голосовать за первый комикс", 
+                callbackData: CommandLineParser.ToCommandLine(
+                    commandName: CommandNames.CastVote, battleInfo.FirstBattleBook.BattleBookId)),
+            InlineKeyboardButton.WithCallbackData(
+                text: "Голосовать за второй комикс",
+                callbackData: CommandLineParser.ToCommandLine(
+                    commandName: CommandNames.CastVote, battleInfo.SecondBattleBook.BattleBookId))
         };
 
         return new InlineKeyboardMarkup(navigationButtons);
