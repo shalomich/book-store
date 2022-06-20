@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 
-import { map, switchMap } from 'rxjs/operators';
+import {map, share, switchMap} from 'rxjs/operators';
 
 import { BookBattle } from '../models/book-battle';
 import { BookBattleMapper } from '../mappers/book-battle-mapper';

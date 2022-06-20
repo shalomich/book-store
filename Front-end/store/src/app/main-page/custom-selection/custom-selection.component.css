@@ -56,3 +56,62 @@
   justify-content: center;
 }
 
+@media (max-width: 1200px) {
+  .selection-link {
+    font-size: 1.2em;
+  }
+
+  .custom-selection-title .mat-icon {
+    font-size: 1.6em;
+  }
+
+  .empty-custom-selection-block span {
+    color: #2199e8;
+    font-size: 1.6em;
+  }
+
+  .empty-custom-selection-block .mat-icon {
+    width: max-content;
+    height: max-content;
+    color: #2199e8;
+    font-size: 2em;
+  }
+
+  .selection-books-list {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    width: 800px;
+    padding-left: 1px;
+    padding-top: 1px;
+  }
+}
+
+@media (max-width: 830px) {
+  .selection-books-list {
+    width: 570px;
+  }
+}
+
+@media (max-width: 585px) {
+  .selection-books-list {
+    width: 350px;
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .selection-books-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .selection-books-list {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+}
+
+@media (max-width: 375px) {
+  .selection-books-list {
+    width: 330px;
+  }
+}

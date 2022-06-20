@@ -30,3 +30,18 @@
   color: white;
 }
 
+@media (max-width: 1200px) {
+  .add-to-cart-block {
+    margin-top: 70px;
+  }
+
+  .add-to-cart span {
+    height: min-content;
+    font-size: 1.2em;
+    margin-right: 30px;
+  }
+
+  .add-to-basket-button, .in-basket-button {
+    font-size: 0.8em;
+  }
+}

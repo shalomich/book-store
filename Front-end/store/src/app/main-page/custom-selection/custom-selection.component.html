@@ -1,5 +1,5 @@
 <ng-container *ngIf="userProfile.isAuthorized(); else emptyCustomSelection">
-  <div *ngIf="hasPageLoaded; else emptyCustomSelection" class="custom-selection-block">
+  <div *ngIf="hasPageLoaded && bookSet.previews.length > 0; else emptyCustomSelection" class="custom-selection-block">
     <div class="custom-selection-title">
       <h3>
         <a class="selection-link" [href]="selectionLink">
@@ -16,7 +16,8 @@
     <div class="selection-books-list">
       <app-book-preview *ngFor="let book of bookSet.previews"
                         [item]="book"
-                        [userBasketBookIds]="userProfile.basketBookIds || []">
+                        [userBasketBookIds]="userProfile.basketBookIds || []"
+                        [isUserAuthorized]="userProfile.isAuthorized()">
       </app-book-preview>
     </div>
   </div>

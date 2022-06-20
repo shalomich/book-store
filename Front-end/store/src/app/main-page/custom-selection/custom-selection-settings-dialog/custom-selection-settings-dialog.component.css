@@ -98,3 +98,61 @@
   color: white;
   background-color: #2199e8;
 }
+
+@media (max-width: 830px) {
+  .settings-dialog-title {
+    font-size: 1.4em;
+  }
+
+  .selection-settings-message {
+    font-size: 1em;
+  }
+
+  .tags-setting-panel .mat-expansion-panel-header-title {
+    font-size: 1em;
+  }
+
+  .tags-setting-panel .mat-expansion-panel-header.mat-expanded {
+    height: 48px;
+  }
+
+  .selected-tags-count {
+    font-size: 1.2em;
+  }
+
+  .tags-apply-button-block button {
+    font-size: 1.4em;
+    height: 40px;
+  }
+}
+
+@media (max-width: 585px) {
+  .settings-dialog-title {
+    font-size: 1.2em;
+  }
+
+  .selection-settings-message {
+    font-size: 0.9em;
+  }
+
+  .tags-setting-panel .mat-expansion-panel-header-title {
+    font-size: 0.8em;
+  }
+
+  .tags-setting-panel .mat-expansion-panel-header.mat-expanded {
+    height: 32px;
+  }
+
+  .selected-tags-count {
+    font-size: 1em;
+  }
+
+  .tags-apply-button-block button {
+    font-size: 1.2em;
+    height: 40px;
+  }
+
+  .tags-groups-block .panel-block {
+    margin-bottom: 20px;
+  }
+}

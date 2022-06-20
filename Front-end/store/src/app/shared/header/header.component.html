@@ -14,7 +14,7 @@
     <button routerLink="/book-store/battle" mat-stroked-button class="battle-redirect">VS</button>
   </div>
   <div class="authorized-block" *ngIf="isAuthorized; else loginButton">
-    <button (click)="openTelegramDialog()" mat-stroked-button class="basket-button">
+    <button (click)="onTelegramClick()" mat-stroked-button class="basket-button">
       <span class="material-icons">telegram</span>
     </button>
     <button mat-stroked-button class="basket-button" routerLink="/book-store/basket">
@@ -42,12 +42,86 @@
   </div>
 </div>
 
+
+<mat-sidenav-container autosize="true" class="example-container" [hasBackdrop]="true">
+  <mat-sidenav autoFocus="false" position="end" [fixedInViewport]="true" #drawer [mode]="'over'">
+    <div class="sidenav-close-button"><button (click)="drawer.close()" mat-icon-button><mat-icon>keyboard_backspace</mat-icon></button></div>
+    <div class="authorized-block" *ngIf="isAuthorized; else sideLoginButton">
+      <div class="catalog-button">
+        <button (click)="drawer.close()" mat-stroked-button routerLink="/book-store/catalog/book">Каталог</button>
+      </div>
+      <div class="battle-redirect-block">
+        <button (click)="drawer.close()" routerLink="/book-store/battle" mat-stroked-button class="battle-redirect">VS</button>
+      </div>
+      <div class="telegram-button-block">
+        <button (click)="onTelegramClick()" mat-stroked-button class="basket-button">
+          <span class="material-icons">telegram</span> Telegram
+        </button>
+      </div>
+      <div>
+        <button class="profile-menu-button" mat-button [matMenuTriggerFor]="profileMenu">
+          {{user.firstName}}
+          <mat-icon class="arrow-down-icon">arrow_drop_down</mat-icon>
+          <mat-icon class="arrow-up-icon">arrow_drop_up</mat-icon>
+        </button>
+        <mat-menu #profileMenu="matMenu" class="profile-menu">
+          <button (click)="drawer.close()" routerLink="book-store/profile" mat-menu-item>Профиль</button>
+          <mat-divider class="divider"></mat-divider>
+          <button (click)="drawer.close()" routerLink="book-store/orders" mat-menu-item>Заказы</button>
+          <mat-divider class="divider"></mat-divider>
+          <button class="logout-button" mat-menu-item (click)="logout()">Выход</button>
+        </mat-menu>
+      </div>
+      <div class="user-bonus-block">
+        Очки баттла: {{user.votingPointCount}}
+      </div>
+      <div class="telegram-button-block">
+        <button (click)="drawer.close()" mat-stroked-button class="basket-button" routerLink="/book-store/basket">
+          <mat-icon>shopping_cart</mat-icon> Корзина
+        </button>
+      </div>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="sidenav-header">
+      <div routerLink="/book-store" class="logo">
+        ComicStore
+      </div>
+      <div class="search-field-block">
+        <app-search-field></app-search-field>
+      </div>
+      <button class="sidenav-open-button" mat-icon-button (click)="drawer.toggle()"><mat-icon>menu</mat-icon></button>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
 <ng-template #loginButton>
   <div class="unauthorized-block">
-    <button (click)="openTelegramDialog()" mat-stroked-button class="basket-button">
+    <button (click)="onTelegramClick()" mat-stroked-button class="basket-button">
       <span class="material-icons">telegram</span>
     </button>
     <button class="login-button" mat-stroked-button (click)="openLoginDialog()">Войти</button>
+  </div>
+</ng-template>
+
+
+<ng-template #sideLoginButton>
+  <div class="unauthorized-block">
+    <div class="catalog-button">
+      <button (click)="drawer.close()" mat-stroked-button routerLink="/book-store/catalog/book">Каталог</button>
+    </div>
+    <div class="battle-redirect-block">
+      <button (click)="drawer.close()" routerLink="/book-store/battle" mat-stroked-button class="battle-redirect">VS</button>
+    </div>
+    <div class="telegram-button-block">
+      <button (click)="onTelegramClick()" mat-stroked-button class="basket-button">
+        <span class="material-icons">telegram</span> Telegram
+      </button>
+    </div>
+    <div class="login-button-block">
+      <button class="login-button" mat-stroked-button (click)="openLoginDialog()">Войти</button>
+    </div>
   </div>
 </ng-template>
 

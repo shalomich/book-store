@@ -1,5 +1,5 @@
 <ng-container>
-  <div class="selection-block">
+  <div *ngIf="!hasPageLoaded || (hasPageLoaded && bookSet.previews && bookSet.previews.length !== 0)" class="selection-block">
     <h3>
       <a class="selection-link" [href]="selectionLink">
         {{selectionHeader}}
@@ -9,7 +9,8 @@
       <div class="selection-books-list">
         <app-book-preview *ngFor="let book of bookSet.previews"
                           [item]="book"
-                          [userBasketBookIds]="userProfile.basketBookIds">
+                          [userBasketBookIds]="userProfile.basketBookIds"
+                          [isUserAuthorized]="userProfile.isAuthorized()">
         </app-book-preview>
       </div>
     </div>

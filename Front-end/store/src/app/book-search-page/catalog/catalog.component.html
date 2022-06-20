@@ -12,14 +12,18 @@
     <sorting [propertyNamesWithText]="propertyNamesWithText" [setSortingsCallback]="onSortChanged"></sorting>
     <div *ngIf="!loading; else loadingBlock">
       <div *ngIf="books.length !== 0; else emptyResult" class="books-list">
-        <app-book-preview *ngFor="let book of books | paginate: config" [item]="book" [userBasketBookIds]="userProfile.basketBookIds"></app-book-preview>
+        <app-book-preview *ngFor="let book of books | paginate: config"
+                          [item]="book"
+                          [userBasketBookIds]="userProfile.basketBookIds"
+                          [isUserAuthorized]="userProfile.isAuthorized()">
+        </app-book-preview>
       </div>
     </div>
   </div>
 </div>
 <div class="pagination-block pagination-panel">
   <pagination-controls class="custom-pagination" id="paginationPanel"
-                       [maxSize]="9"
+                       [maxSize]="6"
                        nextLabel=""
                        previousLabel=""
                        [autoHide]="true"

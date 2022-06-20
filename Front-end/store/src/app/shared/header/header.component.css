@@ -1,7 +1,16 @@
-.header {
+.header, .sidenav-header {
   display: flex;
   padding: 2em 2em 2em;
   border-bottom: 1px #2199e8 dashed;
+}
+
+.mat-drawer-content, .mat-drawer-container {
+  z-index: 0 !important;
+  position: initial !important;
+}
+
+.sidenav-header {
+  display: none;
 }
 
 .login-button {
@@ -137,10 +146,116 @@
   color: #f44336 !important;
 }
 
+.sidenav-open-button {
+  color: #2199e8;
+}
+
+.sidenav-open-button .mat-icon {
+  line-height: 0 !important;
+  margin-top: 3px;
+}
+
+.sidenav-close-button {
+  color: #2199e8;
+  margin: 10px;
+}
+
+.mat-drawer-backdrop {
+  position: fixed !important;
+}
+
 @keyframes animateBorder {
   to {
     outline-color: #ffffff;
     box-shadow: 0 0 0 3px #2199e8;
   }
+}
+
+@media (max-width: 1200px) {
+  .logo {
+    font-size: 1.2em;
+    margin-left: 5px !important;
+    margin-right: 1px;
+  }
+
+  .sidenav-header {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 2px;
+    padding-right: 5px;
+    overflow: hidden;
+    height: 20px;
+  }
+
+  .header {
+    display: none;
+  }
+
+  .authorized-block, .unauthorized-block {
+    display: block;
+    align-items: center;
+    padding: 10px 30px 30px 30px;
+  }
+
+  .authorized-block div, .unauthorized-block div {
+    margin-bottom: 20px;
+  }
+
+  .battle-redirect-block {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 150px;
+    align-self: center;
+  }
+
+  .basket-button {
+    padding: 0 !important;
+  }
+
+  .telegram-button-block {
+    display: flex;
+    justify-content: center;
+  }
+
+  .catalog-button {
+    display: flex;
+    justify-content: center;
+    margin: 0 0 20px 0 !important;
+  }
+
+  .catalog-button button {
+    width: 150px;
+  }
+
+  .login-button-block {
+    display: flex;
+    justify-content: center;
+  }
+
+  .user-bonus-block {
+   justify-content: center;
+  }
+}
+
+@media (max-width: 1750px) {
+  .catalog-button {
+    margin-left: 7vw;
+  }
+}
+
+@media (max-width: 1420px) {
+  .catalog-button {
+    margin-left: 3vw;
+    margin-right: 2vw;
+  }
+
+  .logo {
+    margin-left: 0;
+  }
+
+  .battle-redirect-block {
+    margin-left: 2vw;
+  }
+
 }
 

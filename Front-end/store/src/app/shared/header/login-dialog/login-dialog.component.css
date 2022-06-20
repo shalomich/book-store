@@ -58,3 +58,14 @@ input.mat-input-element {
   color: gray !important;
 }
 
+@media (max-width: 585px) {
+  .login-modal-field {
+    width: 250px;
+    margin-bottom: 2em;
+  }
+
+  .auth-dialog .mat-dialog-container {
+    padding: 20px 10px 20px 10px;
+  }
+}
+

@@ -1,93 +1,200 @@
-<div *ngIf="(battleInfo$ | async) as battle; else loadingBlock" class="battle-block">
-  <div class="first-book">
-    <div class="battle-winner-text" *ngIf="isWinner(1, battle)">Победитель</div>
-    <div class="{{isWinner(1, battle) ? 'battle-winner' : ''}}">
-      <div title="{{battle.firstBattleBook.name}}" class="book-name">
-        <a target="_blank" href="/book-store/catalog/book/{{battle.firstBattleBook.bookId}}">
-          {{battle.firstBattleBook.name}}
-        </a>
+<div *ngIf="(battleInfo$ | async) as battle; else loadingBlock">
+  <div class="battle-block">
+    <div class="first-book">
+      <div class="battle-winner-text" *ngIf="isWinner(1, battle)">Победитель</div>
+      <div class="{{isWinner(1, battle) ? 'battle-winner' : ''}}">
+        <div title="{{battle.firstBattleBook.name}}" class="book-name">
+          <a target="_blank" href="/book-store/catalog/book/{{battle.firstBattleBook.bookId}}">
+            {{battle.firstBattleBook.name}}
+          </a>
+        </div>
+        <div class="battle-book-image-block">
+          <img [alt]="battle.firstBattleBook.name" src="{{battle.firstBattleBook.titleImage.fileUrl}}">
+        </div>
+        <app-battle-voting-block [votingBookId]="battle.firstBattleBook.battleBookId"
+                                 [canUserVote]="canUserVote(battle.firstBattleBook.battleBookId, battle)"
+                                 [userMaxPoints]="userProfile.votingPointCount"
+                                 [battleVotedBookId]="userProfile.currentVotedBattleBookId"
+                                 [onVote]="handleVoting">
+        </app-battle-voting-block>
       </div>
-      <div class="battle-book-image-block">
-        <img [alt]="battle.firstBattleBook.name" src="{{battle.firstBattleBook.titleImage.fileUrl}}">
+    </div>
+    <div class="center-block">
+      <div class="countdown">
+        <div>
+          {{getBattleMessage(battle)}}
+        </div>
+        <div *ngIf="!hasBattleEnded(battle)" class="time">
+          <cd-timer [countdown]="true" [startTime]="getRemainingTime(battle.endDate)" format="user">
+            [days]:[hours]:[minutes]:[seconds]
+          </cd-timer>
+        </div>
       </div>
-      <app-battle-voting-block [votingBookId]="battle.firstBattleBook.battleBookId"
-                               [canUserVote]="canUserVote(battle.firstBattleBook.battleBookId, battle)"
-                               [userMaxPoints]="userProfile.votingPointCount"
-                               [battleVotedBookId]="userProfile.currentVotedBattleBookId"
-                               [onVote]="handleVoting">
-      </app-battle-voting-block>
+      <div class="versus">
+        VS
+      </div>
+      <div class="votes-block">
+        Очки
+        <div class="votes-count">
+          <div>
+            {{battle.firstBattleBook.totalVotingPointCount}}
+          </div>
+          <div>
+            {{battle.secondBattleBook.totalVotingPointCount}}
+          </div>
+        </div>
+      </div>
+      <div class="discount-block">
+        <div class="discount">
+          <div class="winner-discount-text" *ngIf="battle.state === 'Finished'">Итоговая скидка</div>
+          <span>{{battle.discountPercentage}}%</span> <span *ngIf="battle.state !== 'Finished'"> / {{battle.finalDiscount}}%</span>
+        </div>
+        <div class="prices-for-winner">
+          <div class="book-price">
+            <div class="{{(battle.state !== 'Finished') || isWinner(1, battle) ? 'old-price' : 'loser-price'}}">
+              {{battle.firstBattleBook.cost}} &#8381;
+            </div>
+            &nbsp; &nbsp;
+            <div *ngIf="(battle.state !== 'Finished') || isWinner(1, battle)" class="new-price">
+              {{getWinnerCost(battle.firstBattleBook.cost, battle.discountPercentage)}} &#8381;
+            </div>
+          </div>
+          <mat-icon (click)="openBattleInfoDialog()" matTooltip="Информация о баттле">help_outline</mat-icon>
+          <div class="book-price">
+            <div class="{{(battle.state !== 'Finished') || isWinner(2, battle) ? 'old-price' : 'loser-price'}}">
+              {{battle.secondBattleBook.cost}} &#8381;
+            </div>
+            &nbsp; &nbsp;
+            <div *ngIf="(battle.state !== 'Finished') || isWinner(2, battle)" class="new-price">
+              {{getWinnerCost(battle.secondBattleBook.cost, battle.discountPercentage)}} &#8381;
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="second-book">
+      <div class="battle-winner-text" *ngIf="isWinner(2, battle)">Победитель</div>
+      <div class="{{isWinner(2, battle) ? 'battle-winner' : ''}}">
+        <div title="{{battle.secondBattleBook.name}}" class="book-name">
+          <a target="_blank" href="/book-store/catalog/book/{{battle.secondBattleBook.bookId}}">
+            {{battle.secondBattleBook.name}}
+          </a>
+        </div>
+        <div class="battle-book-image-block">
+          <img [alt]="battle.secondBattleBook.name" src="{{battle.secondBattleBook.titleImage.fileUrl}}">
+        </div>
+        <app-battle-voting-block [votingBookId]="battle.secondBattleBook.battleBookId"
+                                 [canUserVote]="canUserVote(battle.secondBattleBook.battleBookId, battle)"
+                                 [userMaxPoints]="userProfile.votingPointCount"
+                                 [battleVotedBookId]="userProfile.currentVotedBattleBookId"
+                                 [onVote]="handleVoting">
+        </app-battle-voting-block>
+      </div>
     </div>
   </div>
-  <div class="center-block">
-    <div class="countdown">
-      <div>
-        {{getBattleMessage(battle)}}
-      </div>
-      <div *ngIf="!hasBattleEnded(battle)" class="time">
-        <cd-timer [countdown]="true" [startTime]="getRemainingTime(battle.endDate)" format="user">
-          [days]:[hours]:[minutes]:[seconds]
-        </cd-timer>
-      </div>
-    </div>
-    <div class="versus">
-      VS
-    </div>
-    <div class="votes-block">
-      Очки
-      <div class="votes-count">
+
+
+
+
+
+
+
+
+  <div class="slider-battle-block">
+    <div class="center-block">
+      <div class="countdown">
         <div>
-          {{battle.firstBattleBook.totalVotingPointCount}}
+          {{getBattleMessage(battle)}}
         </div>
-        <div>
-          {{battle.secondBattleBook.totalVotingPointCount}}
+        <div *ngIf="!hasBattleEnded(battle)" class="time">
+          <cd-timer [countdown]="true" [startTime]="getRemainingTime(battle.endDate)" format="user">
+            [days]:[hours]:[minutes]:[seconds]
+          </cd-timer>
         </div>
       </div>
-    </div>
-    <div class="discount-block">
-      <div class="discount">
-        <div class="winner-discount-text" *ngIf="battle.state === 'Finished'">Итоговая скидка</div>
-        <span>{{battle.discountPercentage}}%</span> <span *ngIf="battle.state !== 'Finished'"> / {{battle.finalDiscount}}%</span>
-      </div>
-      <div class="prices-for-winner">
-        <div class="book-price">
-          <div class="{{(battle.state !== 'Finished') || isWinner(1, battle) ? 'old-price' : 'loser-price'}}">
-            {{battle.firstBattleBook.cost}} &#8381;
-          </div>
-          &nbsp; &nbsp;
-          <div *ngIf="(battle.state !== 'Finished') || isWinner(1, battle)" class="new-price">
-            {{getWinnerCost(battle.firstBattleBook.cost, battle.discountPercentage)}} &#8381;
-          </div>
-        </div>
-        <mat-icon (click)="openBattleInfoDialog()" matTooltip="Информация о баттле">help_outline</mat-icon>
-        <div class="book-price">
-          <div class="{{(battle.state !== 'Finished') || isWinner(2, battle) ? 'old-price' : 'loser-price'}}">
-            {{battle.secondBattleBook.cost}} &#8381;
-          </div>
-          &nbsp; &nbsp;
-          <div *ngIf="(battle.state !== 'Finished') || isWinner(2, battle)" class="new-price">
-            {{getWinnerCost(battle.secondBattleBook.cost, battle.discountPercentage)}} &#8381;
-          </div>
+      <mat-icon class="battle-info-icon" (click)="openBattleInfoDialog()" matTooltip="Информация о баттле">help_outline</mat-icon>
+      <div class="discount-block">
+        <div class="discount">
+          <div class="winner-discount-text" *ngIf="battle.state === 'Finished'">Итоговая скидка</div>
+          <span>{{battle.discountPercentage}}%</span> <span *ngIf="battle.state !== 'Finished'"> / {{battle.finalDiscount}}%</span>
         </div>
       </div>
     </div>
-  </div>
-  <div class="second-book">
-    <div class="battle-winner-text" *ngIf="isWinner(2, battle)">Победитель</div>
-    <div class="{{isWinner(2, battle) ? 'battle-winner' : ''}}">
-      <div title="{{battle.secondBattleBook.name}}" class="book-name">
-        <a target="_blank" href="/book-store/catalog/book/{{battle.secondBattleBook.bookId}}">
-          {{battle.secondBattleBook.name}}
-        </a>
+    <div class="books-slider">
+      <div class="first-book">
+        <div class="battle-winner-text" *ngIf="isWinner(1, battle)">Победитель</div>
+        <div class="{{isWinner(1, battle) ? 'battle-winner' : ''}}">
+          <div title="{{battle.firstBattleBook.name}}" class="book-name">
+            <a target="_blank" href="/book-store/catalog/book/{{battle.firstBattleBook.bookId}}">
+              {{battle.firstBattleBook.name}}
+            </a>
+          </div>
+          <div class="battle-book-image-block">
+            <img [alt]="battle.firstBattleBook.name" src="{{battle.firstBattleBook.titleImage.fileUrl}}">
+          </div>
+          <div class="votes-block">
+            <div class="votes-count">
+              <div>
+                {{battle.firstBattleBook.totalVotingPointCount}}
+              </div>
+            </div>
+          </div>
+          <app-battle-voting-block [votingBookId]="battle.firstBattleBook.battleBookId"
+                                   [canUserVote]="canUserVote(battle.firstBattleBook.battleBookId, battle)"
+                                   [userMaxPoints]="userProfile.votingPointCount"
+                                   [battleVotedBookId]="userProfile.currentVotedBattleBookId"
+                                   [onVote]="handleVoting">
+          </app-battle-voting-block>
+        </div>
+        <div class="prices-for-winner">
+          <div class="book-price">
+            <div class="{{(battle.state !== 'Finished') || isWinner(1, battle) ? 'old-price' : 'loser-price'}}">
+              {{battle.firstBattleBook.cost}} &#8381;
+            </div>
+            &nbsp; &nbsp;
+            <div *ngIf="(battle.state !== 'Finished') || isWinner(1, battle)" class="new-price">
+              {{getWinnerCost(battle.firstBattleBook.cost, battle.discountPercentage)}} &#8381;
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="battle-book-image-block">
-        <img [alt]="battle.secondBattleBook.name" src="{{battle.secondBattleBook.titleImage.fileUrl}}">
+      <div class="second-book">
+        <div class="battle-winner-text" *ngIf="isWinner(2, battle)">Победитель</div>
+        <div class="{{isWinner(2, battle) ? 'battle-winner' : ''}}">
+          <div title="{{battle.secondBattleBook.name}}" class="book-name">
+            <a target="_blank" href="/book-store/catalog/book/{{battle.secondBattleBook.bookId}}">
+              {{battle.secondBattleBook.name}}
+            </a>
+          </div>
+          <div class="battle-book-image-block">
+            <img [alt]="battle.secondBattleBook.name" src="{{battle.secondBattleBook.titleImage.fileUrl}}">
+          </div>
+          <div class="votes-block">
+            <div class="votes-count">
+              <div>
+                {{battle.secondBattleBook.totalVotingPointCount}}
+              </div>
+            </div>
+          </div>
+          <app-battle-voting-block [votingBookId]="battle.secondBattleBook.battleBookId"
+                                   [canUserVote]="canUserVote(battle.secondBattleBook.battleBookId, battle)"
+                                   [userMaxPoints]="userProfile.votingPointCount"
+                                   [battleVotedBookId]="userProfile.currentVotedBattleBookId"
+                                   [onVote]="handleVoting">
+          </app-battle-voting-block>
+        </div>
+        <div class="prices-for-winner">
+          <div class="book-price">
+            <div class="{{(battle.state !== 'Finished') || isWinner(2, battle) ? 'old-price' : 'loser-price'}}">
+              {{battle.secondBattleBook.cost}} &#8381;
+            </div>
+            &nbsp; &nbsp;
+            <div *ngIf="(battle.state !== 'Finished') || isWinner(2, battle)" class="new-price">
+              {{getWinnerCost(battle.secondBattleBook.cost, battle.discountPercentage)}} &#8381;
+            </div>
+          </div>
+        </div>
       </div>
-      <app-battle-voting-block [votingBookId]="battle.secondBattleBook.battleBookId"
-                               [canUserVote]="canUserVote(battle.secondBattleBook.battleBookId, battle)"
-                               [userMaxPoints]="userProfile.votingPointCount"
-                               [battleVotedBookId]="userProfile.currentVotedBattleBookId"
-                               [onVote]="handleVoting">
-      </app-battle-voting-block>
     </div>
   </div>
 </div>
