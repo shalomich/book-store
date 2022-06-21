@@ -1,13 +1,10 @@
-﻿using AutoMapper;
-using AutoMapperBuilder.Extensions.DependencyInjection;
+﻿using AutoMapperBuilder.Extensions.DependencyInjection;
 using BookStore.Bot.Infrastructure;
-using BookStore.Bot.Notifications;
 using BookStore.Bot.Providers;
 using BookStore.Bot.UseCases.Basket;
 using BookStore.Bot.UseCases.Battle;
 using BookStore.Bot.UseCases.Common;
 using BookStore.Bot.UseCases.ViewSelection;
-using BookStore.Persistance.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RestSharp;
@@ -47,8 +44,6 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<ITelegramBotClient>(new TelegramBotClient(configuration["Token"]));
 
-        
-        services.Configure<TelegramBotMessages>(configuration.GetSection("Messages"));
         services.Configure<BackEndSettings>(configuration.GetSection("BackEnd"));
 
         services.AddSingleton(new RestClient(configuration["BackEnd:ApiUri"])
