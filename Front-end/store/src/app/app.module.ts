@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {Injector, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -69,7 +69,6 @@ import { BattlePageComponent } from './battle-page/battle-page.component';
 
 import { BattleInfoDialogComponent } from './battle-page/battle-info-dialog/battle-info-dialog.component';
 
-
 import { BattleVotingBlockComponent } from './battle-page/battle-voting-block/battle-voting-block.component';
 import { OrdersListPageComponent } from './orders-list-page/orders-list-page.component';
 import { CustomSelectionComponent } from './main-page/custom-selection/custom-selection.component';
@@ -82,6 +81,7 @@ import {
   CustomSelectionInfoDialogComponent,
 } from './main-page/custom-selection/custom-selection-info-dialog/custom-selection-info-dialog.component';
 
+export let InjectorInstance: Injector;
 
 @NgModule({
   declarations: [
@@ -138,4 +138,8 @@ import {
   providers: [ProductOptionsStorage, ProfileProviderService],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {
+  public constructor(private injector: Injector) {
+    InjectorInstance = this.injector;
+  }
+}

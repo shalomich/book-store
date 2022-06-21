@@ -5,6 +5,7 @@ export interface BasketProductDto {
   name: string;
   cost: number;
   quantity: number;
+  productQuantity: number;
   titleImage: Image;
   productId: number;
 }
