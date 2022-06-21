@@ -260,6 +260,10 @@
   .votes-count {
     font-size: 1.8em;
   }
+
+  .slider-first-book-arrow, .slider-second-book-arrow {
+    display: none;
+  }
 }
 
 @media (max-width: 600px) {

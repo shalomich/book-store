@@ -8,14 +8,17 @@ internal class BotHost : IHostedService
 {
     private ITelegramBotClient BotClient { get; }
     private IServiceProvider ServiceProvider { get; }
+    public ILogger<BotHost> Logger { get; }
 
     public BotHost(
         ITelegramBotClient botClient,
-        IServiceProvider serviceProvider
+        IServiceProvider serviceProvider,
+        ILogger<BotHost> logger
     )
     {
         BotClient = botClient;
         ServiceProvider = serviceProvider;
+        Logger = logger;
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
@@ -41,7 +44,14 @@ internal class BotHost : IHostedService
         {
             var orchestrator = scope.ServiceProvider.GetRequiredService<CommandOrchestrator>();
 
-            await orchestrator.Run(update, cancellationToken);
+            try
+            {
+                await orchestrator.Run(update, cancellationToken);
+            }
+            catch(Exception exception)
+            {
+                Logger.LogError(exception, "Unhandled exception.");
+            }
         }
     }
 
