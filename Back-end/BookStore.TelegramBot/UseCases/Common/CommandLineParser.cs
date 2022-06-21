@@ -1,12 +1,12 @@
 ﻿namespace BookStore.TelegramBot.UseCases.Common;
-internal static class CommandParser
+internal static class CommandLineParser
 {
     public static bool IsCommand(string str)
     {
         return str?.StartsWith('/') ?? false;
     }
 
-    public static TryGetCommandResult TryGetCommand(string str)
+    public static TryGetCommandResult FromCommandLine(string str)
     {
         if (!IsCommand(str))
         {
@@ -32,6 +32,20 @@ internal static class CommandParser
             command = str.Substring(1);
 
             return TryGetCommandResult.IsCommand(command);
+        }
+    }
+
+    public static string ToCommandLine(string commandName, params object[] commandArgs)
+    {
+        if (commandArgs.Length == 0)
+        {
+            return $"/{commandName}";
+        }
+        else
+        {
+            var commandArgsString = string.Join(' ', commandArgs);
+
+            return $"/{commandName} {commandArgsString}";
         }
     }
 }

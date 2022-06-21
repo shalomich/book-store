@@ -3,6 +3,7 @@ using BookStore.Application.Providers;
 using BookStore.TelegramBot.Extensions;
 using BookStore.TelegramBot.UseCases.Common;
 using QueryWorker.Args;
+using QueryWorker.DataTransformers.Paggings;
 using System.Text;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -16,18 +17,25 @@ internal class ViewSelectionCommandProvider
     {
         Update = update;
     }
+    public long GetChatId()
+    {
+        return Update.GetChatId();
+    }
 
-    public string GetSelectionName()
+    public (string SelectionName, bool NeedToAuthorize) GetSelectionName()
     {
         var command = Update.TryGetCommand().Command;
 
         return command switch
         {
-            CommandNames.Novelties => SelectionNames.Novelties,
-            CommandNames.GoneOnSale => SelectionNames.GoneOnSale,
-            CommandNames.BackOnSale => SelectionNames.BackOnSale,
-            CommandNames.CurrentDayAuthor => SelectionNames.CurrentDayAuthor,
-            CommandNames.Popular => SelectionNames.Popular
+            CommandNames.Novelties => (SelectionNames.Novelties, false),
+            CommandNames.GoneOnSale => (SelectionNames.GoneOnSale, false),
+            CommandNames.BackOnSale => (SelectionNames.BackOnSale, false),
+            CommandNames.CurrentDayAuthor => (SelectionNames.CurrentDayAuthor, false),
+            CommandNames.Popular => (SelectionNames.Popular, false),
+            CommandNames.LastViewed => (SelectionNames.LastViewed, true),
+            CommandNames.CanBeInteresting => (SelectionNames.CanBeInteresting, true),
+            CommandNames.SpecialForYou => (SelectionNames.SpecialForYou, true)
         };
     }
 
@@ -74,32 +82,60 @@ internal class ViewSelectionCommandProvider
         return builder.ToString();
     }
 
-    public InlineKeyboardMarkup BuildNavigationButtons(int totalCount)
+    public bool TryGetNotEmptyNavigation(int totalDataCount, out InlineKeyboardMarkup keyboard)
     {
         var pagging = BuildPagging().Pagging;
-        var pageNumber = pagging.PageNumber;
-        var maxPageNumber = (int)Math.Ceiling(totalCount / (double)pagging.PageSize);
 
-        var command = Update.TryGetCommand().Command;
+        var commandName = Update.TryGetCommand().Command;
 
-        int previousPage = pageNumber - 1;
-        int nextPage = pageNumber + 1;
+        keyboard = BuildNavigation(
+            commandName: commandName,
+            pagging: pagging,
+            totalDataCount: totalDataCount);        
+        
+        return keyboard.InlineKeyboard
+            .First()
+            .Any();
+    }
 
-        var navigationButtons = new List<InlineKeyboardButton>
+    private InlineKeyboardMarkup BuildNavigation(string commandName, PaggingArgs pagging, int totalDataCount)
+    {
+        var navigationButtons = new List<InlineKeyboardButton>();
+
+        if (PaggingCalculator.HasPreviousPage(pagging, totalDataCount))
         {
-            InlineKeyboardButton.WithCallbackData(text: "Предыдущая страница", callbackData: $"/{command} {previousPage}"),
-            InlineKeyboardButton.WithCallbackData(text: "Следующая страница", callbackData: $"/{command} {nextPage}")
-        };
-
-        if (pageNumber == 1)
-        {
-            navigationButtons.Remove(navigationButtons.First());
+            navigationButtons.Add(InlineKeyboardButton.WithCallbackData(
+                text: "Предыдущая страница",
+                callbackData: CommandLineParser.ToCommandLine(commandName, pagging.PageNumber - 1)));
         }
-        else if (pageNumber == maxPageNumber)
+
+        if (PaggingCalculator.HasNextPage(pagging, totalDataCount))
         {
-            navigationButtons.Remove(navigationButtons.Last());
+            navigationButtons.Add(InlineKeyboardButton.WithCallbackData(
+                text: "Следующая страница",
+                callbackData: CommandLineParser.ToCommandLine(commandName, pagging.PageNumber + 1)));
         }
 
         return new InlineKeyboardMarkup(navigationButtons);
+    }
+
+    public InlineKeyboardMarkup BuildBasketButton(PreviewViewModel preview, IEnumerable<int> basketIds)
+    {
+        var basketButtons = new List<InlineKeyboardButton>();
+
+        if (!basketIds.Contains(preview.Id))
+        {
+            basketButtons.Add(InlineKeyboardButton.WithCallbackData(
+                text: "Добавить в корзину",
+                callbackData: CommandLineParser.ToCommandLine(CommandNames.AddToBasket, preview.Id)));
+        }
+        else
+        {
+            basketButtons.Add(InlineKeyboardButton.WithCallbackData(
+                text: "Перейти в корзину",
+                callbackData: CommandLineParser.ToCommandLine(CommandNames.ShowBasket)));
+        }
+
+        return new InlineKeyboardMarkup(basketButtons);
     }
 }

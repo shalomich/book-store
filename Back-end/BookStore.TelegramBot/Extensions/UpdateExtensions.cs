@@ -22,12 +22,12 @@ internal static class UpdateExtensions
 
     public static bool IsCommand(this Update update)
     {  
-        return CommandParser.IsCommand(GetCommandLine(update));
+        return CommandLineParser.IsCommand(GetCommandLine(update));
     }
 
     public static TryGetCommandResult TryGetCommand(this Update update)
     {
-        return CommandParser.TryGetCommand(GetCommandLine(update));
+        return CommandLineParser.FromCommandLine(GetCommandLine(update));
     }
 
     public static string GetCommandLine(Update update)
