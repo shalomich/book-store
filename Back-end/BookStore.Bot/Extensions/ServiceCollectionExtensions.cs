@@ -27,10 +27,11 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<TelegramBotDbContext>(options =>
         {
             options.UseNpgsql(connectionString);
-        });
-        services.AddScoped<CommandOrchestrator>();
+        });        
+        
         services.AddScoped<CallbackCommandRepository>();
-
+        services.AddScoped<CommandOrchestrator>();
+        services.AddHostedService<BotHost>();
 
         services.AddAutoMapper(currentAssembly);
         services.AddAutoMapperBuilder(builder =>
