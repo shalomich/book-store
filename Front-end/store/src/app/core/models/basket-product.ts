@@ -9,6 +9,8 @@ export class BasketProduct {
 
   public quantity: number;
 
+  public productQuantity: number;
+
   public titleImage: Image;
 
   public productId: number;
@@ -18,6 +20,7 @@ export class BasketProduct {
     this.name = product.name;
     this.cost = product.cost;
     this.quantity = product.quantity;
+    this.productQuantity = product.productQuantity;
     this.titleImage = product.titleImage;
     this.productId = product.productId;
   }

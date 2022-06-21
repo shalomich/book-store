@@ -1,11 +1,20 @@
 import { AbstractControl, AsyncValidatorFn, FormControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
+
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+
+import { InjectorInstance } from '../../app.module';
+
 import {
+  EMAIL_EXISTENCE_ERROR,
   EMAIL_FORMAT_ERROR,
   PASSWORD_FORMAT_ERROR,
   PASSWORD_MATCH_ERROR,
-  PHONE_FORMAT_ERROR
+  PHONE_FORMAT_ERROR,
 } from '../utils/validation-errors';
+
 export class AuthValidator {
 
   public static matchPassword(password: AbstractControl): ValidatorFn {
@@ -15,6 +24,25 @@ export class AuthValidator {
       }
 
       return null;
+    };
+  }
+
+  /**
+   * Validating entered email (returns error if user with such email already exists).
+   */
+  public static doesEmailExist(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      const httpClient = InjectorInstance.get<HttpClient>(HttpClient);
+
+      return httpClient.get(`https://comic-store-server.herokuapp.com/store/Account/email-existence/${control.value}`)
+        .pipe(
+          map(response => {
+            if (response) {
+              return { error: EMAIL_EXISTENCE_ERROR };
+            }
+            return null;
+          }),
+        );
     };
   }
 
@@ -58,6 +86,6 @@ export class AuthValidator {
       }
 
       return null;
-    }
+    };
   }
 }

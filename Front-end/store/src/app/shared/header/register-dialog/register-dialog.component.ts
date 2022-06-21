@@ -6,7 +6,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { AuthorizationService } from '../../../core/services/authorization.service';
 import { AuthValidator } from '../../../core/validators/auth-validator';
-import {EXISTING_EMAIL_ERROR} from '../../../core/utils/validation-errors';
+import { EXISTING_EMAIL_ERROR } from '../../../core/utils/validation-errors';
 
 @Component({
   selector: 'app-register-dialog',
@@ -17,7 +17,11 @@ import {EXISTING_EMAIL_ERROR} from '../../../core/utils/validation-errors';
 export class RegisterDialogComponent implements OnInit {
 
   public registerForm = new FormGroup({
-    email: new FormControl('', { validators: [AuthValidator.emailFormat(), Validators.required], updateOn: 'blur' }),
+    email: new FormControl('', {
+      validators: [AuthValidator.emailFormat(), Validators.required],
+      asyncValidators: AuthValidator.doesEmailExist(),
+      updateOn: 'blur',
+    }),
     name: new FormControl('', { validators: Validators.required, updateOn: 'blur' }),
     password: new FormControl('', { validators: [Validators.required, AuthValidator.passwordFormat()], updateOn: 'blur' }),
     repeatPassword: new FormControl('', { validators: Validators.required, updateOn: 'blur' }),
@@ -40,8 +44,7 @@ export class RegisterDialogComponent implements OnInit {
   }
 
   public register(): void {
-    this.authService.register(this.registerForm.value.email, this.registerForm.value.password, this.registerForm.value.name,
-      () => this.close(), () => this.setExistingEmailError());
+    this.authService.register(this.registerForm.value.email, this.registerForm.value.password, this.registerForm.value.name, () => this.close(), () => this.setExistingEmailError());
   }
 
   public close() {

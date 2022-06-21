@@ -34,7 +34,7 @@ export class BattleVotingBlockComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.add(this.pointsForVote.valueChanges.subscribe(value => {
-      if (value < 1) {
+      if (value < 1 && value !== null) {
         this.pointsForVote.setValue(1);
       } else if (value > this.userMaxPoints) {
         this.pointsForVote.setValue(this.userMaxPoints);

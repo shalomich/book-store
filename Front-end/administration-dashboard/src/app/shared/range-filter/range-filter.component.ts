@@ -2,10 +2,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { FormControl } from '@angular/forms';
 
+import { combineLatest } from 'rxjs';
+
+import { startWith } from 'rxjs/operators';
+
 import { FilterParams } from '../../core/interfaces/filter-params';
 import { Comparison } from '../../core/utils/comparison';
-import { combineLatest } from 'rxjs';
-import { startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-range-filter',
@@ -32,7 +34,7 @@ export class RangeFilterComponent implements OnInit {
     ]).pipe(
       startWith([this.lowerBound.value, this.upperBound.value]),
     )
-.subscribe(data => console.log(data));
+      .subscribe();
 
   }
 
