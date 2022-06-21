@@ -9,6 +9,7 @@ using BookStore.Application.Exceptions;
 using BookStore.Domain.Enums;
 using BookStore.Application.Commands.Account.Common;
 using BookStore.Application.Notifications.UserRegistered;
+using Microsoft.Extensions.Logging;
 
 namespace BookStore.Application.Commands.Account.Registration;
 public record RegistrationCommand(RegistrationDto RegistrationForm) : IRequest<TokensDto>;
@@ -16,16 +17,19 @@ internal class RegistrationCommandHandler : IRequestHandler<RegistrationCommand,
 {
     private UserManager<User> UserManager { get; }
     private TokensFactory TokensFactory { get; }
-    public IMediator Mediator { get; }
+    private IMediator Mediator { get; }
+    private ILogger<RegistrationCommandHandler> Logger { get; }
 
     public RegistrationCommandHandler(
         UserManager<User> userManager,
         TokensFactory tokensFactory,
-        IMediator mediator)
+        IMediator mediator,
+        ILogger<RegistrationCommandHandler> logger)
     {
         UserManager = userManager;
         TokensFactory = tokensFactory;
         Mediator = mediator;
+        Logger = logger;
     }
 
     public async Task<TokensDto> Handle(RegistrationCommand request, CancellationToken cancellationToken)
@@ -48,6 +52,8 @@ internal class RegistrationCommandHandler : IRequestHandler<RegistrationCommand,
         }
 
         await UserManager.AddToRoleAsync(user, RoleName.Customer.ToString());
+
+        Logger.LogInformation("User with {Email} is registered.", user.Email);
 
         await Mediator.Publish(new UserRegisteredNotification(user.Id), cancellationToken);
 
