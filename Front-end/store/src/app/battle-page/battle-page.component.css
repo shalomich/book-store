@@ -315,5 +315,17 @@
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
   }
+
+  .slider-first-book-arrow {
+    display: flex;
+    justify-content: flex-end;
+    color: #2199e8;
+  }
+
+  .slider-second-book-arrow {
+    display: flex;
+    justify-content: flex-start;
+    color: #2199e8;
+  }
 }
 
