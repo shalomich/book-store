@@ -3,52 +3,54 @@
     {{book.name}}
   </div>
   <app-product-images [titleImage]="book.titleImage" [notTitleImages]="book.notTitleImages"></app-product-images>
-  <div class="info-block">
-    <div class="info-field">
-      <div class="field-name">ID Товара</div>
-      <div class="field-value">{{book.id}}</div>
+  <div [ngStyle]="{'display': 'block'}">
+    <div class="info-block">
+      <div class="info-field">
+        <div class="field-name">ID Товара</div>
+        <div class="field-value">{{book.id}}</div>
+      </div>
+      <div class="info-field">
+        <div class="field-name">Автор</div>
+        <div class="field-value">{{book.authorName}}</div>
+      </div>
+      <div class="info-field">
+        <div class="field-name">Издательство</div>
+        <div class="field-value">{{book.publisherName}}</div>
+      </div>
+      <div class="info-field">
+        <div class="field-name">Год издания</div>
+        <div class="field-value">{{book.releaseYear}}</div>
+      </div>
+      <div class="info-field">
+        <div class="field-name">ISBN</div>
+        <div class="field-value">{{book.isbn}}</div>
+      </div>
+      <div class="info-field">
+        <div class="field-name">Кол-во страниц</div>
+        <div class="field-value">{{book.pageQuantity}}</div>
+      </div>
+      <div class="info-field">
+        <div class="field-name">Тип</div>
+        <div class="field-value">{{book.type}}</div>
+      </div>
+      <div class="info-field">
+        <div class="field-name">Жанры</div>
+        <div class="field-value">{{book.genres.join(', ')}}</div>
+      </div>
+      <div class="info-field">
+        <div class="field-name">Тип обложки</div>
+        <div class="field-value">{{book.coverArt}}</div>
+      </div>
+      <div class="info-field">
+        <div class="field-name">Возрастное ограничение</div>
+        <div class="field-value">{{book.ageLimit}}</div>
+      </div>
+      <div class="info-field">
+        <div class="field-name">Формат</div>
+        <div class="field-value">{{book.bookFormat}}</div>
+      </div>
     </div>
-    <div class="info-field">
-      <div class="field-name">Автор</div>
-      <div class="field-value">{{book.authorName}}</div>
-    </div>
-    <div class="info-field">
-      <div class="field-name">Издательство</div>
-      <div class="field-value">{{book.publisherName}}</div>
-    </div>
-    <div class="info-field">
-      <div class="field-name">Год издания</div>
-      <div class="field-value">{{book.releaseYear}}</div>
-    </div>
-    <div class="info-field">
-      <div class="field-name">ISBN</div>
-      <div class="field-value">{{book.isbn}}</div>
-    </div>
-    <div class="info-field">
-      <div class="field-name">Кол-во страниц</div>
-      <div class="field-value">{{book.pageQuantity}}</div>
-    </div>
-    <div class="info-field">
-      <div class="field-name">Тип</div>
-      <div class="field-value">{{book.type}}</div>
-    </div>
-    <div class="info-field">
-      <div class="field-name">Жанры</div>
-      <div class="field-value">{{book.genres.join(', ')}}</div>
-    </div>
-    <div class="info-field">
-      <div class="field-name">Тип обложки</div>
-      <div class="field-value">{{book.coverArt}}</div>
-    </div>
-    <div class="info-field">
-      <div class="field-name">Возрастное ограничение</div>
-      <div class="field-value">{{book.ageLimit}}</div>
-    </div>
-    <div class="info-field">
-      <div class="field-name">Формат</div>
-      <div class="field-value">{{book.bookFormat}}</div>
-    </div>
-    <div class="info-field">
+    <div class="info-field chip-list">
       <mat-chip-list>
         <mat-chip [title]="tag.groupName" [style]="{backgroundColor: tag.colorHex, color: '#FFFFFF'}" [disableRipple]="true" *ngFor="let tag of book.tags"># {{tag.name}}</mat-chip>
       </mat-chip-list>

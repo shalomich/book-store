@@ -18,7 +18,7 @@ export const TAGS_URL = 'https://comic-store-server.herokuapp.com/store/tag';
 
 export const FILTERS_URL = 'https://comic-store-server.herokuapp.com/store/catalog/filter';
 
-export const PAGE_SIZE = 3;
+export const PAGE_SIZE = 5;
 export const PAGE_NUMBER = 1;
 
 export const SEARCH_DEPTH = 3;
