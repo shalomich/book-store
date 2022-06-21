@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using BookStore.Application.Exceptions;
 using BookStore.Domain.Enums;
 using BookStore.Application.Commands.Account.Common;
+using BookStore.Application.Notifications.UserRegistered;
 
 namespace BookStore.Application.Commands.Account.Registration;
 public record RegistrationCommand(RegistrationDto RegistrationForm) : IRequest<TokensDto>;
@@ -15,13 +16,16 @@ internal class RegistrationCommandHandler : IRequestHandler<RegistrationCommand,
 {
     private UserManager<User> UserManager { get; }
     private TokensFactory TokensFactory { get; }
+    public IMediator Mediator { get; }
 
     public RegistrationCommandHandler(
         UserManager<User> userManager,
-        TokensFactory tokensFactory)
+        TokensFactory tokensFactory,
+        IMediator mediator)
     {
         UserManager = userManager;
         TokensFactory = tokensFactory;
+        Mediator = mediator;
     }
 
     public async Task<TokensDto> Handle(RegistrationCommand request, CancellationToken cancellationToken)
@@ -44,6 +48,8 @@ internal class RegistrationCommandHandler : IRequestHandler<RegistrationCommand,
         }
 
         await UserManager.AddToRoleAsync(user, RoleName.Customer.ToString());
+
+        await Mediator.Publish(new UserRegisteredNotification(user.Id), cancellationToken);
 
         return await TokensFactory.GenerateTokens(user);
     }

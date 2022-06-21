@@ -73,14 +73,14 @@ namespace QueryWorker.DataTransformers
         }
         private IQueryable<T> ContainsFilter(string comparedValue, IQueryable<T> query)
         {
-            Expression<Func<string, bool>> comparer = value => value.Contains(comparedValue);
+            Expression<Func<string, bool>> comparer = value => value.ToUpper().Contains(comparedValue.ToUpper());
 
             return query.Where(PropertySelector.Compose(comparer));
         }
 
         private IQueryable<T> EqualFilter(string comparedValue, IQueryable<T> query)
         {
-            Expression<Func<string, bool>> comparer = value => value == comparedValue;
+            Expression<Func<string, bool>> comparer = value => value.ToUpper() == comparedValue.ToUpper();
 
             return query.Where(PropertySelector.Compose(comparer));
         }
