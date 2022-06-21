@@ -18,6 +18,7 @@ export class BasketProductMapper extends Mapper<BasketProductDto, BasketProduct>
       name: data.name,
       cost: data.cost,
       quantity: data.quantity,
+      productQuantity: data.productQuantity,
       titleImage: data.titleImage,
       productId: data.productId,
     };
@@ -30,6 +31,7 @@ export class BasketProductMapper extends Mapper<BasketProductDto, BasketProduct>
       name: data.name,
       cost: data.cost,
       quantity: data.quantity,
+      productQuantity: data.productQuantity,
       titleImage: data.titleImage,
       productId: data.productId,
     });

@@ -11,7 +11,7 @@
   <div class="amount-block">
     <button mat-flat-button [disabled]="quantity.value <= 1" (click)="decrease()">-</button>
     <div class="quantity">{{product.quantity}}</div>
-    <button [disabled]="quantity.value >= 10" mat-flat-button (click)="increase()">+</button>
+    <button [disabled]="quantity.value >= (product.productQuantity >= 10 ? 10 : product.productQuantity)" mat-flat-button (click)="increase()">+</button>
   </div>
   <div class="cost">{{product.cost * product.quantity}} &#8381;</div>
   <div class="remove-button-block">

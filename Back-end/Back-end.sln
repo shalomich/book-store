@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Persistance", "Bo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Application", "BookStore.Application\BookStore.Application.csproj", "{EBD07790-090A-4317-92BC-1CB8631C2B7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookStore.TelegramBot", "BookStore.TelegramBot\BookStore.TelegramBot.csproj", "{5E372897-38A0-44D7-8916-D0123E8E1446}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Bot", "BookStore.Bot\BookStore.Bot.csproj", "{4F79CDBB-05F6-4764-8848-4E65F1F41CA7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,10 +47,10 @@ Global
 		{EBD07790-090A-4317-92BC-1CB8631C2B7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBD07790-090A-4317-92BC-1CB8631C2B7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBD07790-090A-4317-92BC-1CB8631C2B7D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5E372897-38A0-44D7-8916-D0123E8E1446}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5E372897-38A0-44D7-8916-D0123E8E1446}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5E372897-38A0-44D7-8916-D0123E8E1446}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5E372897-38A0-44D7-8916-D0123E8E1446}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F79CDBB-05F6-4764-8848-4E65F1F41CA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F79CDBB-05F6-4764-8848-4E65F1F41CA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F79CDBB-05F6-4764-8848-4E65F1F41CA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F79CDBB-05F6-4764-8848-4E65F1F41CA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
