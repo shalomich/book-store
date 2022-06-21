@@ -1,4 +1,7 @@
-﻿namespace BookStore.Bot.Providers;
+﻿using System.ComponentModel;
+using System.Linq.Expressions;
+
+namespace BookStore.Bot.Providers;
 internal static class CommandNames
 {
     public const string Start = "start";
@@ -31,10 +34,12 @@ internal static class CommandNames
 
     public const string CastVote = BattleGroup + "cast_vote";
 
+    [Description()]
     public const string SpendVotingPoints = BattleGroup + "spend_points";
 
     private const string BasketGroup = "basket_";
 
+    [Description()]
     public const string ShowBasket = BasketGroup + "show";
 
     public const string AddToBasket = BasketGroup + "add";
@@ -43,10 +48,8 @@ internal static class CommandNames
 
     public const string DeleteChoosen = BasketGroup + "delete";
 
+    [Description()]
     public const string DeleteAll = BasketGroup + "delete_all";
-
-
-
 
     public static string[] All => new string[]
     {
@@ -60,4 +63,22 @@ internal static class CommandNames
     {
         Start, CastVote, AddToBasket, ChangeBasketProductQuantity, DeleteChoosen
     };
+
+    public static IEnumerable<(string CommandName, string Description)> GetUserAvailableCommands()
+    {
+        yield return (Help, "показать все существующие команды бота");
+        yield return (Authenticate, "пройти авторизацию на сайте");
+        yield return (Novelties, "подборка \"Новинки\"");
+        yield return (GoneOnSale, "подборка \"Теперь в продаже\"");
+        yield return (BackOnSale, "подборка \"Снова в продаже\"");
+        yield return (CurrentDayAuthor, "подборка \"Автор этого дня\"");
+        yield return (Popular, "подборка \"Популярное\"");
+        yield return (LastViewed, "подборка \"Последние просмотренные\"");
+        yield return (CanBeInteresting, "подборка \"Можеть быть интересно\"");
+        yield return (SpecialForYou, "подборка \"Специально для вас\"");
+        yield return (ShowBattle, "продемонстрировать баттл комиксов");
+        yield return (SpendVotingPoints, "проголосовать за кандидата в баттле комиксов");
+        yield return (ShowBasket, "продемонстрировать корзину");
+        yield return (DeleteAll, "очистить корзину");
+    }
 }

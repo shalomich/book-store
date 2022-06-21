@@ -18,9 +18,8 @@ internal class HelpCommandHandler : TelegramBotCommandHandler<HelpCommand>
 
     protected async override Task Handle(HelpCommand request, CancellationToken cancellationToken)
     {
-        var commandList = CommandNames.All
-                .Except(CommandNames.NotForUser)
-                .Aggregate(string.Empty, (commands, command) => commands + $"\n /{command}");
+        var commandList = CommandNames.GetUserAvailableCommands()
+                .Aggregate(string.Empty, (commands, command) => commands + $"\n /{command.CommandName} - {command.Description}");
 
         var commandsMessage = "Команды:\n" + commandList;
 
