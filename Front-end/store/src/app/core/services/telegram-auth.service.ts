@@ -38,7 +38,7 @@ export class TelegramAuthService {
   }
 
   public redirectToTelegram(): void {
-    window.open(`https://t.me/Comic_Store_Bot`, '_blank');
+    window.open(`https://t.me/ComicsStore_bot`, '_blank');
   }
 
   public redirectToTelegramWithAuth(token: string): void {
