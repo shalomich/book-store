@@ -21,7 +21,6 @@ public record BookForm
     [Range(Product.MinQuantity, int.MaxValue)]
     public int Quantity { init; get; }
 
-    [MaxLength(Product.MaxDescriptionLength)]
     public string Description { init; get; }
 
     [Required]
