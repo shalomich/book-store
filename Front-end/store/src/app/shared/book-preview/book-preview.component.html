@@ -6,7 +6,7 @@
     <div class="name">{{item.name}}</div>
   </div>
   <div class="buy-block">
-    <span>{{item.cost}} &#8381;</span>
+    <span>{{item.cost}} р.</span>
     <button *ngIf="!inBasketFlag; else inBasket"
             (click)="isUserAuthorized ? handleAddToBasketClick() : openLoginDialog()"
             class="add-to-basket-button"
