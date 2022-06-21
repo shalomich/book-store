@@ -15,20 +15,9 @@ public class BattleSettingsProvider
     }
     public BattleSettings GetBattleSettings()
     {
-        if (!File.Exists(_battleSettingsFilePath))
-        {
-            var battleSettings = new BattleSettings();
+        var battleSettingsString = File.ReadAllText(_battleSettingsFilePath);
 
-            UpdateBattleSettings(battleSettings);
-
-            return battleSettings;
-        }
-        else
-        {
-            var battleSettingsString = File.ReadAllText(_battleSettingsFilePath);
-
-            return JsonConvert.DeserializeObject<BattleSettings>(battleSettingsString);
-        }
+        return JsonConvert.DeserializeObject<BattleSettings>(battleSettingsString);
     }
 
     public void UpdateBattleSettings(BattleSettings battleSettings)

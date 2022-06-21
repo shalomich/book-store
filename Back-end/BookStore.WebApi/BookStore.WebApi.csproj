@@ -5,10 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Areas\Dashboard\Services\**" />
-    <Content Remove="Areas\Dashboard\Services\**" />
-    <EmbeddedResource Remove="Areas\Dashboard\Services\**" />
-    <None Remove="Areas\Dashboard\Services\**" />
+    <EmbeddedResource Include="battlesettings.json" />
   </ItemGroup>
 
   <ItemGroup>

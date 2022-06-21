@@ -1,0 +1,11 @@
+{
+  "BattleDurationInDays": 7,
+  "VotingPointCountBattleBeginning": 50,
+  "VotingPointCountPerRuble": 0.2,
+  "InitialDiscount": 5,
+  "FinalDiscount": 30,
+  "DiscountPerVotingPoint": 0.02,
+  "LowerBoundBookCost": 1000,
+  "MaxBookCostDifference": 500,
+  "BattleExtensionInHours": 1
+}
